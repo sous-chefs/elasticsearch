@@ -1,0 +1,7 @@
+check process elasticsearch with pidfile <%= @pidfile %>
+  start program = "/etc/init.d/elasticsearch restart" with timeout 60 seconds
+  stop program  = "/etc/init.d/elasticsearch restart"
+  if cpu > 90% for 15 cycles then restart
+  if totalmem > 90% for 15 cycles then restart
+  if loadavg(15min) greater than 10 for 50 cycles then stop
+  group elasticsearch

@@ -1,0 +1,43 @@
+################################### Cluster ###################################
+
+cluster.name: '<%= node.elasticsearch[:cluster_name] %>'
+node.name:    '<%= node.elasticsearch[:node_name]    %>'
+
+#################################### Index ####################################
+
+index.number_of_shards:   <%= node.elasticsearch[:index_shards]   %>
+index.number_of_replicas: <%= node.elasticsearch[:index_replicas] %>
+
+#################################### Paths ####################################
+
+path.data: <%= node.elasticsearch[:data_path] %>
+path.logs: <%= node.elasticsearch[:log_path] %>
+
+################################### Memory ####################################
+
+bootstrap.mlockall: true
+
+################################## Discovery ##################################
+<% if node.elasticsearch[:discovery][:type] %>
+discovery:
+  type: <%= node.elasticsearch[:discovery][:type] %>
+<% end %>
+<% unless node.elasticsearch[:cloud][:ec2].values.compact.empty? %>
+  ec2.groups: <%= node.elasticsearch[:cloud][:ec2][:security_group] %>
+<% end %>
+
+<% unless node.elasticsearch[:cloud][:aws].values.compact.empty? %>
+cloud:
+  node.auto_attributes: true
+  aws.access_key: '<%= node.elasticsearch[:cloud][:aws][:access_key] %>'
+  aws.secret_key: '<%= node.elasticsearch[:cloud][:aws][:secret_key] %>'
+<% end %>
+
+<% if node.elasticsearch[:gateway][:type] %>
+################################## Persistence ##################################
+gateway:
+  type: <%= node.elasticsearch[:gateway][:type] %>
+<% if node.elasticsearch[:gateway][:s3] %>
+  s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
+<% end %>
+<% end %>

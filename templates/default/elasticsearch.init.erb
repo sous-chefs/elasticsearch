@@ -1,0 +1,125 @@
+#!/usr/bin/env bash
+#
+# elasticsearch
+#
+# chkconfig:   - 57 47
+# description: elasticsearch
+# processname: elasticsearch
+# config:      <%= node[:elasticsearch][:conf_path] %>/elasticsearch.yml
+
+# Source networking configuration
+source /etc/sysconfig/network
+
+# Exit if networking is not up
+[ "$NETWORKING" = "no" ] && exit
+
+PIDFILE='<%= node[:elasticsearch][:pid_path] %>/<%= node[:elasticsearch][:node_name].to_s.gsub(/\W/, "_") %>.pid'
+ES_INCLUDE='<%= node.elasticsearch[:conf_path] %>/elasticsearch-env.sh'
+CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es-pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
+
+start() {
+    if [ -f $PIDFILE ]; then
+      echo -e "\033[31;1mPID file found in $PIDFILE, already running?\033[0m"
+      return 1
+    else
+      echo -e "\033[1mStarting elasticsearch...\033[0m"
+      su <%= node[:elasticsearch][:user] %> -m -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch -p $PIDFILE"
+    fi
+    return $?
+}
+
+stop() {
+    if [[ -f $PIDFILE ]]; then
+      echo -n -e "\033[1mStopping elasticsearch...\033[0m"
+
+      # REMOVE PIDFILE AND EXIT IF PROCESS NOT RUNNING
+      if [ ! $CHECK_PID_RUNNING ]; then
+        echo -e "\033[1mPID file found, but no matching process running?\033[0m"
+        echo    "Removing PID file..."
+        su <%= node[:elasticsearch][:user] %> -m -c "rm $PIDFILE"
+        exit $?
+      fi
+
+      # KILL PROCESS
+      su <%= node[:elasticsearch][:user] %> -m -c "kill $(cat $PIDFILE)"
+      r=$?
+      timeout=0
+      while [ -f $PIDFILE  ]; do
+        echo -n '.'
+        (( timeout++ ))
+        if [ $timeout -gt '15' ]; then return; fi
+        sleep 1
+      done; echo
+      return $r
+    else
+      echo -e "\033[1mNo PID file found -- elasticsearch not running?\033[0m"
+    fi
+}
+
+restart() {
+    stop
+    start
+}
+
+status() {
+  # GOT PIDFILE?
+  [ -f $PIDFILE ] && pid=$(cat $PIDFILE)
+
+  # RUNNING
+  if [[ $pid && -d "/proc/$pid" ]]; then
+    echo -e "\033[1;37;46melasticsearch running with PID $pid\033[0m"
+    # VERBOSE
+    if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
+      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node_name] %>' | \
+      ruby -rubygems -e '
+        begin
+          require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
+          def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
+          e "Cluster Name", h["cluster_name"]
+          e "Node Name", node["name"]
+          e "Started",   Time.at(node["jvm"]["start_time"].to_i/1000)
+          e "JVM",       node["jvm"]["vm_name"]
+          e "Memory Total", node["os"]["mem"]["total"]
+          e "HTTP Address", node["http_address"]
+        rescue
+          puts "Metadata cannot be retrieved."
+        end
+      '
+    fi
+    # INCORRECT PID?
+    if [ $pid != $CHECK_PID_RUNNING ]; then
+      echo -e "\033[1;31;40m[!] Incorrect PID found in $PIDFILE: $pid\033[0m"
+    fi
+  fi
+
+  # NOT RUNNING
+  if [[ ! $pid || ! -d "/proc/$pid" ]]; then
+    echo -e "\033[1;33;40melasticsearch not running\033[0m"
+  fi
+
+  # STALE PID FOUND
+  if [[ ! -d "/proc/$pid" && -f $PIDFILE ]]; then
+    echo -e "\033[1;31;40m[!] Stale PID found in $PIDFILE\033[0m"
+  fi
+}
+
+
+case "$1" in 
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart)
+        restart
+        ;;
+  status)
+        status $2
+        ;;
+  *)
+        echo $"Usage: $0 {start|stop|restart|status [-v]|}"
+        exit 1
+esac
+
+exit $?
