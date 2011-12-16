@@ -5,3 +5,22 @@ check process elasticsearch with pidfile <%= @pidfile %>
   if totalmem > 90% for 15 cycles then restart
   if loadavg(15min) greater than 10 for 50 cycles then stop
   group elasticsearch
+
+<% if node.monit[:notify_email] %>
+check host elasticsearch_connection with address 0.0.0.0
+  if failed url http://0.0.0.0:9200/ with timeout 15 seconds then alert
+  group elasticsearch
+
+check host elasticsearch_cluster_health with address 0.0.0.0
+  if failed url http://0.0.0.0:9200/_cluster/health
+     and content == 'green'
+     with timeout 60 seconds
+     then alert
+     alert <%= node.monit[:notify_email] %> with mail-format {
+       subject:  [monit] elasticsearch: CLUSTER HEALTH PROBLEM at <%= node.hostname %>
+       message:  [<%= node.hostname %>] $SERVICE $ACTION
+                 --
+                 http://<%= node.monit[:http_auth]['username'] %>:<%= node.monit[:http_auth]['password_encoded'] %>@<%= node.cloud.public_hostname %>:2812/elasticsearch_cluster_health
+     }
+  group elasticsearch
+<% end %>
