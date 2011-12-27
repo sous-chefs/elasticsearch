@@ -1,3 +1,5 @@
+# === VERSION ===
+#
 default.elasticsearch[:version]   = "0.18.5"
 
 # === PATHS ===
@@ -12,11 +14,17 @@ default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
 # === MEMORY ===
 #
 # Maximum amount of memory to use is automatically computed as 2/3 of total available memory.
-# Set it to discrete value in your node configuration.
+# You may choose to configure it in your node configuration instead.
 #
 max_mem = "#{(node.memory.total.to_i - (node.memory.total.to_i/3) ) / 1024}m"
 default.elasticsearch[:min_mem] = "128m"
 default.elasticsearch[:max_mem] = max_mem
+
+# === LIMITS ===
+#
+default.elasticsearch[:limits]  = {}
+default.elasticsearch[:limits][:memlock] = 'unlimited'
+default.elasticsearch[:limits][:nofile]  = '64000'
 
 # === SETTINGS ===
 #

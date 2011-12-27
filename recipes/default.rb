@@ -1,5 +1,7 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
+package('curl') { not_if 'which curl' }
+
 # Create user and group
 #
 user node.elasticsearch[:user] do
@@ -9,7 +11,9 @@ user node.elasticsearch[:user] do
   action  :create
 end
 group node.elasticsearch[:user] do
-  members [ 'ec2-user', node.elasticsearch[:user] ]
+  ( m = [] ) << node.elasticsearch[:user]
+  m << 'ec2-user' if node.recipes.include?('elasticsearch::plugin_aws')
+  members m
   action :create
 end
 
@@ -31,22 +35,18 @@ template "/etc/init.d/elasticsearch" do
 end
 service "elasticsearch" do
   supports :status => true, :restart => true
-  action [ :enable]
+  action [ :enable ]
 end
 
 # Increase open file limits
 #
 bash "increase ulimit for elasticsearch user" do
   user 'root'
-  limits = <<-END
-  
-  elasticsearch     -    memlock    unlimited
-  END
   
   code <<-END.gsub(/^    /, '')
-    echo 'elasticsearch     -    nofile    32000'     >> /etc/security/limits.conf
-    echo 'elasticsearch     -    memlock   unlimited' >> /etc/security/limits.conf
-    echo 'session    required   pam_limits.so'        >> /etc/pam.d/su
+    echo 'elasticsearch     -    nofile    #{node.elasticsearch[:limits][:nofile]}'  >> /etc/security/limits.conf
+    echo 'elasticsearch     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
+    echo 'session    required   pam_limits.so'                                       >> /etc/pam.d/su
   END
 end
 
@@ -116,7 +116,7 @@ template "elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, resources(:service => 'elasticsearch')
+  notifies :restart, resources(:service => 'elasticsearch'), :immediately
 end
 
 # Add Monit configuration file
