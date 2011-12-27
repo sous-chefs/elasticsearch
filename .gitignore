@@ -1,3 +1,5 @@
 .DS_Store
-tmp/
 .vagrant
+tmp/
+!tmp/.gitignore
+!tmp/cookbooks/.gitignore

@@ -80,6 +80,72 @@ After you have configured the node and uploaded all the information to the _Chef
     knife ssh name:elasticsearch* 'sudo su - root -c "chef-client"'
 
 
+Testing with Vagrant
+--------------------
+
+The cookbook comes with a `Vagrantfile`, allowing you to test-drive the installation and configuration
+with [_Vagrant_](http://vagrantup.com/), the tool for building virtualized development infrastructure.
+
+First, make sure, you have both _VirtualBox_ and _Vagrant_ installed as per
+[documentation](http://vagrantup.com/docs/getting-started/index.html).
+
+Then, clone this repository somewhere on your development machine:
+
+```bash
+    git clone git://github.com/karmi/cookbook-elasticsearch.git elasticsearch
+```
+
+Switch to the cloned repository:
+
+```bash
+   cd elasticsearch
+```
+
+Download the required cookbooks (unless you already have them in `~/cookbooks`):
+
+```bash
+    books=( http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1184/original/apt.tgz   \
+            http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/631/original/java.tgz   \
+            http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1098/original/vim.tgz   \
+            http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1157/original/nginx.tgz )
+    for book in "${books[@]}"; do
+      curl -# -L -k $book | tar xz -C tmp/cookbooks
+    done
+```
+
+Add the Ubuntu 10.04 64 bit box as "ubuntu" to Vagrant:
+
+```bash
+    vagrant box add ubuntu http://files.vagrantup.com/lucid64.box
+```
+
+Launch the virtual machine with _Vagrant_:
+
+```bash
+    vagrant up
+```
+
+The machine will be started and automatically provisioned with
+[_chef-solo_](http://vagrantup.com/docs/provisioners/chef_solo.html);
+you'll see _Chef_ debug messages flying by in your terminal, installing and configuring
+_Java_, _Nginx_, _elasticsearch_, etc. The process takes about 6 minutes on a 2011 MacBook Air.
+
+After the process is done, you may connect to _elasticsearch_ via the Nginx proxy:
+
+```bash
+    open 'http://USERNAME:PASSWORD@33.33.33.10:8080/test_chef_cookbook/_search?q=*'
+```
+
+Of course, you should connect to the box with SSH and check things out:
+
+```bash
+    vagrant ssh
+    ps aux | grep elasticsearch
+    service elasticsearch status --verbose
+    curl http://localhost:9200/_cluster/health?pretty
+```
+
+
 Cookbook Organization
 ---------------------
 
