@@ -1,18 +1,23 @@
 # Inserts example data into ES to test persistence across restarts, etc
 #
 bash "Insert example data and perform search" do
-  user node.elasticsearch[:user]
+  user 'root'
 
   code <<-EOS
     HOST=http://localhost:9200
 
-    timeout=0
+    if [ ! $(curl -s $HOST) ]; then
+      echo "(Re)starting elasticsearch..."
+      su - root -c 'service elasticsearch restart'
+      sleep 10
+    fi
 
+    timeout=0
     echo 'Waiting for elasticsearch...'
     until curl -s $HOST/ > /dev/null; do
       echo -n '.'
       (( timeout++ ))
-      if [ $timeout -gt '60' ]; then
+      if [ $timeout -gt '120' ]; then
         echo '[!] Timeout.'
         exit 1
       fi
