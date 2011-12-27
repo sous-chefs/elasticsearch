@@ -133,13 +133,10 @@ Now, launch the virtual machine with _Vagrant_ (it will download the box unless 
     vagrant up
 ```
 
-The machine will be started and automatically provisioned with
-[_chef-solo_](http://vagrantup.com/docs/provisioners/chef_solo.html).
+The machine will be started and automatically provisioned with 
+[_chef-solo_](http://vagrantup.com/docs/provisioners/chef_solo.html). You'll see _Chef_ debug messages flying by in your terminal, installing and configuring _Java_, _Nginx_, _elasticsearch_, etc. The process should take less then 15 minutes.
 
-You'll see _Chef_ debug messages flying by in your terminal, installing and configuring
-_Java_, _Nginx_, _elasticsearch_, etc. The process should take less then 15 minutes.
-
-After the process is done, you may connect to _elasticsearch_ via the Nginx proxy:
+After the process is done, you may connect to _elasticsearch_ via the _Nginx_ proxy:
 
 ```bash
     open 'http://USERNAME:PASSWORD@33.33.33.10:8080/test_chef_cookbook/_search?q=*'
