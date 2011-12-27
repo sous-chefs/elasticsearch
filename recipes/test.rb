@@ -5,16 +5,32 @@ bash "Insert example data and perform search" do
 
   code <<-EOS
     HOST=http://localhost:9200
-    curl -X DELETE $HOST/test/; echo
 
-    curl -X POST $HOST/test/document -d '{"title" : "Test 1", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
-    curl -X POST $HOST/test/document -d '{"title" : "Test 2", "time" : "#{Time.now.utc}", "enabled" : false}'; echo
-    curl -X POST $HOST/test/document -d '{"title" : "Test 3", "time" : "#{Time.now.utc}", "enabled" : false}'; echo
-    curl -X POST $HOST/test/document -d '{"title" : "Test 4", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
-    curl -X POST $HOST/test/document -d '{"title" : "Test 5", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
-    curl -X POST $HOST/test/_refresh; echo
+    timeout=0
 
-    curl "$HOST/test/_search?q=Test&size=1&pretty"; echo
+    echo 'Waiting for elasticsearch...'
+    until curl -s $HOST/ > /dev/null; do
+      echo -n '.'
+      (( timeout++ ))
+      if [ $timeout -gt '60' ]; then
+        echo '[!] Timeout.'
+        exit 1
+      fi
+      sleep 1
+    done
+
+    echo; echo 'Inserting data...'
+
+    curl -X DELETE $HOST/test_chef_cookbook/; echo
+
+    curl -X POST $HOST/test_chef_cookbook/document/1 -d '{"title" : "Test 1", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
+    curl -X POST $HOST/test_chef_cookbook/document/2 -d '{"title" : "Test 2", "time" : "#{Time.now.utc}", "enabled" : false}'; echo
+    curl -X POST $HOST/test_chef_cookbook/document/3 -d '{"title" : "Test 3", "time" : "#{Time.now.utc}", "enabled" : false}'; echo
+    curl -X POST $HOST/test_chef_cookbook/document/4 -d '{"title" : "Test 4", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
+    curl -X POST $HOST/test_chef_cookbook/document/5 -d '{"title" : "Test 5", "time" : "#{Time.now.utc}", "enabled" : true} '; echo
+    curl -X POST $HOST/test_chef_cookbook/_refresh; echo
+
+    curl "$HOST/test_chef_cookbook/_search?q=Test&size=1&pretty"; echo
   EOS
 
 end
