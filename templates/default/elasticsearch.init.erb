@@ -37,7 +37,7 @@ stop() {
         echo -e "\033[1mPID file found, but no matching process running?\033[0m"
         echo    "Removing PID file..."
         su <%= node[:elasticsearch][:user] %> -m -c "rm $PIDFILE"
-        exit $?
+        exit 0
       fi
 
       # KILL PROCESS
