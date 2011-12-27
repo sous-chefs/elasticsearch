@@ -1,11 +1,11 @@
-# Load configuration and credentials from data bag 'elasticsearch/aws --
+# Load configuration and credentials from data bag 'elasticsearch/aws' -
 #
 aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
 # ----------------------------------------------------------------------
 
 # === AWS ===
 # AWS configuration is set based on data bag values.
-# Set it to discrete values in your node configuration.
+# You may choose to configure them in your node configuration instead.
 #
 default.elasticsearch[:gateway][:type]               = ( aws['gateway']['type']                rescue nil )
 default.elasticsearch[:discovery][:type]             = ( aws['discovery']['type']              rescue nil )
