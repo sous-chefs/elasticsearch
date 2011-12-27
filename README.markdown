@@ -124,15 +124,10 @@ Download the required cookbooks (unless you already have them in `~/cookbooks`):
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1157/original/nginx.tgz | tar xz -C tmp/cookbooks
 ```
 
-Download and add the [_Ubuntu Lucid 64_](http://vagrantbox.es/2/) box as "ubuntu" to Vagrant:
+We will use the [_Ubuntu Lucid 64_](http://vagrantbox.es/2/) box, but you may want to test-drive this cookbook on a different
+OS, of course. Check out the available boxes at <http://vagrantbox.es>.
 
-```bash
-    vagrant box add ubuntu http://files.vagrantup.com/lucid64.box
-```
-
-(Of course, you may want to test-drive this cookbook on a different OS. Check out the available <http://vagrantbox.es>.)
-
-Now, launch the virtual machine with _Vagrant_:
+Now, launch the virtual machine with _Vagrant_ (it will download the box unless you already have it):
 
 ```bash
     vagrant up
@@ -142,7 +137,7 @@ The machine will be started and automatically provisioned with
 [_chef-solo_](http://vagrantup.com/docs/provisioners/chef_solo.html).
 
 You'll see _Chef_ debug messages flying by in your terminal, installing and configuring
-_Java_, _Nginx_, _elasticsearch_, etc. The process takes about 6 minutes on a 2011 MacBook Air.
+_Java_, _Nginx_, _elasticsearch_, etc. The process should take less then 15 minutes.
 
 After the process is done, you may connect to _elasticsearch_ via the Nginx proxy:
 
