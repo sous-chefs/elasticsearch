@@ -2,6 +2,7 @@ ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:ve
 ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
 
 ES_JAVA_OPTS="
+  -server
   -Djava.net.preferIPv4Stack=true
   -Des.max-open-files=true
   -Des.config=<%= node.elasticsearch[:conf_path] %>/elasticsearch.yml
