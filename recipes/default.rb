@@ -44,8 +44,8 @@ bash "increase ulimit for elasticsearch user" do
   user 'root'
   
   code <<-END.gsub(/^    /, '')
-    echo 'elasticsearch     -    nofile    #{node.elasticsearch[:limits][:nofile]}'  >> /etc/security/limits.conf
-    echo 'elasticsearch     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
+    echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}'  >> /etc/security/limits.conf
+    echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
     echo 'session    required   pam_limits.so'                                       >> /etc/pam.d/su
   END
 end
