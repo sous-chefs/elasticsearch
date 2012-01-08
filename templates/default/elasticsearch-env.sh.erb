@@ -4,14 +4,15 @@ ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
 ES_JAVA_OPTS="
   -server
   -Djava.net.preferIPv4Stack=true
-  -Des.max-open-files=true
   -Des.config=<%= node.elasticsearch[:conf_path] %>/elasticsearch.yml
   -Xms<%= node.elasticsearch[:min_mem] %>
   -Xmx<%= node.elasticsearch[:max_mem] %>
   -Xss128k
-  -XX:+AggressiveOpts
   -XX:+UseParNewGC
   -XX:+UseConcMarkSweepGC
   -XX:+CMSParallelRemarkEnabled
-  -XX:+HeapDumpOnOutOfMemoryError
-  -XX:CMSInitiatingOccupancyFraction=88"
+  -XX:SurvivorRatio=8
+  -XX:MaxTenuringThreshold=1
+  -XX:CMSInitiatingOccupancyFraction=75
+  -XX:+UseCMSInitiatingOccupancyOnly
+  -XX:+HeapDumpOnOutOfMemoryError"
