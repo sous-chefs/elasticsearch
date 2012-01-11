@@ -1,7 +1,5 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
-package('curl') { not_if 'which curl' }
-
 # Create user and group
 #
 user node.elasticsearch[:user] do
@@ -52,16 +50,9 @@ end
 
 # Download ES
 #
-bash "Download https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz" do
-  user "root"
-  cwd  "/tmp"
 
-  code <<-EOH
-    echo "Downloading ES..."
-    curl -# -k -L -O https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz
-  EOH
-
-  creates "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
+remote_file "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
+  source "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
 end
 
 # Move to ES dir
