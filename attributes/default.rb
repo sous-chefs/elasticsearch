@@ -1,6 +1,6 @@
 # === VERSION ===
 #
-default.elasticsearch[:version]   = "0.18.5"
+default.elasticsearch[:version]   = "0.18.7"
 
 # === PATHS ===
 #
