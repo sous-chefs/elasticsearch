@@ -1,5 +1,9 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
+include_recipe 'elasticsearch::curl' do
+  not_if "which curl"
+end
+
 # Create user and group
 #
 user node.elasticsearch[:user] do
@@ -40,7 +44,7 @@ end
 #
 bash "increase ulimit for elasticsearch user" do
   user 'root'
-  
+
   code <<-END.gsub(/^    /, '')
     echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}'  >> /etc/security/limits.conf
     echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
@@ -50,7 +54,6 @@ end
 
 # Download ES
 #
-
 remote_file "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
   source "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
 end
