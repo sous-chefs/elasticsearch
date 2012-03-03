@@ -1,8 +1,8 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
-include_recipe 'elasticsearch::curl' do
-  not_if "which curl"
-end
+# Include the `curl` recipe, needed by `service status`
+#
+include_recipe "elasticsearch::curl"
 
 # Create user and group
 #
