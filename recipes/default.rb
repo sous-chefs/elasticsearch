@@ -1,8 +1,6 @@
-elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
+include_recipe "elasticsearch::curl"
 
-include_recipe 'elasticsearch::curl' do
-  not_if "which curl"
-end
+elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
 # Create user and group
 #
