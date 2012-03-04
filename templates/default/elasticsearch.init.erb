@@ -15,7 +15,7 @@ if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
 PIDFILE='<%= node[:elasticsearch][:pid_path] %>/<%= node[:elasticsearch][:node_name].to_s.gsub(/\W/, "_") %>.pid'
 ES_INCLUDE='<%= node.elasticsearch[:conf_path] %>/elasticsearch-env.sh'
-CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es-pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
+CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
 
 start() {
     if [ -f $PIDFILE ]; then
@@ -70,17 +70,19 @@ status() {
     echo -e "\033[1;37;46melasticsearch running with PID $pid\033[0m"
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
-      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node_name] %>' | \
+      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node_name] %>?os&process&jvm&network&transport&settings&pretty' | \
       ruby -rubygems -e '
         begin
           require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
           def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
-          e "Cluster Name", h["cluster_name"]
-          e "Node Name", node["name"]
-          e "Started",   Time.at(node["jvm"]["start_time"].to_i/1000)
-          e "JVM",       node["jvm"]["vm_name"]
-          e "Memory Total", node["os"]["mem"]["total"]
-          e "HTTP Address", node["http_address"]
+          e "HTTP Address",  node["http_address"]
+          e "Node Name",     node["name"]
+          e "Cluster Name",  h["cluster_name"]
+          e "Started",       Time.at(node["jvm"]["start_time"].to_i/1000)
+          e "JVM",           "#{node["jvm"]["vm_name"]} (#{node["jvm"]["version"]})"
+          e "Memory Total",  node["os"]["mem"]["total"]
+          e "Open Files",    node["process"]["max_file_descriptors"]
+          e "Configuration", node["settings"]["config"]
         rescue
           puts "Metadata cannot be retrieved."
         end
@@ -104,7 +106,7 @@ status() {
 }
 
 
-case "$1" in 
+case "$1" in
   start)
         start
         ;;
