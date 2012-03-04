@@ -8,7 +8,7 @@ include_recipe "elasticsearch::curl"
 #
 user node.elasticsearch[:user] do
   comment "ElasticSearch User"
-  home    "#{node.elasticsearch[:dir]}/#{elasticsearch}"
+  home    "#{node.elasticsearch[:dir]}/elasticsearch"
   shell   "/bin/bash"
   action  :create
 end
@@ -65,7 +65,6 @@ bash "Move elasticsearch to #{node.elasticsearch[:dir]}/#{elasticsearch}" do
   cwd  "/tmp"
 
   code <<-EOS
-    rm -rf #{node.elasticsearch[:dir]}/#{elasticsearch}
     tar xfz /tmp/#{elasticsearch}.tar.gz
     mv --force /tmp/#{elasticsearch} #{node.elasticsearch[:dir]}
   EOS
@@ -111,6 +110,13 @@ template "elasticsearch.yml" do
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, resources(:service => 'elasticsearch')
+end
+
+# Symlink current version to main directory
+#
+link "#{node.elasticsearch[:dir]}/elasticsearch" do
+  owner node.elasticsearch[:user] and group node.elasticsearch[:user]
+  to    "#{node.elasticsearch[:dir]}/#{elasticsearch}"
 end
 
 # Add Monit configuration file
