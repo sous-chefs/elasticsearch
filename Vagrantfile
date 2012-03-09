@@ -24,6 +24,7 @@ Vagrant::Config.run do |config|
                         monit
                         elasticsearch
                         elasticsearch::proxy_nginx
+                        elasticsearch::plugin_aws
                         elasticsearch::test |
 
     chef.json = {

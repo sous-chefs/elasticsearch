@@ -1,1 +1,1 @@
-install_plugin "cloud-aws"
+install_plugin "elasticsearch/elasticsearch-cloud-aws"
