@@ -1,3 +1,7 @@
+# ------------------------------------------
+# Monit configuration file for ElasticSearch
+# ------------------------------------------
+
 check process elasticsearch with pidfile <%= @pidfile %>
   start program = "/etc/init.d/elasticsearch restart" with timeout 60 seconds
   stop program  = "/etc/init.d/elasticsearch stop"
@@ -19,8 +23,8 @@ check host elasticsearch_cluster_health with address 0.0.0.0
      alert <%= node.monit[:notify_email] %> with mail-format {
        subject:  [monit] elasticsearch: CLUSTER HEALTH PROBLEM at <%= node.hostname %>
        message:  [<%= node.hostname %>] $SERVICE $ACTION
+                 <% if node.monit[:http_auth] && node.cloud %>
                  --
-                 <% if node.monit[:http_auth] %>
                  http://<%= node.monit[:http_auth]['username'] %>:<%= node.monit[:http_auth]['password_encoded'] %>@<%= node.cloud.public_hostname %>:2812/elasticsearch_cluster_health
                  <% end %>
      }
