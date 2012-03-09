@@ -8,7 +8,12 @@ define :install_plugin do
 
     notifies :restart, resources(:service => 'elasticsearch')
 
-    not_if "test -d #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/#{params[:name]}"
+    not_if do
+      Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|
+        params[:name].include? plugin
+      end
+    end
+
   end
   
 end
