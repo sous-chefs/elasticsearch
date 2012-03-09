@@ -6,17 +6,16 @@ include_recipe "elasticsearch::curl"
 
 # Create user and group
 #
+group node.elasticsearch[:user] do
+  action :create
+end
+
 user node.elasticsearch[:user] do
   comment "ElasticSearch User"
   home    "#{node.elasticsearch[:dir]}/elasticsearch"
   shell   "/bin/bash"
+  gid     node.elasticsearch[:user]
   action  :create
-end
-group node.elasticsearch[:user] do
-  ( m = [] ) << node.elasticsearch[:user]
-  m << 'ec2-user' if node.recipes.include?('elasticsearch::plugin_aws')
-  members m
-  action :create
 end
 
 # Create ES directories
