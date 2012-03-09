@@ -49,6 +49,11 @@ bash "increase ulimit for elasticsearch user" do
     echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
     echo 'session    required   pam_limits.so'                                       >> /etc/pam.d/su
   END
+
+  not_if do
+    File.read("/etc/security/limits.conf").include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile") ||
+    File.read("/etc/pam.d/su").include?("session    required   pam_limits.so")
+  end
 end
 
 # Download ES
