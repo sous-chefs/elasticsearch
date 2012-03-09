@@ -1,4 +1,9 @@
-ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}" %>'
+# JVM Configuration for ElasticSearch
+# ===================================
+# See <https://github.com/elasticsearch/elasticsearch/blob/master/bin/elasticsearch.in.sh>
+#
+
+ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch" %>'
 ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
 
 ES_JAVA_OPTS="
@@ -10,9 +15,6 @@ ES_JAVA_OPTS="
   -Xss128k
   -XX:+UseParNewGC
   -XX:+UseConcMarkSweepGC
-  -XX:+CMSParallelRemarkEnabled
-  -XX:SurvivorRatio=8
-  -XX:MaxTenuringThreshold=1
   -XX:CMSInitiatingOccupancyFraction=75
   -XX:+UseCMSInitiatingOccupancyOnly
   -XX:+HeapDumpOnOutOfMemoryError"
