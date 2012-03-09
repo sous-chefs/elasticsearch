@@ -20,7 +20,9 @@ check host elasticsearch_cluster_health with address 0.0.0.0
        subject:  [monit] elasticsearch: CLUSTER HEALTH PROBLEM at <%= node.hostname %>
        message:  [<%= node.hostname %>] $SERVICE $ACTION
                  --
+                 <% if node.monit[:http_auth] %>
                  http://<%= node.monit[:http_auth]['username'] %>:<%= node.monit[:http_auth]['password_encoded'] %>@<%= node.cloud.public_hostname %>:2812/elasticsearch_cluster_health
+                 <% end %>
      }
   group elasticsearch
 <% end %>

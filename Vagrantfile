@@ -17,7 +17,14 @@ Vagrant::Config.run do |config|
     chef.provisioning_path = '/etc/vagrant-chef'
     chef.log_level         = :debug
 
-    chef.run_list = %w| apt java vim nginx elasticsearch elasticsearch::proxy_nginx elasticsearch::test |
+    chef.run_list = %w| apt
+                        java
+                        vim
+                        nginx
+                        monit
+                        elasticsearch
+                        elasticsearch::proxy_nginx
+                        elasticsearch::test |
 
     chef.json = {
       elasticsearch: {

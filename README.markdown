@@ -122,6 +122,7 @@ Download the required cookbooks (unless you already have them in `~/cookbooks`):
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/631/original/java.tgz   | tar xz -C tmp/cookbooks
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1098/original/vim.tgz   | tar xz -C tmp/cookbooks
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1157/original/nginx.tgz | tar xz -C tmp/cookbooks
+    curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/915/original/monit.tgz | tar xz -C tmp/cookbooks
 ```
 
 We will use the [_Ubuntu Lucid 64_](http://vagrantbox.es/2/) box, but you may want to test-drive this cookbook on a different
