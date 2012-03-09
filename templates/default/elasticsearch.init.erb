@@ -67,7 +67,8 @@ status() {
 
   # RUNNING
   if [[ $pid && -d "/proc/$pid" ]]; then
-    echo -e "\033[1;37;46melasticsearch running with PID $pid\033[0m"
+    version=$(curl -s 'http://localhost:9200' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
+    echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
       curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node_name] %>?os&process&jvm&network&transport&settings&pretty' | \
