@@ -157,13 +157,13 @@ Cookbook Organization
 ---------------------
 
 * `attributes/default.rb`: version, paths, memory and naming settings for the node
-* `attributes/plugin_aws.rb`: Amazon AWS related node configuration
-* `attributes/proxy_nginx.rb`: _Nginx_ node settings
+* `attributes/plugin_aws.rb`: _Amazon Web Services_ settings
+* `attributes/proxy_nginx.rb`: _Nginx_ settings
 * `templates/default/elasticsearch.init.erb`: service init script
 * `templates/default/elasticsearch.yml.erb`: main _elasticsearch_ configuration file
 * `templates/default/elasticsearch-env.sh.erb`: environment variables needed by the _Java Virtual Machine_ and _elasticsearch_
 * `templates/default/elasticsearch_proxy_nginx.conf.erb`: the reverse proxy configuration
-* `templates/default/elasticsearch.monitrc.erb`: _Monit_ configuration.
+* `templates/default/elasticsearch.conf.erb`: _Monit_ configuration file
 
 
 License
