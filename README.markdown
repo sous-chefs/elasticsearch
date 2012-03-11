@@ -121,7 +121,7 @@ Download the required cookbooks (unless you already have them in `~/cookbooks`):
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1184/original/apt.tgz   | tar xz -C tmp/cookbooks
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/631/original/java.tgz   | tar xz -C tmp/cookbooks
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1098/original/vim.tgz   | tar xz -C tmp/cookbooks
-    curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1157/original/nginx.tgz | tar xz -C tmp/cookbooks
+    curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1413/original/nginx.tgz | tar xz -C tmp/cookbooks
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/915/original/monit.tgz | tar xz -C tmp/cookbooks
 ```
 
