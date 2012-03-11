@@ -15,6 +15,7 @@ user node.elasticsearch[:user] do
   home    "#{node.elasticsearch[:dir]}/elasticsearch"
   shell   "/bin/bash"
   gid     node.elasticsearch[:user]
+  supports :manage_home => false
   action  :create
 end
 
