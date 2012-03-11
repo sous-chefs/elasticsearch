@@ -26,7 +26,6 @@ discovery.ec2.groups: <%= node.elasticsearch[:cloud][:ec2][:security_group] %>
 <% end %>
 
 <% unless node.elasticsearch[:cloud][:aws].values.compact.empty? %>
-cloud:
 cloud.node.auto_attributes: true
 cloud.aws.access_key: '<%= node.elasticsearch[:cloud][:aws][:access_key] %>'
 cloud.aws.secret_key: '<%= node.elasticsearch[:cloud][:aws][:secret_key] %>'
@@ -34,7 +33,6 @@ cloud.aws.secret_key: '<%= node.elasticsearch[:cloud][:aws][:secret_key] %>'
 
 <% if node.elasticsearch[:gateway][:type] %>
 ################################## Persistence ##################################
-gateway:
 gateway.type: <%= node.elasticsearch[:gateway][:type] %>
 <% if node.elasticsearch[:gateway][:s3] %>
 gateway.s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
