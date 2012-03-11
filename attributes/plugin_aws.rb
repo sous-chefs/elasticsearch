@@ -3,6 +3,8 @@
 aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
 # ----------------------------------------------------------------------
 
+default.elasticsearch[:plugin][:aws][:version] = '1.5.0'
+
 # === AWS ===
 # AWS configuration is set based on data bag values.
 # You may choose to configure them in your node configuration instead.
