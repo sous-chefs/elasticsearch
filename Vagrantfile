@@ -7,7 +7,7 @@ Vagrant::Config.run do |config|
     vm.memory_size = 1024
   end
 
-  config.vm.network '33.33.33.10'
+  config.vm.network :bridged, '33.33.33.10'
 
   config.vm.provision :chef_solo do |chef|
 
