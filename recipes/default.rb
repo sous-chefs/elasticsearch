@@ -56,7 +56,7 @@ bash "enable user limits" do
     echo 'session    required   pam_limits.so' >> /etc/pam.d/su
   END
 
-  not_if { File.read("/etc/pam.d/su").match(/^session    required   pam_limits\.so/) }
+  not_if { ::File.read("/etc/pam.d/su").match(/^session    required   pam_limits\.so/) }
 end
 
 bash "increase limits for the elasticsearch user" do
@@ -67,7 +67,7 @@ bash "increase limits for the elasticsearch user" do
     echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
   END
 
-  not_if { File.read("/etc/security/limits.conf").include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile")  }
+  not_if { ::File.read("/etc/security/limits.conf").include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile")  }
 end
 
 # Download ES
