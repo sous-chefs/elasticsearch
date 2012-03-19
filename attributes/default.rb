@@ -1,3 +1,7 @@
+# Load settings from data bag 'elasticsearch/settings' -
+#
+settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
+
 # === VERSION ===
 #
 default.elasticsearch[:version]   = "0.19.0"
@@ -29,7 +33,7 @@ default.elasticsearch[:limits][:nofile]  = '64000'
 # === SETTINGS ===
 #
 default.elasticsearch[:node_name]      = node.name
-default.elasticsearch[:cluster_name]   = "elasticsearch"
+default.elasticsearch[:cluster_name]   = ( settings['cluster_name'] || "elasticsearch" rescue "elasticsearch" )
 default.elasticsearch[:index_shards]   = "5"
 default.elasticsearch[:index_replicas] = "1"
 
