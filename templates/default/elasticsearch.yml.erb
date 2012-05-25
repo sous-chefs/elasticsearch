@@ -15,7 +15,7 @@ path.logs: <%= node.elasticsearch[:log_path] %>
 
 ################################### Memory ####################################
 
-bootstrap.mlockall: true
+bootstrap.mlockall: <%= node.elasticsearch[:mlockall] %>
 
 ################################## Discovery ##################################
 <% if node.elasticsearch[:discovery][:type] %>
