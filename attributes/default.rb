@@ -40,3 +40,7 @@ default.elasticsearch[:index_replicas] = "1"
 # === PERSISTENCE ===
 #
 default.elasticsearch[:gateway][:type] = nil
+
+# === VARIA ===
+#
+default.elasticsearch[:disable_delete_all_indices] = true

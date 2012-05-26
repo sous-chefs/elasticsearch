@@ -17,6 +17,10 @@ path.logs: <%= node.elasticsearch[:log_path] %>
 
 bootstrap.mlockall: true
 
+################################### Varia #####################################
+
+action.disable_delete_all_indices: <%= node.elasticsearch[:disable_delete_all_indices] %>
+
 ################################## Discovery ##################################
 <% if node.elasticsearch[:discovery][:type] %>
 discovery.type: <%= node.elasticsearch[:discovery][:type] %>
