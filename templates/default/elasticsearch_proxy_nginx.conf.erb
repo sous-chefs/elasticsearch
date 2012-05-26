@@ -7,11 +7,19 @@ server {
 
   location / {
 
+    # Deny Nodes Shutdown API
+    if ($request_filename ~ "_shutdown") {
+      return 403;
+      break;
+    }
+
+<% unless node.elasticsearch[:nginx][:allow_cluster_api] %>
     # Deny access to Cluster API
     if ($request_filename ~ "_cluster") {
       return 403;
       break;
     }
+<% end %>
 
     # Pass requests to ElasticSearch
     proxy_pass http://localhost:9200;
