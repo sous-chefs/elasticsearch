@@ -7,6 +7,9 @@ node.name:    '<%= node.elasticsearch[:node_name]    %>'
 
 index.number_of_shards:   <%= node.elasticsearch[:index_shards]   %>
 index.number_of_replicas: <%= node.elasticsearch[:index_replicas] %>
+action.auto_create_index: <%= node.elasticsearch[:index_auto_create_index] %>
+index.mapper.dynamic:     <%= node.elasticsearch[:index_mapper_dynamic] %>
+
 
 #################################### Paths ####################################
 

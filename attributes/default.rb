@@ -6,6 +6,11 @@ settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
 #
 default.elasticsearch[:version]   = "0.19.4"
 
+# === INDEX ===
+#
+default.elasticsearch[:index_auto_create_index] = true
+default.elasticsearch[:index_mapper_dynamic]    = true
+
 # === PATHS ===
 #
 default.elasticsearch[:dir]       = "/usr/local"
