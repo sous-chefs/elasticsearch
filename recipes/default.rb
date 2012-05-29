@@ -72,7 +72,7 @@ end
 
 # Download ES
 #
-remote_file "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
+remote_file "#{node.elasticsearch[:remote_file_path]}/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
   source "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
   action :create_if_missing
 end
@@ -81,11 +81,11 @@ end
 #
 bash "Move elasticsearch to #{node.elasticsearch[:dir]}/#{elasticsearch}" do
   user "root"
-  cwd  "/tmp"
+  cwd  "#{node.elasticsearch[:remote_file_path]}"
 
   code <<-EOS
-    tar xfz /tmp/#{elasticsearch}.tar.gz
-    mv --force /tmp/#{elasticsearch} #{node.elasticsearch[:dir]}
+    tar xfz #{node.elasticsearch[:remote_file_path]}/#{elasticsearch}.tar.gz
+    mv --force #{node.elasticsearch[:remote_file_path]}/#{elasticsearch} #{node.elasticsearch[:dir]}
   EOS
 
   creates "#{node.elasticsearch[:dir]}/#{elasticsearch}/lib/#{elasticsearch}.jar"
