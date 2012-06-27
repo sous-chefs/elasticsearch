@@ -1,5 +1,6 @@
 .DS_Store
 .vagrant
+Berksfile.lock
 tmp/
 !tmp/.gitignore
 !tmp/cookbooks/.gitignore
