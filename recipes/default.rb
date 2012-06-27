@@ -1,8 +1,7 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
-# Include the `curl` recipe, needed by `service status`
-#
 include_recipe "elasticsearch::curl"
+include_recipe "ark"
 
 # Create user and group
 #
@@ -26,6 +25,17 @@ bash "remove the elasticsearch user home" do
   only_if "test -d #{node.elasticsearch[:dir]}/elasticsearch"
 end
 
+# Download, extract, symlink the elasticsearch libraries and binaries
+#
+ark "elasticsearch" do
+  url "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
+  owner node.elasticsearch[:user]
+  group node.elasticsearch[:user]
+  version node.elasticsearch[:version]
+  has_binaries ['bin/elasticsearch', 'bin/plugin']
+  checksum node.elasticsearch[:checksum]
+end
+
 # Create ES directories
 #
 %w| conf_path data_path log_path pid_path |.each do |path|
@@ -42,6 +52,7 @@ template "/etc/init.d/elasticsearch" do
   source "elasticsearch.init.erb"
   owner 'root' and mode 0755
 end
+
 service "elasticsearch" do
   supports :status => true, :restart => true
   action [ :enable ]
@@ -70,46 +81,6 @@ bash "increase limits for the elasticsearch user" do
   not_if { ::File.read("/etc/security/limits.conf").include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile")  }
 end
 
-# Download ES
-#
-remote_file "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
-  source "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
-  action :create_if_missing
-end
-
-# Move to ES dir
-#
-bash "Move elasticsearch to #{node.elasticsearch[:dir]}/#{elasticsearch}" do
-  user "root"
-  cwd  "/tmp"
-
-  code <<-EOS
-    tar xfz /tmp/#{elasticsearch}.tar.gz
-    mv --force /tmp/#{elasticsearch} #{node.elasticsearch[:dir]}
-  EOS
-
-  creates "#{node.elasticsearch[:dir]}/#{elasticsearch}/lib/#{elasticsearch}.jar"
-  creates "#{node.elasticsearch[:dir]}/#{elasticsearch}/bin/elasticsearch"
-end
-
-# Ensure proper permissions
-#
-bash "Ensure proper permissions for #{node.elasticsearch[:dir]}/#{elasticsearch}" do
-  user    "root"
-  code    <<-EOS
-    chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/#{elasticsearch}
-    chmod -R 775 #{node.elasticsearch[:dir]}/#{elasticsearch}
-  EOS
-end
-
-# Symlink binaries
-#
-%w| elasticsearch plugin |.each do |f|
-    link "/usr/local/bin/#{f}" do
-      owner node.elasticsearch[:user] and group node.elasticsearch[:user]
-      to    "#{node.elasticsearch[:dir]}/#{elasticsearch}/bin/#{f}"
-    end
-end
 
 # Create file with ES environment variables
 #
@@ -129,13 +100,6 @@ template "elasticsearch.yml" do
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, resources(:service => 'elasticsearch')
-end
-
-# Symlink current version to main directory
-#
-link "#{node.elasticsearch[:dir]}/elasticsearch" do
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user]
-  to    "#{node.elasticsearch[:dir]}/#{elasticsearch}"
 end
 
 # Add Monit configuration file
