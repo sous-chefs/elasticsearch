@@ -1,0 +1,3 @@
+cookbook 'elasticsearch', :path => '/home/hitman/chef-repo/site-cookbooks/elasticsearch'
+cookbook 'ark', :git => 'git://github.com/bryanwb/chef-ark.git', :ref => '721692625e1bff6f651f1032ef14adf355dc216b'
+cookbook 'java', :git => 'git://github.com/bryanwb/java', :ref => '8576a1b3a65599bfe50e49f462921071a2e04cb0'
