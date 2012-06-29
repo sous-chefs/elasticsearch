@@ -9,17 +9,17 @@ Vagrant::Config.run do |config|
       vm.memory_size = 1024
     end
 
-    dist_config.vm.network :bridged, '33.33.33.10'
+    dist_config.vm.network :bridged
+#, '33.33.33.10'
 
     dist_config.vm.provision :chef_solo do |chef|
 
-      chef.cookbooks_path    = [ File.expand_path(File.dirname( __FILE__)),
-                                 File.expand_path('../tmp/cookbooks', __FILE__)
-                               ]
+      chef.cookbooks_path    = [ '/tmp/elasticsearch-cookbooks' ]
       chef.provisioning_path = '/etc/vagrant-chef'
       chef.log_level         = :debug
 
-      chef.run_list = %w| apt
+      chef.run_list = %w| minitest-handler
+      		        apt
                         java
                         vim
                         monit
@@ -32,17 +32,10 @@ Vagrant::Config.run do |config|
           limits: {
             nofile:  1024,
             memlock: 512
-          },
-
-          nginx: {
-            users: [{
-                      username: 'USERNAME',
-                      password: 'PASSWORD'
-                    }]
+            }
+		
           }
-        }
-      }
-
+	}
     end
   end
 

@@ -172,3 +172,5 @@ License
 Author: Karel Minarik (<karmi@karmi.cz>)
 
 MIT LICENSE
+
+foo
