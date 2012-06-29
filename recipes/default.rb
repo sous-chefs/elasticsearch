@@ -4,7 +4,6 @@ elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 #
 include_recipe "elasticsearch::curl"
 include_recipe "ark"
-include_recipe "logrotate"
 
 # Create user and group
 #
@@ -109,10 +108,4 @@ monitrc("elasticsearch", :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.el
   if node.recipes.include?('monit')
 
 
-logrotate_app "elasticsearch" do
-  path "#{node['elasticsearch']['log_path']}/*.log"
-  frequency "daily"
-  create    "664 #{node['elasticsearch']['user']} #{node['elasticsearch']['user']}"
-  rotate "30"
-end
     
