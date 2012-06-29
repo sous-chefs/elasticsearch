@@ -47,16 +47,12 @@ describe_recipe 'elasticsearch::default' do
    
     # let's clean up first
     system("curl -X DELETE #{test_url}/test_chef_cookbook")
-    require 'pry'
-    binding.pry
 
     # insert test data
     (1..5).each do |num|
       test_uri = URI.parse "#{test_url}/test_chef_cookbook/document/#{num}"
       system(%|curl http://localhost:9200/test_chef_cookbook/document/#{num} -d '{ "title": "Test #{num}", "time": "#{Time.now.utc}", "enabled": true }'|)
     end
-    require 'pry'
-    binding.pry
 
     Net::HTTP.post_form URI.parse("#{test_url}/test_chef_cookbook/_refresh"), {}
     resp = Net::HTTP.get_response(URI.parse("#{test_url}/test_chef_cookbook/_search?q=Test&size=1"))

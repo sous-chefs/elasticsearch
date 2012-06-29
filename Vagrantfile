@@ -108,8 +108,8 @@ Vagrant::Config.run do |config|
 
       chef.run_list = %w| minitest-handler
                         java
+			yum::epel
                         vim
-                        monit
                         elasticsearch |
 
       chef.json = {

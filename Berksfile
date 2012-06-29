@@ -2,6 +2,7 @@ metadata
 cookbook 'ark', git: 'git://github.com/bryanwb/chef-ark.git'
 cookbook 'java', git: 'git://github.com/bryanwb/java'
 cookbook 'apt'
+cookbook 'yum'
 cookbook 'logrotate'
 cookbook 'vim'
 cookbook 'monit'
