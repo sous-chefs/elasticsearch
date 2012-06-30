@@ -18,7 +18,7 @@ path.logs: <%= node.elasticsearch[:log_path] %>
 
 ################################### Memory ####################################
 
-bootstrap.mlockall: true
+bootstrap.mlockall: <%= node.elasticsearch[:mlockall] %>
 
 ################################### Varia #####################################
 
