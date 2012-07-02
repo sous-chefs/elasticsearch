@@ -24,7 +24,7 @@ start() {
       pid_running="$( ps ax | grep 'java' | grep $es_pid )"
 
       if [ ! -z "$pid_running" ] ; then 
-	  echo -e "\033[31;1mPID $ls_pid still alive, logstash is already running. Doing nothing\033[0m"
+	  echo -e "\033[31;1mPID $ls_pid still alive, elasticsearch is already running. Doing nothing\033[0m"
 	  return 1
       else
           echo -e "\033[1mElasticsearch is not running, proceeding normally\033[0m"
