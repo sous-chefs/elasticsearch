@@ -107,5 +107,10 @@ end
 monitrc("elasticsearch", :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid") \
   if node.recipes.include?('monit')
 
-
     
+# if we aren't using monit, let's reopen the elasticsearch service and start it
+unless node.recipes.include?('monit')
+  service "elasticsearch" do
+    action [ :start ]
+  end
+end
