@@ -19,8 +19,9 @@ You may want to include the `elasticsearch::proxy_nginx` recipe, which will conf
 a reverse proxy so you may access _elasticsearch_ remotely with HTTP Authentication. (Be sure to
 include a `nginx` cookbook in your node setup as well.)
 
-The cookbook also provides the `elasticsearch::test` recipe, which populates the `test_chef_cookbook`
-index with some sample data to check if the installation, the S3 persistence, etc is working.
+The cookbook also provides a test case, which can be executed as a part of the Chef run
+(via the [Minitest Chef Handler](https://github.com/calavera/minitest-chef-handler) support).
+It populates the `test_chef_cookbook` index with some sample data and performs a simple search.
 
 
 Usage
