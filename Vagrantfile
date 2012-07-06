@@ -24,7 +24,7 @@ end
 distributions = {
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx |,
+    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx elasticsearch::plugin_aws |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {}
