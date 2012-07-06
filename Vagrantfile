@@ -1,129 +1,99 @@
-Vagrant::Config.run do |config|
+# Launch and provision multiple Linux distributions with Vagrant <http://vagrantup.com>
+#
+# Support:
+#
+# * lucid32: Ubuntu Lucid 32 bit
+# * lucid64: Ubuntu Lucid 64 bit (primary box)
+# * centos6: CentOS 6 32 bit
+#
+# See:
+#
+#   $ vagrant status
+#
+# The virtual machines are automatically provisioned upon startup with Chef-Solo
+# <http://vagrantup.com/v1/docs/provisioners/chef_solo.html>.
+#
 
-  config.vm.define :lucid32 do |dist_config|
-    dist_config.vm.box       = 'lucid32'
-    dist_config.vm.box_url   = 'http://files.vagrantup.com/lucid32.box'
+begin
+  require 'active_support/core_ext/hash/deep_merge'
+rescue LoadError => e
+  STDERR.puts '', "[!] ERROR -- Please install ActiveSupport (gem install activesupport)", '-'*80, ''
+  raise e
+end
 
-    dist_config.vm.customize do |vm|
-      vm.name        = 'elasticsearch'
-      vm.memory_size = 1024
-    end
+distributions = {
+  :lucid64 => {
+    :url      => 'http://files.vagrantup.com/lucid64.box',
+    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx |,
+    :ip       => '33.33.33.10',
+    :primary  => true,
+    :node     => {}
+  },
 
-    dist_config.vm.network :bridged, '33.33.33.10'
+  :lucid32 => {
+    :url      => 'http://files.vagrantup.com/lucid32.box',
+    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx |,
+    :ip       => '33.33.33.11',
+    :primary  => false,
+    :node     => {}
+  },
 
-    dist_config.vm.provision :chef_solo do |chef|
-
-      chef.cookbooks_path    = [ '/tmp/elasticsearch-cookbooks' ]
-      chef.provisioning_path = '/etc/vagrant-chef'
-      chef.log_level         = :debug
-
-      chef.run_list = %w| minitest-handler
-      		        apt
-                        java
-                        vim
-                        monit
-                        elasticsearch |
-
-      chef.json = {
-        elasticsearch: {
-          cluster_name: "elasticsearch_vagrant",
-
-          limits: {
-            nofile:  1024,
-            memlock: 512
-            }
-		
-          }
-	}
-    end
-  end
-
-
-  config.vm.define :lucid64 do |dist_config|
-    dist_config.vm.box       = 'lucid64'
-    dist_config.vm.box_url   = 'http://files.vagrantup.com/lucid64.box'
-
-    dist_config.vm.customize do |vm|
-      vm.name        = 'elasticsearch'
-      vm.memory_size = 1024
-    end
-
-    dist_config.vm.network :bridged, '33.33.33.10'
-
-    dist_config.vm.provision :chef_solo do |chef|
-
-      chef.cookbooks_path    = [ File.expand_path('../', __FILE__),
-                                 File.expand_path('../tmp/cookbooks', __FILE__)
-                               ]
-      chef.provisioning_path = '/etc/vagrant-chef'
-      chef.log_level         = :debug
-
-      chef.run_list = %w| apt
-                        java
-                        vim
-                        nginx
-                        monit
-                        elasticsearch
-                        elasticsearch::proxy_nginx
-                        elasticsearch::plugin_aws
-                        elasticsearch::test |
-
-      chef.json = {
-        elasticsearch: {
-          cluster_name: "elasticsearch_vagrant",
-
-          limits: {
-            nofile:  1024,
-            memlock: 512
-          },
-
-          nginx: {
-            users: [{
-                      username: 'USERNAME',
-                      password: 'PASSWORD'
-                    }]
-          }
+  :centos6 => {
+    :url      => 'http://vagrant.sensuapp.org/centos-6-i386.box',
+    :run_list => %w| minitest-handler java yum::epel vim nginx elasticsearch elasticsearch::proxy_nginx |,
+    :ip       => '33.33.33.12',
+    :primary  => false,
+    :node     => {
+      :elasticsearch => {
+        :nginx => {
+          :user => 'nginx'
         }
       }
+    }
+  }
+}
 
+node_config = {
+  :elasticsearch => {
+    :cluster_name => "elasticsearch_vagrant",
+
+    :limits => {
+      :nofile  => 1024,
+      :memlock => 512
+    },
+
+    :nginx => {
+      :user  =>  'www-data',
+      :users => [{ username: 'USERNAME', password: 'PASSWORD' }]
+    }
+  }
+}
+
+Vagrant::Config.run do |config|
+
+  distributions.each_pair do |name, options|
+
+    config.vm.define name, :options => options[:primary] do |box_config|
+
+      box_config.vm.box       = name.to_s
+      box_config.vm.box_url   = options[:url]
+
+      box_config.vm.host_name = name.to_s
+
+      box_config.vm.network   :hostonly, options[:ip]
+
+      box_config.vm.customize { |vm| vm.memory_size = 1024 } 
+
+      box_config.vm.provision :chef_solo do |chef|
+        chef.cookbooks_path    = ['..', './tmp/cookbooks']
+        chef.provisioning_path = '/etc/vagrant-chef'
+        chef.log_level         = :debug
+
+        chef.run_list = options[:run_list]
+        chef.json     = node_config.deep_merge(options[:node])
+      end
     end
-  end
 
-  config.vm.define :centos6_32 do |dist_config|
-    dist_config.vm.box       = 'centos6_32'
-    dist_config.vm.box_url   = 'http://vagrant.sensuapp.org/centos-6-i386.box'
-
-    dist_config.vm.customize do |vm|
-      vm.name        = 'elasticsearch'
-      vm.memory_size = 1024
-    end
-
-    dist_config.vm.network :bridged, '33.33.33.10'
-
-    dist_config.vm.provision :chef_solo do |chef|
-
-      chef.cookbooks_path    = [ '/tmp/elasticsearch-cookbooks' ]
-      chef.provisioning_path = '/etc/vagrant-chef'
-      chef.log_level         = :debug
-
-      chef.run_list = %w| minitest-handler
-                        java
-			yum::epel
-                        vim
-                        elasticsearch |
-
-      chef.json = {
-        elasticsearch: {
-          cluster_name: "elasticsearch_vagrant",
-
-          limits: {
-            nofile:  1024,
-            memlock: 512
-            }
-
-          }
-	}
-    end
   end
 
 end
