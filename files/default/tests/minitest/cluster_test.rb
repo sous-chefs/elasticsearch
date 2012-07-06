@@ -11,14 +11,6 @@ describe_recipe 'elasticsearch::default' do
   cluster_url = 'http://localhost:9200'
   health_url  = "#{cluster_url}/_cluster/health"
 
-  it "runs as a daemon" do
-    service("elasticsearch").must_be_running
-  end
-
-  it "boots on startup" do
-    service("elasticsearch").must_be_enabled
-  end
-
   it "shows green or yellow for cluster health" do
     # Let's wait until the service is alive
     timeout = 120
