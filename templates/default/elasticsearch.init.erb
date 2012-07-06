@@ -19,15 +19,15 @@ CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's
 
 start() {
     if [ -f $PIDFILE ]; then
-      echo -e "\033[31;1mPID file found in $PIDFILE, already running?\033[0m"
+      # PIDFILE EXISTS -- ES RUNNING?
+      echo -e "\033[31;1mPID file found in $PIDFILE, elasticsearch already running?\033[0m"
       es_pid="$(cat $PIDFILE)"
       pid_running="$( ps ax | grep 'java' | grep $es_pid )"
 
       if [ ! -z "$pid_running" ] ; then 
-	  echo -e "\033[31;1mPID $ls_pid still alive, elasticsearch is already running. Doing nothing\033[0m"
-	  return 1
-      else
-          echo -e "\033[1mElasticsearch is not running, proceeding normally\033[0m"
+        # EXIT IF ES IS ALREADY RUNNING
+	      echo -e "\033[31;1mPID $es_pid still alive, already running...\033[0m"
+	      return 1
       fi
     fi
     
