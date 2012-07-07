@@ -11,12 +11,12 @@ unpacks and moves it to the directory you have specified in the node configurati
 It installs a service which enables you to start, stop, restart and check status of the _elasticsearch_ process.
 
 If your node has the `monit` recipe in its `run_list`, it will also create a configuration file for _Monit_,
-which will check whether _elasticsearch_ is running, reachable by HTTP and the cluster is in the “green” state.
+which will check whether _elasticsearch_ is running, reachable by HTTP and the cluster is in the "green" state.
 
 If you include the `elasticsearch::plugin_aws` recipe, the
 [AWS Cloud Plugin](http://github.com/elasticsearch/elasticsearch-cloud-aws) will be installed on the node,
 allowing you to use the _Amazon_ AWS features: node auto-discovery and S3 gateway.
-You may set your AWS credentials either in the “elasticsearch/aws” data bag,
+You may set your AWS credentials either in the "elasticsearch/aws" data bag,
 or directly in the node configuration.
 
 You may want to include the `elasticsearch::proxy_nginx` recipe, which will configure _Nginx_ as
