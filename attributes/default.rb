@@ -4,8 +4,8 @@ settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
 
 # === VERSION ===
 #
-default.elasticsearch[:version]   = "0.19.4"
-default.elasticsearch[:checksum] = "dfcfe4189e42b60b049f9b203799cf24c9c1581673eb2df96dda34a67372facd"
+default.elasticsearch[:version]  = "0.19.8"
+default.elasticsearch[:checksum] = "6cc4c3a2439f48864050ba306c0e3569c064ad9097448b5452e11e3fc7c7d9e6"
 
 # === INDEX ===
 #
