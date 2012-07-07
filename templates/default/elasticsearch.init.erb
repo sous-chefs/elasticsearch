@@ -67,6 +67,13 @@ stop() {
 
 restart() {
     stop
+    timeout=30
+    while ps aux | grep 'java' | grep -e "es.pidfile"; do
+      echo -n '.'
+      (( timeout-- ))
+      if [ $timeout -lt '1' ]; then return; fi
+      sleep 1
+    done;
     start
 }
 
