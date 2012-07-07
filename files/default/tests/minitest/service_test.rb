@@ -13,4 +13,3 @@ describe_recipe 'elasticsearch::default' do
   end
 
 end
-
