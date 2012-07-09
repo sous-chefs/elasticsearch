@@ -20,6 +20,14 @@ path.logs: <%= node.elasticsearch[:log_path] %>
 
 bootstrap.mlockall: <%= node.elasticsearch[:mlockall] %>
 
+############################## Network And HTTP ###############################
+
+<%- %w{bind_host publish_host host}.each do |setting| %>
+<%- if node.elasticsearch[setting] %>
+network.<%= setting%>: <%= node.elasticsearch[setting] %>
+<%- end %>
+<%- end %>
+
 ################################### Varia #####################################
 
 action.disable_delete_all_indices: <%= node.elasticsearch[:disable_delete_all_indices] %>
