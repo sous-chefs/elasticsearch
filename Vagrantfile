@@ -2,9 +2,10 @@
 #
 # Support:
 #
-# * lucid32: Ubuntu Lucid 32 bit
-# * lucid64: Ubuntu Lucid 64 bit (primary box)
-# * centos6: CentOS 6 32 bit
+# * precise64: Ubuntu 12.04 (Precise) 64 bit (primary box)
+# * lucid32:   Ubuntu 10.04 (Lucid) 32 bit
+# * lucid64:   Ubuntu 10.04 (Lucid) 64 bit
+# * centos6:   CentOS 6 32 bit
 #
 # See:
 #
@@ -22,11 +23,19 @@ rescue LoadError => e
 end
 
 distributions = {
+  :precise64 => {
+    :url      => 'http://files.vagrantup.com/precise64.box',
+    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx elasticsearch::plugin_aws |,
+    :ip       => '33.33.33.10',
+    :primary  => true,
+    :node     => {}
+  },
+
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
     :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx elasticsearch::plugin_aws |,
     :ip       => '33.33.33.10',
-    :primary  => true,
+    :primary  => false,
     :node     => {}
   },
 
