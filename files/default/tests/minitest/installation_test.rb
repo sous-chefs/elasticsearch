@@ -20,7 +20,7 @@ describe_recipe 'elasticsearch::default' do
       file("/usr/local/elasticsearch-#{version}/lib/elasticsearch-#{version}.jar").
         must_exist.
         with(:owner, 'elasticsearch')
-    end
+    end unless Chef::VERSION == '0.10.10'
 
     it "has a link to versioned directory" do
       version = node[:elasticsearch][:version]
