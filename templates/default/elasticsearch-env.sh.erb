@@ -12,7 +12,7 @@ ES_JAVA_OPTS="
   -Des.config=<%= node.elasticsearch[:conf_path] %>/elasticsearch.yml
   -Xms<%= node.elasticsearch[:min_mem] %>
   -Xmx<%= node.elasticsearch[:max_mem] %>
-  -Xss128k
+  -Xss<%= node.elasticsearch[:thread_stack_size] %>
   -XX:+UseParNewGC
   -XX:+UseConcMarkSweepGC
   -XX:CMSInitiatingOccupancyFraction=75
