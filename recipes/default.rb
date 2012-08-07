@@ -1,4 +1,5 @@
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
+distro = "#{node.elasticsearch[:distro]}"
 
 include_recipe "elasticsearch::curl"
 include_recipe "ark"
@@ -50,7 +51,7 @@ end
 # Download, extract, symlink the elasticsearch libraries and binaries
 #
 ark "elasticsearch" do
-  url "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
+  url "https://github.com/downloads/#{distro}/elasticsearch/#{elasticsearch}.tar.gz"
   owner node.elasticsearch[:user]
   group node.elasticsearch[:user]
   version node.elasticsearch[:version]
