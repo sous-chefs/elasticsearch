@@ -50,7 +50,7 @@ end
 # Download, extract, symlink the elasticsearch libraries and binaries
 #
 ark "elasticsearch" do
-  url "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
+  url   node.elasticsearch[:download_url]
   owner node.elasticsearch[:user]
   group node.elasticsearch[:user]
   version node.elasticsearch[:version]
@@ -113,4 +113,3 @@ else
   # ... if we aren't using monit, let's reopen the elasticsearch service and start it
   service("elasticsearch") { action :start }
 end
-
