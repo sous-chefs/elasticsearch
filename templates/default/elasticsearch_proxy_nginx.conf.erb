@@ -32,6 +32,7 @@ server {
     # For CORS Ajax
     add_header Access-Control-Allow-Origin *;
     add_header Access-Control-Allow-Credentials true;
+    add_header Access-Control-Allow-Headers *;
 
     # Authorize access
     auth_basic           "ElasticSearch";
