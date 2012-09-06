@@ -24,15 +24,15 @@ start() {
       es_pid="$(cat $PIDFILE)"
       pid_running="$( ps ax | grep 'java' | grep $es_pid )"
 
-      if [ ! -z "$pid_running" ] ; then 
+      if [ ! -z "$pid_running" ] ; then
         # EXIT IF ES IS ALREADY RUNNING
-	      echo -e "\033[31;1mPID $es_pid still alive, already running...\033[0m"
-	      return 1
+          echo -e "\033[31;1mPID $es_pid still alive, already running...\033[0m"
+          return 1
       fi
     fi
-    
+
     echo -e "\033[1mStarting elasticsearch...\033[0m"
-    su - <%= node[:elasticsearch][:user] %> -m -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch -p $PIDFILE"
+    su <%= node[:elasticsearch][:user] %> -m -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch -p $PIDFILE"
 
     return $?
 }
