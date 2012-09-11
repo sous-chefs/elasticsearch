@@ -108,17 +108,21 @@ status() {
     # INCORRECT PID?
     if [ $pid != $CHECK_PID_RUNNING ]; then
       echo -e "\033[1;31;40m[!] Incorrect PID found in $PIDFILE: $pid\033[0m"
+      return 1
     fi
+    return 0
   fi
 
   # NOT RUNNING
   if [[ ! $pid || ! -d "/proc/$pid" ]]; then
     echo -e "\033[1;33;40melasticsearch not running\033[0m"
+    return 3
   fi
 
   # STALE PID FOUND
   if [[ ! -d "/proc/$pid" && -f $PIDFILE ]]; then
     echo -e "\033[1;31;40m[!] Stale PID found in $PIDFILE\033[0m"
+    return 1
   fi
 }
 
