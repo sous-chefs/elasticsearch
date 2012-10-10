@@ -106,7 +106,7 @@ end
 
 # Add Monit configuration file
 #
-if node.recipes.include?('monit')
+if node.recipes.include?('monit') and defined? monitrc
   monitrc("elasticsearch",
           :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid")
 else
