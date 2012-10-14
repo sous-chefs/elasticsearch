@@ -47,7 +47,7 @@ but it is arguably more convenient to store the information in an "elasticsearch
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
     mkdir -p ./data_bags/elasticsearch
-    echo '{ 
+    echo '{
       "id" : "aws",
       "discovery" : { "type": "ec2" },
 
@@ -134,13 +134,7 @@ Install the neccessary gems:
 
 You need to download the required third-party cookbooks (unless you already have them in `~/cookbooks`).
 
-The easiest way is to use the bundled [_Berkshelf_](http://berkshelf.com) support:
-
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-  berks install --shims ./tmp/cookbooks
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Of course, you can install the cookbooks manually as well:
+You can install the cookbooks manually by simply downloading them:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1184/original/apt.tgz   | tar xz -C tmp/cookbooks
@@ -151,24 +145,28 @@ Of course, you can install the cookbooks manually as well:
     curl -# -L -k http://s3.amazonaws.com/community-files.opscode.com/cookbook_versions/tarballs/1631/original/ark.tgz   | tar xz -C tmp/cookbooks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The `Vagrantfile` supports three Linux distributions so far:
+The easiest way is to use the bundled [_Berkshelf_](http://berkshelf.com) support -- the cookbooks will be automatically
+installed and mounted in the virtual machine. (You can use the `berks install --path ./tmp/cookbooks` command as well.)
 
+The `Vagrantfile` supports four Linux distributions so far:
+
+* Ubuntu Precise 64 bit
 * Ubuntu Lucid 32 bit
 * Ubuntu Lucid 64 bit
 * CentOS 6 32 bit
 
 Use the `vagrant status` command for more information.
 
-We will use the [_Ubuntu Lucid 64_](http://vagrantup.com/v1/docs/boxes.html) box for the purpose of this demo.
+We will use the [_Ubuntu Precise 64_](http://vagrantup.com/v1/docs/boxes.html) box for the purpose of this demo.
 You may want to test-drive this cookbook on a different distribution; check out the available boxes at <http://vagrantbox.es>.
 
 Launch the virtual machine with _Vagrant_ (it will download the box unless you already have it):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    time vagrant up lucid64
+    time vagrant up precise64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The machine will be started and automatically provisioned with 
+The machine will be started and automatically provisioned with
 [_chef-solo_](http://vagrantup.com/v1/docs/provisioners/chef_solo.html).
 
 You'll see _Chef_ debug messages flying by in your terminal, downloading, installing and configuring _Java_, _Nginx_,
@@ -184,7 +182,7 @@ After the process is done, you may connect to _elasticsearch_ via the _Nginx_ pr
 Of course, you should connect to the box with SSH and check things out:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    vagrant ssh lucid64
+    vagrant ssh precise64
 
     ps aux | grep elasticsearch
     service elasticsearch status --verbose

@@ -22,6 +22,10 @@ rescue LoadError => e
   raise e
 end
 
+# Automatically install and mount cookbooks from Berksfile
+#
+require 'berkshelf/vagrant'
+
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
