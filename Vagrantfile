@@ -29,7 +29,7 @@ require 'berkshelf/vagrant'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::proxy elasticsearch::plugin_aws |,
+    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {}
@@ -37,7 +37,7 @@ distributions = {
 
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::proxy elasticsearch::plugin_aws |,
+    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::proxy |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}

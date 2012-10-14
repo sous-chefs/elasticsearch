@@ -13,7 +13,7 @@ It installs a service which enables you to start, stop, restart and check status
 If your node has the `monit` recipe in its `run_list`, it will also create a configuration file for _Monit_,
 which will check whether _elasticsearch_ is running, reachable by HTTP and the cluster is in the "green" state.
 
-If you include the `elasticsearch::plugin_aws` recipe, the
+If you include the `elasticsearch::aws` recipe, the
 [AWS Cloud Plugin](http://github.com/elasticsearch/elasticsearch-cloud-aws) will be installed on the node,
 allowing you to use the _Amazon_ AWS features: node auto-discovery and S3 gateway.
 You may set your AWS credentials either in the "elasticsearch/aws" data bag,
@@ -39,7 +39,7 @@ Include the `elasticsearch` recipe in the `run_list` of a node. Then, upload the
     knife cookbook upload elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-To enable the _Amazon_ AWS related features, include the `elasticsearch::plugin_aws` recipe.
+To enable the _Amazon_ AWS related features, include the `elasticsearch::aws` recipe.
 You will need to configure the AWS credentials, bucket names, etc.
 
 You may do that in the node configuration (with `knife node edit MYNODE` or in the _Chef Server_ console),
@@ -194,7 +194,7 @@ Cookbook Organization
 ---------------------
 
 * `attributes/default.rb`: version, paths, memory and naming settings for the node
-* `attributes/plugin_aws.rb`: AWS settings
+* `attributes/aws.rb`: AWS settings
 * `attributes/proxy.rb`: _Nginx_ settings
 * `templates/default/elasticsearch.init.erb`: service init script
 * `templates/default/elasticsearch.yml.erb`: main _elasticsearch_ configuration file
