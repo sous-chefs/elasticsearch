@@ -45,3 +45,8 @@ gateway.type: <%= node.elasticsearch[:gateway][:type] %>
 gateway.s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
 <% end %>
 <% end %>
+
+#################################### Plugins ####################################
+<% unless node.elasticsearch[:plugins_mandatory].empty? %>
+plugin.mandatory: <%= node.elasticsearch[:plugins_mandatory] %>
+<% end %>
