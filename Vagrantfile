@@ -95,8 +95,21 @@ Vagrant::Config.run do |config|
 
       box_config.vm.network   :hostonly, options[:ip]
 
-      box_config.vm.customize { |vm| vm.memory_size = 1024 } 
+      box_config.vm.customize { |vm| vm.memory_size = 1024 }
 
+      # Install latest Chef on the machine
+      #
+      config.vm.provision :shell do |shell|
+        version = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
+        shell.inline = %Q{
+          apt-get update --quiet --yes
+          apt-get install curl --quiet --yes
+          test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''}
+        }
+      end if ENV['CHEF']
+
+      # Provision the machine with Chef Solo
+      #
       box_config.vm.provision :chef_solo do |chef|
         chef.cookbooks_path    = ['..', './tmp/cookbooks']
         chef.provisioning_path = '/etc/vagrant-chef'
