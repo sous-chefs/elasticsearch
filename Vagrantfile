@@ -71,6 +71,10 @@ node_config = {
   :elasticsearch => {
     :cluster_name => "elasticsearch_vagrant",
 
+    :plugins => {
+      "karmi/elasticsearch-paramedic" => {}
+    },
+
     :limits => {
       :nofile  => 1024,
       :memlock => 512

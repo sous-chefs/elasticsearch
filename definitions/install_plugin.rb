@@ -1,13 +1,16 @@
 # Install ElasticSearch plugin
 #
-# TODO: Make it a Chef LWRP [http://wiki.opscode.com/display/chef/Lightweight+Resources+and+Providers+(LWRP)]
-# TODO: Install plugins based on node attribute, data bag values, etc
-#
 define :install_plugin do
 
-  bash "/usr/local/bin/plugin -install #{params[:name]}" do
-    user node.elasticsearch[:user]
-    code "/usr/local/bin/plugin -install #{params[:name]}"
+  ruby_block "Install plugin: #{params[:name]}" do
+    block do
+      Chef::Log.info "Installing elasticsearch plugin: #{params[:name]}"
+
+      command = "/usr/local/bin/plugin -install #{params[:name]}"
+      Chef::Log.debug command
+
+      system command
+    end
 
     notifies :restart, resources(:service => 'elasticsearch')
 
@@ -19,5 +22,5 @@ define :install_plugin do
     end
 
   end
-  
+
 end

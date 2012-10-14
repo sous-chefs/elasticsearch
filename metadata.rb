@@ -12,5 +12,6 @@ recommends 'monit'
 
 provides 'elasticsearch'
 provides 'elasticsearch::proxy'
+provides 'elasticsearch::plugins'
 provides 'service[elasticsearch]'
 provides 'install_plugin(:plugin_name)'
