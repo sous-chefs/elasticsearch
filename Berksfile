@@ -7,7 +7,6 @@ cookbook 'ark'
 cookbook 'java'
 
 cookbook 'monit'
-cookbook 'nginx'
 
 cookbook 'vim'
 

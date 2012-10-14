@@ -1,3 +1,5 @@
+include_recipe "elasticsearch::nginx"
+
 # Create proxy with HTTP authentication via Nginx
 #
 template "#{node.elasticsearch[:nginx][:dir]}/conf.d/elasticsearch_proxy_nginx.conf" do

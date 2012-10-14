@@ -9,7 +9,6 @@ depends 'ark'
 
 recommends 'java'
 recommends 'monit'
-recommends 'nginx'
 
 provides 'elasticsearch'
 provides 'service[elasticsearch]'
