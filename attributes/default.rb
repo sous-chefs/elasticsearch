@@ -12,12 +12,12 @@ default.elasticsearch[:download_url]  = "https://github.com/downloads/" +
 
 default.elasticsearch[:checksum]      = "6cc4c3a2439f48864050ba306c0e3569c064ad9097448b5452e11e3fc7c7d9e6"
 
-# === INDEX ===
+# === SETTINGS ===
 #
-default.elasticsearch[:index_auto_create_index] = true
-default.elasticsearch[:index_mapper_dynamic]    = true
+default.elasticsearch[:node_name]      = node.name
+default.elasticsearch[:cluster_name]   = ( settings['cluster_name'] || "elasticsearch" rescue "elasticsearch" )
 
-# === PATHS ===
+# === USER & PATHS
 #
 default.elasticsearch[:dir]       = "/usr/local"
 default.elasticsearch[:user]      = "elasticsearch"
@@ -42,18 +42,13 @@ default.elasticsearch[:limits]  = {}
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
-# === SETTINGS ===
-#
-default.elasticsearch[:node_name]      = node.name
-default.elasticsearch[:cluster_name]   = ( settings['cluster_name'] || "elasticsearch" rescue "elasticsearch" )
-default.elasticsearch[:index_shards]   = "5"
-default.elasticsearch[:index_replicas] = "1"
-
 # === PERSISTENCE ===
 #
 default.elasticsearch[:gateway][:type] = nil
 
 # === VARIA ===
 #
+default.elasticsearch[:index_auto_create_index] = true
+default.elasticsearch[:index_mapper_dynamic]    = true
 default.elasticsearch[:disable_delete_all_indices] = true
-default.elasticsearch[:thread_stack_size]  = "256k"
+default.elasticsearch[:thread_stack_size]       = "256k"
