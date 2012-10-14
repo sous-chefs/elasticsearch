@@ -28,12 +28,12 @@ default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
 
 # === MEMORY ===
 #
-# Maximum amount of memory to use is automatically computed as 2/3 of total available memory.
-# You may choose to configure it in your node configuration instead.
+# Maximum amount of memory to use is automatically computed as a bit over 1/2 of total available memory on the machine.
+# You may choose to set it in your node/role configuration instead.
+# By default, the `mlockall` is set to true: on weak machines and Vagrant boxes, you may want to disable it.
 #
-max_mem = "#{(node.memory.total.to_i - (node.memory.total.to_i/3) ) / 1024}m"
-default.elasticsearch[:min_mem]  = "128m"
-default.elasticsearch[:max_mem]  = max_mem
+allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
+default.elasticsearch[:allocated_memory] = allocated_memory
 default.elasticsearch[:mlockall] = true
 
 # === LIMITS ===
