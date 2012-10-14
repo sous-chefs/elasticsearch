@@ -1,4 +1,4 @@
-describe_recipe 'elasticsearch::proxy_nginx' do
+describe_recipe 'elasticsearch::proxy' do
 
   include MiniTest::Chef::Assertions
   include MiniTest::Chef::Context
@@ -10,7 +10,7 @@ describe_recipe 'elasticsearch::proxy_nginx' do
   proxy_url   = "http://USERNAME:PASSWORD@localhost:8080"
 
   describe "Nginx" do
-  
+
     it "runs as a daemon" do
       service("nginx").must_be_running
     end

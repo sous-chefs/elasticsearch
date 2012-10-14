@@ -19,7 +19,7 @@ allowing you to use the _Amazon_ AWS features: node auto-discovery and S3 gatewa
 You may set your AWS credentials either in the “elasticsearch/aws” data bag,
 or directly in the node configuration.
 
-You may want to include the `elasticsearch::proxy_nginx` recipe, which will configure _Nginx_ as
+You may want to include the `elasticsearch::proxy` recipe, which will configure _Nginx_ as
 a reverse proxy for _elasticsearch_, so you may access it remotely with HTTP Authentication.
 (Be sure to include a `nginx` cookbook in your node setup in this case.)
 
@@ -73,7 +73,7 @@ Usually, you will restrict the access to _elasticsearch_ with firewall rules. Ho
 to be able to connect to the _elasticsearch_ cluster from `curl` or a HTTP client, or to use a management tool such as
 [_BigDesk_](http://github.com/lukas-vlcek/bigdesk) or [_Paramedic_](http://github.com/karmi/elasticsearch-paramedic).
 
-To enable authorized access to _elasticsearch_, you need to include the `elasticsearch::proxy_nginx` recipe,
+To enable authorized access to _elasticsearch_, you need to include the `elasticsearch::proxy` recipe,
 which will install, configure and run [_Nginx_](http://nginx.org) as a reverse proxy, allowing users with proper
 credentials to connect.
 
@@ -195,11 +195,11 @@ Cookbook Organization
 
 * `attributes/default.rb`: version, paths, memory and naming settings for the node
 * `attributes/plugin_aws.rb`: AWS settings
-* `attributes/proxy_nginx.rb`: _Nginx_ settings
+* `attributes/proxy.rb`: _Nginx_ settings
 * `templates/default/elasticsearch.init.erb`: service init script
 * `templates/default/elasticsearch.yml.erb`: main _elasticsearch_ configuration file
 * `templates/default/elasticsearch-env.sh.erb`: environment variables needed by the _Java Virtual Machine_ and _elasticsearch_
-* `templates/default/elasticsearch_proxy_nginx.conf.erb`: the reverse proxy configuration
+* `templates/default/elasticsearch_proxy.conf.erb`: the reverse proxy configuration
 * `templates/default/elasticsearch.conf.erb`: _Monit_ configuration file
 * `files/default/tests/minitest`: integration tests
 
