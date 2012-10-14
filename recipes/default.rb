@@ -1,3 +1,7 @@
+# Load the ElasticSearch extensions
+#
+[Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::Extensions }
+
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
 include_recipe "elasticsearch::curl"

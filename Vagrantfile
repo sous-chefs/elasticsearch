@@ -72,7 +72,7 @@ node_config = {
     :cluster_name => "elasticsearch_vagrant",
 
     :plugins => {
-      "karmi/elasticsearch-paramedic" => {}
+      'karmi/elasticsearch-paramedic' => {}
     },
 
     :limits => {
