@@ -1,9 +1,9 @@
 maintainer       "karmi"
 maintainer_email "karmi@karmi.cz"
 license          "MIT License"
-description      "Installs and configures elasticsearch on Amazon EC2"
+description      "Installs and configures elasticsearch clusters"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
-version          "0.0.2"
+version          "0.0.3"
 
 depends 'ark'
 
@@ -11,5 +11,6 @@ recommends 'java'
 recommends 'monit'
 
 provides 'elasticsearch'
+provides 'elasticsearch::proxy'
 provides 'service[elasticsearch]'
 provides 'install_plugin(:plugin_name)'
