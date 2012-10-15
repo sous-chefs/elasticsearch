@@ -8,6 +8,6 @@ describe_recipe 'elasticsearch::plugins' do
     if node.recipes.include?("elasticsearch::plugins")
       file("/usr/local/elasticsearch/plugins/paramedic/_site/index.html").must_exist.with(:owner, 'elasticsearch')
     end
-  end
+  end if Chef::VERSION > '10.14'
 
 end
