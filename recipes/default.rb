@@ -113,12 +113,6 @@ template "elasticsearch.yml" do
   notifies :restart, resources(:service => 'elasticsearch')
 end
 
-# Add Monit configuration file
+# Make sure the service is started
 #
-if node.recipes.include?('monit') and defined?(monitrc)
-  monitrc("elasticsearch",
-          :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid")
-else
-  # ... if we aren't using monit, let's reopen the elasticsearch service and start it
-  service("elasticsearch") { action :start }
-end
+service("elasticsearch") { action :start }
