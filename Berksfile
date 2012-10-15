@@ -4,7 +4,7 @@ cookbook 'apt'
 cookbook 'yum'
 
 cookbook 'ark'
-cookbook 'java'
+cookbook 'java', git: 'git://github.com/opscode-cookbooks/java.git'
 
 cookbook 'monit'
 
