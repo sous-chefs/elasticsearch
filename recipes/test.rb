@@ -5,11 +5,16 @@ chef_gem "minitest-chef-handler"
 
 require "minitest-chef-handler"
 
-test_pattern = './**/*elasticsearch*/files/default/tests/**/*_test.rb'
-Chef::Log.debug "Will run these tests: #{Dir[test_pattern].entries.inspect}"
+test_pattern = './**/*elasticsearch*/tests/**/*_test.rb'
+test_files   = Dir[test_pattern].entries.inject([]) do |result,item|
+  result << item unless result.any? { |i| i.include? item.split('/').last }
+  result
+end
+
+Chef::Log.debug "Will run these tests: #{test_files.inspect}"
 
 handler = MiniTest::Chef::Handler.new({
-  :path    => test_pattern,
+  :path    => test_files,
   :verbose => true
 })
 
