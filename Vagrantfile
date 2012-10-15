@@ -53,8 +53,8 @@ distributions = {
 
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
-    :url      => 'http://vagrant.sensuapp.org/centos-6-i386.box',
-    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy |,
+    :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
+    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
