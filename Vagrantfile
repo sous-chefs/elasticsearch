@@ -29,7 +29,7 @@ require 'berkshelf/vagrant'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::monit elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {}
@@ -37,7 +37,7 @@ distributions = {
 
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}
@@ -45,7 +45,7 @@ distributions = {
 
   :lucid32 => {
     :url      => 'http://files.vagrantup.com/lucid32.box',
-    :run_list => %w| minitest-handler apt java vim monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.11',
     :primary  => false,
     :node     => {}
@@ -54,7 +54,7 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'http://vagrant.sensuapp.org/centos-6-i386.box',
-    :run_list => %w| minitest-handler yum::epel java vim elasticsearch elasticsearch::proxy |,
+    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
