@@ -29,7 +29,7 @@ end
 
 # Create ES directories
 #
-%w| conf_path log_path pid_path |.each do |path|
+%w| conf_path work_path log_path pid_path |.each do |path|
   directory node.elasticsearch[path.to_sym] do
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
