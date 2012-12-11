@@ -5,14 +5,15 @@
 
 ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch" %>'
 ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
+ES_HEAP_SIZE=<%= node.elasticsearch[:max_mem] %>
 
 ES_JAVA_OPTS="
   -server
   -Djava.net.preferIPv4Stack=true
   -Des.config=<%= node.elasticsearch[:conf_path] %>/elasticsearch.yml
-  -Xms<%= node.elasticsearch[:min_mem] %>
-  -Xmx<%= node.elasticsearch[:max_mem] %>
-  -Xss128k
+  -Xms<%= node.elasticsearch[:allocated_memory] %>
+  -Xmx<%= node.elasticsearch[:allocated_memory] %>
+  -Xss<%= node.elasticsearch[:thread_stack_size] %>
   -XX:+UseParNewGC
   -XX:+UseConcMarkSweepGC
   -XX:CMSInitiatingOccupancyFraction=75

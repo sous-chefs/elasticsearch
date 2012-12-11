@@ -2,9 +2,10 @@
 #
 # Support:
 #
-# * lucid32: Ubuntu Lucid 32 bit
-# * lucid64: Ubuntu Lucid 64 bit (primary box)
-# * centos6: CentOS 6 32 bit
+# * precise64: Ubuntu 12.04 (Precise) 64 bit (primary box)
+# * lucid32:   Ubuntu 10.04 (Lucid) 32 bit
+# * lucid64:   Ubuntu 10.04 (Lucid) 64 bit
+# * centos6:   CentOS 6 32 bit
 #
 # See:
 #
@@ -21,26 +22,39 @@ rescue LoadError => e
   raise e
 end
 
+# Automatically install and mount cookbooks from Berksfile
+#
+require 'berkshelf/vagrant'
+
 distributions = {
-  :lucid64 => {
-    :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx elasticsearch::plugin_aws |,
+  :precise64 => {
+    :url      => 'http://files.vagrantup.com/precise64.box',
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::monit elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {}
   },
 
+  :lucid64 => {
+    :url      => 'http://files.vagrantup.com/lucid64.box',
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :ip       => '33.33.33.10',
+    :primary  => false,
+    :node     => {}
+  },
+
   :lucid32 => {
     :url      => 'http://files.vagrantup.com/lucid32.box',
-    :run_list => %w| minitest-handler apt java vim nginx monit elasticsearch elasticsearch::proxy_nginx |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.11',
     :primary  => false,
     :node     => {}
   },
 
   :centos6 => {
-    :url      => 'http://vagrant.sensuapp.org/centos-6-i386.box',
-    :run_list => %w| minitest-handler java yum::epel vim nginx elasticsearch elasticsearch::proxy_nginx |,
+    # Note: Monit cookbook broken on CentOS
+    :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
+    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
@@ -56,6 +70,10 @@ distributions = {
 node_config = {
   :elasticsearch => {
     :cluster_name => "elasticsearch_vagrant",
+
+    :plugins => {
+      'karmi/elasticsearch-paramedic' => {}
+    },
 
     :limits => {
       :nofile  => 1024,
@@ -82,8 +100,21 @@ Vagrant::Config.run do |config|
 
       box_config.vm.network   :hostonly, options[:ip]
 
-      box_config.vm.customize { |vm| vm.memory_size = 1024 } 
+      box_config.vm.customize { |vm| vm.memory_size = 1024 }
 
+      # Install latest Chef on the machine
+      #
+      config.vm.provision :shell do |shell|
+        version = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
+        shell.inline = %Q{
+          apt-get update --quiet --yes
+          apt-get install curl --quiet --yes
+          test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''}
+        }
+      end if ENV['CHEF']
+
+      # Provision the machine with Chef Solo
+      #
       box_config.vm.provision :chef_solo do |chef|
         chef.cookbooks_path    = ['..', './tmp/cookbooks']
         chef.provisioning_path = '/etc/vagrant-chef'

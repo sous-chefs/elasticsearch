@@ -1,3 +1,7 @@
+# Load the ElasticSearch extensions
+#
+[Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::Extensions }
+
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
 include_recipe "elasticsearch::curl"
@@ -50,7 +54,7 @@ end
 # Download, extract, symlink the elasticsearch libraries and binaries
 #
 ark "elasticsearch" do
-  url "https://github.com/downloads/elasticsearch/elasticsearch/#{elasticsearch}.tar.gz"
+  url   node.elasticsearch[:download_url]
   owner node.elasticsearch[:user]
   group node.elasticsearch[:user]
   version node.elasticsearch[:version]
@@ -80,7 +84,12 @@ bash "increase limits for the elasticsearch user" do
     echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
   END
 
-  not_if { ::File.read("/etc/security/limits.conf").include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile")  }
+  not_if do
+    file = ::File.read("/etc/security/limits.conf")
+    file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}") \
+    &&           \
+    file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}")
+  end
 end
 
 
@@ -104,13 +113,6 @@ template "elasticsearch.yml" do
   notifies :restart, resources(:service => 'elasticsearch')
 end
 
-# Add Monit configuration file
+# Make sure the service is started
 #
-if node.recipes.include?('monit')
-  monitrc("elasticsearch",
-          :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid")
-else
-  # ... if we aren't using monit, let's reopen the elasticsearch service and start it
-  service("elasticsearch") { action :start }
-end
-
+service("elasticsearch") { action :start }

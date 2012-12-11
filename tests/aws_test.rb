@@ -1,4 +1,4 @@
-describe_recipe 'elasticsearch::plugin_aws' do
+describe_recipe 'elasticsearch::aws' do
 
   include MiniTest::Chef::Assertions
   include MiniTest::Chef::Context
@@ -11,14 +11,14 @@ describe_recipe 'elasticsearch::plugin_aws' do
 
 
   it "creates the directory" do
-    if node.recipes.include?("elasticsearch::plugin_aws")
+    if node.recipes.include?("elasticsearch::aws")
       directory("/usr/local/elasticsearch/plugins/cloud-aws/").must_exist.with(:owner, 'elasticsearch')
     end
   end
 
   # Pending...
   # it "loads the plugin" do
-  #   if node.recipes.include?("elasticsearch::plugin_aws")
+  #   if node.recipes.include?("elasticsearch::aws")
   #     system("service elasticsearch restart")
   #     timeout = 120
   #     until system("curl --silent --show-error '#{health_url}' > /dev/null 2>&1") or timeout == 0

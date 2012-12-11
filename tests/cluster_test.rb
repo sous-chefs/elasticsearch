@@ -11,7 +11,7 @@ describe_recipe 'elasticsearch::default' do
   cluster_url = 'http://localhost:9200'
   health_url  = "#{cluster_url}/_cluster/health"
 
-  describe "cluster health" do
+  describe "Cluster health" do
 
     it "is not red" do
       # Let's wait until the service is alive
@@ -28,7 +28,7 @@ describe_recipe 'elasticsearch::default' do
 
   end
 
-  describe "indexing and searching" do
+  describe "Indexing and searching" do
 
     it "writes test data and retrieves them" do
       # Let's wait until the service is alive
