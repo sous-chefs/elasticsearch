@@ -1,6 +1,7 @@
 server {
   listen   <%= node.elasticsearch[:nginx][:port] %>;
   server_name  elasticsearch;
+  client_max_body_size 20M;
 
   error_log   <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch-errors.log;
   access_log  <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch.log;
