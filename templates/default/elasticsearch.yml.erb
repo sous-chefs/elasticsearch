@@ -98,3 +98,11 @@ gateway.expected_master_nodes: <%= node.elasticsearch[:gateway][:expected_master
 <% unless node.elasticsearch[:plugins_mandatory].empty? %>
 plugin.mandatory: <%= node.elasticsearch[:plugins_mandatory] %>
 <% end %>
+
+################################## JMX ##################################
+<% if node.elasticsearch[:jmx]="true" %>
+jmx.create_connector: true
+jmx.port: 9400-9500
+jmx.domain: elasticsearch
+<% end %>
+
