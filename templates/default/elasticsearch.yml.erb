@@ -62,6 +62,12 @@ cloud.node.auto_attributes: true
 cloud.aws.access_key: '<%= node.elasticsearch[:cloud][:aws][:access_key] %>'
 cloud.aws.secret_key: '<%= node.elasticsearch[:cloud][:aws][:secret_key] %>'
 <% end %>
+<% if node.elasticsearch[:cloud][:aws][:region] %>
+cloud.aws.region: '<%= node.elasticsearch[:cloud][:aws][:region] %>'
+<% end %>
+<% if node.elasticsearch[:cloud][:ec2][:endpoint] %>
+cloud.aws.ec2.endpoint: '<%= node.elasticsearch[:cloud][:ec2][:endpoint] %>'
+<% end %>
 
 <% if node.elasticsearch[:gateway][:type] %>
 ################################## Persistence ##################################
