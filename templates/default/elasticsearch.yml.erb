@@ -170,3 +170,20 @@ monitor.jvm.gc.ConcurrentMarkSweep.info: <% node.elasticsearch[:gclog_Concurrent
 <% if node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
 monitor.jvm.gc.ConcurrentMarkSweep.debug: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
 <% end %>
+
+############################# Recovery Throttling #############################
+
+<% if node.elasticsearch[:recovery][:node_initial_primaries_recoveries] %>
+cluster.routing.allocation.node_initial_primaries_recoveries: <%= node.elasticsearch[:recovery][:node_initial_primaries_recoveries] %>
+<% end %>
+<% if node.elasticsearch[:recovery][:node_concurrent_recoveries] %>
+cluster.routing.allocation.node_concurrent_recoveries: <%= node.elasticsearch[:recovery][:node_concurrent_recoveries] %>
+<% end %>
+
+<% if node.elasticsearch[:recovery][:max_size_per_sec] %>
+indices.recovery.max_size_per_sec:  <%= node.elasticsearch[:recovery][:max_size_per_sec] %>
+<% end %>
+<% if node.elasticsearch[:recovery][:concurrent_streams] %>
+indices.recovery.concurrent_streams:  <%= node.elasticsearch[:recovery][:concurrent_streams] %>
+<% end %>
+

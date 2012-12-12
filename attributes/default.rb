@@ -69,4 +69,7 @@ default.elasticsearch[:slowlog_threshold_index] = {}
 default.elasticsearch[:gclog_PorNew] = {}
 default.elasticsearch[:gclog_ConcurrentMarkSweep] = {}
 
+# === Recovery ===
+#
+default.elasticsearch[:recovery] = {}
 
