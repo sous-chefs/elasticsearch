@@ -53,3 +53,26 @@ default.elasticsearch[:index_auto_create_index] = true
 default.elasticsearch[:index_mapper_dynamic]    = true
 default.elasticsearch[:disable_delete_all_indices] = true
 default.elasticsearch[:thread_stack_size]       = "256k"
+
+# === NETWORK ===
+#
+default.elasticsearch[:network] = {}
+default.elasticsearch[:transport] = {}
+default.elasticsearch[:http] = {}
+
+# === DISCOVERY ===
+#
+default.elasticsearch[:discovery][:multicast] = "false"
+
+# === LOGGING ===
+#
+default.elasticsearch[:slowlog_threshold_query] = {}
+default.elasticsearch[:slowlog_threshold_fetch] = {}
+default.elasticsearch[:slowlog_threshold_index] = {}
+default.elasticsearch[:gclog_PorNew] = {}
+default.elasticsearch[:gclog_ConcurrentMarkSweep] = {}
+
+# === Recovery ===
+#
+default.elasticsearch[:recovery] = {}
+

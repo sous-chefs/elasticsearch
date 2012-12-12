@@ -24,7 +24,32 @@ bootstrap.mlockall: <%= node.elasticsearch[:mlockall] %>
 
 action.disable_delete_all_indices: <%= node.elasticsearch[:disable_delete_all_indices] %>
 
+################################## Network / HTTP ##################################
+
+<% if node.elasticsearch[:network][:bind_interface] %>
+network.bind_host: <%= node.network["ipaddress_#{node.elasticsearch[:network][:bind_interface]}".to_sym] %>
+<% end %>
+
+<% if node.elasticsearch[:network][:publish_interface] %>
+network.publish_host: <%= node.network[":ipaddress_#{node.elasticsearch[:network][:publish_interface]}".to_sym] %>
+<% end %>
+
+<% if node.elasticsearch[:transport][:tcp_port] %>
+transport.tcp.port: <%= node.elasticsearch[:transport][:port] %>
+<% end %>
+
+<% if node.elasticsearch[:http][:port] %>
+http.port: <%= node.elasticsearch[:http][:port] %>
+<% end %>
+
+<% if node.elasticsearch[:http][:max_content_length] %>
+http.max_content_length: <%= node.elasticsearch[:http][:max_content_length] %>
+<% end %>
+
 ################################## Discovery ##################################
+<% if node.elasticsearch[:discovery][:multicast]="true" %>
+discovery.zen.ping.multicast.enabled: true
+<% end %>
 <% if node.elasticsearch[:discovery][:type] %>
 discovery.type: <%= node.elasticsearch[:discovery][:type] %>
 <% end %>
@@ -52,7 +77,119 @@ gateway.s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
 <% end %>
 <% end %>
 
+<% if node.elasticsearch[:gateway][:recover_after_nodes] %>
+gateway.recover_after_nodes: <%= node.elasticsearch[:gateway][:recover_after_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_data_nodes] %>
+gateway.recover_after_data_nodes: <%= node.elasticsearch[:gateway][:recover_after_data_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_master_nodes] %>
+gateway.recover_after_master_nodes: <%= node.elasticsearch[:gateway][:recover_after_master_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_time] %>
+gateway.recover_after_time: <%= node.elasticsearch[:gateway][:recover_after_time] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_nodes] %>
+gateway.expected_nodes: <%= node.elasticsearch[:gateway][:expected_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_data_nodes] %>
+gateway.expected_data_nodes: <%= node.elasticsearch[:gateway][:expected_data_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_master_nodes] %>
+gateway.expected_master_nodes: <%= node.elasticsearch[:gateway][:expected_master_nodes] %>
+<% end %>
+
+
 #################################### Plugins ####################################
 <% unless node.elasticsearch[:plugins_mandatory].empty? %>
 plugin.mandatory: <%= node.elasticsearch[:plugins_mandatory] %>
 <% end %>
+
+################################## JMX ##################################
+<% if node.elasticsearch[:jmx]="true" %>
+jmx.create_connector: true
+jmx.port: 9400-9500
+jmx.domain: elasticsearch
+<% end %>
+
+################################## Slow Log ##################################
+
+
+<% if node.elasticsearch[:slowlog_threshold_query][:warn] %>
+index.search.slowlog.threshold.query.warn: <%= node.elasticsearch[:slowlog_threshold_query][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:info] %>
+index.search.slowlog.threshold.query.info: <%= node.elasticsearch[:slowlog_threshold_query][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:debug] %>
+index.search.slowlog.threshold.query.debug: <%= node.elasticsearch[:slowlog_threshold_query][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:trace] %>
+index.search.slowlog.threshold.query.trace: <%= node.elasticsearch[:slowlog_threshold_query][:trace] %>
+<% end %>
+
+<% if node.elasticsearch[:slowlog_threshold_fetch][:warn] %>
+index.search.slowlog.threshold.fetch.warn: <%= node.elasticsearch[:slowlog_threshold_fetch][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:info] %>
+index.search.slowlog.threshold.fetch.info: <%= node.elasticsearch[:slowlog_threshold_fetch][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:debug] %>
+index.search.slowlog.threshold.fetch.debug: <%= node.elasticsearch[:slowlog_threshold_fetch][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:trace] %>
+index.search.slowlog.threshold.fetch.trace: <%= node.elasticsearch[:slowlog_threshold_fetch][:trace] %>
+<% end %>
+
+
+<% if node.elasticsearch[:slowlog_threshold_index][:warn] %>
+index.search.slowlog.threshold.index.warn: <%= node.elasticsearch[:slowlog_threshold_index][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:info] %>
+index.search.slowlog.threshold.index.info: <%= node.elasticsearch[:slowlog_threshold_index][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:debug] %>
+index.search.slowlog.threshold.index.debug: <%= node.elasticsearch[:slowlog_threshold_index][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:trace] %>
+index.search.slowlog.threshold.index.trace: <%= node.elasticsearch[:slowlog_threshold_index][:trace] %>
+<% end %>
+
+################################## GC Logging ################################
+
+<% if node.elasticsearch[:gclog_PorNew_warn] %>
+monitor.jvm.gc.ParNew.warn: <%= node.elasticsearch[:gclog_PorNew_warn] %>
+<% end %>
+<% if node.elasticsearch[:gclog_PorNew_info] %>
+monitor.jvm.gc.ParNew.info: <%= node.elasticsearch[:gclog_PorNew_info] %>
+<% end %>
+<% if node.elasticsearch[:gclog_PorNew_debug] %>
+monitor.jvm.gc.ParNew.debug: <%= node.elasticsearch[:gclog_PorNew_debug] %>
+<% end %>
+
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_warn] %>
+monitor.jvm.gc.ConcurrentMarkSweep.warn: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_warn] %>
+<% end %>
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_info] %>
+monitor.jvm.gc.ConcurrentMarkSweep.info: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_info] %>
+<% end %>
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
+monitor.jvm.gc.ConcurrentMarkSweep.debug: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
+<% end %>
+
+############################# Recovery Throttling #############################
+
+<% if node.elasticsearch[:recovery][:node_initial_primaries_recoveries] %>
+cluster.routing.allocation.node_initial_primaries_recoveries: <%= node.elasticsearch[:recovery][:node_initial_primaries_recoveries] %>
+<% end %>
+<% if node.elasticsearch[:recovery][:node_concurrent_recoveries] %>
+cluster.routing.allocation.node_concurrent_recoveries: <%= node.elasticsearch[:recovery][:node_concurrent_recoveries] %>
+<% end %>
+
+<% if node.elasticsearch[:recovery][:max_size_per_sec] %>
+indices.recovery.max_size_per_sec:  <%= node.elasticsearch[:recovery][:max_size_per_sec] %>
+<% end %>
+<% if node.elasticsearch[:recovery][:concurrent_streams] %>
+indices.recovery.concurrent_streams:  <%= node.elasticsearch[:recovery][:concurrent_streams] %>
+<% end %>
+
