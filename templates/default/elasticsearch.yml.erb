@@ -24,6 +24,28 @@ bootstrap.mlockall: <%= node.elasticsearch[:mlockall] %>
 
 action.disable_delete_all_indices: <%= node.elasticsearch[:disable_delete_all_indices] %>
 
+################################## Network / HTTP ##################################
+
+<% if node.elasticsearch[:network][:bind_interface] %>
+network.bind_host: <%= node.network["ipaddress_#{node.elasticsearch[:network][:bind_interface]}".to_sym] %>
+<% end %>	
+
+<% if node.elasticsearch[:network][:publish_interface] %>
+network.publish_host: <%= node.network[":ipaddress_#{node.elasticsearch[:network][:publish_interface]}".to_sym] %>
+<% end %>
+
+<% if node.elasticsearch[:transport][:tcp_port] %>
+transport.tcp.port: <%= node.elasticsearch[:transport][:port] %>
+<% end %>
+
+<% if node.elasticsearch[:http][:port] %>
+http.port: <%= node.elasticsearch[:http][:port] %>
+<% end %>
+
+<% if node.elasticsearch[:http][:max_content_length] %>
+http.max_content_length: <%= node.elasticsearch[:http][:max_content_length] %>
+<% end %>
+
 ################################## Discovery ##################################
 <% if node.elasticsearch[:discovery][:type] %>
 discovery.type: <%= node.elasticsearch[:discovery][:type] %>
