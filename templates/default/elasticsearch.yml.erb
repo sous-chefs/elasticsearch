@@ -106,3 +106,67 @@ jmx.port: 9400-9500
 jmx.domain: elasticsearch
 <% end %>
 
+################################## Slow Log ##################################
+
+
+<% if node.elasticsearch[:slowlog_threshold_query][:warn] %>
+index.search.slowlog.threshold.query.warn: <%= node.elasticsearch[:slowlog_threshold_query][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:info] %>
+index.search.slowlog.threshold.query.info: <%= node.elasticsearch[:slowlog_threshold_query][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:debug] %>
+index.search.slowlog.threshold.query.debug: <%= node.elasticsearch[:slowlog_threshold_query][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_query][:trace] %>
+index.search.slowlog.threshold.query.trace: <%= node.elasticsearch[:slowlog_threshold_query][:trace] %>
+<% end %>
+
+<% if node.elasticsearch[:slowlog_threshold_fetch][:warn] %>
+index.search.slowlog.threshold.fetch.warn: <%= node.elasticsearch[:slowlog_threshold_fetch][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:info] %>
+index.search.slowlog.threshold.fetch.info: <%= node.elasticsearch[:slowlog_threshold_fetch][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:debug] %>
+index.search.slowlog.threshold.fetch.debug: <%= node.elasticsearch[:slowlog_threshold_fetch][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_fetch][:trace] %>
+index.search.slowlog.threshold.fetch.trace: <%= node.elasticsearch[:slowlog_threshold_fetch][:trace] %>
+<% end %>
+
+
+<% if node.elasticsearch[:slowlog_threshold_index][:warn] %>
+index.search.slowlog.threshold.index.warn: <%= node.elasticsearch[:slowlog_threshold_index][:warn] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:info] %>
+index.search.slowlog.threshold.index.info: <%= node.elasticsearch[:slowlog_threshold_index][:info] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:debug] %>
+index.search.slowlog.threshold.index.debug: <%= node.elasticsearch[:slowlog_threshold_index][:debug] %>
+<% end %>
+<% if node.elasticsearch[:slowlog_threshold_index][:trace] %>
+index.search.slowlog.threshold.index.trace: <%= node.elasticsearch[:slowlog_threshold_index][:trace] %>
+<% end %>
+
+################################## GC Logging ################################
+
+<% if node.elasticsearch[:gclog_PorNew_warn] %>
+monitor.jvm.gc.ParNew.warn: <%= node.elasticsearch[:gclog_PorNew_warn] %>
+<% end %>
+<% if node.elasticsearch[:gclog_PorNew_info] %>
+monitor.jvm.gc.ParNew.info: <%= node.elasticsearch[:gclog_PorNew_info] %>
+<% end %>
+<% if node.elasticsearch[:gclog_PorNew_debug] %>
+monitor.jvm.gc.ParNew.debug: <%= node.elasticsearch[:gclog_PorNew_debug] %>
+<% end %>
+
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_warn] %>
+monitor.jvm.gc.ConcurrentMarkSweep.warn: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_warn] %>
+<% end %>
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_info] %>
+monitor.jvm.gc.ConcurrentMarkSweep.info: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_info] %>
+<% end %>
+<% if node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
+monitor.jvm.gc.ConcurrentMarkSweep.debug: <% node.elasticsearch[:gclog_ConcurrentMarkSweep_debug] %>
+<% end %>

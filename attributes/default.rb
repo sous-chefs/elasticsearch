@@ -60,3 +60,13 @@ default.elasticsearch[:http] = {}
 # === DISCOVERY ===
 #
 default.elasticsearch[:discovery][:multicast] = "false"
+
+# === LOGGING ===
+#
+default.elasticsearch[:slowlog_threshold_query] = {}
+default.elasticsearch[:slowlog_threshold_fetch] = {}
+default.elasticsearch[:slowlog_threshold_index] = {}
+default.elasticsearch[:gclog_PorNew] = {}
+default.elasticsearch[:gclog_ConcurrentMarkSweep] = {}
+
+
