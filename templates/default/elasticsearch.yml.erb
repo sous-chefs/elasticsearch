@@ -47,6 +47,9 @@ http.max_content_length: <%= node.elasticsearch[:http][:max_content_length] %>
 <% end %>
 
 ################################## Discovery ##################################
+<% if node.elasticsearch[:discovery][:multicast]="true" %>
+discovery.zen.ping.multicast.enabled: true
+<% else %>
 <% if node.elasticsearch[:discovery][:type] %>
 discovery.type: <%= node.elasticsearch[:discovery][:type] %>
 <% end %>

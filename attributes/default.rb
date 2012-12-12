@@ -57,3 +57,6 @@ default.elasticsearch[:network] = {}
 default.elasticsearch[:transport] = {}
 default.elasticsearch[:http] = {}
 
+# === DISCOVERY ===
+#
+default.elasticsearch[:discovery][:multicast] = "false"
