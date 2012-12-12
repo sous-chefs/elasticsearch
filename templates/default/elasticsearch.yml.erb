@@ -71,6 +71,29 @@ gateway.s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
 <% end %>
 <% end %>
 
+<% if node.elasticsearch[:gateway][:recover_after_nodes] %>
+gateway.recover_after_nodes: <%= node.elasticsearch[:gateway][:recover_after_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_data_nodes] %>
+gateway.recover_after_data_nodes: <%= node.elasticsearch[:gateway][:recover_after_data_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_master_nodes] %>
+gateway.recover_after_master_nodes: <%= node.elasticsearch[:gateway][:recover_after_master_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:recover_after_time] %>
+gateway.recover_after_time: <%= node.elasticsearch[:gateway][:recover_after_time] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_nodes] %>
+gateway.expected_nodes: <%= node.elasticsearch[:gateway][:expected_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_data_nodes] %>
+gateway.expected_data_nodes: <%= node.elasticsearch[:gateway][:expected_data_nodes] %>
+<% end %>
+<% if node.elasticsearch[:gateway][:expected_master_nodes] %>
+gateway.expected_master_nodes: <%= node.elasticsearch[:gateway][:expected_master_nodes] %>
+<% end %>
+
+
 #################################### Plugins ####################################
 <% unless node.elasticsearch[:plugins_mandatory].empty? %>
 plugin.mandatory: <%= node.elasticsearch[:plugins_mandatory] %>
