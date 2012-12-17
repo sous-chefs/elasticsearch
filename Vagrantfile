@@ -100,7 +100,11 @@ Vagrant::Config.run do |config|
 
       box_config.vm.network   :hostonly, options[:ip]
 
-      box_config.vm.customize { |vm| vm.memory_size = 1024 }
+      # Box customizations
+      #
+      # 1. Limit memory to 1GB
+      #
+      box_config.vm.customize ["modifyvm", :id, "--memory", 1024]
 
       # Install latest Chef on the machine
       #
