@@ -5,7 +5,7 @@ This cookbook installs and configures the [_elasticsearch_](http://www.elasticse
 
 It requires a working _Java_ installation on the target node; add your preferred `java` cookbook to the node `run_list`.
 
-The cookbook downloads the _elasticsearch_ tarball from GitHub (via the [`ark`](http://github.com/bryanwb/chef-ark) provider),
+The cookbook downloads the _elasticsearch_ tarball (via the [`ark`](http://github.com/bryanwb/chef-ark) provider),
 unpacks and moves it to the directory you have specified in the node configuration (`/usr/local/elasticsearch` by default).
 
 It installs a service which enables you to start, stop, restart and check status of the _elasticsearch_ process.
