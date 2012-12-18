@@ -41,6 +41,9 @@ module Extensions
         Chef::Log.debug command
 
         system command
+
+        # Ensure proper permissions
+        system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
       end
 
       notifies :restart, resources(:service => 'elasticsearch')
