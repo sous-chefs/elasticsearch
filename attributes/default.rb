@@ -14,6 +14,8 @@ default.elasticsearch[:download_url]  = "https://github.com/downloads/" +
 #
 default.elasticsearch[:node_name]      = node.name
 default.elasticsearch[:cluster_name]   = ( settings['cluster_name'] || "elasticsearch" rescue "elasticsearch" )
+default.elasticsearch[:index_shards]   = "5"
+default.elasticsearch[:index_replicas] = "1"
 
 # === USER & PATHS
 #
