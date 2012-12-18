@@ -4,7 +4,7 @@ settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
 
 # === VERSION ===
 #
-default.elasticsearch[:version]       = "0.19.10"
+default.elasticsearch[:version]       = "0.20.1"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
 default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
 default.elasticsearch[:filename]      = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
