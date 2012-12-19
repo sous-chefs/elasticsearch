@@ -108,7 +108,19 @@ module Extensions
 
           options[:type] = params[:ebs][:type] if params[:ebs][:type]
           options[:iops] = params[:ebs][:iops] if params[:ebs][:iops] and params[:ebs][:type] == "io1"
-          options[:snapshot_id] = params[:ebs][:snapshot_id] if params[:ebs][:snapshot_id]
+
+          if params[:ebs][:snapshot_id]
+            if snapshot = aws.snapshots.get(params[:ebs][:snapshot_id])
+              Chef::Log.info "Creating EBS from snapshot: #{snapshot.id} (" +
+                             "Tags: #{snapshot.tags.inspect}, "             +
+                             "Description: #{snapshot.description})"
+              options[:snapshot_id] = snapshot.id
+            else
+              __message = "[!] Cannot find snapshot: #{params[:ebs][:snapshot_id]}"
+              Chef::Log.fatal __message
+              raise __message
+            end
+          end
 
           volume = aws.volumes.new options
           volume.save
@@ -118,7 +130,7 @@ module Extensions
           aws.tags.new(:key => "ClusterName", :value => node.elasticsearch[:cluster_name], :resource_id => volume.id, :resource_type => "volume").save
 
           # Checking if block device is attached
-          Chef::Log.info("Attaching volume #{volume.id} ")
+          Chef::Log.info("Attaching volume: #{volume.id} ")
           loop do
             `ls #{device} > /dev/null 2>&1`
             break if $?.success?
