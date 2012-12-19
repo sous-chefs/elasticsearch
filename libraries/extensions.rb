@@ -102,6 +102,7 @@ module Extensions
 
           options[:type] = params[:ebs][:type] if params[:ebs][:type]
           options[:iops] = params[:ebs][:iops] if params[:ebs][:iops] and params[:ebs][:type] == "io1"
+          options[:snapshot_id] = params[:ebs][:snapshot_id] if params[:ebs][:snapshot_id]
 
           Chef::Log.info("Creating volume on #{device} (size: #{params[:ebs][:size]})...")
 
