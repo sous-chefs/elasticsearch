@@ -1,6 +1,30 @@
-# Load configuration settings from data bag 'elasticsearch/data' or from node attributes
+# Loads configuration settings from data bag 'elasticsearch/data' or from node attributes.
 #
 # In a data bag, you can define multiple devices to be formatted and/or mounted:
+#
+#    {
+#      "id" : "data",
+#      "<ENVIRONMENT>": {
+#        "devices" : {
+#          "/dev/sdb" : {
+#            "file_system"      : "ext3",
+#            "mount_options"    : "rw,user",
+#            "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
+#            "format_command"   : "mkfs.ext3",
+#            "fs_check_command" : "dumpe2fs",
+#          }
+#        }
+#      }
+#    }
+#
+# To set the configuration with nodes attributes (eg. for Chef Solo), see the Vagrantfile.
+# See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
+#
+# You have to add the `mount_path` of each defined device to `default.elasticsearch[:data_path]`,
+# either as a comma-delimited string or as a Ruby/JSON array, so it is used in the Elasticsearch
+# configuration.
+#
+# For EC2, you can define additional parameters for creating and attaching EBS volumes:
 #
 #    {
 #      "id" : "data",
@@ -13,28 +37,35 @@
 #            "format_command"   : "mkfs.ext3",
 #            "fs_check_command" : "dumpe2fs",
 #            "ebs"            : {
-#              "region"                : "us-east-1", // if undefined then instance region is used
-#              "size"                  : 250,
+#              "region"                : "us-east-1", // Optional: instance region is used by default
+#              "size"                  : 250,         // In GB
 #              "delete_on_termination" : true,
 #              "type"                  : "io1",
 #              "iops"                  : 2000
 #            }
-#          },
-#          "/dev/sda3" : {
-#            "file_system"      : "ext3",
-#            "mount_options"    : "rw,user",
-#            "mount_path"       : "/usr/local/var/data/elasticsearch/disk2",
-#            "format_command"   : "mkfs.ext3",
-#            "fs_check_command" : "dumpe2fs",
 #          }
 #        }
 #      }
+#    }
 #
-# To set the configuration with nodes attributes (eg. for Chef Solo), see the Vagrantfile.
 #
-# If EBS size is defined, new storage is automaticaly created, formated by format_command and mounted to mount_path.
-# You should add mount_path of each defined device to attributes/default - default.elasticsearch[:data_path].
-# Multiple data paths in default attributes can be defined as string separated by commas or as Array
+# When you define a `snapshot_id` property for an EBS device, it will be created from that snapshot,
+# having all the data available in the snapshot:
+#
+#    {
+#      "id" : "data",
+#      "<ENVIRONMENT>": {
+#        "devices" : {
+#          "/dev/sda2" : {
+#            # ...
+#            "ebs" : {
+#              # ...
+#              "snapshot_id" : "snap-123abc4d"
+#            }
+#          }
+#        }
+#      }
+#    }
 #
 data = Chef::DataBagItem.load('elasticsearch', 'data')[node.chef_environment] rescue {}
 

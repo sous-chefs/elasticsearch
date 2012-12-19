@@ -59,40 +59,46 @@ module Extensions
 
   end
 
-
-  # Create ebs and attach to the instance
+  # Creates an EBS volume based on passed parameters and attaches it to the instance
+  # via the [Fog](http://rubydoc.info/gems/fog/Fog/Compute/AWS/Volume).
+  #
+  # The credentials for accessing AWS API are loaded from `node.elasticsearch[:cloud]`,
+  # you need to provide volume properties such as _size_ in the `params[:ebs]` hash.
   #
   def create_ebs device, params={}
 
-    # Install the fog gem
-    chef_gem "fog" do
-      action :install
-    end
+    # Install the Fog gem for Chef
+    chef_gem("fog") { action :install }
 
-    ruby_block "Create EBS volume" do
+    ruby_block "Create EBS volume on #{device} (size: #{params[:ebs][:size]}GB)" do
 
       block do
         require 'fog'
         require 'open-uri'
 
+        region      = params[:region] || node.elasticsearch[:cloud][:aws][:region]
         instance_id = open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
-        raise "Cannot find instance id!" unless instance_id
+        raise "[!] Cannot get instance id from AWS meta-data API" unless instance_id
 
-        region = params[:region] || node.elasticsearch[:cloud][:aws][:region]
+        Chef::Log.debug("Region: #{region}, instance ID: #{instance_id}")
 
         aws = Fog::Compute.new :provider =>              'AWS',
                                :region   =>              region,
                                :aws_access_key_id =>     node.elasticsearch[:cloud][:aws][:access_key],
                                :aws_secret_access_key => node.elasticsearch[:cloud][:aws][:secret_key]
 
-        Chef::Log.info("Region: #{region}, instance ID: #{instance_id}")
+
         server = aws.servers.get instance_id
 
-        # Create EBS volume if device is free
-        #
+        # Create EBS volume if the device is free
         unless server.volumes.map(&:device).include?(device)
-          #stop_elasticsearch = node.recipes.include?('monit') ? "sudo monit stop elasticsearch" : "sudo service elasticsearch stop"
-          #system stop_elasticsearch
+          stop_elasticsearch = node.recipes.include?('monit') ? "sudo monit stop elasticsearch" : "sudo service elasticsearch stop"
+          begin
+            system stop_elasticsearch
+          rescue Exception => e
+            Chef::Log.warn "Cannot stop elasticsearch before creating the EBS volume on #{device}:"
+            Chef::Log.warn e.inspect
+          end
 
           options = { :device                => device,
                       :size                  => params[:ebs][:size],
@@ -104,21 +110,15 @@ module Extensions
           options[:iops] = params[:ebs][:iops] if params[:ebs][:iops] and params[:ebs][:type] == "io1"
           options[:snapshot_id] = params[:ebs][:snapshot_id] if params[:ebs][:snapshot_id]
 
-          Chef::Log.info("Creating volume on #{device} (size: #{params[:ebs][:size]})...")
-
           volume = aws.volumes.new options
-
           volume.save
 
           # Create tags
-          tag = aws.tags.new :key => "Name", :value => node.name, :resource_id => volume.id, :resource_type => "volume"
-          tag.save
-
-          tag = aws.tags.new :key => "Cluster name", :value => node.elasticsearch[:cluster_name], :resource_id => volume.id, :resource_type => "volume"
-          tag.save
+          aws.tags.new(:key => "Name", :value => node.name, :resource_id => volume.id, :resource_type => "volume").save
+          aws.tags.new(:key => "ClusterName", :value => node.elasticsearch[:cluster_name], :resource_id => volume.id, :resource_type => "volume").save
 
           # Checking if block device is attached
-          Chef::Log.info("Attaching volume #{volume.id}")
+          Chef::Log.info("Attaching volume #{volume.id} ")
           loop do
             `ls #{device} > /dev/null 2>&1`
             break if $?.success?
@@ -126,7 +126,7 @@ module Extensions
             sleep 1
           end
 
-          Chef::Log.info("Volume #{volume.id} is attached to #{instance_id} on #{device}")
+          Chef::Log.debug("Volume #{volume.id} is attached to #{instance_id} on #{device}")
         end
 
       end
@@ -134,6 +134,5 @@ module Extensions
     end
 
   end
-
 
 end

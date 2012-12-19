@@ -1,7 +1,11 @@
-# Create EBS for each device with defined size
+# Create EBS for each device with proper configuration
+#
+# See the `attributes/data` file for instructions.
 #
 node.elasticsearch[:data][:devices].
-     select { |device, params| params[:ebs][:size] > 0 rescue nil }.
-     each do |device, params|
-       create_ebs device, params
+  reject do |device, params|
+    params[:ebs].keys.empty?
+  end.
+  each do |device, params|
+    create_ebs device, params
 end
