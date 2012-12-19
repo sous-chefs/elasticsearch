@@ -29,6 +29,8 @@ node.elasticsearch[:data][:devices].each do |device, params|
     action  [:mount, :enable]
 
     only_if { File.exists?(device) }
+
+    notifies :restart, resources(:service => 'elasticsearch') if node.elasticsearch[:data_path].include?(params[:mount_path])
   end
 
   # Ensure proper permissions
@@ -37,5 +39,4 @@ node.elasticsearch[:data][:devices].each do |device, params|
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0775
     recursive true
   end
-
 end

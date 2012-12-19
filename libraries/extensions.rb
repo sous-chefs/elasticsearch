@@ -92,14 +92,6 @@ module Extensions
 
         # Create EBS volume if the device is free
         unless server.volumes.map(&:device).include?(device)
-          stop_elasticsearch = node.recipes.include?('monit') ? "sudo monit stop elasticsearch" : "sudo service elasticsearch stop"
-          begin
-            system stop_elasticsearch
-          rescue Exception => e
-            Chef::Log.warn "Cannot stop elasticsearch before creating the EBS volume on #{device}:"
-            Chef::Log.warn e.inspect
-          end
-
           options = { :device                => device,
                       :size                  => params[:ebs][:size],
                       :delete_on_termination => params[:ebs][:delete_on_termination],
