@@ -2,10 +2,15 @@ node.elasticsearch[:data][:devices].each do |device, params|
   # Format volume if format command is provided and volume is unformatted
   #
   bash "Format device: #{device}" do
-    code "#{params[:format_command]} #{device}"
+    __command  = "#{params[:format_command]} #{device}"
+    __fs_check = params[:fs_check_command] || 'dumpe2fs'
+
+    Chef::Log.info "Command: #{__command}"
+
+    code __command
 
     only_if { params[:format_command] }
-    not_if  "#{params[:fs_check_command]} #{device}"
+    not_if  "#{__fs_check} #{device}"
   end
 
   # Create directory with proper permissions
