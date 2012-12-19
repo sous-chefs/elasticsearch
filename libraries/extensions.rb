@@ -63,25 +63,9 @@ module Extensions
   # Create ebs and attach to the instance
   #
   def create_ebs device, params={}
-    # Install fog gem
-    #
-    git "/tmp/fog" do
-      repository "https://github.com/fog/fog.git"
-      revision "d1fbbe65b404e7d606f40070b7fc474bfa8ff406"
-      action :sync
-    end
 
-    bash "build fog gem from git source" do
-      code <<-EOS
-        cd /tmp/fog && gem build fog.gemspec
-      EOS
-
-      not_if "ls -la /tmp/fog/fog-1.5.0.gem"
-    end
-
-    gem_package "install builded fog gem" do
-      package_name "fog"
-      source "/tmp/fog/fog-1.5.0.gem"
+    # Install the fog gem
+    chef_gem "fog" do
       action :install
     end
 
@@ -92,24 +76,23 @@ module Extensions
         require 'open-uri'
 
         instance_id = open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
-        region      = params[:region] || node.elasticsearch[:cloud][:aws][:region]
-        Chef::Log.info("Instance region is #{region}")
+        raise "Cannot find instance id!" unless instance_id
+
+        region = params[:region] || node.elasticsearch[:cloud][:aws][:region]
 
         aws = Fog::Compute.new :provider =>              'AWS',
                                :region   =>              region,
                                :aws_access_key_id =>     node.elasticsearch[:cloud][:aws][:access_key],
                                :aws_secret_access_key => node.elasticsearch[:cloud][:aws][:secret_key]
 
-        raise "Cannot find instance id!" unless instance_id
-        Chef::Log.info("Instance ID is #{instance_id}")
-        Chef::Log.info("Instance region is #{region}")
+        Chef::Log.info("Region: #{region}, instance ID: #{instance_id}")
         server = aws.servers.get instance_id
 
         # Create EBS volume if device is free
         #
         unless server.volumes.map(&:device).include?(device)
-          stop_elasticsearch = node.recipes.include?('monit') ? "sudo monit stop elasticsearch" : "sudo service elasticsearch stop"
-          system stop_elasticsearch
+          #stop_elasticsearch = node.recipes.include?('monit') ? "sudo monit stop elasticsearch" : "sudo service elasticsearch stop"
+          #system stop_elasticsearch
 
           options = { :device                => device,
                       :size                  => params[:ebs][:size],
@@ -119,6 +102,8 @@ module Extensions
 
           options[:type] = params[:ebs][:type] if params[:ebs][:type]
           options[:iops] = params[:ebs][:iops] if params[:ebs][:iops] and params[:ebs][:type] == "io1"
+
+          Chef::Log.info("Creating volume on #{device} (size: #{params[:ebs][:size]})...")
 
           volume = aws.volumes.new options
 
@@ -140,7 +125,7 @@ module Extensions
             sleep 1
           end
 
-          Chef::Log.info("Volume #{volume.id} is attached to #{instance_id}")
+          Chef::Log.info("Volume #{volume.id} is attached to #{instance_id} on #{device}")
         end
 
       end
