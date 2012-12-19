@@ -31,8 +31,20 @@ end
 
 # Create ES directories
 #
-%w| conf_path data_path log_path pid_path |.each do |path|
+%w| conf_path log_path pid_path |.each do |path|
   directory node.elasticsearch[path.to_sym] do
+    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+    recursive true
+    action :create
+  end
+end
+
+# Create data path directories
+#
+data_paths = node.elasticsearch[:data_path].is_a?(Array) ? node.elasticsearch[:data_path] : node.elasticsearch[:data_path].split(',')
+
+data_paths.each do |path|
+  directory path.strip do
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
     action :create

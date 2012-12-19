@@ -1,15 +1,11 @@
 node.elasticsearch[:data][:devices].each do |device, params|
   # Format volume if format command is provided and volume is unformatted
   #
-  bash "Format device #{device}" do
-
-    code <<-EOS
-      #{params[:format_command]}
-    EOS
+  bash "Format device: #{device}" do
+    code "#{params[:format_command]} #{device}"
 
     only_if { params[:format_command] }
-    not_if "dumpe2fs #{device}"
-
+    not_if  "#{params[:fs_check_command]} #{device}"
   end
 
   # Create directory with proper permissions
@@ -27,17 +23,14 @@ node.elasticsearch[:data][:devices].each do |device, params|
     options params[:mount_options]
     action  [:mount, :enable]
 
-    only_if { device }
+    only_if { File.exists?(device) }
   end
 
   # Ensure proper permissions
   #
-  bash "Ensure proper permissions for #{params[:mount_path]}" do
-    user    "root"
-    code    <<-EOS
-      chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{params[:mount_path]}
-      chmod -R 775 #{params[:mount_path]}
-    EOS
+  directory params[:mount_path] do
+    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0775
+    recursive true
   end
 
 end

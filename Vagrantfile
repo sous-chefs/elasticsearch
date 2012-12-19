@@ -29,10 +29,33 @@ require 'berkshelf/vagrant'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::monit elasticsearch::test |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
-    :node     => {}
+    :node     => {
+      :elasticsearch => {
+        :data_path => %w| /usr/local/var/data/elasticsearch/disk1 /usr/local/var/data/elasticsearch/disk2 |,
+
+        :data => {
+          :devices   => {
+            "/dev/sdb" => {
+              :file_system      => "ext3",
+              :mount_options    => "rw,user",
+              :mount_path       => "/usr/local/var/data/elasticsearch/disk1",
+              :format_command   => "mkfs.ext3 -F",
+              :fs_check_command => "dumpe2fs"
+            },
+            "/dev/sdc" => {
+              :file_system      => "ext3",
+              :mount_options    => "rw,user",
+              :mount_path       => "/usr/local/var/data/elasticsearch/disk2",
+              :format_command   => "mkfs.ext3 -F",
+              :fs_check_command => "dumpe2fs"
+            }
+          }
+        }
+      }
+    }
   },
 
   :lucid64 => {
@@ -54,11 +77,25 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
-    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::test |,
+    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::data  elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
       :elasticsearch => {
+        :data_path => "/usr/local/var/data/elasticsearch/disk1",
+
+        :data => {
+          :devices   => {
+            "/dev/sdb" => {
+              :file_system      => "ext3",
+              :mount_options    => "rw,user",
+              :mount_path       => "/usr/local/var/data/elasticsearch/disk1",
+              :format_command   => "mkfs.ext3 -F",
+              :fs_check_command => "dumpe2fs"
+            }
+          }
+        },
+
         :nginx => {
           :user => 'nginx'
         }
@@ -102,17 +139,27 @@ Vagrant::Config.run do |config|
 
       # Box customizations
       #
-      # 1. Limit memory to 1GB
+      # 1. Limit memory to 512 MB
       #
-      box_config.vm.customize ["modifyvm", :id, "--memory", 1024]
+      box_config.vm.customize ["modifyvm", :id, "--memory", 512]
+      #
+      # 2. Create additional disks
+      #
+      if name == :precise64 or name == :centos6
+        disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
+        box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
+        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1,"--type", "hdd", "--medium", disk1]
+        box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
+        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 2,"--type", "hdd", "--medium", disk2]
+      end
 
       # Install latest Chef on the machine
       #
       config.vm.provision :shell do |shell|
         version = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
         shell.inline = %Q{
-          apt-get update --quiet --yes
-          apt-get install curl --quiet --yes
+          which apt-get > /dev/null 2>&1 && apt-get update --quiet --yes && apt-get install curl --quiet --yes
+          which yum > /dev/null 2>&1 && yum update -y && yum install curl -y
           test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''}
         }
       end if ENV['CHEF']

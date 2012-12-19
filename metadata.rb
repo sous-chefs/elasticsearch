@@ -12,6 +12,7 @@ recommends 'java'
 recommends 'monit'
 
 provides 'elasticsearch'
+provides 'elasticsearch::data'
 provides 'elasticsearch::aws'
 provides 'elasticsearch::proxy'
 provides 'elasticsearch::plugins'

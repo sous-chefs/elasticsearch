@@ -13,7 +13,7 @@ index.mapper.dynamic:     <%= node.elasticsearch[:index_mapper_dynamic] %>
 
 #################################### Paths ####################################
 
-path.data: <%= node.elasticsearch[:data_path] %>
+path.data: <%= node.elasticsearch[:data_path].is_a?(Array) ? node.elasticsearch[:data_path].join(",") : node.elasticsearch[:data_path] %>
 path.logs: <%= node.elasticsearch[:log_path] %>
 
 ################################### Memory ####################################
