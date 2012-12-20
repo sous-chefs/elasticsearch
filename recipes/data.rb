@@ -5,8 +5,6 @@ node.elasticsearch[:data][:devices].each do |device, params|
     __command  = "#{params[:format_command]} #{device}"
     __fs_check = params[:fs_check_command] || 'dumpe2fs'
 
-    Chef::Log.info "Command: #{__command}"
-
     code __command
 
     only_if { params[:format_command] }
