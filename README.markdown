@@ -19,6 +19,11 @@ If you include the `elasticsearch::aws` recipe, the
 allowing you to use the _Amazon_ AWS features (node auto-discovery, etc).
 Set your AWS credentials either in the "elasticsearch/aws" data bag, or directly in the role/node configuration.
 
+If you include the `elasticsearch::data` and `elasticsearch::ebs` recipes, an EBS volume will be automatically
+created, formatted and mounted for using it as a local gateway. When the EBS configuration contains
+a `snapshot_id` value, it will be created with data from the corresponding snapshot. See the `attributes/data`
+file for more information.
+
 You may want to include the `elasticsearch::proxy` recipe, which will configure _Nginx_ as
 a reverse proxy for _elasticsearch_, so you may access it remotely with HTTP Authentication.
 Set the credentials either in a "elasticsearch/users" data bag, or directly in the role/node configuration.
@@ -27,7 +32,7 @@ Set the credentials either in a "elasticsearch/users" data bag, or directly in t
 Usage
 -----
 
-Read the tutorial on [deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/2012/03/21/deploying-elasticsearch-with-chef-solo.html) using this cookbook.
+Read the tutorial on [deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/2012/03/21/deploying-elasticsearch-with-chef-solo.html) which uses this cookbook.
 
 For _Chef Server_ based deployment, include the `elasticsearch` recipe in the role or node `run_list`.
 
@@ -38,7 +43,7 @@ Then, upload the cookbook to the _Chef_ server:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To enable the _Amazon_ AWS related features, include the `elasticsearch::aws` recipe.
-You will need to configure the AWS credentials, bucket names, etc.
+You will need to configure the AWS credentials.
 
 You may do that in the node configuration (with `knife node edit MYNODE` or in the _Chef Server_ console),
 but it is arguably more convenient to store the information in an "elasticsearch" _data bag_:
@@ -48,11 +53,6 @@ but it is arguably more convenient to store the information in an "elasticsearch
     echo '{
       "id" : "aws",
       "discovery" : { "type": "ec2" },
-
-      "gateway" : {
-        "type"    : "s3",
-        "s3"      : { "bucket": "YOUR BUCKET NAME" }
-      },
 
       "cloud"   : {
         "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
@@ -65,6 +65,34 @@ Do not forget to upload the data bag to the _Chef_ server:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
     knife data bag from file elasticsearch aws.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+To use the EBS related features, store the configuration in a data bag called
+`elasticsearch/data`, or configure the node directly:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~json
+    {
+      "elasticsearch": {
+        // ...
+        "data" : {
+          "devices" : {
+            "/dev/sda2" : {
+              "file_system"      : "ext3",
+              "mount_options"    : "rw,user",
+              "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
+              "format_command"   : "mkfs.ext3",
+              "fs_check_command" : "dumpe2fs",
+              "ebs"            : {
+                "size"                  : 250,         // In GB
+                "delete_on_termination" : true,
+                "type"                  : "io1",
+                "iops"                  : 2000
+              }
+            }
+          }
+        }
+      }
+    }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Usually, you will restrict the access to _elasticsearch_ with firewall rules. However, it's convenient

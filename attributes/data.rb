@@ -5,15 +5,16 @@
 # In a data bag, you can define multiple devices to be formatted and/or mounted:
 #
 #    {
-#      "id" : "data",
-#      "<ENVIRONMENT>": {
-#        "devices" : {
-#          "/dev/sdb" : {
-#            "file_system"      : "ext3",
-#            "mount_options"    : "rw,user",
-#            "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
-#            "format_command"   : "mkfs.ext3",
-#            "fs_check_command" : "dumpe2fs",
+#      "elasticsearch": {
+#        "data" : {
+#          "devices" : {
+#            "/dev/sdb" : {
+#              "file_system"      : "ext3",
+#              "mount_options"    : "rw,user",
+#              "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
+#              "format_command"   : "mkfs.ext3",
+#              "fs_check_command" : "dumpe2fs",
+#            }
 #          }
 #        }
 #      }
@@ -29,21 +30,22 @@
 # For EC2, you can define additional parameters for creating and attaching EBS volumes:
 #
 #    {
-#      "id" : "data",
-#      "<ENVIRONMENT>": {
-#        "devices" : {
-#          "/dev/sda2" : {
-#            "file_system"      : "ext3",
-#            "mount_options"    : "rw,user",
-#            "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
-#            "format_command"   : "mkfs.ext3",
-#            "fs_check_command" : "dumpe2fs",
-#            "ebs"            : {
-#              "region"                : "us-east-1", // Optional: instance region is used by default
-#              "size"                  : 250,         // In GB
-#              "delete_on_termination" : true,
-#              "type"                  : "io1",
-#              "iops"                  : 2000
+#      "elasticsearch": {
+#        "data" : {
+#          "devices" : {
+#            "/dev/sda2" : {
+#              "file_system"      : "ext3",
+#              "mount_options"    : "rw,user",
+#              "mount_path"       : "/usr/local/var/data/elasticsearch/disk1",
+#              "format_command"   : "mkfs.ext3",
+#              "fs_check_command" : "dumpe2fs",
+#              "ebs"            : {
+#                "region"                : "us-east-1", // Optional: instance region is used by default
+#                "size"                  : 250,         // In GB
+#                "delete_on_termination" : true,
+#                "type"                  : "io1",
+#                "iops"                  : 2000
+#              }
 #            }
 #          }
 #        }
@@ -55,14 +57,15 @@
 # having all the data available in the snapshot:
 #
 #    {
-#      "id" : "data",
-#      "<ENVIRONMENT>": {
-#        "devices" : {
-#          "/dev/sda2" : {
-#            # ...
-#            "ebs" : {
+#      "elasticsearch": {
+#        "data" : {
+#          "devices" : {
+#            "/dev/sda2" : {
 #              # ...
-#              "snapshot_id" : "snap-123abc4d"
+#              "ebs" : {
+#                # ...
+#                "snapshot_id" : "snap-123abc4d"
+#              }
 #            }
 #          }
 #        }
