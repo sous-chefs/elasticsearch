@@ -1,3 +1,5 @@
+[Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::Extensions }
+
 # Loads configuration settings from data bag 'elasticsearch/data' or from node attributes.
 #
 # In a data bag, you can define multiple devices to be formatted and/or mounted:
