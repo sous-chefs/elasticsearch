@@ -71,6 +71,7 @@ ark "elasticsearch" do
   has_binaries ['bin/elasticsearch', 'bin/plugin']
   checksum node.elasticsearch[:checksum]
 
+  notifies :start,   resources(:service => 'elasticsearch')
   notifies :restart, resources(:service => 'elasticsearch')
 end
 
@@ -102,7 +103,6 @@ bash "increase limits for the elasticsearch user" do
   end
 end
 
-
 # Create file with ES environment variables
 #
 template "elasticsearch-env.sh" do
@@ -122,7 +122,3 @@ template "elasticsearch.yml" do
 
   notifies :restart, resources(:service => 'elasticsearch')
 end
-
-# Make sure the service is started
-#
-service("elasticsearch") { action :start }
