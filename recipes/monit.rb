@@ -2,7 +2,7 @@
 #
 begin
   monitrc "elasticsearch" do
-    pidfile "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
+    variables :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
     template_cookbook "elasticsearch"
   end
 rescue Exception => e
