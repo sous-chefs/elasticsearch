@@ -1,3 +1,8 @@
+Important Note
+--------------
+
+As of 0.2.0, the elasticsearch cookbook available from the opscode community site is no longer compatible with the previous version. If you are a user of the previous cookbook, please be aware that there is no mapped upgrade process and active testing is your responsibility when upgrading to this cookbook. If you have questions, please don't hesitate to leave a message in the comments section on the community site. Thanks!
+
 Description
 -----------
 
@@ -238,6 +243,11 @@ Cookbook Organization
 * `templates/default/elasticsearch_proxy.conf.erb`: the reverse proxy configuration for _Nginx_
 * `templates/default/elasticsearch.conf.erb`: _Monit_ configuration file
 * `files/default/tests/minitest`: integration tests
+
+Repository
+----------
+
+http://github.com/karmi/cookbook-elasticsearch
 
 License
 -------
