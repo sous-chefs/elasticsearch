@@ -1,7 +1,7 @@
 metadata
 
-cookbook 'apt'
-cookbook 'yum'
+cookbook 'apt', git: 'git://github.com/opscode-cookbooks/apt.git'
+cookbook 'yum', git: 'git://github.com/opscode-cookbooks/yum.git'
 
 cookbook 'ark'
 cookbook 'java', git: 'git://github.com/opscode-cookbooks/java.git'
