@@ -8,6 +8,7 @@ name             "elasticsearch"
 
 depends 'ark'
 
+recommends 'build-essential'
 recommends 'java'
 recommends 'monit'
 
