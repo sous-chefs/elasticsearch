@@ -5,7 +5,7 @@
 
 ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch" %>'
 ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
-ES_HEAP_SIZE=<%= node.elasticsearch[:max_mem] %>
+ES_HEAP_SIZE=<%= node.elasticsearch[:allocated_memory] %>
 
 ES_JAVA_OPTS="
   -server
