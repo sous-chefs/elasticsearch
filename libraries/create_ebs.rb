@@ -8,9 +8,6 @@ module Extensions
   #
   def create_ebs device, params={}
 
-    # Install the Fog gem for Chef
-    chef_gem("fog") { action :install }
-
     ruby_block "Create EBS volume on #{device} (size: #{params[:ebs][:size]}GB)" do
 
       block do
