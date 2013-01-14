@@ -6,7 +6,7 @@
 #
 node.elasticsearch[:data][:devices].
   reject do |device, params|
-    params[:ebs].keys.empty?
+    params[:ebs].nil? || params[:ebs].keys.empty?
   end.
   each do |device, params|
     create_ebs device, params
