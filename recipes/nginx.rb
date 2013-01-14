@@ -35,9 +35,11 @@ end
 template "nginx.conf.erb" do
   path "#{node[:nginx][:dir]}/nginx.conf"
   source "nginx.conf.erb"
-  owner 'root'
+  owner "root"
   mode 0644
   notifies :restart, resources(:service => "nginx"), :immediately
 end
 
-monitrc("nginx.monitrc") if node.recipes.include?('monit') and defined?(:monitrc)
+if node.recipes.include?('monit') and defined?(:monitrc)
+  monitrc "nginx.monitrc", :template_cookbook => 'elasticsearch', :template_source => 'nginx.monitrc.conf.erb'
+end
