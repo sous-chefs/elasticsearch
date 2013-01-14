@@ -2,7 +2,6 @@
 #
 begin
   monitrc "elasticsearch" do
-    variables :pidfile => "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
     template_cookbook "elasticsearch"
     source "elasticsearch.conf.rb"
   end

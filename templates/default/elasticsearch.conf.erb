@@ -2,7 +2,7 @@
 # Monit configuration file for ElasticSearch
 # ------------------------------------------
 
-check process elasticsearch with pidfile <%= @pidfile %>
+check process elasticsearch with pidfile <%= node.elasticsearch[:pid_file] %>
   start program = "/etc/init.d/elasticsearch restart" with timeout 60 seconds
   stop program  = "/etc/init.d/elasticsearch stop"
   if cpu > 90% for 15 cycles then alert
