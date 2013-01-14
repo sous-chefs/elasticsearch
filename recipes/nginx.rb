@@ -41,5 +41,8 @@ template "nginx.conf.erb" do
 end
 
 if node.recipes.include?('monit') and defined?(:monitrc)
-  monitrc "nginx.monitrc", :template_cookbook => 'elasticsearch', :template_source => 'nginx.monitrc.conf.erb'
+  monitrc "nginx.monitrc" do
+    template_cookbook 'elasticsearch'
+    source 'nginx.monitrc.conf.erb'
+  end
 end
