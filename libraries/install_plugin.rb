@@ -46,7 +46,7 @@ module Extensions
         system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
       end
 
-      notifies :restart, resources(:service => 'elasticsearch')
+      notifies :restart, 'service[elasticsearch]'
 
       not_if do
         Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|

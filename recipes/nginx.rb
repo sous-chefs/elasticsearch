@@ -37,7 +37,7 @@ template "nginx.conf.erb" do
   source "nginx.conf.erb"
   owner "root"
   mode 0644
-  notifies :restart, resources(:service => "nginx"), :immediately
+  notifies :restart, 'service[nginx]', :immediately
 end
 
 if node.recipes.include?('monit') and defined?(:monitrc)

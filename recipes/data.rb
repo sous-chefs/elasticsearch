@@ -29,7 +29,7 @@ node.elasticsearch[:data][:devices].each do |device, params|
     only_if { File.exists?(device) }
     if node.elasticsearch[:data_path].include?(params[:mount_path])
       Chef::Log.debug "Schedule Elasticsearch service restart..."
-      notifies :restart, resources(:service => 'elasticsearch')
+      notifies :restart, 'service[elasticsearch]'
     end
   end
 
