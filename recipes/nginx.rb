@@ -28,6 +28,7 @@ directory node[:nginx][:log_dir] do
   mode 0755
   owner 'root'
   action :create
+  recursive true
 end
 
 # Create Nginx main configuration file
