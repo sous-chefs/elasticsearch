@@ -1,8 +1,13 @@
-# Load settings from data bag 'elasticsearch/settings' -
+# Load settings from data bag 'elasticsearch/settings'
 #
 settings = Chef::DataBagItem.load('elasticsearch', 'settings') rescue {}
+Chef::Log.debug "Loaded settings: #{settings.inspect}"
 
-# === VERSION ===
+# Initialize the node attributes with node attributes merged with data bag attributes
+#
+node.set[:elasticsearch] = DeepMerge.merge(node[:elasticsearch].to_hash, settings.to_hash)
+
+# === VERSION AND LOCATION
 #
 default.elasticsearch[:version]       = "0.20.1"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
@@ -10,12 +15,10 @@ default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
 default.elasticsearch[:filename]      = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
 default.elasticsearch[:download_url]  = [node.elasticsearch[:host], node.elasticsearch[:repository], node.elasticsearch[:filename]].join('/')
 
-# === SETTINGS ===
+# === NAMING
 #
-default.elasticsearch[:node_name]      = node.name
-default.elasticsearch[:cluster_name]   = ( settings['cluster_name'] || "elasticsearch" rescue "elasticsearch" )
-default.elasticsearch[:index_shards]   = "5"
-default.elasticsearch[:index_replicas] = "1"
+default.elasticsearch[:cluster][:name] = 'elasticsearch'
+default.elasticsearch[:node][:name]    = node.name
 
 # === USER & PATHS
 #
@@ -27,52 +30,59 @@ default.elasticsearch[:log_path]  = "/usr/local/var/log/elasticsearch"
 default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
 default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
 
-# === MEMORY ===
+# === MEMORY
 #
-# Maximum amount of memory to use is automatically computed as a bit over 1/2 of total available memory on the machine.
+# Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
 # You may choose to set it in your node/role configuration instead.
-# By default, the `mlockall` is set to true: on weak machines and Vagrant boxes, you may want to disable it.
 #
 allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
-default.elasticsearch[:mlockall] = true
 
-# === LIMITS ===
+# === LIMITS
 #
-default.elasticsearch[:limits]  = {}
+# By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
+# you may want to disable it.
+#
+default.elasticsearch[:mlockall] = true
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
-# === PERSISTENCE ===
+# === PRODUCTION SETTINGS
 #
-default.elasticsearch[:gateway][:type] = nil
+default.elasticsearch[:index][:mapper][:dynamic]   = true
+default.elasticsearch[:action][:auto_create_index] = true
+default.elasticsearch[:action][:disable_delete_all_indices] = true
+default.elasticsearch[:node][:max_local_storage_nodes] = 1
 
-# === VARIA ===
+default.elasticsearch[:discovery][:zen][:ping][:multicast][:enabled] = true
+default.elasticsearch[:discovery][:zen][:minimum_master_nodes] = 1
+default.elasticsearch[:gateway][:expected_nodes] = 1
+
+default.elasticsearch[:cloud][:node][:auto_attributes] = true
+
+default.elasticsearch[:thread_stack_size] = "256k"
+
+# --------------------------------------------------
+# NOTE: Setting the attributes for elasticsearch.yml
+# --------------------------------------------------
 #
-default.elasticsearch[:index_auto_create_index] = true
-default.elasticsearch[:index_mapper_dynamic]    = true
-default.elasticsearch[:disable_delete_all_indices] = true
-default.elasticsearch[:thread_stack_size]       = "256k"
-
-# === NETWORK ===
+# The template uses the `print_value` extension method to print attributes with a "truthy"
+# value, set either in data bags, node attributes, role override attributes, etc.
 #
-default.elasticsearch[:network] = {}
-default.elasticsearch[:transport] = {}
-default.elasticsearch[:http] = {}
-
-# === DISCOVERY ===
+# It is possible to set *any* configuration value exposed by the Elasticsearch configuration file.
 #
-default.elasticsearch[:discovery][:multicast] = "false"
-
-# === LOGGING ===
+# For example:
 #
-default.elasticsearch[:slowlog_threshold_query] = {}
-default.elasticsearch[:slowlog_threshold_fetch] = {}
-default.elasticsearch[:slowlog_threshold_index] = {}
-default.elasticsearch[:gclog_PorNew] = {}
-default.elasticsearch[:gclog_ConcurrentMarkSweep] = {}
-
-# === Recovery ===
+#     <%= print_value 'cluster.routing.allocation.node_concurrent_recoveries' -%>
 #
-default.elasticsearch[:recovery] = {}
-
+# will print a line:
+#
+#     cluster.routing.allocation.node_concurrent_recoveries: <VALUE>
+#
+# if the either of following node attributes is set:
+#
+# * `node.cluster.routing.allocation.node_concurrent_recoveries`
+# * `node['cluster.routing.allocation.node_concurrent_recoveries']`
+#
+# The default attributes set by the cookbook configure a minimal set inferred from the environment
+# (eg. memory settings, node name), or reasonable defaults for production.
