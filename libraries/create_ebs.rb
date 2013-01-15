@@ -1,10 +1,13 @@
 module Extensions
 
   # Creates an EBS volume based on passed parameters and attaches it to the instance
-  # via the [Fog](http://rubydoc.info/gems/fog/Fog/Compute/AWS/Volume).
+  # via the [Fog](http://rubydoc.info/gems/fog/Fog/Compute/AWS/Volume) library.
   #
-  # The credentials for accessing AWS API are loaded from `node.elasticsearch[:cloud]`,
+  # The credentials for accessing AWS API are loaded from `node.elasticsearch.cloud`,
   # you need to provide volume properties such as _size_ in the `params[:ebs]` hash.
+  #
+  # If `params[:snapshot_id]` is passed, the volume will be created from
+  # the corresponding snapshot.
   #
   def create_ebs device, params={}
 

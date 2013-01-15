@@ -22,4 +22,4 @@ node.elasticsearch[:data][:devices].
   end.
   each do |device, params|
     create_ebs device, params
-end
+  end
