@@ -6,7 +6,7 @@ cookbook 'yum', git: 'git://github.com/opscode-cookbooks/yum.git'
 cookbook 'ark'
 cookbook 'java', git: 'git://github.com/opscode-cookbooks/java.git'
 
-cookbook 'monit'
+cookbook 'monit', git: 'git://github.com/apsoto/monit.git'
 
 cookbook 'vim'
 
