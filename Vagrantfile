@@ -34,8 +34,9 @@ distributions = {
     :primary  => true,
     :node     => {
       :elasticsearch => {
-        :data_path => %w| /usr/local/var/data/elasticsearch/disk1 /usr/local/var/data/elasticsearch/disk2 |,
-
+        :path => {
+          :data => %w| /usr/local/var/data/elasticsearch/disk1 /usr/local/var/data/elasticsearch/disk2 |
+        },
         :data => {
           :devices   => {
             "/dev/sdb" => {
@@ -86,8 +87,9 @@ distributions = {
         :jdk_version => "7"
       },
       :elasticsearch => {
-        :data_path => "/usr/local/var/data/elasticsearch/disk1",
-
+        :path => {
+          :data => "/usr/local/var/data/elasticsearch/disk1"
+        },
         :data => {
           :devices   => {
             "/dev/sdb" => {
@@ -110,7 +112,7 @@ distributions = {
 
 node_config = {
   :elasticsearch => {
-    :cluster_name => "elasticsearch_vagrant",
+    :cluster => { :name => "elasticsearch_vagrant" },
 
     :plugins => {
       'karmi/elasticsearch-paramedic' => {}
@@ -119,6 +121,9 @@ node_config = {
     :limits => {
       :nofile  => 1024,
       :memlock => 512
+    },
+    :bootstrap => {
+      :mlockall => false
     },
 
     :nginx => {
