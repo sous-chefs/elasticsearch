@@ -60,7 +60,7 @@ module Extensions
 
           # Create tags
           aws.tags.new(:key => "Name", :value => node.name, :resource_id => volume.id, :resource_type => "volume").save
-          aws.tags.new(:key => "ClusterName", :value => node.elasticsearch[:cluster_name], :resource_id => volume.id, :resource_type => "volume").save
+          aws.tags.new(:key => "ClusterName", :value => node.elasticsearch[:cluster][:name], :resource_id => volume.id, :resource_type => "volume").save
 
           # Checking if block device is attached
           Chef::Log.info("Attaching volume: #{volume.id} ")

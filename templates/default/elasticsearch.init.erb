@@ -87,7 +87,7 @@ status() {
     echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
-      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node_name] %>?os&process&jvm&network&transport&settings&pretty' | \
+      curl -s 'http://localhost:9200/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
       ruby -rubygems -e '
         begin
           require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;

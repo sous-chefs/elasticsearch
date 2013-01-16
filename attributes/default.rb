@@ -30,7 +30,7 @@ default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"
 default.elasticsearch[:path][:log]  = "/usr/local/var/log/elasticsearch"
 
 default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
-default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
+default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
 
 # Deprecation notice for legacy path configuration
 Chef::Log.warn "DEPRECATION WARNING! The 'conf_path', 'data_path' and 'log_path' attributes have changed, and will be removed in the next release. Please review your attributes."
