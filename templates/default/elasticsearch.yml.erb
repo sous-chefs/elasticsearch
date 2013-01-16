@@ -151,7 +151,7 @@
 # Path to directory where to store index data allocated for this node.
 #
 # path.data: /path/to/data
-<%= print_value 'path.data' -%>
+<%= print_value 'path.data', (node.elasticsearch.path.data.is_a?(Array) ? node.elasticsearch.path.data.join(",") : node.elasticsearch.path.data) -%>
 #
 # Can optionally include more than one location, causing data to be striped across
 # the locations (a la RAID 0) on a file level, favouring locations with most free
