@@ -263,7 +263,7 @@
 # The default gateway type is the "local" gateway (recommended):
 #
 # gateway.type: local
-<%= print_value 'gateway.type' -%>
+<%= print_value 'gateway.type', ( node.elasticsearch[:gateway][:type] rescue nil ) -%>
 
 # Settings below control how and when to start the initial recovery process on
 # a full cluster restart (to reuse as much local data as possible when using shared
