@@ -77,10 +77,14 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
-    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::data  elasticsearch::test |,
+    :run_list => %w| yum::epel vim java elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
+      :java => {
+        :install_flavor => "openjdk",
+        :jdk_version => "7"
+      },
       :elasticsearch => {
         :data_path => "/usr/local/var/data/elasticsearch/disk1",
 
