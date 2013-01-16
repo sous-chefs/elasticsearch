@@ -124,3 +124,13 @@ template "elasticsearch.yml" do
 
   notifies :restart, 'service[elasticsearch]'
 end
+
+# Create ES logging file
+#
+template "logging.yml" do
+  path   "#{node.elasticsearch[:path][:conf]}/logging.yml"
+  source "logging.yml.erb"
+  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+
+  notifies :restart, 'service[elasticsearch]'
+end

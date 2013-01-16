@@ -126,6 +126,11 @@ node_config = {
       :mlockall => false
     },
 
+    :logging => {
+      :discovery => 'TRACE',
+      'index.indexing.slowlog' => 'INFO, index_indexing_slow_log_file'
+    },
+
     :nginx => {
       :user  =>  'www-data',
       :users => [{ username: 'USERNAME', password: 'PASSWORD' }]

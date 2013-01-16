@@ -52,6 +52,13 @@ describe_recipe 'elasticsearch::default' do
       end
     end
 
+    it "creates logging file" do
+      file("/usr/local/etc/elasticsearch/logging.yml").
+        must_exist.
+        must_include("logger.action: DEBUG").
+        must_include("logger.discovery: TRACE")
+    end
+
   end
 
 end
