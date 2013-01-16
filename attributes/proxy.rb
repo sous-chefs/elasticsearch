@@ -15,7 +15,7 @@ default.elasticsearch[:nginx][:dir]            = ( node.nginx[:dir]     rescue '
 default.elasticsearch[:nginx][:user]           = ( node.nginx[:user]    rescue 'nginx'          )
 default.elasticsearch[:nginx][:log_dir]        = ( node.nginx[:log_dir] rescue '/var/log/nginx' )
 default.elasticsearch[:nginx][:users]          = users
-default.elasticsearch[:nginx][:passwords_file] = "#{node.elasticsearch[:conf_path]}/passwords"
+default.elasticsearch[:nginx][:passwords_file] = "#{node.elasticsearch[:path][:conf]}/passwords"
 
 # Deny or allow authenticated access to cluster API.
 #

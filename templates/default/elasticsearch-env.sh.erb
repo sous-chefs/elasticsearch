@@ -10,7 +10,7 @@ ES_HEAP_SIZE=<%= node.elasticsearch[:allocated_memory] %>
 ES_JAVA_OPTS="
   -server
   -Djava.net.preferIPv4Stack=true
-  -Des.config=<%= node.elasticsearch[:conf_path] %>/elasticsearch.yml
+  -Des.config=<%= node.elasticsearch[:path][:conf] %>/elasticsearch.yml
   -Xms<%= node.elasticsearch[:allocated_memory] %>
   -Xmx<%= node.elasticsearch[:allocated_memory] %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>

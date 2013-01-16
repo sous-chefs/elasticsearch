@@ -5,7 +5,7 @@
 # chkconfig:   - 57 47
 # description: elasticsearch
 # processname: elasticsearch
-# config:      <%= node[:elasticsearch][:conf_path] %>/elasticsearch.yml
+# config:      <%= node[:elasticsearch][:path][:conf] %>/elasticsearch.yml
 
 # Source networking configuration
 if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
@@ -14,7 +14,7 @@ if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 [ "$NETWORKING" = "no" ] && exit
 
 PIDFILE='<%= node.elasticsearch[:pid_file] %>'
-ES_INCLUDE='<%= node.elasticsearch[:conf_path] %>/elasticsearch-env.sh'
+ES_INCLUDE='<%= node.elasticsearch[:path][:conf] %>/elasticsearch-env.sh'
 CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
 
 start() {

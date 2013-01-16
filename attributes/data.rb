@@ -23,7 +23,7 @@
 # To set the configuration with nodes attributes (eg. for Chef Solo), see the Vagrantfile.
 # See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
 #
-# You have to add the `mount_path` of each defined device to `default.elasticsearch[:data_path]`,
+# You have to add the `mount_path` of each defined device to `default.elasticsearch[:path][:data]`,
 # either as a comma-delimited string or as a Ruby/JSON array, so it is used in the Elasticsearch
 # configuration.
 #

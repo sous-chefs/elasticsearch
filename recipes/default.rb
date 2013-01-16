@@ -31,8 +31,8 @@ end
 
 # Create ES directories
 #
-%w| conf_path log_path pid_path |.each do |path|
-  directory node.elasticsearch[path.to_sym] do
+[ node.elasticsearch[:path][:conf], node.elasticsearch[:path][:logs], node.elasticsearch[:pid_path] ].each do |path|
+  directory path do
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
     action :create
@@ -41,7 +41,7 @@ end
 
 # Create data path directories
 #
-data_paths = node.elasticsearch[:data_path].is_a?(Array) ? node.elasticsearch[:data_path] : node.elasticsearch[:data_path].split(',')
+data_paths = node.elasticsearch[:path][:data].is_a?(Array) ? node.elasticsearch[:path][:data] : node.elasticsearch[:path][:data].split(',')
 
 data_paths.each do |path|
   directory path.strip do
@@ -108,7 +108,7 @@ end
 # Create file with ES environment variables
 #
 template "elasticsearch-env.sh" do
-  path   "#{node.elasticsearch[:conf_path]}/elasticsearch-env.sh"
+  path   "#{node.elasticsearch[:path][:conf]}/elasticsearch-env.sh"
   source "elasticsearch-env.sh.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
@@ -118,7 +118,7 @@ end
 # Create ES config file
 #
 template "elasticsearch.yml" do
-  path   "#{node.elasticsearch[:conf_path]}/elasticsearch.yml"
+  path   "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml"
   source "elasticsearch.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
