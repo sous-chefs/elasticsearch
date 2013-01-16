@@ -19,10 +19,10 @@ ES_JAVA_OPTS="
   -XX:CMSInitiatingOccupancyFraction=75
   -XX:+UseCMSInitiatingOccupancyOnly
   -XX:+HeapDumpOnOutOfMemoryError
-<% if node.elasticsearch[:jmx]="true" %>
+<% if node.elasticsearch[:jmx] %>
   -Dcom.sun.management.jmxremote.ssl=false
   -Dcom.sun.management.jmxremote.authenticate=false
   -Dcom.sun.management.jmxremote.port=3333
-  -Djava.rmi.server.hostname=<%= "#{node[:ipaddress]}" %> 
-<% end %> 
+  -Djava.rmi.server.hostname=<%= "#{node[:ipaddress]}" %>
+<% end %>
 "
