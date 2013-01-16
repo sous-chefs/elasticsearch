@@ -33,13 +33,23 @@ describe_recipe 'elasticsearch::default' do
 
     it "creates configuration files" do
       file("/usr/local/etc/elasticsearch/elasticsearch.yml").
-        must_exist.
-        must_include("cluster.name: 'elasticsearch_vagrant'").
-        must_include("path.data: /usr/local/var/data/elasticsearch")
+        must_exist
 
       file("/usr/local/etc/elasticsearch/elasticsearch-env.sh").
         must_exist.
         must_include("ES_HOME='/usr/local/elasticsearch'")
+    end
+
+    it "creates the configuration file with proper content" do
+      file("/usr/local/etc/elasticsearch/elasticsearch.yml").
+        must_include("cluster.name: elasticsearch_vagrant").
+        must_include("path.data: /usr/local/var/data/elasticsearch/disk1").
+        must_include("bootstrap.mlockall: false")
+
+      if node.name == 'precise64'
+        file("/usr/local/etc/elasticsearch/elasticsearch.yml").
+          must_include("node.name: precise64")
+      end
     end
 
   end
