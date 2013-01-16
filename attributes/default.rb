@@ -24,11 +24,20 @@ default.elasticsearch[:node][:name]    = node.name
 #
 default.elasticsearch[:dir]       = "/usr/local"
 default.elasticsearch[:user]      = "elasticsearch"
-default.elasticsearch[:conf_path] = "/usr/local/etc/elasticsearch"
-default.elasticsearch[:data_path] = "/usr/local/var/data/elasticsearch"
-default.elasticsearch[:log_path]  = "/usr/local/var/log/elasticsearch"
+
+default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
+default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"
+default.elasticsearch[:path][:log]  = "/usr/local/var/log/elasticsearch"
+
 default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
 default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node_name].to_s.gsub(/\W/, '_')}.pid"
+
+# Deprecation notice for legacy path configuration
+Chef::Log.warn "DEPRECATION WARNING! The 'conf_path', 'data_path' and 'log_path' attributes have changed, and will be removed in the next release. Please review your attributes."
+default.elasticsearch[:conf_path] = default.elasticsearch[:path][:conf]
+default.elasticsearch[:data_path] = default.elasticsearch[:path][:data]
+default.elasticsearch[:log_path]  = default.elasticsearch[:path][:log]
+
 
 # === MEMORY
 #
@@ -43,7 +52,7 @@ default.elasticsearch[:allocated_memory] = allocated_memory
 # By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
 # you may want to disable it.
 #
-default.elasticsearch[:mlockall] = true
+default.elasticsearch[:bootstrap][:mlockall] = true
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
