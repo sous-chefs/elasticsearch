@@ -44,7 +44,8 @@ describe_recipe 'elasticsearch::default' do
       file("/usr/local/etc/elasticsearch/elasticsearch.yml").
         must_include("cluster.name: elasticsearch_vagrant").
         must_include("path.data: /usr/local/var/data/elasticsearch/disk1").
-        must_include("bootstrap.mlockall: false")
+        must_include("bootstrap.mlockall: false").
+        must_include("index.search.slowlog.threshold.query.trace: 1ms")
 
       if node.name == 'precise64'
         file("/usr/local/etc/elasticsearch/elasticsearch.yml").

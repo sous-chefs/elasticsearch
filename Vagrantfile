@@ -134,7 +134,8 @@ node_config = {
     :nginx => {
       :user  =>  'www-data',
       :users => [{ username: 'USERNAME', password: 'PASSWORD' }]
-    }
+    },
+    "index.search.slowlog.threshold.query.trace" => "1ms"
   }
 }
 
