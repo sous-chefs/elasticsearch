@@ -47,6 +47,11 @@ cloud.aws.ec2.endpoint: '<%= node.elasticsearch[:cloud][:ec2][:endpoint] %>'
 <% if node.elasticsearch[:gateway][:type] %>
 ################################## Persistence ##################################
 gateway.type: <%= node.elasticsearch[:gateway][:type] %>
+<% %w[recover_after_nodes recover_after_time expected_nodes].each do |attr| %>
+  <% unless node.elasticsearch[:gateway][attr.to_sym].nil? || node.elasticsearch[:gateway][attr.to_sym].empty? %>
+<%= "gateway.#{attr}: #{node.elasticsearch[:gateway][attr.to_sym]}" %>
+  <% end %>
+<% end %>
 <% if node.elasticsearch[:gateway][:s3] %>
 gateway.s3.bucket: '<%= node.elasticsearch[:gateway][:s3][:bucket] %>'
 <% end %>
