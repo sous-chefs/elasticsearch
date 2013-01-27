@@ -135,7 +135,10 @@ node_config = {
       :user  =>  'www-data',
       :users => [{ username: 'USERNAME', password: 'PASSWORD' }]
     },
-    "index.search.slowlog.threshold.query.trace" => "1ms"
+    # For testing flat attributes:
+    "index.search.slowlog.threshold.query.trace" => "1ms",
+    # For testing deep attributes:
+    :discovery => { :zen => { :ping => { :timeout => "9s" } } }
   }
 }
 
