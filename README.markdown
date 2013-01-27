@@ -166,6 +166,12 @@ Install the neccessary gems:
    bundle install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Note that you must have the bundler gem installed. If not, get it:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+   sudo gem install bundler
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 All the required third-party cookbooks will be automatically installed via the
 [_Berkshelf_](http://berkshelf.com) integration. If you want to install them
 locally, you can do so explicitely:
