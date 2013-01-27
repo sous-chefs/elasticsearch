@@ -157,14 +157,14 @@ Then, clone this repository into an `elasticsearch` directory on your developmen
 Switch to the cloned repository:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-   cd elasticsearch
+    cd elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Install the neccessary gems with [Bundler](http://gembundler.com):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-   gem install bundler
-   bundle install
+    gem install bundler
+    bundle install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 All the required third-party cookbooks will be automatically installed via the
@@ -172,7 +172,7 @@ All the required third-party cookbooks will be automatically installed via the
 locally, you can do so explicitely:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-   berks install --path ./tmp/cookbooks
+    berks install --path ./tmp/cookbooks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `Vagrantfile` supports four Linux distributions so far:
@@ -190,7 +190,7 @@ You may want to test-drive this cookbook on a different distribution; check out 
 Launch the virtual machine (it will download the box unless you already have it):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    time vagrant up precise64
+    time bundle exec vagrant up precise64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The machine will be started and automatically provisioned with
@@ -211,7 +211,7 @@ After the process is done, you may connect to _elasticsearch_ via the _Nginx_ pr
 Of course, you should connect to the box with SSH and check things out:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    vagrant ssh precise64
+    bundle exec vagrant ssh precise64
 
     ps aux | grep elasticsearch
     service elasticsearch status --verbose
