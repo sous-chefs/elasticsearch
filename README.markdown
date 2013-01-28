@@ -4,6 +4,16 @@ Description
 This _Chef_ cookbook installs and configures the [_Elasticsearch_](http://www.elasticsearch.org)
 search engine on a Linux compatible operating system.
 
+-----
+### Important Upgrade Notice ###
+
+As of version 0.2.0, the Elasticsearch cookbook available from the Opscode community site is no longer
+compatible with the previous version. If you are a user of the previous cookbook, please be aware that
+there is no recommended upgrade process and you have to actively test the upgrade in your environment.
+If you have questions, please leave a message in the comments section on the community site. Thanks!
+
+-----
+
 It requires a working _Java_ installation on the target node; add your preferred `java` cookbook to the node `run_list`.
 
 The cookbook downloads the _elasticsearch_ tarball (via the [`ark`](http://github.com/bryanwb/chef-ark) provider),
@@ -225,6 +235,11 @@ which are executed as a part of the _Chef_ run in _Vagrant_
 They check the basic installation mechanics, populate the `test_chef_cookbook` index
 with some sample data, perform a simple search, etc.
 
+
+Repository
+----------
+
+http://github.com/karmi/cookbook-elasticsearch
 
 License
 -------
