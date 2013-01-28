@@ -152,7 +152,7 @@ run `chef-client` on the node(s):
 Testing with Vagrant
 --------------------
 
-The cookbook comes with a [`Vagrantfile`](https://github.com/karmi/cookbook-elasticsearch/blob/master/Vagrantfile), which allows you to test-drive the installation and configuration with
+The cookbook comes with a [`Vagrantfile`](https://github.com/elasticsearch/cookbook-elasticsearch/blob/master/Vagrantfile), which allows you to test-drive the installation and configuration with
 [_Vagrant_](http://vagrantup.com/), a tool for building virtualized infrastructures.
 
 First, make sure, you have both _VirtualBox_ and _Vagrant_
@@ -161,7 +161,7 @@ First, make sure, you have both _VirtualBox_ and _Vagrant_
 Then, clone this repository into an `elasticsearch` directory on your development machine:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    git clone git://github.com/karmi/cookbook-elasticsearch.git elasticsearch
+    git clone git://github.com/elasticsearch/cookbook-elasticsearch.git elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Switch to the cloned repository:
@@ -239,11 +239,11 @@ with some sample data, perform a simple search, etc.
 Repository
 ----------
 
-http://github.com/karmi/cookbook-elasticsearch
+http://github.com/elasticsearch/cookbook-elasticsearch
 
 License
 -------
 
-Author: Karel Minarik (<karmi@elasticsearch.com>) and [contributors](http://github.com/karmi/cookbook-elasticsearch/graphs/contributors)
+Author: Karel Minarik (<karmi@elasticsearch.com>) and [contributors](http://github.com/elasticsearch/cookbook-elasticsearch/graphs/contributors)
 
 License: MIT LICENSE
