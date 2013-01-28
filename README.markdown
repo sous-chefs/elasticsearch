@@ -1,3 +1,8 @@
+Important Note
+--------------
+
+As of 0.2.0, the elasticsearch cookbook available from the opscode community site is no longer compatible with the previous version. If you are a user of the previous cookbook, please be aware that there is no mapped upgrade process and active testing is your responsibility when upgrading to this cookbook. If you have questions, please don't hesitate to leave a message in the comments section on the community site. Thanks!
+
 Description
 -----------
 
@@ -235,6 +240,11 @@ which are executed as a part of the _Chef_ run in _Vagrant_
 They check the basic installation mechanics, populate the `test_chef_cookbook` index
 with some sample data, perform a simple search, etc.
 
+
+Repository
+----------
+
+http://github.com/karmi/cookbook-elasticsearch
 
 Repository
 ----------
