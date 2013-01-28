@@ -1,6 +1,6 @@
 maintainer       "karmi"
 maintainer_email "karmi@karmi.cz"
-license          "MIT License"
+license          "Apache"
 description      "Installs and configures elasticsearch clusters"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
 version          "0.2.0"

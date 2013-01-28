@@ -246,4 +246,4 @@ License
 
 Author: Karel Minarik (<karmi@elasticsearch.com>) and [contributors](http://github.com/elasticsearch/cookbook-elasticsearch/graphs/contributors)
 
-License: MIT LICENSE
+License: Apache
