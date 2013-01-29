@@ -192,7 +192,6 @@ Vagrant::Config.run do |config|
       # Provision the machine with Chef Solo
       #
       box_config.vm.provision :chef_solo do |chef|
-        chef.cookbooks_path    = ['..', './tmp/cookbooks']
         chef.data_bags_path    = './tmp/data_bags'
         chef.provisioning_path = '/etc/vagrant-chef'
         chef.log_level         = :debug
