@@ -5,7 +5,7 @@ include_recipe "elasticsearch::nginx"
 template "#{node.elasticsearch[:nginx][:dir]}/conf.d/elasticsearch_proxy.conf" do
   source "elasticsearch_proxy.conf.erb"
   owner node.elasticsearch[:nginx][:user] and group node.elasticsearch[:nginx][:user] and mode 0755
-  notifies :reload, resources(:service => "nginx")
+  notifies :reload, 'service[nginx]'
 end
 
 unless node.elasticsearch[:nginx][:users].empty?
