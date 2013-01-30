@@ -140,6 +140,23 @@
 # Use the Index Status API (<http://localhost:9200/A/_status>) to inspect
 # the index status.
 
+# Automatic Index Creation can be disabled by setting action.auto_create_index 
+# to false.  Automatic index creation can include a pattern based while/black 
+# list, for example, set action.auto_create_index to +aaa*,-bbb*,+ccc*,-* 
+# (+ meaning allowed, and – meaning disallowed). 
+# Note, this feature is available since 0.20 
+<%= print_value 'action.auto_create_index' -%>
+
+# The delete index API can also be applied to more than one index, or on _all 
+# indices (be careful!). All indices will also be deleted when no specific 
+# index is provided. In order to disable allowing to delete all indices, 
+# set action.disable_delete_all_indices setting in the config to true.
+<%= print_value 'action.disable_delete_all_indices' -%>
+
+# Automatic mapping creation can be disabled by setting index.mapper.dynamic 
+# to false in the config files of all nodes (or on the specific index settings).
+<%= print_value 'index.mapper.dynamic' -%>
+
 
 #################################### Paths ####################################
 
