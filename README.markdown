@@ -32,7 +32,7 @@ allowing you to use the _Amazon_ AWS-related features (node auto-discovery, etc)
 Set your AWS credentials either in the "elasticsearch/aws" data bag, or directly in the role/node configuration.
 
 If you include the `elasticsearch::data` and `elasticsearch::ebs` recipes, an EBS volume will be automatically
-created, formatted and mounted so you can use it as a local gateway for _Elasticsearcg_.
+created, formatted and mounted so you can use it as a local gateway for _Elasticsearch_.
 When the EBS configuration contains a `snapshot_id` value, it will be created with data from the corresponding snapshot. See the `attributes/data` file for more information.
 
 If you include the `elasticsearch::proxy` recipe, it will configure the _Nginx_ server as
