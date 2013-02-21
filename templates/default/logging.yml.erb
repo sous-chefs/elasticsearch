@@ -1,6 +1,6 @@
 rootLogger: INFO, console, file
 
-<% node.elasticsearch[:logging].each do |key, value| %>
+<% node.elasticsearch[:logging].sort.each do |key, value| %>
 logger.<%= key %>: <%= value %>
 <% end %>
 
