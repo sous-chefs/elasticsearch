@@ -16,10 +16,8 @@ chef_gem("fog") { action :install }
 #
 # See the `attributes/data` file for instructions.
 #
-node.elasticsearch[:data][:devices].
-  reject do |device, params|
-    params[:ebs].nil? || params[:ebs].keys.empty?
-  end.
-  each do |device, params|
+node.elasticsearch[:data][:devices].each do |device, params|
+  if params[:ebs] && !params[:ebs].keys.empty?
     create_ebs device, params
   end
+end
