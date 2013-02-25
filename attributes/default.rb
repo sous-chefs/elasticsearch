@@ -9,7 +9,7 @@ node.set[:elasticsearch] = DeepMerge.merge(node[:elasticsearch].to_hash, setting
 
 # === VERSION AND LOCATION
 #
-default.elasticsearch[:version]       = "0.20.1"
+default.elasticsearch[:version]       = "0.20.4"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
 default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
 default.elasticsearch[:filename]      = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
