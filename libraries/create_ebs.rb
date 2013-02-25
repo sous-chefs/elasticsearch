@@ -32,8 +32,9 @@ module Extensions
         server = aws.servers.get instance_id
 
         # Create EBS volume if the device is free
-        unless server.volumes.map(&:device).include?(device)
-          options = { :device                => device,
+        ebs_device = params[:ebs][:device] || device
+        unless server.volumes.map(&:device).include?(ebs_device)
+          options = { :device                => ebs_device,
                       :size                  => params[:ebs][:size],
                       :delete_on_termination => params[:ebs][:delete_on_termination],
                       :availability_zone     => server.availability_zone,

@@ -53,6 +53,26 @@
 #    }
 #
 #
+# Some kernels attach EBS devices to `/dev/xvd*` instead of `/dev/sd*`. You can set a specific name
+# with the `ebs.device` property:
+#
+#    {
+#      "elasticsearch": {
+#        "data" : {
+#          "devices" : {
+#            "/dev/xvda2" : {
+#              # ...
+#              "ebs" : {
+#                # ...
+#                "device" : "/dev/sda2"
+#              }
+#            }
+#          }
+#        }
+#      }
+#    }
+#
+#
 # When you define a `snapshot_id` property for an EBS device, it will be created from that snapshot,
 # having all the data available in the snapshot:
 #
