@@ -21,6 +21,9 @@
 
 <%= print_value 'index.number_of_shards' -%>
 <%= print_value 'index.number_of_replicas' -%>
+<%= print_value 'index.mapper.dynamic' -%>
+<%= print_value 'action.auto_create_index' -%>
+<%= print_value 'action.disable_delete_all_indices' -%>
 
 #################################### Paths ####################################
 
@@ -97,3 +100,11 @@
 <%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.warn' -%>
 <%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.info' -%>
 <%= print_value 'monitor.jvm.gc.ConcurrentMarkSweep.debug' -%>
+
+################################## JMX ########################################
+
+<%- if node.elasticsearch[:jmx] -%>
+jmx.create_connector: true
+jmx.port: 9400-9500
+jmx.domain: elasticsearch
+<%- end -%>
