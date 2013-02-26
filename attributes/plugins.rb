@@ -5,4 +5,4 @@ plugins = Chef::DataBagItem.load('elasticsearch', 'plugins').to_hash['plugins'] 
 Chef::Log.debug "Plugins list: #{plugins.keys.inspect}"
 
 default.elasticsearch[:plugins] = plugins
-default.elasticsearch[:plugins_mandatory] ||= []
+default.elasticsearch[:plugin][:mandatory] = []

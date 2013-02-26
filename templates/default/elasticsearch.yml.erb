@@ -180,7 +180,8 @@
 # If a plugin listed here is not installed for current node, the node will not start.
 #
 # plugin.mandatory: mapper-attachments,lang-groovy
-<%= print_value 'plugin.mandatory' -%>
+<%= print_value 'plugin.mandatory', node[:elasticsearch][:plugin][:mandatory].join(',') \
+    unless node[:elasticsearch][:plugin][:mandatory].empty? -%>
 
 
 ################################### Memory ####################################

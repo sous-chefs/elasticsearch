@@ -1,10 +1,11 @@
+include_attribute 'elasticsearch::plugins'
+
 # Load configuration and credentials from data bag 'elasticsearch/aws' -
 #
 aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
 # ----------------------------------------------------------------------
 
-default.elasticsearch[:plugin][:aws][:version] = '1.9.0'
-default.elasticsearch[:plugins_mandatory] ||= []
+default.elasticsearch[:plugins][:aws][:version] = '1.9.0'
 
 # === AWS ===
 # AWS configuration is set based on data bag values.
