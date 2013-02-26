@@ -39,7 +39,6 @@ default.elasticsearch[:conf_path] = default.elasticsearch[:path][:conf]
 default.elasticsearch[:data_path] = default.elasticsearch[:path][:data]
 default.elasticsearch[:log_path]  = default.elasticsearch[:path][:logs]
 
-
 # === MEMORY
 #
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
@@ -70,6 +69,10 @@ default.elasticsearch[:gateway][:type] = 'local'
 default.elasticsearch[:gateway][:expected_nodes] = 1
 
 default.elasticsearch[:thread_stack_size] = "256k"
+
+# === CUSTOM CONFIGURATION
+#
+default.elasticsearch[:custom_config] = {}
 
 # --------------------------------------------------
 # NOTE: Setting the attributes for elasticsearch.yml
