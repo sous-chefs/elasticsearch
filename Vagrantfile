@@ -138,7 +138,12 @@ node_config = {
     # For testing flat attributes:
     "index.search.slowlog.threshold.query.trace" => "1ms",
     # For testing deep attributes:
-    :discovery => { :zen => { :ping => { :timeout => "9s" } } }
+    :discovery => { :zen => { :ping => { :timeout => "9s" } } },
+    # For testing custom configuration
+    :custom_config => {
+      'threadpool.index.type' => 'fixed',
+      'threadpool.index.size' => '2'
+    }
   }
 }
 

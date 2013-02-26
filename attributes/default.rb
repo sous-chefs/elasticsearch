@@ -95,3 +95,13 @@ default.elasticsearch[:thread_stack_size] = "256k"
 #
 # The default attributes set by the cookbook configure a minimal set inferred from the environment
 # (eg. memory settings, node name), or reasonable defaults for production.
+#
+# The template is based on the elasticsearch.yml file from the Elasticsearch distribution;
+# to set other configurations, set the `node.elasticsearch[:custom_config]` attribute in the
+# node configuration, `elasticsearch/settings` data bag, role/environment definition, etc:
+#
+#     // ...
+#     'threadpool.index.type' => 'fixed',
+#     'threadpool.index.size' => '2'
+#     // ...
+#

@@ -5,6 +5,15 @@
 # Please see the source file for context and more information:
 #
 # https://github.com/elasticsearch/elasticsearch/blob/master/config/elasticsearch.yml
+#
+# To set configurations not exposed by this template, set the
+# `node.elasticsearch[:custom_config]` attribute in your node configuration,
+# `elasticsearch/settings` data bag, role/environment definition, etc:
+#
+#     // ...
+#     'threadpool.index.type' => 'fixed',
+#     'threadpool.index.size' => '2'
+#     // ...
 
 ################################### Cluster ###################################
 
@@ -122,3 +131,9 @@ jmx.create_connector: true
 jmx.port: 9400-9500
 jmx.domain: elasticsearch
 <%- end -%>
+
+################################## Custom #####################################
+
+<% node.elasticsearch[:custom_config].sort.each do |key, value| %>
+<%= key %>: <%= value %>
+<% end %>
