@@ -86,7 +86,6 @@
 <%= print_value 'discovery.zen.ping.unicast.hosts' -%>
 
 <%- if node.elasticsearch[:cloud] -%>
-# AWS Discovery
 <%= print_value 'cloud.node.auto_attributes' -%>
 <%= print_value 'cloud.aws.access_key' %>
 <%= print_value 'cloud.aws.secret_key' %>
@@ -97,6 +96,9 @@
 <%= print_value 'discovery.ec2.availability_zones' -%>
 <%= print_value 'discovery.ec2.any_group' -%>
 <%= print_value 'discovery.ec2.ping_timeout' -%>
+<%- node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| -%>
+discovery.ec2.tag.<%= key %>: <%= value %>
+<%- end unless node.elasticsearch[:discovery][:ec2][:tag].keys.empty? rescue false -%>
 <%- end -%>
 
 ################################## Slow Log ###################################
