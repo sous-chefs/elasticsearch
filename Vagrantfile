@@ -188,6 +188,7 @@ Vagrant::Config.run do |config|
           which apt-get > /dev/null 2>&1 && apt-get install curl --quiet --yes
           which yum > /dev/null 2>&1 && yum update -y && yum install curl -y
           test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''}
+          /opt/chef/embedded/bin/gem list pry | grep pry || /opt/chef/embedded/bin/gem install pry --no-ri --no-rdoc
         }
       end if ENV['CHEF']
 
