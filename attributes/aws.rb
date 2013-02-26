@@ -21,4 +21,9 @@ default.elasticsearch[:cloud][:aws][:secret_key]     = ( aws['cloud']['aws']['se
 default.elasticsearch[:cloud][:aws][:region]         = ( aws['cloud']['aws']['region']         rescue nil )
 default.elasticsearch[:cloud][:ec2][:endpoint]       = ( aws['cloud']['ec2']['endpoint']       rescue nil )
 
+discovery_tags = ( aws['discovery']['ec2']['tag'] rescue [] )
+discovery_tags.each do |tag_name, tag_value|
+  default.elasticsearch[:discovery][:ec2][:tag][tag_name] = tag_value
+end
+
 default.elasticsearch[:cloud][:node][:auto_attributes] = true

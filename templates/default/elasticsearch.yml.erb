@@ -95,6 +95,10 @@
 <%= print_value 'discovery.ec2.availability_zones' -%>
 <%= print_value 'discovery.ec2.any_group' -%>
 <%= print_value 'discovery.ec2.ping_timeout' -%>
+<%- if node.elasticsearch[:discovery][:ec2][:tag] -%><% node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| %>
+'discovery.ec2.tag.<%= key %>': <%= value %>
+<% end %>
+<%- end -%>
 <%- end -%>
 
 ################################## Slow Log ###################################
