@@ -78,6 +78,8 @@
 
 ################################## Discovery ##################################
 
+<%= print_value 'discovery.type', node.elasticsearch[:discovery][:type] -%>
+
 <%= print_value 'discovery.zen.minimum_master_nodes' -%>
 <%= print_value 'discovery.zen.ping.timeout' -%>
 <%= print_value 'discovery.zen.ping.multicast.enabled' -%>
