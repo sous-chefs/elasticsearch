@@ -69,8 +69,6 @@ default.elasticsearch[:discovery][:zen][:minimum_master_nodes] = 1
 default.elasticsearch[:gateway][:type] = 'local'
 default.elasticsearch[:gateway][:expected_nodes] = 1
 
-default.elasticsearch[:cloud][:node][:auto_attributes] = true
-
 default.elasticsearch[:thread_stack_size] = "256k"
 
 # --------------------------------------------------

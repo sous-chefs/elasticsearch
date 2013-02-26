@@ -74,7 +74,21 @@
 <%= print_value 'discovery.zen.ping.multicast.enabled' -%>
 <%= print_value 'discovery.zen.ping.unicast.hosts' -%>
 
-################################## Slow Log ##################################
+<%- if node.elasticsearch[:cloud] -%>
+# AWS Discovery
+<%= print_value 'cloud.node.auto_attributes' -%>
+<%= print_value 'cloud.aws.access_key' %>
+<%= print_value 'cloud.aws.secret_key' %>
+<%= print_value 'cloud.aws.region' %>
+<%= print_value 'cloud.aws.ec2.endpoint' %>
+<%= print_value 'discovery.ec2.groups' -%>
+<%= print_value 'discovery.ec2.host_type' -%>
+<%= print_value 'discovery.ec2.availability_zones' -%>
+<%= print_value 'discovery.ec2.any_group' -%>
+<%= print_value 'discovery.ec2.ping_timeout' -%>
+<%- end -%>
+
+################################## Slow Log ###################################
 
 <%= print_value 'index.search.slowlog.threshold.query.warn' -%>
 <%= print_value 'index.search.slowlog.threshold.query.info' -%>
@@ -91,7 +105,7 @@
 <%= print_value 'index.indexing.slowlog.threshold.index.debug' -%>
 <%= print_value 'index.indexing.slowlog.threshold.index.trace' -%>
 
-################################## GC Logging ################################
+################################## GC Logging #################################
 
 <%= print_value 'monitor.jvm.gc.ParNew.warn' -%>
 <%= print_value 'monitor.jvm.gc.ParNew.info' -%>
