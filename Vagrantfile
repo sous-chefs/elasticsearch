@@ -185,6 +185,8 @@ Vagrant::Config.run do |config|
       config.vm.provision :shell do |shell|
         version = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
         shell.inline = %Q{
+          which apt-get > /dev/null 2>&1 && apt-get install curl --quiet --yes
+          which yum > /dev/null 2>&1 && yum update -y && yum install curl -y
           test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''}
         }
       end if ENV['CHEF']
