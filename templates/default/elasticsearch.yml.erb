@@ -134,6 +134,6 @@ jmx.domain: elasticsearch
 
 ################################## Custom #####################################
 
-<% node.elasticsearch[:custom_config].sort.each do |key, value| %>
+<% (node.elasticsearch[:custom_config] || {}).sort.each do |key, value| %>
 <%= key %>: <%= value %>
 <% end %>
