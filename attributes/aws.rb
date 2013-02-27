@@ -6,6 +6,21 @@ include_attribute 'elasticsearch::plugins'
 aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
 # ----------------------------------------------------------------------
 
+# To use the AWS discovery, you have to properly set up the configuration,
+# either with the data bag, role or environment overrides, or directly
+# on the node itself:
+#
+#    cloud:
+#      aws:
+#        access_key: <REPLACE>
+#        secret_key: <REPLACE>
+#        region:     <REPLACE>
+#        ec2:
+#          groups: <REPLACE>
+#    discovery:
+#      type: ec2
+#
+
 default.elasticsearch[:plugins][:aws][:version] = '1.9.0'
 
 # === AWS ===
