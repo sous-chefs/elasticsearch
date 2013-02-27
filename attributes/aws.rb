@@ -1,3 +1,4 @@
+include_attribute 'elasticsearch::default'
 include_attribute 'elasticsearch::plugins'
 
 # Load configuration and credentials from data bag 'elasticsearch/aws' -
