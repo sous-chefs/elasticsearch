@@ -156,7 +156,7 @@ The cookbook comes with a [`Vagrantfile`](https://github.com/elasticsearch/cookb
 [_Vagrant_](http://vagrantup.com/), a tool for building virtualized infrastructures.
 
 First, make sure, you have both _VirtualBox_ and _Vagrant_
-[installed](http://vagrantup.com/docs/getting-started/index.html).
+[installed](http://docs.vagrantup.com/v1/docs/getting-started/index.html).
 
 Then, clone this repository into an `elasticsearch` directory on your development machine:
 
