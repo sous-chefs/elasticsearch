@@ -207,13 +207,13 @@ You may want to test-drive this cookbook on a different distribution; check out 
 Launch the virtual machine (it will download the box unless you already have it):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    time bundle exec vagrant up precise64
+    time CHEF=latest bundle exec vagrant up precise64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The machine will be started and automatically provisioned with
 [_chef-solo_](http://vagrantup.com/v1/docs/provisioners/chef_solo.html).
-(Note: To use the latest version of Chef, run `CHEF=latest vagrant up precise64`.
-You may substitute _latest_ with a specific version.)
+(Note: You may substitute _latest_ with a specific Chef version.
+Set the `UPDATE` environment variable to update packages on the machine as well.)
 
 You'll see _Chef_ debug messages flying by in your terminal, downloading, installing and configuring _Java_,
 _Nginx_, _Elasticsearch_, and all the other components.
