@@ -6,3 +6,4 @@ tmp/*
 !tmp/.gitignore
 !tmp/cookbooks/.gitignore
 !tmp/data_bags/.gitignore
+!tmp/data_bags/elasticsearch/settings.json

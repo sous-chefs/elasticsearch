@@ -1,0 +1,18 @@
+{
+  "id" : "settings",
+
+  "_default" : {
+
+    "gateway" : {
+      "expected_nodes" : 1
+    },
+
+    "indices" : {
+      "recovery" : {
+        "concurrent_streams" : 2
+      }
+    },
+
+    "index.search.slowlog.threshold.query.warn" : "100ms"
+  }
+}

@@ -67,11 +67,13 @@ the information in an "elasticsearch" _data bag_:
     mkdir -p ./data_bags/elasticsearch
     echo '{
       "id" : "aws",
-      "discovery" : { "type": "ec2" },
+      "_default" : {
+        "discovery" : { "type": "ec2" },
 
-      "cloud"   : {
-        "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
-        "ec2"     : { "security_group": "elasticsearch" }
+        "cloud"   : {
+          "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
+          "ec2"     : { "security_group": "elasticsearch" }
+        }
       }
     }' >> ./data_bags/elasticsearch/aws.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -127,10 +129,12 @@ Usernames and passwords may be stored in a data bag `elasticsearch/users`:
     mkdir -p ./data_bags/elasticsearch
     echo '{
       "id" : "users",
-      "users" : [
-        {"username" : "USERNAME", "password" : "PASSWORD"},
-        {"username" : "USERNAME", "password" : "PASSWORD"}
-      ]
+      "_default" : {
+        "users" : [
+          {"username" : "USERNAME", "password" : "PASSWORD"},
+          {"username" : "USERNAME", "password" : "PASSWORD"}
+        ]
+      }
     }
     ' >> ./data_bags/elasticsearch/users.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,6 +152,9 @@ run `chef-client` on the node(s):
     knife ssh name:elasticsearch* 'sudo chef-client'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+Please note that all data bags _must_ have attributes enclosed in an environment
+(use the `_default` environment), as suggested by the Chef
+[documentation](http://docs.opscode.com/chef/essentials_data_bags.html#use-data-bags-with-environments).
 
 Testing with Vagrant
 --------------------
