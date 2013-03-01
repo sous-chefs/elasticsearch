@@ -23,11 +23,14 @@ module Extensions
 
         Chef::Log.debug("Region: #{region}, instance ID: #{instance_id}")
 
-        aws = Fog::Compute.new :provider =>              'AWS',
-                               :region   =>              region,
-                               :aws_access_key_id =>     node.elasticsearch[:cloud][:aws][:access_key],
-                               :aws_secret_access_key => node.elasticsearch[:cloud][:aws][:secret_key]
-
+        fog_options = { :provider => 'AWS', :region => region }
+        if (access_key = node.elasticsearch[:cloud][:aws][:access_key]) &&
+            (secret_key = node.elasticsearch[:cloud][:aws][:secret_key])
+          fog_options.merge!(:aws_access_key_id => access_key, :aws_secret_access_key => secret_key)
+        else  # Lack of credentials implies a IAM role will provide keys
+          fog_options.merge!(:use_iam_profile => true)
+        end
+        aws = Fog::Compute.new(fog_options)
 
         server = aws.servers.get instance_id
 
