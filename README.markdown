@@ -30,6 +30,7 @@ If you include the `elasticsearch::aws` recipe, the
 [AWS Cloud Plugin](http://github.com/elasticsearch/elasticsearch-cloud-aws) will be installed on the node,
 allowing you to use the _Amazon_ AWS-related features (node auto-discovery, etc).
 Set your AWS credentials either in the "elasticsearch/aws" data bag, or directly in the role/node configuration.
+If no credentials are set, the recipe and plugin will assume a IAM instance profile is assigned to the node for credentials.
 
 If you include the `elasticsearch::data` and `elasticsearch::ebs` recipes, an EBS volume will be automatically
 created, formatted and mounted so you can use it as a local gateway for _Elasticsearch_.
@@ -57,8 +58,8 @@ Then, upload the cookbook to the _Chef_ server:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 To enable the _Amazon_ AWS related features, include the `elasticsearch::aws` recipe.
-You will need to configure the AWS credentials.
 
+Either assign a IAM instance profile to the node or configure AWS credentials.
 You may do that in the node configuration (with `knife node edit MYNODE` or in the _Chef Server_ console),
 in a role with `override_attributes` declaration, but it is arguably most convenient to store
 the information in an "elasticsearch" _data bag_:

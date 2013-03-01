@@ -20,6 +20,7 @@ aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
 #    discovery:
 #      type: ec2
 #
+# Leave out the access and secret keys if you're using an IAM instance profile.
 
 default.elasticsearch[:plugins][:aws][:version] = '1.9.0'
 
