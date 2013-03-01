@@ -30,6 +30,8 @@ If you include the `elasticsearch::aws` recipe, the
 [AWS Cloud Plugin](http://github.com/elasticsearch/elasticsearch-cloud-aws) will be installed on the node,
 allowing you to use the _Amazon_ AWS-related features (node auto-discovery, etc).
 Set your AWS credentials either in the "elasticsearch/aws" data bag, or directly in the role/node configuration.
+Instead of using AWS access tokens, you can create the instance with a
+[IAM role](http://aws.amazon.com/iam/faqs/#How_do_i_get_started_with_IAM_roles_for_EC2_instances).
 
 If you include the `elasticsearch::data` and `elasticsearch::ebs` recipes, an EBS volume will be automatically
 created, formatted and mounted so you can use it as a local gateway for _Elasticsearch_.
