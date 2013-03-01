@@ -3,7 +3,7 @@ include_attribute 'elasticsearch::plugins'
 
 # Load configuration and credentials from data bag 'elasticsearch/aws' -
 #
-aws = Chef::DataBagItem.load('elasticsearch', 'aws') rescue {}
+aws = Chef::DataBagItem.load('elasticsearch', 'aws')[node.chef_environment] rescue {}
 # ----------------------------------------------------------------------
 
 # To use the AWS discovery, you have to properly set up the configuration,
