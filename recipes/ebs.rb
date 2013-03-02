@@ -1,14 +1,14 @@
 [Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::Extensions }
 
-# Install the Fog gem for Chef
+# Install the Fog gem dependencies
 #
-# NOTE: The `chef_gem` resource is run *before* all other recipes,
-#       during node compile phase, so you have to have development packages
-#       and the libxml bindings installed for Nokogiri (a dependency of Fog).
-#
-#       Add a line like this to your bootstrap template, AWS user data, etc.:
-#
-#       yum install gcc gcc-c++ make automake install ruby-devel libxml2-devel libxslt-devel -y
+value_for_platform(
+  'default' => %w|libxslt1-dev libxml2-dev|
+).each do |pkg|
+  package(pkg) { action :nothing }.run_action(:upgrade)
+end
+
+# Install the Fog gem for Chef run
 #
 chef_gem("fog") { action :install }
 
