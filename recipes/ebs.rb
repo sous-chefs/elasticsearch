@@ -3,13 +3,15 @@
 # Install the Fog gem for Chef
 #
 
-%w{
-  libxslt1-dev
-  libxml2-dev
-}.each do |pkg|
-    package "#{pkg}" do
-    action :upgrade
+fog_pkgs = value_for_platform(
+  "default" => ["libxslt1-dev","libxml2-dev"]
+)
+
+fog_pkgs.each do |pkg|
+  p =  package pkg do
+    action :nothing
   end
+  p.run_action(:upgrade)
 end
 
 chef_gem("fog") { action :install }
