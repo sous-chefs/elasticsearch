@@ -40,8 +40,10 @@ default.elasticsearch[:cloud][:aws][:region]         = ( aws['cloud']['aws']['re
 default.elasticsearch[:cloud][:ec2][:endpoint]       = ( aws['cloud']['ec2']['endpoint']       rescue nil )
 
 discovery_tags = ( aws['discovery']['ec2']['tag'] rescue [] )
-discovery_tags.each do |tag_name, tag_value|
-  default.elasticsearch[:discovery][:ec2][:tag][tag_name] = tag_value
+unless discovery_tags.nil?
+  discovery_tags.each do |tag_name, tag_value|
+    default.elasticsearch[:discovery][:ec2][:tag][tag_name] = tag_value
+  end
 end
 
 default.elasticsearch[:cloud][:node][:auto_attributes] = true
