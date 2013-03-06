@@ -97,4 +97,4 @@
 #
 data = Chef::DataBagItem.load('elasticsearch', 'data')[node.chef_environment] rescue {}
 
-default.elasticsearch[:data][:devices] = data['devices'] rescue {}
+default.elasticsearch[:data][:devices] = data['devices'] || {}
