@@ -1,4 +1,5 @@
 node[:elasticsearch][:plugins].each do | name, config |
+  next if name == 'elasticsearch-cloud-aws' && !node.recipe?('aws')
   install_plugin name, config
 end
 
