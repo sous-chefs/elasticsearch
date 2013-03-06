@@ -33,17 +33,11 @@ default.elasticsearch[:gateway][:type]               = ( aws['gateway']['type'] 
 default.elasticsearch[:discovery][:type]             = ( aws['discovery']['type']              rescue nil )
 default.elasticsearch[:gateway][:s3][:bucket]        = ( aws['gateway']['s3']['bucket']        rescue nil )
 default.elasticsearch[:discovery][:ec2][:groups]     = ( aws['discovery']['ec2']['group']      rescue nil )
+default.elasticsearch[:discovery][:ec2][:tag]        = ( aws['discovery']['ec2']['tag']        rescue {} )
 
 default.elasticsearch[:cloud][:aws][:access_key]     = ( aws['cloud']['aws']['access_key']     rescue nil )
 default.elasticsearch[:cloud][:aws][:secret_key]     = ( aws['cloud']['aws']['secret_key']     rescue nil )
 default.elasticsearch[:cloud][:aws][:region]         = ( aws['cloud']['aws']['region']         rescue nil )
 default.elasticsearch[:cloud][:ec2][:endpoint]       = ( aws['cloud']['ec2']['endpoint']       rescue nil )
-
-discovery_tags = ( aws['discovery']['ec2']['tag'] rescue [] )
-unless discovery_tags.nil?
-  discovery_tags.each do |tag_name, tag_value|
-    default.elasticsearch[:discovery][:ec2][:tag][tag_name] = tag_value
-  end
-end
 
 default.elasticsearch[:cloud][:node][:auto_attributes] = true
