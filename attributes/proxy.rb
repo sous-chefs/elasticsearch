@@ -24,6 +24,11 @@ default.elasticsearch[:nginx][:passwords_file] = "#{node.elasticsearch[:path][:c
 #
 default.elasticsearch[:nginx][:allow_cluster_api] = false
 
+# Allow responding to unauthorized requests for `/status`,
+# returning `curl -I localhost:9200`
+#
+default.elasticsearch[:nginx][:allow_status] = false
+
 # Other Nginx proxy settings
 #
 default.elasticsearch[:nginx][:client_max_body_size] = "50M"

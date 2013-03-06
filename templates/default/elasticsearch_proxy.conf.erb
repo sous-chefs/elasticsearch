@@ -43,4 +43,12 @@ server {
 
   }
 
+<% if node.elasticsearch[:nginx][:allow_status] %>
+  location /status {
+    proxy_method HEAD;
+    proxy_intercept_errors on;
+    proxy_pass http://localhost:9200/;
+  }
+<% end %>
+
 }
