@@ -5,6 +5,6 @@ task :release do
     exit(1)
   end
   if version = File.read('metadata.rb')[/^version\s*"(.*)"$/, 1]
-    system "git tag #{version} && git push --tags"
+    system "git tag #{version} && git push origin master --verbose && git push origin --tags --verbose"
   end
 end
