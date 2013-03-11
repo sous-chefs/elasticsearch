@@ -3,7 +3,7 @@
 # Install the Fog gem dependencies
 #
 value_for_platform(
-  'default' => %w|libxslt1-dev libxml2-dev|
+  'default' => %w|libxslt-devel libxml2-devel|
 ).each do |pkg|
   package(pkg) { action :nothing }.run_action(:upgrade)
 end
