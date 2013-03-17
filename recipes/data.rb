@@ -20,7 +20,7 @@ node.elasticsearch[:data][:devices].each do |device, params|
 
   # Mount device to elasticsearch data path
   #
-  mount "#{device}_to_#{params[:mount_path]}" do
+  mount "#{device}-to-#{params[:mount_path]}" do
     mount_point params[:mount_path]
     device  device
     fstype  params[:file_system]
