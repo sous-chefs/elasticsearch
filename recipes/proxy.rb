@@ -14,7 +14,7 @@ ruby_block "add users to passwords file" do
     @htpasswd = WEBrick::HTTPAuth::Htpasswd.new(node.elasticsearch[:nginx][:passwords_file])
 
     node.elasticsearch[:nginx][:users].each do |u|
-      STDOUT.print "Adding user '#{u['username']}' to #{node.elasticsearch[:nginx][:passwords_file]}\n"
+      Chef::Log.debug "Adding user '#{u['username']}' to #{node.elasticsearch[:nginx][:passwords_file]}\n"
       @htpasswd.set_passwd( 'Elasticsearch', u['username'], u['password'] )
     end
 
