@@ -46,7 +46,7 @@ Usage
 -----
 
 For an overview, please read the tutorial on
-[deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/2012/03/21/deploying-elasticsearch-with-chef-solo.html)
+[deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/)
 which uses this cookbook.
 
 For _Chef Server_ based deployment, include the recipes you want to be executed in a
