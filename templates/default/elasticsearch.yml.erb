@@ -65,6 +65,9 @@
 ################################### Gateway ###################################
 
 <%= print_value 'gateway.type', node.elasticsearch[:gateway][:type] -%>
+<%- if node.elasticsearch[:gateway][:s3][:bucket] -%>
+<%= print_value 'gateway.s3.bucket', node.elasticsearch[:gateway][:s3][:bucket] -%>
+<%- end -%>
 <%= print_value 'gateway.recover_after_nodes' -%>
 <%= print_value 'gateway.recover_after_time' -%>
 <%= print_value 'gateway.expected_nodes' -%>
