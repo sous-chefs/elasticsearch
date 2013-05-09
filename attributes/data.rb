@@ -98,3 +98,7 @@
 data = Chef::DataBagItem.load('elasticsearch', 'data')[node.chef_environment] rescue {}
 
 default.elasticsearch[:data][:devices] = data['devices'] || {}
+
+# Perform package update (https://github.com/opscode-cookbooks/build-essential#usage)
+#
+node.default.build_essential.compiletime = true if node.recipes.any? { |r| r =~ /elasticsearch::ebs|build-essential/ }
