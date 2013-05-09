@@ -11,7 +11,10 @@ end
 
 # Install the Fog gem for Chef run
 #
-chef_gem("fog") { action :install }
+chef_gem("fog") do
+  version '1.10.1'
+  action :install
+end
 
 # Create EBS for each device with proper configuration
 #
