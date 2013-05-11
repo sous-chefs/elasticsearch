@@ -2,10 +2,10 @@
 #
 # Support:
 #
-# * precise64: Ubuntu 12.04 (Precise) 64 bit (primary box)
-# * lucid32:   Ubuntu 10.04 (Lucid) 32 bit
-# * lucid64:   Ubuntu 10.04 (Lucid) 64 bit
-# * centos6:   CentOS 6 32 bit
+# * precise64:   Ubuntu 12.04 (Precise) 64 bit (primary box)
+# * lucid32:     Ubuntu 10.04 (Lucid) 32 bit
+# * lucid64:     Ubuntu 10.04 (Lucid) 64 bit
+# * centos6:     CentOS 6 32 bit
 #
 # See:
 #
@@ -27,9 +27,11 @@ class Hash
   end unless respond_to?(:deep_merge!)
 end
 
+puts "[Vagrant   ] #{Vagrant::VERSION}"
+
 # Automatically install and mount cookbooks from Berksfile
 #
-require 'berkshelf/vagrant'
+require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 
 distributions = {
   :precise64 => {
@@ -62,6 +64,14 @@ distributions = {
         }
       }
     }
+  },
+
+  :precise32 => {
+    :url      => 'http://files.vagrantup.com/precise32.box',
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :ip       => '33.33.33.10',
+    :primary  => false,
+    :node     => {}
   },
 
   :lucid64 => {
@@ -156,6 +166,8 @@ Vagrant::Config.run do |config|
 
   distributions.each_pair do |name, options|
 
+    config.vagrant.dotfile_name = Vagrant::VERSION < '1.1' ? '.vagrant-1' : '.vagrant-2'
+
     config.vm.define name, :options => options[:primary] do |box_config|
 
       box_config.vm.box       = name.to_s
@@ -164,6 +176,8 @@ Vagrant::Config.run do |config|
       box_config.vm.host_name = name.to_s
 
       box_config.vm.network   :hostonly, options[:ip]
+
+      box_config.berkshelf.enabled = true if Vagrant::VERSION > '1.1'
 
       # Box customizations
       #
