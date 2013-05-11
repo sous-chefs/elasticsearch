@@ -17,13 +17,15 @@
 
 # Lifted from <https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/hash/deep_merge.rb>
 #
-def deep_merge!(other_hash)
-  self.merge(other_hash) do |key, oldval, newval|
-     oldval = oldval.to_hash if oldval.respond_to?(:to_hash)
-    newval = newval.to_hash if newval.respond_to?(:to_hash)
-    oldval.class.to_s == 'Hash' && newval.class.to_s == 'Hash' ? oldval.deep_merge(newval) : newval
-  end
-end unless Hash.respond_to?(:deep_merge!)
+class Hash
+  def deep_merge!(other_hash)
+    self.merge(other_hash) do |key, oldval, newval|
+      oldval = oldval.to_hash if oldval.respond_to?(:to_hash)
+      newval = newval.to_hash if newval.respond_to?(:to_hash)
+      oldval.class.to_s == 'Hash' && newval.class.to_s == 'Hash' ? oldval.dup.deep_merge!(newval) : newval
+    end
+  end unless respond_to?(:deep_merge!)
+end
 
 # Automatically install and mount cookbooks from Berksfile
 #
@@ -208,7 +210,7 @@ Vagrant::Config.run do |config|
         chef.log_level         = :debug
 
         chef.run_list = options[:run_list]
-        chef.json     = node_config.dup.deep_merge(options[:node])
+        chef.json     = node_config.dup.deep_merge!(options[:node])
       end
     end
 
