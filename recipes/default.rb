@@ -65,10 +65,8 @@ end
 
 # Download, extract, symlink the elasticsearch libraries and binaries
 #
-ark_prefix_root = node.elasticsearch[:dir]
-ark_prefix_root ||= node.ark[:prefix_root]
-ark_prefix_home = node.elasticsearch[:dir]
-ark_prefix_home ||= node.ark[:prefix_home]
+ark_prefix_root = node.elasticsearch[:dir] || node.ark[:prefix_root]
+ark_prefix_home = node.elasticsearch[:dir] || node.ark[:prefix_home]
 
 ark "elasticsearch" do
   url   node.elasticsearch[:download_url]
