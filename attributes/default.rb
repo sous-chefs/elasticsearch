@@ -28,6 +28,7 @@ default.elasticsearch[:node][:name]    = node.name
 default.elasticsearch[:dir]       = "/usr/local"
 default.elasticsearch[:user]      = "elasticsearch"
 
+default.elasticsearch[:path][:bin] = "/usr/local/elasticsearch/bin"
 default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
 default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"
 default.elasticsearch[:path][:logs] = "/usr/local/var/log/elasticsearch"
@@ -40,6 +41,9 @@ Chef::Log.warn "DEPRECATION WARNING! The 'conf_path', 'data_path' and 'log_path'
 default.elasticsearch[:conf_path] = default.elasticsearch[:path][:conf]
 default.elasticsearch[:data_path] = default.elasticsearch[:path][:data]
 default.elasticsearch[:log_path]  = default.elasticsearch[:path][:logs]
+
+default['java-wrapper']['jdk']['7']['x86_64']['url'] = 'http://download.oracle.com/otn-pub/java/jdk/7u15-b03/jdk-7u15-linux-x64.tar.gz'
+set['java']['jdk']['7']['x86_64']['url'] = node['java-wrapper']['jdk']['7']['x86_64']['url']
 
 # === MEMORY
 #
