@@ -42,9 +42,6 @@ default.elasticsearch[:conf_path] = default.elasticsearch[:path][:conf]
 default.elasticsearch[:data_path] = default.elasticsearch[:path][:data]
 default.elasticsearch[:log_path]  = default.elasticsearch[:path][:logs]
 
-default['java-wrapper']['jdk']['7']['x86_64']['url'] = 'http://download.oracle.com/otn-pub/java/jdk/7u15-b03/jdk-7u15-linux-x64.tar.gz'
-set['java']['jdk']['7']['x86_64']['url'] = node['java-wrapper']['jdk']['7']['x86_64']['url']
-
 # === MEMORY
 #
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
