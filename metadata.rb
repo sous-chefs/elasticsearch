@@ -1,3 +1,4 @@
+name             "elasticsearch"
 maintainer       "karmi"
 maintainer_email "karmi@karmi.cz"
 license          "Apache"
