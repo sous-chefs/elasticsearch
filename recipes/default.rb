@@ -4,14 +4,11 @@ Erubis::Context.send(:include, Extensions::Templates)
 
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
-include_recipe "elasticsearch::curl"
+package "curl"
+
 include_recipe "ark"
 
-# Create user and group
-#
-group node.elasticsearch[:user] do
-  action :create
-end
+group node.elasticsearch[:user]
 
 user node.elasticsearch[:user] do
   comment "ElasticSearch User"
@@ -23,48 +20,35 @@ user node.elasticsearch[:user] do
 end
 
 # FIX: Work around the fact that Chef creates the directory even for `manage_home: false`
-bash "remove the elasticsearch user home" do
-  user    'root'
-  code    "rm -rf  #{node.elasticsearch[:dir]}/elasticsearch"
-  only_if "test -d #{node.elasticsearch[:dir]}/elasticsearch"
+file "#{node.elasticsearch[:dir]}/elasticsearch" do
+    action :delete
 end
 
-# Create ES directories
-#
 [ node.elasticsearch[:path][:conf], node.elasticsearch[:path][:logs], node.elasticsearch[:pid_path] ].each do |path|
   directory path do
-    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+    owner node.elasticsearch[:user]
+    group node.elasticsearch[:user]
+    mode 0755
     recursive true
-    action :create
   end
 end
 
-# Create data path directories
-#
 data_paths = node.elasticsearch[:path][:data].is_a?(Array) ? node.elasticsearch[:path][:data] : node.elasticsearch[:path][:data].split(',')
 
 data_paths.each do |path|
   directory path.strip do
-    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+    owner node.elasticsearch[:user]
+    group node.elasticsearch[:user]
+    mode 0755
     recursive true
-    action :create
   end
 end
 
-# Create service
-#
 template "/etc/init.d/elasticsearch" do
   source "elasticsearch.init.erb"
-  owner 'root' and mode 0755
+   mode 0755
 end
 
-service "elasticsearch" do
-  supports :status => true, :restart => true
-  action [ :enable ]
-end
-
-# Download, extract, symlink the elasticsearch libraries and binaries
-#
 ark "elasticsearch" do
   url   node.elasticsearch[:download_url]
   owner node.elasticsearch[:user]
@@ -77,8 +61,6 @@ ark "elasticsearch" do
   notifies :restart, 'service[elasticsearch]'
 end
 
-# Increase open file limits
-#
 bash "enable user limits" do
   user 'root'
 
@@ -105,32 +87,28 @@ bash "increase limits for the elasticsearch user" do
   end
 end
 
-# Create file with ES environment variables
-#
-template "elasticsearch-env.sh" do
-  path   "#{node.elasticsearch[:path][:conf]}/elasticsearch-env.sh"
-  source "elasticsearch-env.sh.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
-
+template "#{node.elasticsearch[:path][:conf]}/elasticsearch-env.sh" do
+  owner node.elasticsearch[:user]
+  group node.elasticsearch[:user]
+  mode 0755
   notifies :restart, 'service[elasticsearch]'
 end
 
-# Create ES config file
-#
-template "elasticsearch.yml" do
-  path   "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml"
-  source "elasticsearch.yml.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
-
+template "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml" do
+  owner node.elasticsearch[:user]
+  group node.elasticsearch[:user]
+  mode 0755
   notifies :restart, 'service[elasticsearch]'
 end
 
-# Create ES logging file
-#
-template "logging.yml" do
-  path   "#{node.elasticsearch[:path][:conf]}/logging.yml"
-  source "logging.yml.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
-
+template "#{node.elasticsearch[:path][:conf]}/logging.yml" do
+  owner node.elasticsearch[:user]
+  group node.elasticsearch[:user]
+  mode 0755
   notifies :restart, 'service[elasticsearch]'
+end
+
+service "elasticsearch" do
+  supports :status => true, :restart => true
+  action [ :enable, :start ]
 end
