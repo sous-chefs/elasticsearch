@@ -35,12 +35,6 @@ default.elasticsearch[:path][:logs] = "/usr/local/var/log/elasticsearch"
 default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
 default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
 
-# Deprecation notice for legacy path configuration
-Chef::Log.warn "DEPRECATION WARNING! The 'conf_path', 'data_path' and 'log_path' attributes have changed, and will be removed in the next release. Please review your attributes."
-default.elasticsearch[:conf_path] = default.elasticsearch[:path][:conf]
-default.elasticsearch[:data_path] = default.elasticsearch[:path][:data]
-default.elasticsearch[:log_path]  = default.elasticsearch[:path][:logs]
-
 # === MEMORY
 #
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
