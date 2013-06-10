@@ -73,12 +73,16 @@ module Provision
       msg "Creating EC2 instance #{name} in #{options[:aws_region]}...", :bold
       msg "-"*ANSI::Terminal.terminal_width
 
-      @node = connection.servers.create(:image_id   => options[:aws_image],
-                                        :groups     => options[:aws_groups].split(",").map {|x| x.strip},
-                                        :flavor_id  => options[:aws_flavor],
-                                        :key_name   => options[:aws_ssh_key_id],
-                                        :block_device_mapping => options[:block_device_mapping] || [ { "DeviceName" => "/dev/sde1", "VirtualName" => "ephemeral0" }]
-      )
+
+      server_options = {:image_id   => options[:aws_image],
+                        :groups     => options[:aws_groups].split(",").map {|x| x.strip},
+                        :flavor_id  => options[:aws_flavor],
+                        :key_name   => options[:aws_ssh_key_id],
+                        :block_device_mapping => options[:block_device_mapping] || [ { "DeviceName" => "/dev/sde1", "VirtualName" => "ephemeral0" }]}
+
+      server_options.update :iam_instance_profile_name => options[:iam_profile] if options[:iam_profile]
+
+      @node = connection.servers.create(server_options)
 
       msg_pair "Instance ID",       node.id
       msg_pair "Flavor",            node.flavor_id
@@ -256,6 +260,7 @@ task :setup do
   @args[:aws_groups]            = ENV['AWS_GROUPS'] || 'elasticsearch'
   @args[:aws_flavor]            = ENV['AWS_FLAVOR'] || 't1.micro'
   @args[:aws_image]             = ENV['AWS_IMAGE']  || 'ami-7539b41c'
+  @args[:iam_profile]           = ENV['AWS_IAM_ROLE'] || nil
   @args[:ssh_user]              = ENV['SSH_USER']   || 'ubuntu'
   @args[:ssh_key]               = ENV['SSH_KEY']    || File.expand_path("../tmp/#{@args[:aws_ssh_key_id]}.pem", __FILE__)
 end
