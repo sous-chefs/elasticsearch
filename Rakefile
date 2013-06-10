@@ -1,6 +1,6 @@
 desc "Create a release tag and push everything to Github"
 task :release do
-  unless system("git status --porcelain").to_s =~ /^\s*$/
+  unless `git status --porcelain`.to_s =~ /^\s*$/
     puts "[!] Error, repository dirty, please commit or stash your changes.", ""
     exit(1)
   end
