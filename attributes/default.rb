@@ -57,7 +57,7 @@ default.elasticsearch[:default_file][:template_cookbook] = 'elasticsearch'
 default.elasticsearch[:default_file][:template_source] = 'elasticsearch.etc-default.erb'
 
 ## Remove deprecated ulimit changes made in limits.conf
-default.elasticsearch[:default_file][:scrub_limits_conf] = false
+default.elasticsearch[:default_file][:scrub_limits_conf] = true
 
 # === PRODUCTION SETTINGS
 #
