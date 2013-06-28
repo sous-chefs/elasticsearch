@@ -110,9 +110,10 @@ bash "clean elasticsearch user ulimits in /etc/security/limits.conf" do
 
   only_if do
     file = ::File.read("/etc/security/limits.conf")
-    file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile") \
-      ||           \
+    node.elasticsearch[:scrub_limits_conf] && (
+      file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile") ||
       file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock")
+    )
   end
 end
 

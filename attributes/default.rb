@@ -52,9 +52,12 @@ default.elasticsearch[:bootstrap][:mlockall] = true
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
-## Debian family /etc/default/elasticsearch file for limits
+## /etc/default/elasticsearch file for limits
 default.elasticsearch[:default_file][:template_cookbook] = 'elasticsearch'
 default.elasticsearch[:default_file][:template_source] = 'elasticsearch.etc-default.erb'
+
+## Remove deprecated ulimit changes made in limits.conf
+default.elasticsearch[:default_file][:scrub_limits_conf] = false
 
 # === PRODUCTION SETTINGS
 #
