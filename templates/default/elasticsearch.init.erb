@@ -8,7 +8,7 @@
 # config:      <%= node[:elasticsearch][:path][:conf] %>/elasticsearch.yml
 
 # Source networking configuration
-if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; 
+if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 # Source defaults if found
 if [ -f /etc/default/elasticsearch ]; then source /etc/default/elasticsearch; fi    
 
