@@ -103,10 +103,10 @@ end
 bash "clean elasticsearch user ulimits in /etc/security/limits.conf" do
   user 'root'
 
-  code <<- EOH
+  code <<-EOH
     sed -i "/#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile/d" /etc/security/limits.conf
     sed -i "/#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock/d" /etc/security/limits.conf
-  END
+  EOH
 
   only_if do
     file = ::File.read("/etc/security/limits.conf")
