@@ -77,7 +77,7 @@ the information in an "elasticsearch" _data bag_:
 
         "cloud"   : {
           "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
-          "ec2"     : { "security_group": "elasticsearch" }
+          "ec2"     : { "groups": "elasticsearch" }
         }
       }
     }' >> ./data_bags/elasticsearch/aws.json
