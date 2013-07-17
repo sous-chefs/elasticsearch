@@ -61,8 +61,20 @@ stop() {
       fi
 
       # KILL PROCESS
+      pid=$(cat $PIDFILE)
       su <%= node[:elasticsearch][:user] %> -m -c "kill $(cat $PIDFILE)"
       r=$?
+
+      # Check for process
+      timeout=0
+      while [ $(ps -p $pid | wc -l ) -gt '1' ]; do
+        echo -n '.'
+        (( timeout ++))
+        if [ $timeout -gt '30' ]; then return; fi
+        sleep 1
+      done;
+
+      # Check for pidfile
       timeout=0
       while [ -f $PIDFILE  ]; do
         echo -n '.'
