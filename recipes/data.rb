@@ -14,7 +14,7 @@ node.elasticsearch[:data][:devices].each do |device, params|
   # Create directory with proper permissions
   #
   directory params[:mount_path] do
-    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0775
+    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
   end
 
@@ -37,7 +37,7 @@ node.elasticsearch[:data][:devices].each do |device, params|
   # Ensure proper permissions
   #
   directory params[:mount_path] do
-    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0775
+    owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
   end
 end
