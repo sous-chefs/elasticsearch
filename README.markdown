@@ -41,6 +41,9 @@ If you include the `elasticsearch::proxy` recipe, it will configure the _Nginx_ 
 a reverse proxy for _Elasticsearch_, so you may access it remotely with HTTP authentication.
 Set the credentials either in a "elasticsearch/users" data bag, or directly in the role/node configuration.
 
+If you include the `elasticsearch::search_discovery` recipe, it will configure the cluster to use Chef search
+for discovering Elasticsearch nodes. This allows the cluster to operate without multicast, without AWS, and
+without having to manually manage nodes.
 
 Usage
 -----
