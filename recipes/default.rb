@@ -94,20 +94,13 @@ bash "enable user limits" do
   not_if { ::File.read("/etc/pam.d/su").match(/^session    required   pam_limits\.so/) }
 end
 
-bash "increase limits for the elasticsearch user" do
-  user 'root'
+log "increase limits for the elasticsearch user"
 
-  code <<-END.gsub(/^    /, '')
-    echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}'  >> /etc/security/limits.conf
-    echo '#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}' >> /etc/security/limits.conf
+file "/etc/security/limits.d/10-elasticsearch.conf" do
+  content <<-END.gsub(/^    /, '')
+    #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}
+    #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}
   END
-
-  not_if do
-    file = ::File.read("/etc/security/limits.conf")
-    file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}") \
-    &&           \
-    file.include?("#{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}")
-  end
 end
 
 # Create file with ES environment variables
