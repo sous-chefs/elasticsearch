@@ -77,7 +77,7 @@ the information in an "elasticsearch" _data bag_:
           "ec2"     : { "security_group": "elasticsearch" }
         }
       }
-    }' >> ./data_bags/elasticsearch/aws.json
+    }' > ./data_bags/elasticsearch/aws.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Do not forget to upload the data bag to the _Chef_ server:
@@ -138,7 +138,7 @@ Usernames and passwords may be stored in a data bag `elasticsearch/users`:
         ]
       }
     }
-    ' >> ./data_bags/elasticsearch/users.json
+    ' > ./data_bags/elasticsearch/users.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Again, do not forget to upload the data bag to the _Chef_ server:
