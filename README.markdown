@@ -41,6 +41,22 @@ If you include the `elasticsearch::proxy` recipe, it will configure the _Nginx_ 
 a reverse proxy for _Elasticsearch_, so you may access it remotely with HTTP authentication.
 Set the credentials either in a "elasticsearch/users" data bag, or directly in the role/node configuration.
 
+If you include the `elasticsearch::search_discovery` recipe, it will
+configure the cluster to use chef search for discovering other nodes.
+This allows the cluster to operate without multicast, without AWS, and
+without having to manually manage nodes. By default it will search for
+other nodes with the query
+`role:elasticsearch AND chef_environment:#{node.chef_environment}`, but
+you may override that with the
+`node['elasticsearch']['discovery']['search_query']` attribute.
+Reasonable values include
+`"tag:elasticsearch AND chef_environment:#{node.chef_environment}"` and
+`"(role:es-server OR role:es-client) AND chef_environment:#{node.chef_environment}"`
+By default it will attempt to select a reasonable IP address for each
+node, using `node['cloud']['local_ipv4']` on cloud servers, and
+`node['ipaddress']` elsewhere. You may override that with the
+`node'elasticsearch']['discovery']['node_attribute']` attribute.
+Reasonable values include `"fqdn"` and `"cloud.public_ipv4`.
 
 Usage
 -----
