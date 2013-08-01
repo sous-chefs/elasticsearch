@@ -35,12 +35,81 @@ If you include the `elasticsearch::search_discovery` recipe, it will configure t
 for discovering Elasticsearch nodes. This allows the cluster to operate without multicast, without AWS, and
 without having to manually manage nodes.
 
+
 Usage
 -----
 
-For an overview, please read the tutorial on
+### Chef Solo
+
+You have to configure your node in a `node.json` file, upload the configuration file, this cookbook and any dependent cookbooks and all data bags, role, etc files to the server, and run `chef-solo`.
+
+A basic node configuration can look like this:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+echo '{
+  "name": "elasticsearch-cookbook-test",
+  "run_list": [
+    "recipe[java]",
+    "recipe[elasticsearch]"
+  ],
+
+  "java": {
+    "install_flavor": "openjdk",
+    "jdk_version": "7"
+  },
+
+  "elasticsearch": {
+    "cluster_name" : "elasticsearch_test_chef",
+    "bootstrap.mlockall" : false
+  }
+}
+' > node.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's upload it to our server (assuming Ubuntu on Amazon EC2):
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+scp -o User=ubuntu \
+    -o IdentityFile=/path/to/your/key.pem \
+    -o StrictHostKeyChecking=no \
+    -o UserKnownHostsFile=/dev/null \
+    node.json ec2-12-45-67-89.compute-1.amazonaws.com:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Let's download the cookbook on the target system:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+ssh -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com \
+  "curl -# -L -k -o cookbook-elasticsearch-master.tar.gz https://github.com/elasticsearch/cookbook-elasticsearch/archive/master.tar.gz"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Finally, let's install latest Chef, install dependent cookbooks, and run `chef-solo`:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+
+ssh -t -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com <<END
+  curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
+  sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/elasticsearch
+  sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf cookbook-elasticsearch-master.tar.gz
+  sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
+  sudo /opt/chef/embedded/bin/gem install berkshelf --version 1.4.5 --no-rdoc --no-ri
+  sudo /opt/chef/embedded/bin/berks install --path=/var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/elasticsearch/Berksfile
+  sudo chef-solo -N elasticsearch-test-chef-solo -j node.json
+END
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Verify the installation with:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+ssh -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com "curl localhost:9200"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For a full and thorough walktrough, please read the tutorial on
 [deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/)
-which uses this cookbook.
+which uses this cookbook as an example.
+
+
+### Chef Server
 
 For _Chef Server_ based deployment, include the recipes you want to be executed in a
 dedicated `elasticsearch` role, or in the node `run_list`.
@@ -107,6 +176,10 @@ or store the configuration in a data bag called `elasticsearch/data`:
     }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+
+Nginx Proxy
+-----------
+
 Usually, you will restrict the access to _Elasticsearch_ with firewall rules. However, it's convenient
 to be able to connect to the _Elasticsearch_ cluster from `curl` or a HTTP client, or to use a
 management tool such as [_BigDesk_](http://github.com/lukas-vlcek/bigdesk) or
@@ -150,6 +223,7 @@ run `chef-client` on the node(s):
 Please note that all data bags _must_ have attributes enclosed in an environment
 (use the `_default` environment), as suggested by the Chef
 [documentation](http://docs.opscode.com/chef/essentials_data_bags.html#use-data-bags-with-environments).
+
 
 Testing with Vagrant
 --------------------
@@ -230,6 +304,10 @@ Of course, you should connect to the box with SSH and check things out:
     curl http://localhost:9200/_cluster/health?pretty
     sudo monit status elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Tests
+-----
 
 The cookbook provides test cases in the `files/default/tests/minitest/` directory,
 which are executed as a part of the _Chef_ run in _Vagrant_
