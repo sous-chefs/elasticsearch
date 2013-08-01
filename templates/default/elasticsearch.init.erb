@@ -9,6 +9,8 @@
 
 # Source networking configuration
 if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
+# Source defaults if found
+if [ -f /etc/default/elasticsearch ]; then source /etc/default/elasticsearch; fi    
 
 # Exit if networking is not up
 [ "$NETWORKING" = "no" ] && exit

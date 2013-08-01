@@ -1,0 +1,2 @@
+ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
+ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
