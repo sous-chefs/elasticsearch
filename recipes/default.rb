@@ -82,6 +82,13 @@ ark "elasticsearch" do
 
   notifies :start,   'service[elasticsearch]'
   notifies :restart, 'service[elasticsearch]'
+
+  not_if do
+    link   = "#{node.elasticsearch[:dir]}/elasticsearch"
+    target = "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}"
+
+    ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
+  end
 end
 
 # Increase open file and memory limits
