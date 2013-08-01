@@ -8,9 +8,16 @@
 # config:      <%= node[:elasticsearch][:path][:conf] %>/elasticsearch.yml
 
 # Source networking configuration
+#
 if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
+# Set limits for environments ignoring `/etc/security/limits.d`
+#
+ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
+ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
+
 # Exit if networking is not up
+#
 [ "$NETWORKING" = "no" ] && exit
 
 PIDFILE='<%= node.elasticsearch[:pid_file] %>'
