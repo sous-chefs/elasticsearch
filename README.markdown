@@ -108,6 +108,20 @@ For a full and thorough walktrough, please read the tutorial on
 [deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/)
 which uses this cookbook as an example.
 
+This cookbook comes with a Rake task which allows to create, bootstrap and configure an Amazon EC2 with a single command. Save your node configuration into `tmp/node.json` file and run:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+time \
+ AWS_SSH_KEY_ID=your-key-id \
+ AWS_ACCESS_KEY=your-access-keys \
+ AWS_SECRET_ACCESS_KEY=your-secret-key\
+ SSH_KEY=/path/to/your/key.pem \
+ NAME=elasticsearch-test-chef-solo-with-rake \
+ rake create
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Run `rake -T` for more information about other available tasks, see the `Rakefile`
+for all available options and configurations.
 
 ### Chef Server
 
