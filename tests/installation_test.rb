@@ -43,7 +43,7 @@ describe_recipe 'elasticsearch::default' do
     it "creates the configuration file with proper content" do
       file("#{node.elasticsearch[:path][:conf]}/elasticsearch.yml").
         must_include("cluster.name: elasticsearch_vagrant").
-        must_include("path.data: /var/data/elasticsearch/disk1").
+        must_include("path.data: #{node.elasticsearch[:path][:data]}").
         must_include("bootstrap.mlockall: false").
         must_include("index.search.slowlog.threshold.query.trace: 1ms").
         must_include("discovery.zen.ping.timeout: 9s").
