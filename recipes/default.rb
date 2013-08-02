@@ -7,6 +7,14 @@ elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 include_recipe "elasticsearch::curl"
 include_recipe "ark"
 
+# Create elasticsearch directory
+directory "#{node.elasticsearch[:dir]}" do
+  owner "root"
+  group "root"
+  mode 0755
+  action :create
+end
+
 # Create user and group
 #
 group node.elasticsearch[:user] do
