@@ -2,14 +2,11 @@ module Extensions
 
   # Search for other Elasticsearch nodes
   #
-  # `search_for_nodes()` will use Chef Search to find other nodes
-  # matching a search query (skipping the current node) and
-  # from those nodes will select an attribute from each node,
-  # defaulting to a smart selection between `node['ipaddress']`
-  # and `node['cloud']['local_ipv4']`.
+  # The `search_for_nodes()` method will use Chef Search to find other nodes matching a search query
+  # (skipping the current node) and will return a sorted array of hostnames, defaulting to a smart
+  # selection between `node['ipaddress']` and `node['cloud']['local_ipv4']`.
   #
-  # If a search query is provided, that will be used instead of
-  # the default.
+  # If a search query is provided, that will be used instead of the default.
   #
   # Examples:
   #
@@ -37,7 +34,7 @@ module Extensions
     nodes = find_matching_nodes(query)
     nodes.map do |node|
       select_attribute(node, attribute)
-    end
+    end.sort
   end
 
   def find_matching_nodes(query = nil)
