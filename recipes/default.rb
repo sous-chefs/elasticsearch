@@ -32,13 +32,20 @@ bash "remove the elasticsearch user home" do
 end
 
 # Create ES directories
-#
-[ node.elasticsearch[:path][:conf], node.elasticsearch[:path][:logs], node.elasticsearch[:pid_path] ].each do |path|
+
+[:conf, :pid, :data, :logs].each do |name|
+  path=node.elasticsearch[:path][name]
   directory path do
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
     action :create
   end
+end
+# don't want bins owned by non-root user
+directory node.elasticsearch[:path][:bin] do
+  owner "root" and group "root" and mode "0755"
+  recursive true
+  action    :create
 end
 
 # Create data path directories

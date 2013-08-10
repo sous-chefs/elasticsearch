@@ -27,13 +27,13 @@ default.elasticsearch[:node][:name]    = node.name
 #
 default.elasticsearch[:dir]       = "/usr/local"
 default.elasticsearch[:user]      = "elasticsearch"
-
+default.elasticsearch[:path][:bin]  = "#{node.elasticsearch[:dir]}/bin"
 default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
 default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"
 default.elasticsearch[:path][:logs] = "/usr/local/var/log/elasticsearch"
+default.elasticsearch[:path][:pid]  = "/usr/local/var/run/elasticsearch"
 
-default.elasticsearch[:pid_path]  = "/usr/local/var/run/elasticsearch"
-default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
+default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:path][:pid]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
 
 # === MEMORY
 #
