@@ -40,10 +40,10 @@ module Extensions
         command = "/usr/local/bin/plugin -install #{name}#{version}#{url}"
         Chef::Log.debug command
 
-        system command
+        raise "[!] Failed to install plugin" unless system command
 
         # Ensure proper permissions
-        system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
+        raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
       end
 
       notifies :restart, 'service[elasticsearch]'
