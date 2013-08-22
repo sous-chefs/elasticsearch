@@ -130,7 +130,9 @@ node_config = {
     :cluster => { :name => "elasticsearch_vagrant" },
 
     :plugins => {
-      'karmi/elasticsearch-paramedic' => {}
+      'karmi/elasticsearch-paramedic' => {
+        :url => 'https://github.com/karmi/elasticsearch-paramedic/archive/master.zip'
+      }
     },
 
     :limits => {
