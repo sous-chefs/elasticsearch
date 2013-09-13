@@ -141,3 +141,21 @@ template "logging.yml" do
 
   notifies :restart, 'service[elasticsearch]'
 end
+
+
+# CUSTOM: Create logstash template config
+
+directory "#{node.elasticsearch[:path][:conf]}/templates" do
+  owner "elasticsearch"
+  group "elasticsearch"
+  mode 00644
+  action :create
+end
+
+template "logstash-template.json" do
+  path   "#{node.elasticsearch[:path][:conf]}/templates/logstash-template.json"
+  source "logstash-template.json.erb"
+  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+
+  notifies :restart, 'service[elasticsearch]'
+end

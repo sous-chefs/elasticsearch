@@ -83,7 +83,7 @@ restart() {
       echo -n '.'
       (( timeout-- ))
       if [ $timeout -lt '1' ]; then return; fi
-      sleep 1
+      sleep 5
     done;
     start
 }
