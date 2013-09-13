@@ -1,4 +1,4 @@
-include_recipe "elasticsearch::nginx"
+include_recipe "elasticsearch::nginx" unless node.recipe?('nginx')
 
 # Create proxy with HTTP authentication via Nginx
 #
