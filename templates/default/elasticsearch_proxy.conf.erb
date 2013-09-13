@@ -23,7 +23,7 @@ server {
 <% end %>
 
     # Pass requests to ElasticSearch
-    proxy_pass http://<%= node.elasticsearch.network.host rescue 'localhost' %>:<%= node.elasticsearch.http.port rescue 9200 %>;
+    proxy_pass http://<%= node.elasticsearch.network.host rescue 'localhost' %>:<%= node.elasticsearch[:http][:port] %>;
     proxy_redirect off;
 
     proxy_set_header  X-Real-IP  $remote_addr;
@@ -47,7 +47,7 @@ server {
   location /status {
     proxy_method HEAD;
     proxy_intercept_errors on;
-    proxy_pass http://localhost:9200/;
+    proxy_pass http://localhost:<%= node.elasticsearch[:http][:port] %>/;
   }
 <% end %>
 
