@@ -19,4 +19,5 @@ http {
   gzip_types application/javascript application/x-javascript text/css text/xml application/xml;
 
   include <%= node[:nginx][:dir] %>/conf.d/*.conf;
+  include <%= node[:nginx][:dir] %>/sites-enabled/*;
 }
