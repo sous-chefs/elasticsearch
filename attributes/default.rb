@@ -10,6 +10,7 @@ node.normal[:elasticsearch]  ||= {}
 node.normal[:elasticsearch]    = DeepMerge.merge(node.default[:elasticsearch].to_hash, node.normal[:elasticsearch].to_hash)
 node.normal[:elasticsearch]    = DeepMerge.merge(node.normal[:elasticsearch].to_hash, settings.to_hash)
 
+
 # === VERSION AND LOCATION
 #
 default.elasticsearch[:version]       = "0.90.3"
@@ -65,6 +66,10 @@ default.elasticsearch[:gateway][:type] = 'local'
 default.elasticsearch[:gateway][:expected_nodes] = 1
 
 default.elasticsearch[:thread_stack_size] = "256k"
+
+# === PORT
+#
+default.elasticsearch[:http][:port] = 9200
 
 # === CUSTOM CONFIGURATION
 #
