@@ -8,6 +8,7 @@ long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
 version          "0.3.3"
 
 depends 'ark'
+depends 'nginx'
 
 recommends 'build-essential'
 recommends 'xml'
