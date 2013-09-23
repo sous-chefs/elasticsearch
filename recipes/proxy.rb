@@ -2,9 +2,11 @@ include_recipe "elasticsearch::nginx"
 
 # Create proxy with HTTP authentication via Nginx
 #
-template "#{node.elasticsearch[:nginx][:dir]}/conf/sites/elasticsearch_proxy.conf" do
+puts "#{node[:nginx][:dir]}/conf/sites/elasticsearch_proxy.conf"
+
+template "#{node[:nginx][:dir]}/conf/sites/elasticsearch_proxy.conf" do
   source "elasticsearch_proxy.conf.erb"
-  owner node.elasticsearch[:nginx][:user] and group node.elasticsearch[:nginx][:user] and mode 0755
+  owner node[:nginx][:user] and group node[:nginx][:user] and mode 0755
   notifies :reload, 'service[nginx]'
 end
 
@@ -27,6 +29,6 @@ end
 # Ensure proper permissions and existence of the passwords file
 #
 file node.elasticsearch[:nginx][:passwords_file] do
-  owner node.elasticsearch[:nginx][:user] and group node.elasticsearch[:nginx][:user] and mode 0755
+  owner node[:nginx][:user] and group node[:nginx][:user] and mode 0755
   action :touch
 end
