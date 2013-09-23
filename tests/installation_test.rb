@@ -38,7 +38,7 @@ describe_recipe 'elasticsearch::default' do
       file("/usr/local/etc/elasticsearch/elasticsearch-env.sh").
         must_exist.
         must_include("ES_HOME='/usr/local/elasticsearch'").
-        must_include("UserParNewGC'")
+        must_include("UseParNewGC")
     end
 
     it "creates the configuration file with proper content" do
