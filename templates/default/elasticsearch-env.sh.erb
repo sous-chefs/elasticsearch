@@ -20,10 +20,30 @@ ES_JAVA_OPTS="
   -XX:CMSInitiatingOccupancyFraction=75
   -XX:+UseCMSInitiatingOccupancyOnly
   -XX:+HeapDumpOnOutOfMemoryError
+
+
 <% if node.elasticsearch[:jmx] %>
-  -Dcom.sun.management.jmxremote.ssl=false
-  -Dcom.sun.management.jmxremote.authenticate=false
-  -Dcom.sun.management.jmxremote.port=3333
-  -Djava.rmi.server.hostname=<%= node[:ipaddress] %>
+  	-Dcom.sun.management.jmxremote.ssl=<%= node.elasticsearch[:jmx_config][:ssl] %>
+  	-Dcom.sun.management.jmxremote.authenticate=<%= node.elasticsearch[:jmx_config][:authenticate] %>
+  	-Dcom.sun.management.jmxremote.port=<%= node.elasticsearch[:jmx_config][:port] %>
+  	<% if node.elasticsearch[:jmx_config][:hostname_fqdn] %>
+  		-Djava.rmi.server.hostname=<%= node[:fqdn] %>
+  	<% else %>
+  		-Djava.rmi.server.hostname=<%= node[:ipadress] %>
+  	<% end %>
+	<% if node.elasticsearch[:jmx_config][:authenticate] %>
+  		-Dcom.sun.management.jmxremote.password.file=<%= node.elasticsearch[:jmx_config][:password_file] %>
+  		-Dcom.sun.management.jmxremote.access.file=<%= node.elasticsearch[:jmx_config][:access_file] %>
+	<% end %>
+
+	<% if node.elasticsearch[:jmx_config][:ssl] %>
+		-Djavax.net.ssl.keyStore=<%= node.elasticsearch[:jmx_config][:keystore] %>
+		-Djavax.net.ssl.keyStorePassword=<%= node.elasticsearch[:jmx_config][:keystorepassword] %>
+		-Djavax.net.ssl.trustStore=<%= node.elasticsearch[:jmx_config][:truststore] %>
+		-Djavax.net.ssl.trustStorePassword=<%= node.elasticsearch[:jmx_config][:truststorepassword] %>
+		-Dcom.sun.management.jmxremote.ssl.need.client.auth=<%= node.elasticsearch[:jmx_config][:nedd_client_auth] %>
+	<% end %>
+
 <% end %>
 "
+
