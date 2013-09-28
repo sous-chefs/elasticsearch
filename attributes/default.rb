@@ -67,6 +67,8 @@ default.elasticsearch[:gateway][:expected_nodes] = 1
 
 default.elasticsearch[:thread_stack_size] = "256k"
 
+default.elasticsearch[:env_options] = ""
+
 # === PORT
 #
 default.elasticsearch[:http][:port] = 9200
