@@ -44,17 +44,15 @@ default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.ela
 allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
 
-# === GARBAGE COLLECTION
+# === GARBAGE COLLECTION SETTINGS
 #
-# Take care when overriding any o fthese values
-#
-default.elasticsearch[:gc_settings] = [
-  '-XX:+UseParNewGC',
-  '-XX:+UseConcMarkSweepGC',
-  '-XX:CMSInitiatingOccupancyFraction=75',
-  '-XX:+UseCMSInitiatingOccupancyOnly',
-  '-XX:+HeapDumpOnOutOfMemoryError',
-]
+default.elasticsearch[:gc_settings] =<<-CONFIG
+  -XX:+UseParNewGC
+  -XX:+UseConcMarkSweepGC
+  -XX:CMSInitiatingOccupancyFraction=75
+  -XX:+UseCMSInitiatingOccupancyOnly
+  -XX:+HeapDumpOnOutOfMemoryError
+CONFIG
 
 # === LIMITS
 #

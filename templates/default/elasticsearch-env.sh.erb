@@ -15,7 +15,7 @@ ES_JAVA_OPTS="
   -Xms<%= node.elasticsearch[:allocated_memory] %>
   -Xmx<%= node.elasticsearch[:allocated_memory] %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>
-  <%= node.elasticsearch[:gc_settings].join("\n  ") %>
+  <%= node.elasticsearch[:gc_settings] %>
 <% if node.elasticsearch[:jmx] %>
   -Dcom.sun.management.jmxremote.ssl=false
   -Dcom.sun.management.jmxremote.authenticate=false
