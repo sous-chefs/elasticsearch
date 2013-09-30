@@ -2,7 +2,7 @@
 # This allows the cluster to operate without multicast, without AWS, and without having to manually manage nodes.
 #
 # By default it will search for other nodes with the query
-# `role:elasticsearch AND chef_environment:#{node.chef_environment}`, but you may override that with the
+# `role:elasticsearch AND chef_environment:#{node.chef_environment} AND elasticsearch_cluster_name:#{node[:elasticsearch][:cluster][:name]}`, but you may override that with the
 # `node['elasticsearch']['discovery']['search_query']` attribute.
 #
 # Reasonable values include
