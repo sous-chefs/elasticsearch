@@ -76,7 +76,7 @@ default.elasticsearch[:http][:port] = 9200
 default.elasticsearch[:jmx_config][:port] = 3333
 default.elasticsearch[:jmx_config][:ssl] = false
 default.elasticsearch[:jmx_config][:authenticate] = false
-default.elasticsearch[:jmx_config][:hostname_fqdn] = "#{node[:ipadressipadre]}"
+default.elasticsearch[:jmx_config][:hostname_fqdn] = false
 default.elasticsearch[:jmx_config][:password_file] = ""
 default.elasticsearch[:jmx_config][:access_file] = "" 
 
