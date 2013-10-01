@@ -13,7 +13,7 @@ node.normal[:elasticsearch]    = DeepMerge.merge(node.normal[:elasticsearch].to_
 
 # === VERSION AND LOCATION
 #
-default.elasticsearch[:version]       = "0.90.3"
+default.elasticsearch[:version]       = "0.90.5"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
 default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
 default.elasticsearch[:filename]      = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
@@ -44,6 +44,16 @@ default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.ela
 allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
 default.elasticsearch[:allocated_memory] = allocated_memory
 
+# === GARBAGE COLLECTION SETTINGS
+#
+default.elasticsearch[:gc_settings] =<<-CONFIG
+  -XX:+UseParNewGC
+  -XX:+UseConcMarkSweepGC
+  -XX:CMSInitiatingOccupancyFraction=75
+  -XX:+UseCMSInitiatingOccupancyOnly
+  -XX:+HeapDumpOnOutOfMemoryError
+CONFIG
+
 # === LIMITS
 #
 # By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
@@ -66,6 +76,8 @@ default.elasticsearch[:gateway][:type] = 'local'
 default.elasticsearch[:gateway][:expected_nodes] = 1
 
 default.elasticsearch[:thread_stack_size] = "256k"
+
+default.elasticsearch[:env_options] = ""
 
 # === PORT
 #

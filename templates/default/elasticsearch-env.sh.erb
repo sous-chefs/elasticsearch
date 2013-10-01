@@ -15,13 +15,7 @@ ES_JAVA_OPTS="
   -Xms<%= node.elasticsearch[:allocated_memory] %>
   -Xmx<%= node.elasticsearch[:allocated_memory] %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>
-  -XX:+UseParNewGC
-  -XX:+UseConcMarkSweepGC
-  -XX:CMSInitiatingOccupancyFraction=75
-  -XX:+UseCMSInitiatingOccupancyOnly
-  -XX:+HeapDumpOnOutOfMemoryError
-
-
+  <%= node.elasticsearch[:gc_settings] %>
 <% if node.elasticsearch[:jmx] %>
   	-Dcom.sun.management.jmxremote.ssl=<%= node.elasticsearch[:jmx_config][:ssl] %>
   	-Dcom.sun.management.jmxremote.authenticate=<%= node.elasticsearch[:jmx_config][:authenticate] %>
@@ -45,5 +39,6 @@ ES_JAVA_OPTS="
 	<% end %>
 
 <% end %>
+  <%= node.elasticsearch[:env_options] %>
 "
 
