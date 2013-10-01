@@ -244,18 +244,31 @@ JMX configuration
 ElasticSearch recommends to use the Elasticsearch's internal monitoring/statistics APIs instead of JMX.
 We have a simple support of JMX, to be able to use monitoring tools supporting JMX.
 
-You have to include the recipe[elasticsearch::jmx] before all recipe[elasticsearch]
-
 To enable it you have to include the recipe[elasticsearch::jmx] before the recipe[elasticsearch]
-and to set the default_attibute like this:
 
+
+the default node become:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
- "default_attributes": {
-    "elasticsearch": {
-    	"jmx": true
-    }
+echo '{
+  "name": "elasticsearch-cookbook-test",
+  "run_list": [
+    "recipe[java]",
+    "recipe[elasticsearch::jmx]"
+    "recipe[elasticsearch]"
+  ],
+
+  "java": {
+    "install_flavor": "openjdk",
+    "jdk_version": "7"
+  },
+
+  "elasticsearch": {
+    "cluster_name": "elasticsearch_test_chef",
+    "bootstrap.mlockall": false
+  }
 }
+' > node.json
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -267,7 +280,6 @@ attribute like this:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
  "default_attributes": {
     "elasticsearch": {
-    	"jmx": true,
     	 "jmx_config": {
         	"hostname_fqdn": true,
         	"port": 9041
