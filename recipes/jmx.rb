@@ -10,8 +10,8 @@ else
 	options << "-Djava.rmi.server.hostname=#{node.ipaddress}"
 end
 
-node[:elasticsearch][:env_options] << options
+node.default["elasticsearch"]["env_options"] << options
 
-node[:elasticsearch][:jmx]=true
+node.default["elasticsearch"]["jmx"]=true
 
 

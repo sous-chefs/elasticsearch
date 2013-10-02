@@ -36,7 +36,7 @@ require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
+    :run_list => %w| apt build-essential vim java monit elasticsearch::jmx elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {
@@ -68,7 +68,7 @@ distributions = {
 
   :precise32 => {
     :url      => 'http://files.vagrantup.com/precise32.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}
@@ -76,7 +76,7 @@ distributions = {
 
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}
@@ -84,7 +84,7 @@ distributions = {
 
   :lucid32 => {
     :url      => 'http://files.vagrantup.com/lucid32.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
     :ip       => '33.33.33.11',
     :primary  => false,
     :node     => {}
@@ -93,7 +93,7 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
-    :run_list => %w| yum::epel build-essential vim java elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::test |,
+    :run_list => %w| yum::epel build-essential vim java elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
@@ -132,9 +132,11 @@ node_config = {
     :plugins => {
       'karmi/elasticsearch-paramedic' => {
         :url => 'https://github.com/karmi/elasticsearch-paramedic/archive/master.zip'
-      }
+      },
     },
-
+    :jmx_config => {
+	:port => 4092
+    },
     :limits => {
       :nofile  => 1024,
       :memlock => 512
