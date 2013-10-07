@@ -37,9 +37,11 @@ server {
     add_header Access-Control-Allow-Headers 'X-Requested-With, Content-Type';
     add_header Access-Control-Allow-Credentials true;
 
+<% unless node.elasticsearch[:nginx][:users].empty? %>
     # Authorize access
     auth_basic           "ElasticSearch";
     auth_basic_user_file <%= node.elasticsearch[:nginx][:passwords_file] %>;
+<% end %>
 
   }
 
