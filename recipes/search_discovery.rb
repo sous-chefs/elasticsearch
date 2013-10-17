@@ -25,3 +25,6 @@ node.set['elasticsearch']['discovery']['zen']['ping']['unicast']['hosts'] = node
 
 # set minimum_master_nodes to n/2+1 to avoid split brain scenarios
 node.default['elasticsearch']['discovery']['zen']['minimum_master_nodes'] = (nodes.length / 2).floor + 1
+
+# we don't want all of the nodes in the cluster to restart when a new node joins
+node.set['elasticsearch']['skip_restart_on_update'] = true
