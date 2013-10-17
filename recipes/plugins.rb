@@ -6,6 +6,11 @@ directory "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:versi
 end
 
 node[:elasticsearch][:plugins].each do | name, config |
-  next if name == 'elasticsearch/elasticsearch-cloud-aws' && !node.recipe?('aws')
+  if(name == "elasticsearch/elasticsearch-cloud-aws" and !node.recipe?("aws"))
+        log "**** We are skipping this plugin : #{name}" do
+            level :debug
+        end
+        next
+    end
   install_plugin name, config
 end
