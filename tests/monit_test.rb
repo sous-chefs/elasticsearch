@@ -6,7 +6,9 @@ describe_recipe 'elasticsearch::monit' do
 
   it "saves the configuration file in the Monit directory" do
     if node.recipes.include?("elasticsearch::monit")
-      file("/etc/monit/conf.d/elasticsearch.conf").must_exist
+      file("/etc/monit/conf.d/elasticsearch.conf").
+        must_exist.
+        must_include("check host elasticsearch_connection with address 0.0.0.0")
     end
   end
 
