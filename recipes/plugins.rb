@@ -7,9 +7,6 @@ end
 
 node[:elasticsearch][:plugins].each do | name, config |
   if(name == "elasticsearch/elasticsearch-cloud-aws" and !node.recipe?("aws"))
-        log "**** We are skipping this plugin : #{name}" do
-            level :debug
-        end
         next
     end
   install_plugin name, config
