@@ -5,4 +5,4 @@ plugins = Chef::DataBagItem.load('elasticsearch', 'plugins')[node.chef_environme
 node.default.elasticsearch[:plugins].merge!(plugins)
 node.default.elasticsearch[:plugin][:mandatory] = []
 
-Chef::Log.debug "Current Plugins list: #{default.elasticsearch.plugins.inspect}"
+Chef::Log.debug "Plugins list: #{default.elasticsearch.plugins.inspect}"

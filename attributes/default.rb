@@ -79,6 +79,10 @@ default.elasticsearch[:thread_stack_size] = "256k"
 
 default.elasticsearch[:env_options] = ""
 
+# === OTHER SETTINGS
+#
+default.elasticsearch[:skip_restart] = false
+
 # === PORT
 #
 default.elasticsearch[:http][:port] = 9200

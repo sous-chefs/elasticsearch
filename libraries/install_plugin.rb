@@ -46,7 +46,7 @@ module Extensions
         raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
       end
 
-      notifies :restart, 'service[elasticsearch]'
+      notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
       not_if do
         Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|
