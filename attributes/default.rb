@@ -81,7 +81,7 @@ default.elasticsearch[:env_options] = ""
 
 # === OTHER SETTINGS
 #
-default.elasticsearch[:skip_restart_on_update] = false
+default.elasticsearch[:skip_restart] = false
 
 # === PORT
 #
