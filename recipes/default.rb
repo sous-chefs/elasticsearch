@@ -130,7 +130,7 @@ template "elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, 'service[elasticsearch]'
+  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart_on_update]
 end
 
 # Create ES logging file
@@ -140,5 +140,5 @@ template "logging.yml" do
   source "logging.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, 'service[elasticsearch]'
+  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart_on_update]
 end
