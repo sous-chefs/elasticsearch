@@ -91,6 +91,12 @@ default.elasticsearch[:http][:port] = 9200
 #
 default.elasticsearch[:custom_config] = {}
 
+# === LOGGING
+#
+# See `attributes/logging.rb`
+#
+default.elasticsearch[:logging] = {}
+
 # --------------------------------------------------
 # NOTE: Setting the attributes for elasticsearch.yml
 # --------------------------------------------------
