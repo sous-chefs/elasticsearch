@@ -88,6 +88,7 @@ Finally, let's install latest Chef, install dependent cookbooks, and run `chef-s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
 
 ssh -t -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com <<END
+  sudo apt-get install build-essential curl git vim -y
   curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
   sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/elasticsearch
   sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf cookbook-elasticsearch-master.tar.gz
