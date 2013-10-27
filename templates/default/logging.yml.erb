@@ -46,25 +46,43 @@ appender:
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
 
   file:
-    type: dailyRollingFile
     file: ${path.logs}/${cluster.name}.log
-    datePattern: "'.'yyyy-MM-dd"
+<% if node.elasticsearch[:logger][:useFileSize] %>
+    maxBackupIndex: <%= node.elasticsearch[:logger][:maxBackup] %>
+    maxFileSize: <%= node.elasticsearch[:logger][:maxSize] %>
+    type: rollingFile
+<% else %>
+    type: dailyRollingFile
+    datePattern: "<%= node.elasticsearch[:logger][:datePattern] %>"
+<% end %>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
 
   index_search_slow_log_file:
-    type: dailyRollingFile
     file: ${path.logs}/${cluster.name}_index_search_slowlog.log
-    datePattern: "'.'yyyy-MM-dd"
+<% if node.elasticsearch[:logger][:useFileSize] %>
+    maxBackupIndex: <%= node.elasticsearch[:logger][:maxBackup] %>
+    maxFileSize: <%= node.elasticsearch[:logger][:maxSize] %>
+    type: rollingFile
+<% else %>
+    datePattern: "<%= node.elasticsearch[:logger][:datePattern] %>"
+    type: dailyRollingFile
+<% end %>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
 
   index_indexing_slow_log_file:
-    type: dailyRollingFile
     file: ${path.logs}/${cluster.name}_index_indexing_slowlog.log
-    datePattern: "'.'yyyy-MM-dd"
+<% if node.elasticsearch[:logger][:useFileSize] %>
+    maxBackupIndex: <%= node.elasticsearch[:logger][:maxBackup] %>
+    maxFileSize: <%= node.elasticsearch[:logger][:maxSize] %>
+    type: rollingFile
+<% else %>
+    datePattern: "<%= node.elasticsearch[:logger][:datePattern] %>"
+    type: dailyRollingFile
+<% end %>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"

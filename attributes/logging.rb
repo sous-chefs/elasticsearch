@@ -3,6 +3,13 @@ default.elasticsearch[:logging]['com.amazonaws'] = 'WARN'
 default.elasticsearch[:logging]['index.search.slowlog'] = 'TRACE, index_search_slow_log_file'
 default.elasticsearch[:logging]['index.indexing.slowlog'] = 'TRACE, index_indexing_slow_log_file'
 
+# we use a different key here so that we don't try to add these in the template for loop
+# since these are really not ES specific logging options, they are log4j options.
+default.elasticsearch[:logger][:maxBackup] = 10
+default.elasticsearch[:logger][:maxSize] = "10MB"
+default.elasticsearch[:logger][:useFileSize] = false
+default.elasticsearch[:logger][:datePattern] = "'.'yyyy-MM-dd"
+
 # --------------------------------------------
 # NOTE: Setting the attributes for logging.yml
 # --------------------------------------------
