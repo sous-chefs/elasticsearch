@@ -193,6 +193,73 @@ or store the configuration in a data bag called `elasticsearch/data`:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+Customizing the cookbook
+------------------------
+
+When you want to significantly customize the cookbook — changing the templates, adding a specific logic —,
+the best way is to use the “wrapper cookbook” pattern: creating a lightweight cookbook which will
+customize this one. Let's see how to change the template for the `logging.yml` file in this way.
+
+First, we need to create our “wrapper” cookbook:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+knife cookbook create my-elasticsearch --cookbook-path=. --verbose --yes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, we'll include the main cookbook in our _default_ recipe:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/recipes/default.rb
+
+include_recipe 'java'
+include_recipe 'elasticsearch::default'
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Then, we'll change the `cookbook` for the appropriate template resource:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/recipes/default.rb
+
+logging_template = resources(:template => "logging.yml")
+logging_template.cookbook "my-elasticsearch"
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Of course, we may redefine the whole `logging.yml` template definition, or other parts of the cookbook.
+
+Don't forget to put your custom template into the appropriate path:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/templates/default/logging.yml.erb
+# My custom logging template...
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can configure a node with our custom cookbook, now:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+echo '{
+  "name": "elasticsearch-wrapper-cookbook-test",
+  "run_list": [
+    "recipe[my-elasticsearch]"
+  ]
+' > node.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upload your “wrapper” cookbook to the server, and run Chef on the node,
+eg. following the instructions for _Chef Solo_ above:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+scp -R ... cookbooks/my-elasticsearch ...
+ssh ... "sudo mv --force --verbose /tmp/my-elasticsearch /var/chef/cookbooks/my-elasticsearch"
+ssh ... <<END
+....
+END
+ssh ... "sudo chef-solo -N elasticsearch-wrapper-cookbook-test -j node.json"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
 Nginx Proxy
 -----------
 
