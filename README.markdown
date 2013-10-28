@@ -197,7 +197,7 @@ Customizing the cookbook
 ------------------------
 
 When you want to significantly customize the cookbook — changing the templates, adding a specific logic —,
-the best way is to use the “wrapper cookbook” pattern: creating a lightweight cookbook which will
+the best way is to use the "wrapper cookbook" pattern: creating a lightweight cookbook which will
 customize this one. Let's see how to change the template for the `logging.yml` file in this way.
 
 First, we need to create our “wrapper” cookbook:
