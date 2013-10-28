@@ -32,6 +32,8 @@ node.elasticsearch[:data][:devices].each do |device, params|
       Chef::Log.debug "Schedule Elasticsearch service restart..."
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
     end
+    
+    not_if { `cat /proc/mounts | grep "#{params[:mount_path]}"` }
   end
 
   # Ensure proper permissions
