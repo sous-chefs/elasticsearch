@@ -1,3 +1,5 @@
+# See <http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_linux.html>
+
 filename = node.elasticsearch[:rpm_url].split('/').last
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
