@@ -36,7 +36,7 @@ require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| apt build-essential vim java monit elasticsearch::jmx elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
+    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::jmx elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {
@@ -68,7 +68,7 @@ distributions = {
 
   :precise32 => {
     :url      => 'http://files.vagrantup.com/precise32.box',
-    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit elasticsearch::jmx |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}
@@ -76,7 +76,7 @@ distributions = {
 
   :lucid64 => {
     :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit elasticsearch::jmx |,
     :ip       => '33.33.33.10',
     :primary  => false,
     :node     => {}
@@ -84,7 +84,7 @@ distributions = {
 
   :lucid32 => {
     :url      => 'http://files.vagrantup.com/lucid32.box',
-    :run_list => %w| apt vim java monit elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::monit |,
+    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit elasticsearch::jmx |,
     :ip       => '33.33.33.11',
     :primary  => false,
     :node     => {}
@@ -93,7 +93,7 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
-    :run_list => %w| yum::epel build-essential vim java elasticsearch::jmx elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::test |,
+    :run_list => %w| yum::epel build-essential vim java elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::jmx elasticsearch::test |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
@@ -135,7 +135,7 @@ node_config = {
       },
     },
     :jmx_config => {
-	:port => 4092
+		:port => 4092
     },
     :limits => {
       :nofile  => 1024,
@@ -144,12 +144,12 @@ node_config = {
     :bootstrap => {
       :mlockall => false
     },
-
+	:rootlogger => "INFO, syslog",
     :logging => {
       :discovery => 'TRACE',
       'index.indexing.slowlog' => 'INFO, index_indexing_slow_log_file'
     },
-
+	:method => "pkg", 
     :nginx => {
       :user  =>  'www-data',
       :users => [{ username: 'USERNAME', password: 'PASSWORD' }]
@@ -194,9 +194,9 @@ Vagrant::Config.run do |config|
       if name == :precise64 or name == :centos6
         disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
         box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1,"--type", "hdd", "--medium", disk1]
+        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 1,"--type", "hdd", "--medium", disk1]
         box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 2,"--type", "hdd", "--medium", disk2]
+        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 2,"--type", "hdd", "--medium", disk2]
       end
 
       # Update packages on the machine

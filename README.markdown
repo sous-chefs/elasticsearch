@@ -246,6 +246,8 @@ We have a simple support of JMX, to be able to use monitoring tools supporting J
 
 To enable it you have to include the recipe[elasticsearch::jmx] before the recipe[elasticsearch]
 
+If you want to 
+
 
 the default node become:
 
@@ -272,7 +274,7 @@ echo '{
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-By default the SSL and authenticate are false, the port is 3333 and the listening is based on 
+By default the SSL is false, the port is 3333 and the listening is based on 
 ip address.
 
 If you want to change the listening port, or use the FQDN for the listening address you can set the default
@@ -288,7 +290,26 @@ attribute like this:
 }
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The SSL and authenticate can't be customize.
+If you provision a databag called esjmxusers, the authenticate is enabled automatically with information stored in the databag
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+knife data bag create esjmxusers
+
+mkdir data_bags/esjmxusers
+cd data_bags/esjmxusers
+
+vi admin.json
+{
+        "id": "admin",
+        "password": "admin",
+        "access": "readwrite"
+}
+
+knife data bag from file esjmxusers admin.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+The data bag name can be changed by settings the attribute node.elasticsearch[:jmx_config][:users]
+
+The SSL can't be customize.
 
 
 Testing with Vagrant

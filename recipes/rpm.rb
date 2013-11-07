@@ -1,3 +1,4 @@
+include_recipe "elasticsearch::_default"
 filename = node.elasticsearch[:rpm_url].split('/').last
 
 remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do

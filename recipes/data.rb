@@ -1,3 +1,4 @@
+include_recipe "elasticsearch::_default"
 node.elasticsearch[:data][:devices].each do |device, params|
   # Format volume if format command is provided and volume is unformatted
   #
