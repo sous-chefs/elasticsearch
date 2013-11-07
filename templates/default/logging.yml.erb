@@ -41,8 +41,8 @@ appender:
   
   syslog:
     type: syslog
-    syslogHost: localhost
-    facility: local0
+    syslogHost: <%= node.elasticsearch[:syslog][:server] %>
+    facility: <%= node.elasticsearch[:syslog][:facility] %>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"

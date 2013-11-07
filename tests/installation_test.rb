@@ -73,7 +73,8 @@ describe_recipe 'elasticsearch::default' do
         must_exist.
         must_include("logger.action: DEBUG").
         must_include("logger.discovery: TRACE").
-        must_include("#{node.elasticsearch[:rootlogger]}")
+        must_include("#{node.elasticsearch[:rootlogger]}").
+        must_include("#{node.elasticsearch[:syslog][:facility]}")
     end
 
   end
