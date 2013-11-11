@@ -66,30 +66,29 @@ service "elasticsearch" do
 end
 
 # Download, extract, symlink the elasticsearch libraries and binaries
-#
-ark_prefix_root = node.elasticsearch[:dir] || node.ark[:prefix_root]
-ark_prefix_home = node.elasticsearch[:dir] || node.ark[:prefix_home]
+target = "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}"
 
-ark "elasticsearch" do
-  url   node.elasticsearch[:download_url]
-  owner node.elasticsearch[:user]
-  group node.elasticsearch[:user]
-  version node.elasticsearch[:version]
-  has_binaries ['bin/elasticsearch', 'bin/plugin']
-  checksum node.elasticsearch[:checksum]
-  prefix_root   ark_prefix_root
-  prefix_home   ark_prefix_home
+directory target do
+  recursive true
+end
 
-  notifies :start,   'service[elasticsearch]'
-  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
+remote_file "/tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz" do
+  source node.elasticsearch[:download_url]
+end
 
-  not_if do
-    link   = "#{node.elasticsearch[:dir]}/elasticsearch"
-    target = "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}"
-    binary = "#{target}/bin/elasticsearch"
+bash "unpack elasticsearch" do
+  code "tar -xzf /tmp/elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
+  cwd node.elasticsearch[:dir]
+end
 
-    ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exists?(binary)
+['bin/elasticsearch', 'bin/plugin'].each do |binary|
+  link "#{node.elasticsearch[:dir]}/#{binary}" do
+    to "#{target}/#{binary}"
   end
+end
+
+service "elasticsearch" do
+  action [:restart]
 end
 
 # Increase open file and memory limits
@@ -121,6 +120,11 @@ template "elasticsearch-env.sh" do
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
+end
+
+# remove default elasticsearch config file
+file "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml" do
+  action :delete
 end
 
 # Create ES config file

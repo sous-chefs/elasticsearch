@@ -5,7 +5,7 @@ maintainer_email "karmi@karmi.cz"
 license          "Apache"
 description      "Installs and configures elasticsearch"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
-version          "0.3.8"
+version          "0.3.9"
 
 depends 'ark'
 
