@@ -5,8 +5,6 @@ Erubis::Context.send(:include, Extensions::Templates)
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
 include_recipe "elasticsearch::curl"
-include_recipe "ark"
-
 # Create user and group
 #
 group node.elasticsearch[:user] do
@@ -33,7 +31,7 @@ end
 
 # Create ES directories
 #
-[  node.elasticsearch[:path][:logs], node.elasticsearch[:pid_path] ].each do |path|
+[ node.elasticsearch[:path][:logs], node.elasticsearch[:pid_path] ].each do |path|
   directory path do
     owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
     recursive true
