@@ -11,6 +11,7 @@ include_recipe "ark"
 #
 group node.elasticsearch[:user] do
   action :create
+  system true
 end
 
 user node.elasticsearch[:user] do
@@ -20,6 +21,7 @@ user node.elasticsearch[:user] do
   gid     node.elasticsearch[:user]
   supports :manage_home => false
   action  :create
+  system true
 end
 
 # FIX: Work around the fact that Chef creates the directory even for `manage_home: false`
