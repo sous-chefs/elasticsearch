@@ -81,6 +81,10 @@ bash "unpack elasticsearch" do
   cwd node.elasticsearch[:dir]
 end
 
+link "#{node.elasticsearch[:dir]}/elasticsearch" do
+  to "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}"
+end
+
 ['bin/elasticsearch', 'bin/plugin'].each do |binary|
   link "#{node.elasticsearch[:dir]}/#{binary}" do
     to "#{target}/#{binary}"
