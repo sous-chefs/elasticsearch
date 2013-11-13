@@ -10,7 +10,6 @@ version          "0.3.10"
 recommends 'build-essential'
 recommends 'xml'
 recommends 'java'
-recommends 'monit'
 
 provides 'elasticsearch'
 provides 'elasticsearch::data'
