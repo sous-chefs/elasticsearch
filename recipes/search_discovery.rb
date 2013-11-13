@@ -1,3 +1,4 @@
+include_recipe "elasticsearch::_default"
 # This recipe configures the cluster to use Chef search for discovering Elasticsearch nodes.
 # This allows the cluster to operate without multicast, without AWS, and without having to manually manage nodes.
 #

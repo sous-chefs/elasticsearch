@@ -13,6 +13,8 @@ node.normal[:elasticsearch]    = DeepMerge.merge(node.normal[:elasticsearch].to_
 
 # === VERSION AND LOCATION
 #
+default.elasticsearch[:method]        = "source" #Method could be source or pkg
+  
 default.elasticsearch[:version]       = "0.90.5"
 default.elasticsearch[:host]          = "http://download.elasticsearch.org"
 default.elasticsearch[:repository]    = "elasticsearch/elasticsearch"
@@ -26,10 +28,15 @@ default.elasticsearch[:node][:name]    = node.name
 
 # === USER & PATHS
 #
-default.elasticsearch[:dir]       = "/usr/local"
+
+#these 3 paths will be overriden if method is pkg
+default.elasticsearch[:dir]       = "/usr/local/"
+default.elasticsearch[:bindir]       = "/usr/local/bin"
+default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
+
+
 default.elasticsearch[:user]      = "elasticsearch"
 
-default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
 default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"
 default.elasticsearch[:path][:logs] = "/usr/local/var/log/elasticsearch"
 
@@ -82,22 +89,6 @@ default.elasticsearch[:env_options] = ""
 # === PORT
 #
 default.elasticsearch[:http][:port] = 9200
-
-
-#==== JMX CONFIGURATION
-default.elasticsearch[:jmx_config][:port] = 3333
-default.elasticsearch[:jmx_config][:ssl] = false
-default.elasticsearch[:jmx_config][:authenticate] = false
-default.elasticsearch[:jmx_config][:hostname_fqdn] = false
-default.elasticsearch[:jmx_config][:password_file] = ""
-default.elasticsearch[:jmx_config][:access_file] = "" 
-
-default.elasticsearch[:jmx_config][:keystore] = ""
-default.elasticsearch[:jmx_config][:keystorepassword]  = ""
-default.elasticsearch[:jmx_config][:truststore] = ""
-default.elasticsearch[:jmx_config][:truststorepassword] = ""
-default.elasticsearch[:jmx_config][:nedd_client_auth]  = true
-
 
 # === CUSTOM CONFIGURATION
 #

@@ -1,3 +1,4 @@
+include_recipe "elasticsearch::_default"
 # Install Nginx via packages
 #
 package "nginx"

@@ -1,4 +1,5 @@
 [Chef::Recipe, Chef::Resource].each { |l| l.send :include, ::Extensions }
+include_recipe "elasticsearch::_default"
 
 # Install the Fog gem dependencies
 #

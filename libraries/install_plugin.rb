@@ -27,7 +27,7 @@ module Extensions
   #         }
   #       }
   #     }
-  #
+  #s
   # See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
   #
   def install_plugin name, params={}
@@ -36,14 +36,17 @@ module Extensions
       block do
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
-
-        command = "/usr/local/bin/plugin -install #{name}#{version}#{url}"
+      
+        command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
+        
+        
+        
         Chef::Log.debug command
 
-        raise "[!] Failed to install plugin" unless system command
+        raise "[!] Failed to install plugin #{command}" unless system command
 
         # Ensure proper permissions
-        raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
+        raise "[!] Failed to set permission: chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch/plugins/" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch/plugins/"
       end
 
       notifies :restart, 'service[elasticsearch]'
