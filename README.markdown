@@ -148,11 +148,10 @@ the information in an "elasticsearch" _data bag_:
     echo '{
       "id" : "aws",
       "_default" : {
-        "discovery" : { "type": "ec2" },
+        "discovery" : { "type": "ec2", "ec2" : { "groups": "elasticsearch" } },
 
         "cloud"   : {
-          "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
-          "ec2"     : { "groups": "elasticsearch" }
+          "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" }
         }
       }
     }' > ./data_bags/elasticsearch/aws.json
