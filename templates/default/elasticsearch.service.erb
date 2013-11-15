@@ -1,0 +1,16 @@
+# Dropped off by Chef
+
+[Unit]
+Description=ElasticSearch
+
+[Service]
+User=<%= node.elasticsearch[:user] %>
+Group=<%= node.elasticsearch[:user] %>
+Restart=on-failure
+LimitMEMLOCK=<%= node.elasticsearch[:limits][:memlock] %>
+LimitNOFILE=<%= node.elasticsearch[:limits][:nofile] %>
+Environment="ES_INCLUDE=<%= node.elasticsearch[:path][:conf] %>/elasticsearch-env.sh"
+ExecStart=<%= node.elasticsearch[:dir] %>/elasticsearch/bin/elasticsearch -f
+
+[Install]
+WantedBy=multi-user.target
