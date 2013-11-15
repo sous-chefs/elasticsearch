@@ -24,10 +24,18 @@ default.elasticsearch[:download_url]  = [node.elasticsearch[:host], node.elastic
 default.elasticsearch[:cluster][:name] = 'elasticsearch'
 default.elasticsearch[:node][:name]    = node.name
 
+# === SERVICE
+#
+# init_style options:
+# - initd
+# - systemd
+default.elasticsearch[:init_style] = 'initd'
+
 # === USER & PATHS
 #
 default.elasticsearch[:dir]       = "/usr/local"
 default.elasticsearch[:user]      = "elasticsearch"
+default.elasticsearch[:uid]       = nil  # set elasticsearch user to specific uid. nil for next available
 
 default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
 default.elasticsearch[:path][:data] = "/usr/local/var/data/elasticsearch"

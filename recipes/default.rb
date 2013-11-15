@@ -19,6 +19,7 @@ user node.elasticsearch[:user] do
   shell   "/bin/bash"
   gid     node.elasticsearch[:user]
   supports :manage_home => false
+  uid     node.elasticsearch[:uid]
   action  :create
 end
 
@@ -55,12 +56,38 @@ end
 
 # Create service
 #
-template "/etc/init.d/elasticsearch" do
-  source "elasticsearch.init.erb"
-  owner 'root' and mode 0755
+case node.elasticsearch[:init_style]
+when 'initd'
+  service_name = 'elasticsearch'
+  service_provider = Chef::Provider::Service::Init
+
+  template "/etc/init.d/elasticsearch" do
+    source "elasticsearch.init.erb"
+    owner 'root' and mode 0755
+  end
+when 'systemd'
+  service_name = 'elasticsearch.service'
+  service_provider = Chef::Provider::Service::Systemd
+
+  # systemd uses 'infinity' instead of 'unlimited' when setting rlimits
+  node.elasticsearch[:limits].each { |k,v| node.elasticsearch[:limits][k] = 'infinity' if v == 'unlimited' }
+
+  execute "reload-systemd" do
+    command "systemctl --system daemon-reload"
+    action :nothing
+  end
+
+  template "/etc/systemd/system/elasticsearch.service" do
+    source "elasticsearch.service.erb"
+    owner "root" and group 'root' and mode 0755
+    notifies :run, "execute[reload-systemd]", :immediately
+    notifies :restart, "service[elasticsearch]", :delayed unless node.elasticsearch[:skip_restart]
+  end
 end
 
 service "elasticsearch" do
+  service_name service_name
+  provider service_provider
   supports :status => true, :restart => true
   action [ :enable ]
 end
@@ -94,23 +121,29 @@ end
 
 # Increase open file and memory limits
 #
-bash "enable user limits" do
-  user 'root'
 
-  code <<-END.gsub(/^    /, '')
-    echo 'session    required   pam_limits.so' >> /etc/pam.d/su
-  END
+# systemd allows specifying rlimits in .service files.
+# For other init styles, use the limits.d infrastructure:
 
-  not_if { ::File.read("/etc/pam.d/su").match(/^session    required   pam_limits\.so/) }
-end
+unless node.elasticsearch[:init_style] == 'systemd'
+  bash "enable user limits" do
+    user 'root'
 
-log "increase limits for the elasticsearch user"
+    code <<-END.gsub(/^    /, '')
+      echo 'session    required   pam_limits.so' >> /etc/pam.d/su
+    END
 
-file "/etc/security/limits.d/10-elasticsearch.conf" do
-  content <<-END.gsub(/^    /, '')
-    #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}
-    #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}
-  END
+    not_if { ::File.read("/etc/pam.d/su").match(/^session    required   pam_limits\.so/) }
+  end
+
+  log "increase limits for the elasticsearch user"
+
+  file "/etc/security/limits.d/10-elasticsearch.conf" do
+    content <<-END.gsub(/^    /, '')
+      #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    nofile    #{node.elasticsearch[:limits][:nofile]}
+      #{node.elasticsearch.fetch(:user, "elasticsearch")}     -    memlock   #{node.elasticsearch[:limits][:memlock]}
+    END
+  end
 end
 
 # Create file with ES environment variables
