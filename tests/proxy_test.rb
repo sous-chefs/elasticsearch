@@ -14,7 +14,7 @@ describe_recipe 'elasticsearch::proxy' do
   end
 
   it "has a username in passwords file" do
-    file("/usr/local/etc/elasticsearch/passwords").must_exist.must_include("USERNAME")
+    file("#{node.elasticsearch[:path][:conf]}/passwords").must_exist.must_include("USERNAME")
   end
 
   it "proxies request to elasticsearch" do

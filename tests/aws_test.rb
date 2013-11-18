@@ -12,7 +12,7 @@ describe_recipe 'elasticsearch::aws' do
 
   it "creates the directory" do
     if node.recipes.include?("elasticsearch::aws")
-      directory("/usr/local/elasticsearch/plugins/cloud-aws/").must_exist.with(:owner, 'elasticsearch')
+      directory("#{node.elasticsearch[:dir]}/elasticsearch/plugins/cloud-aws/").must_exist.with(:owner, 'elasticsearch')
     end
   end
 

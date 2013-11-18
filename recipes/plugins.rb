@@ -1,4 +1,5 @@
-directory "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/" do
+include_recipe "elasticsearch::_default"
+directory "#{node.elasticsearch[:dir]}/elasticsearch/plugins/" do
   owner node.elasticsearch[:user]
   group node.elasticsearch[:user]
   mode 0755

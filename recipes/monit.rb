@@ -1,3 +1,4 @@
+include_recipe "elasticsearch::_default"
 # Add Monit configuration file via the `monitrc` definition
 #
 begin

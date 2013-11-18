@@ -1,4 +1,4 @@
-rootLogger: INFO, console, file
+rootLogger: <%= node.elasticsearch[:rootlogger] %>
 
 <% node.elasticsearch[:logging].sort.each do |key, value| %>
 logger.<%= key %>: <%= value %>
@@ -38,3 +38,12 @@ appender:
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+  
+  syslog:
+    type: syslog
+    syslogHost: <%= node.elasticsearch[:syslog][:server] %>
+    facility: <%= node.elasticsearch[:syslog][:facility] %>
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+   
