@@ -21,7 +21,13 @@ include_recipe "elasticsearch::_default"
 node.set['elasticsearch']['discovery']['zen']['ping']['multicast']['enabled'] = false
 nodes = search_for_nodes(node['elasticsearch']['discovery']['search_query'],
                          node['elasticsearch']['discovery']['node_attribute'])
+
+p node['elasticsearch']['discovery']['node_attribute']
 Chef::Log.debug("Found elasticsearch nodes at #{nodes.join(', ').inspect}")
+
+#first put the default value ipaddress
+nodes << "#{node.ipaddress}"
+
 node.set['elasticsearch']['discovery']['zen']['ping']['unicast']['hosts'] = nodes.join(',')
 
 # set minimum_master_nodes to n/2+1 to avoid split brain scenarios

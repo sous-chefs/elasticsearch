@@ -15,15 +15,16 @@ end
 
 dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
   action :install
+  notifies  :stop, "service[elasticsearch]" , :immediately
 end
 
 
 #use bash to stop service started automatically during the package installation
 # a notify to service['elasticsearch'] do it too late
-bash "stop-service" do
-  user "root"
-  cwd "/tmp"
-  code <<-EOH
-  /etc/init.d/elasticsearch stop
-  EOH
-end
+#bash "stop-service" do
+#  user "root"
+#  cwd "/tmp"
+#  code <<-EOH
+#  /etc/init.d/elasticsearch stop
+#  EOH
+#end

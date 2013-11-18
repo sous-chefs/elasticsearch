@@ -45,6 +45,7 @@ else
     variables({
       :lusers => node.default[:elasticsearch][:jmx_users]
     })
+    notifies :restart, "service[elasticsearch]", :immediately
 
   end
 end
