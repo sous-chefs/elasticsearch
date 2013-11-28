@@ -50,6 +50,9 @@ else
   end
 end
 
+#Add a predefined env_options
+options << node.default["elasticsearch"]["env_options"]
+
 node.default["elasticsearch"]["env_options"] << options
 node.default["elasticsearch"]["jmx"]=true
 
