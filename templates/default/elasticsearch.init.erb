@@ -106,12 +106,12 @@ status() {
 
   # RUNNING
   if [[ $pid && -d "/proc/$pid" ]]; then
-    version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
+    version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | ruby -rrubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
     echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
       curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
-      ruby -rubygems -e '
+      ruby -rrubygems -e '
         begin
           require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
           def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
