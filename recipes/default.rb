@@ -4,6 +4,11 @@ Erubis::Context.send(:include, Extensions::Templates)
 
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
+# chmod /tmp to 777 because god dammit
+directory '/tmp' do
+  mode 0777
+end
+
 include_recipe "elasticsearch::curl"
 # Create user and group
 #

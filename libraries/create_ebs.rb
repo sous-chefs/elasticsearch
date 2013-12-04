@@ -13,7 +13,7 @@ module Extensions
   #
   def create_ebs device, params={}
 
-    ruby_block "Create EBS volume on #{device} (size: #{params[:ebs][:size]}GB)" do
+    rb = ruby_block "Create EBS volume on #{device} (size: #{params[:ebs][:size]}GB)" do
 
       block do
         require 'fog'
@@ -82,8 +82,10 @@ module Extensions
 
       end
 
+      action :nothing
     end
 
+    rb.run_action(:create)
   end
 
 end
