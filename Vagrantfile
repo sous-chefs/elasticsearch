@@ -139,9 +139,6 @@ node_config = {
       :nofile  => 1024,
       :memlock => 512
     },
-    :bootstrap => {
-      :mlockall => false
-    },
 
     :logging => {
       :discovery => 'TRACE',
