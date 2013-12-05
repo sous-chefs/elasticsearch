@@ -29,7 +29,7 @@ end
 
 puts "[Vagrant   ] #{Vagrant::VERSION}"
 
-# Automatically install and mount cookbooks from Berksfile
+# Automatically install and mount cookbooks from Berksfile on old Vagrant
 #
 require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 
@@ -168,7 +168,7 @@ Vagrant::Config.run do |config|
 
   distributions.each_pair do |name, options|
 
-    config.vagrant.dotfile_name = Vagrant::VERSION < '1.1' ? '.vagrant-1' : '.vagrant-2'
+    config.vagrant.dotfile_name = '.vagrant-1' if Vagrant::VERSION < '1.1'
 
     config.vm.define name, :options => options[:primary] do |box_config|
 
@@ -177,24 +177,46 @@ Vagrant::Config.run do |config|
 
       box_config.vm.host_name = name.to_s
 
-      box_config.vm.network   :hostonly, options[:ip]
+      if Vagrant::VERSION < '1.1'
+        box_config.vm.network   :hostonly, options[:ip]
+      else
+        config.vm.network :private_network, ip: options[:ip]
+      end
 
       box_config.berkshelf.enabled = true if Vagrant::VERSION > '1.1'
 
       # Box customizations
-      #
+
       # 1. Limit memory to 512 MB
       #
-      box_config.vm.customize ["modifyvm", :id, "--memory", 512]
-      #
+      if Vagrant::VERSION < '1.1'
+        box_config.vm.customize ["modifyvm", :id, "--memory", 512]
+      else
+        config.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", 512]
+        end
+      end
+
       # 2. Create additional disks
       #
-      if name == :precise64 or name == :centos6
-        disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
-        box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1,"--type", "hdd", "--medium", disk1]
-        box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 2,"--type", "hdd", "--medium", disk2]
+      if Vagrant::VERSION < '1.1'
+        if name == :precise64 or name == :centos6
+          disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
+          box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
+          box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1,"--type", "hdd", "--medium", disk1]
+          box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
+          box_config.vm.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 2,"--type", "hdd", "--medium", disk2]
+        end
+      else
+        if name == :precise64 or name == :centos6
+          config.vm.provider :virtualbox do |vb|
+            disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
+            vb.customize ["createhd", "--filename", disk1, "--size", 250]
+            vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 1,"--type", "hdd", "--medium", disk1]
+            vb.customize ["createhd", "--filename", disk2, "--size", 250]
+            vb.customize ["storageattach", :id, "--storagectl", "SATA Controller", "--port", 2,"--type", "hdd", "--medium", disk2]
+          end
+        end
       end
 
       # Update packages on the machine
