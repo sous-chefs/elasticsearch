@@ -388,8 +388,16 @@ Of course, you should connect to the box with SSH and check things out:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-Tests
------
+Tutorial
+--------
+
+You can follow a comprehensive tutorial,
+["Deploying Elasticsearch with Chef Solo"](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/),
+which walks through the process of installing a production-ready Elasticsearch system on Amazon EC2.
+
+
+Cookbook Integration Tests
+--------------------------
 
 The cookbook provides test cases in the `files/default/tests/minitest/` directory,
 which are executed as a part of the _Chef_ run in _Vagrant_
