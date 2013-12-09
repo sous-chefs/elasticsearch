@@ -405,6 +405,12 @@ which are executed as a part of the _Chef_ run in _Vagrant_
 They check the basic installation mechanics, populate the `test_chef_cookbook` index
 with some sample data, perform a simple search, etc.
 
+To run the tests, set the `TEST` environment when running Vagrant:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    time CHEF=latest TEST=yes bundle exec vagrant up precise64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Repository
 ----------
