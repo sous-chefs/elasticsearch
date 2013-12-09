@@ -15,6 +15,8 @@
 # <http://vagrantup.com/v1/docs/provisioners/chef_solo.html>.
 #
 
+require 'json'
+
 # Lifted from <https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/hash/deep_merge.rb>
 #
 class Hash
@@ -161,6 +163,18 @@ node_config = {
   }
 }
 
+if ENV['CONFIG']
+  # See e.g. https://gist.github.com/karmi/2050769#file-node-example-json
+  begin
+    custom_config = JSON.parse(File.read(ENV['CONFIG']), symbolize_names: true)
+  rescue Exception => e
+    STDERR.puts "[!] Error when reading the configuration file:",
+                e.inspect
+  end
+else
+  custom_config = {}
+end
+
 Vagrant::Config.run do |config|
 
   distributions.each_pair do |name, options|
@@ -245,7 +259,6 @@ Vagrant::Config.run do |config|
         chef.log_level         = :debug
 
         chef.run_list = options[:run_list]
-        chef.json     = node_config.dup.deep_merge!(options[:node])
         chef.run_list << 'elasticsearch::test' if ENV['TEST']
         chef.json     = node_config.dup.deep_merge!(options[:node]).deep_merge!(custom_config)
       end

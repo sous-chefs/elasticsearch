@@ -387,6 +387,34 @@ Of course, you should connect to the box with SSH and check things out:
     sudo monit status elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+To change the system after the installation, you can just update node attributes and run the
+`vagrant provision` command. Instead of changing the `default/attributes.rb` file or
+the `Vagrantfile`, you can provide a separate JSON file with the node configuration.
+
+For example, let's upgrade the Elasticsearch version. First, we have to create
+the node configuration file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    echo '{
+      "elasticsearch" : {
+        "version" : "1.0.0.Beta2"
+      }
+    }
+    ' > node.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now, pass the path to the configuration file to the `vagrant provision` command:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    time CONFIG=node.json bundle exec vagrant provision precise64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Verify that the Elasticsearch version has been upgraded to `1.0.0.Beta2`, in fact:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    curl '33.33.33.10:9200?pretty'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 
 Tutorial
 --------
