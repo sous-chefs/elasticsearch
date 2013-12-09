@@ -307,11 +307,13 @@ Please note that all data bags _must_ have attributes enclosed in an environment
 [documentation](http://docs.opscode.com/chef/essentials_data_bags.html#use-data-bags-with-environments).
 
 
-Testing with Vagrant
---------------------
+Vagrant Integration
+-------------------
 
 The cookbook comes with a [`Vagrantfile`](https://github.com/elasticsearch/cookbook-elasticsearch/blob/master/Vagrantfile), which allows you to test-drive the installation and configuration with
 [_Vagrant_](http://vagrantup.com/), a tool for building virtualized infrastructures.
+
+**NOTE: Currently, the integration supports only "gem" variant of Vagrant, i.e. [1.0.x](http://rubygems.org/gems/vagrant).**
 
 First, make sure, you have both _VirtualBox_ and _Vagrant_
 [installed](http://docs.vagrantup.com/v1/docs/getting-started/index.html).
