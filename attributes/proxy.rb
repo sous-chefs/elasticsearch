@@ -11,6 +11,7 @@ users = Chef::DataBagItem.load('elasticsearch', 'users')[node.chef_environment][
 #
 # It's possible to define the credentials directly in your node configuration, if your wish.
 #
+default.elasticsearch[:nginx][:server_name]    = "elasticsearch"
 default.elasticsearch[:nginx][:port]           = "8080"
 default.elasticsearch[:nginx][:dir]            = ( node.nginx[:dir]     rescue '/etc/nginx'     )
 default.elasticsearch[:nginx][:user]           = ( node.nginx[:user]    rescue 'nginx'          )
