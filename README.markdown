@@ -59,7 +59,7 @@ echo '{
   },
 
   "elasticsearch": {
-    "cluster_name" : "elasticsearch_test_chef",
+    "cluster" : { "name" : "elasticsearch_test_chef" },
     "bootstrap.mlockall" : false
   }
 }
