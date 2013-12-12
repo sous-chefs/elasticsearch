@@ -1,11 +1,11 @@
 name             "elasticsearch"
 
-maintainer       "karmi"
-maintainer_email "karmi@karmi.cz"
+maintainer       "jbdamiano"
+maintainer_email "jbdamianno@gmail.com"
 license          "Apache"
 description      "Installs and configures elasticsearch"
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.markdown'))
-version          "0.3.4"
+version          "0.3.5"
 
 depends 'ark'
 

@@ -21,6 +21,7 @@ if node.elasticsearch[:deb_type] == "source"
 else
   package "elasticsearch" do
     action :install
+     options("--force-yes")
     notifies  :stop, "service[elasticsearch]" , :immediately	
   end
 end

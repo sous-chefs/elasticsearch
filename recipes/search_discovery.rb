@@ -25,8 +25,9 @@ nodes = search_for_nodes(node['elasticsearch']['discovery']['search_query'],
 p node['elasticsearch']['discovery']['node_attribute']
 Chef::Log.debug("Found elasticsearch nodes at #{nodes.join(', ').inspect}")
 
+
 #first put the default value ipaddress
-nodes << "#{node.ipaddress}"
+nodes << "#{node.ipaddress}" unless nodes.include?("#{node.ipaddress}")
 
 node.set['elasticsearch']['discovery']['zen']['ping']['unicast']['hosts'] = nodes.join(',')
 
