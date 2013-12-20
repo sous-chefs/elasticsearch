@@ -17,32 +17,39 @@ module Extensions
 
       block do
         require 'fog'
-        require 'open-uri'
-
-        region      = params[:region] || node.elasticsearch[:cloud][:aws][:region]
-        instance_id = open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
-        raise "[!] Cannot get instance id from AWS meta-data API" unless instance_id
+        # get out region and instance_ID from the ohai node data - removes the reliance on open-uri and removes the possibility 
+        # that we connect to the wrong region if the attribute is set wrong -TH
+        region      = node[:ec2][:placement_availability_zone].chop()
+        instance_id = node[:ec2][:instance_id]
 
         Chef::Log.debug("Region: #{region}, instance ID: #{instance_id}")
 
+        # sets the options for the Fog connection to AWS -TH
         fog_options = { :provider => 'AWS', :region => region }
+        # if access_key and secret_key are set, merge them in, otherwise fail back to using IAM role -TH
         if (access_key = node.elasticsearch[:cloud][:aws][:access_key]) &&
             (secret_key = node.elasticsearch[:cloud][:aws][:secret_key])
           fog_options.merge!(:aws_access_key_id => access_key, :aws_secret_access_key => secret_key)
-        else  # Lack of credentials implies a IAM role will provide keys
+        else  # Lack of credentials implies a IAM role will provide keys 
           fog_options.merge!(:use_iam_profile => true)
         end
+
+        # build our AWS conenction ** be careful, this returns properly even if it fails to connect **
+        # connection failures will result in "Excon::Errors::SocketError: getaddrinfo: Name or service not known (SocketError)" in the chef-client output
+        # This will cause the run to fail. -TH
         aws = Fog::Compute.new(fog_options)
 
-        server = aws.servers.get instance_id
-
+        # fetch the instance information from AWS -TH
+        server = aws.servers.get(instance_id)
+        
         # Create EBS volume if the device is free
         ebs_device = params[:ebs][:device] || device
-        unless server.volumes.map(&:device).include?(ebs_device)
+        
+		unless server.volumes.map(&:device).include?(ebs_device)
           options = { :device                => ebs_device,
                       :size                  => params[:ebs][:size],
                       :delete_on_termination => params[:ebs][:delete_on_termination],
-                      :availability_zone     => server.availability_zone,
+                      :availability_zone     => node[:ec2][:placement_availability_zone], #use the node info to pick the AZ -TH
                       :server                => server }
 
           options[:type] = params[:ebs][:type] if params[:ebs][:type]
@@ -61,7 +68,7 @@ module Extensions
             end
           end
 
-          volume = aws.volumes.new options
+          volume = aws.volumes.new(options)
           volume.save
 
           # Create tags
