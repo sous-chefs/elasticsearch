@@ -5,8 +5,8 @@
 # In a data bag, you can define multiple devices to be formatted and/or mounted:
 #
 #    {
-#      "elasticsearch": {
-#        "data" : {
+#	    "id": "data",
+#	    "prod": {
 #          "devices" : {
 #            "/dev/sdb" : {
 #              "file_system"      : "ext3",
@@ -18,20 +18,20 @@
 #          }
 #        }
 #      }
-#    }
+#    
 #
 # To set the configuration with nodes attributes (eg. for Chef Solo), see the Vagrantfile.
 # See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
 #
-# You have to add the `mount_path` of each defined device to `default.elasticsearch[:path][:data]`,
+# You have to add the `mount_path` of each defined device to `defoult.elasticsearch[:path][:data]`,
 # either as a comma-delimited string or as a Ruby/JSON array, so it is used in the Elasticsearch
 # configuration.
 #
 # For EC2, you can define additional parameters for creating and attaching EBS volumes:
 #
 #    {
-#      "elasticsearch": {
-#        "data" : {
+#       "id": "data",
+#       "prod": {
 #          "devices" : {
 #            "/dev/sda2" : {
 #              "file_system"      : "ext3",
@@ -50,15 +50,15 @@
 #          }
 #        }
 #      }
-#    }
+#    
 #
 #
 # Some kernels attach EBS devices to `/dev/xvd*` instead of `/dev/sd*`. You can set a specific name
 # with the `ebs.device` property:
 #
 #    {
-#      "elasticsearch": {
-#        "data" : {
+#       "id": "data",
+#       "prod": {
 #          "devices" : {
 #            "/dev/xvda2" : {
 #              # ...
@@ -77,8 +77,8 @@
 # having all the data available in the snapshot:
 #
 #    {
-#      "elasticsearch": {
-#        "data" : {
+#       "id": "data",
+#       "prod": {
 #          "devices" : {
 #            "/dev/sda2" : {
 #              # ...
