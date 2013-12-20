@@ -28,7 +28,7 @@ node.elasticsearch[:data][:devices].each do |device, params|
     action  [:mount, :enable]
 
     only_if { File.exists?(device) }
-	not_if "grep -qs #{device} /proc/mounts"
+    not_if "grep -qs #{device} /proc/mounts"
     if node.elasticsearch[:path][:data].include?(params[:mount_path])
       Chef::Log.debug "Schedule Elasticsearch service restart..."
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
