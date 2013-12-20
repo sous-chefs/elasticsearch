@@ -17,10 +17,11 @@ module Extensions
 
       block do
         require 'fog'
+        require 'open-uri'
         # get out region and instance_ID from the ohai node data - removes the reliance on open-uri and removes the possibility 
         # that we connect to the wrong region if the attribute is set wrong -TH
-        region      = node[:ec2][:placement_availability_zone].chop()
-        instance_id = node[:ec2][:instance_id]
+        region      = node[:ec2][:placement_availability_zone].chop() || node.elasticsearch[:cloud][:aws][:region] 
+        instance_id = node[:ec2][:instance_id] || open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
 
         Chef::Log.debug("Region: #{region}, instance ID: #{instance_id}")
 
@@ -49,7 +50,7 @@ module Extensions
           options = { :device                => ebs_device,
                       :size                  => params[:ebs][:size],
                       :delete_on_termination => params[:ebs][:delete_on_termination],
-                      :availability_zone     => node[:ec2][:placement_availability_zone], #use the node info to pick the AZ -TH
+                      :availability_zone     => server.availability_zone, 
                       :server                => server }
 
           options[:type] = params[:ebs][:type] if params[:ebs][:type]
