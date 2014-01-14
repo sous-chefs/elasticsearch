@@ -49,6 +49,7 @@ appender:
     type: dailyRollingFile
     file: ${path.logs}/${cluster.name}.log
     datePattern: "'.'yyyy-MM-dd"
+    maxBackupIndex: 7
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
