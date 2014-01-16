@@ -1,4 +1,4 @@
-default.elasticsearch[:logging]['action'] = 'DEBUG'
+default.elasticsearch[:logging]['action'] = 'FATAL'
 default.elasticsearch[:logging]['com.amazonaws'] = 'WARN'
 default.elasticsearch[:logging]['index.search.slowlog'] = 'TRACE, index_search_slow_log_file'
 default.elasticsearch[:logging]['index.indexing.slowlog'] = 'TRACE, index_indexing_slow_log_file'

@@ -25,8 +25,8 @@
 #     // ...
 #
 
-es.logger.level: WARN
-rootLogger: WARN, console, file
+es.logger.level: FATAL 
+rootLogger: FATAL, console, file
 
 # ----- Configuration set by Chef ---------------------------------------------
 <% node.elasticsearch[:logging].sort.each do |key, value| %>
