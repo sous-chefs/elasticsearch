@@ -55,6 +55,12 @@ module Extensions
         end rescue false
       end
 
+      if File.directory? "#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}"
+        action :create
+      else
+        subscribes :create, "execute[set owner on #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}]"
+        action :nothing
+      end
     end
 
   end
