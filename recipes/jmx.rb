@@ -45,7 +45,7 @@ else
     variables({
       :lusers => node.default[:elasticsearch][:jmx_users]
     })
-    notifies :restart, "service[elasticsearch]", :immediately
+    notifies :restart, "service[elasticsearch]", :immediately unless node.elasticsearch[:skip_restart]
 
   end
 end
