@@ -36,10 +36,9 @@ module Extensions
       block do
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
+        name    = params['name']  
       
         command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
-        
-        
         
         Chef::Log.debug command
 
@@ -52,7 +51,7 @@ module Extensions
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
       not_if do
-        Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|
+        Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch/plugins/").any? do |plugin|
           next if plugin =~ /^\./
           name.include? plugin
         end rescue false
