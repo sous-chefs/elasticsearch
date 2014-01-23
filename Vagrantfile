@@ -38,7 +38,7 @@ require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit |,
+    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::jmx elasticsearch::test |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {
