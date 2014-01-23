@@ -18,6 +18,7 @@ else
 
   group node.elasticsearch[:user] do
     action :create
+    system true
   end
 
   user node.elasticsearch[:user] do
@@ -27,6 +28,7 @@ else
     gid     node.elasticsearch[:user]
     supports :manage_home => false
     action  :create
+    system true
   end
 
   # FIX: Work around the fact that Chef creates the directory even for `manage_home: false`
@@ -68,9 +70,6 @@ template "/etc/init.d/elasticsearch" do
   owner 'root' and mode 0755
 end
 
-
-
-
 if node.elasticsearch[:method] == "source"
   service "elasticsearch" do
     supports :status => true, :restart => true
@@ -92,7 +91,7 @@ if node.elasticsearch[:method] == "source"
     prefix_home   ark_prefix_home
 
     notifies :start,   'service[elasticsearch]'
-    notifies :restart, 'service[elasticsearch]'
+    notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
     not_if do
       link   = "#{node.elasticsearch[:dir]}/elasticsearch"
@@ -132,7 +131,7 @@ template "elasticsearch-env.sh" do
   source "elasticsearch-env.sh.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, 'service[elasticsearch]'
+  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
 
 # Create ES config file
@@ -142,7 +141,7 @@ template "elasticsearch.yml" do
   source "elasticsearch.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, 'service[elasticsearch]'
+  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
 
 # Create ES logging file
@@ -152,5 +151,5 @@ template "logging.yml" do
   source "logging.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
-  notifies :restart, 'service[elasticsearch]'
+  notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end

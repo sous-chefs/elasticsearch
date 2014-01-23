@@ -12,8 +12,8 @@ default.elasticsearch[:syslog][:facility] = 'local0'
 # --------------------------------------------
 #
 # The template iterates over all values set in the `node.elasticsearch.logging`
-# namespaces, and prints all settings which have been configured.
-# This file only configures the minimal default set.
+# namespace and prints all settings which have been configured;
+# this file only configures the minimal default set.
 #
 # To configure logging, simply set the corresponding attribute, eg.:
 #

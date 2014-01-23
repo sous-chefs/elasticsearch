@@ -4,6 +4,7 @@
 .vagrant-2
 Berksfile.lock
 Gemfile.lock
+node.json
 tmp/*
 !tmp/.gitignore
 !tmp/cookbooks/.gitignore

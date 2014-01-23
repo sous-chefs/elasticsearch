@@ -15,6 +15,8 @@
 # <http://vagrantup.com/v1/docs/provisioners/chef_solo.html>.
 #
 
+require 'json'
+
 # Lifted from <https://github.com/rails/rails/blob/master/activesupport/lib/active_support/core_ext/hash/deep_merge.rb>
 #
 class Hash
@@ -29,14 +31,14 @@ end
 
 puts "[Vagrant   ] #{Vagrant::VERSION}"
 
-# Automatically install and mount cookbooks from Berksfile
+# Automatically install and mount cookbooks from Berksfile on old Vagrant
 #
 require 'berkshelf/vagrant' if Vagrant::VERSION < '1.1'
 
 distributions = {
   :precise64 => {
     :url      => 'http://files.vagrantup.com/precise64.box',
-    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::jmx elasticsearch::aws elasticsearch::data elasticsearch::monit elasticsearch::test |,
+    :run_list => %w| apt build-essential vim java monit elasticsearch elasticsearch::plugins elasticsearch::proxy elasticsearch::aws elasticsearch::data elasticsearch::monit |,
     :ip       => '33.33.33.10',
     :primary  => true,
     :node     => {
@@ -93,7 +95,7 @@ distributions = {
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
-    :run_list => %w| yum::epel build-essential vim java elasticsearch elasticsearch::proxy elasticsearch::data elasticsearch::jmx elasticsearch::test |,
+    :run_list => %w| yum::epel build-essential vim java elasticsearch elasticsearch::proxy elasticsearch::data |,
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
@@ -141,10 +143,7 @@ node_config = {
       :nofile  => 1024,
       :memlock => 512
     },
-    :bootstrap => {
-      :mlockall => false
-    },
-	:rootlogger => "INFO, syslog",
+    :rootlogger => "INFO, syslog",
     :logging => {
       :discovery => 'TRACE',
       'index.indexing.slowlog' => 'INFO, index_indexing_slow_log_file'
@@ -166,11 +165,23 @@ node_config = {
   }
 }
 
+if ENV['CONFIG']
+  # See e.g. https://gist.github.com/karmi/2050769#file-node-example-json
+  begin
+    custom_config = JSON.parse(File.read(ENV['CONFIG']), symbolize_names: true)
+  rescue Exception => e
+    STDERR.puts "[!] Error when reading the configuration file:",
+                e.inspect
+  end
+else
+  custom_config = {}
+end
+
 Vagrant::Config.run do |config|
 
   distributions.each_pair do |name, options|
 
-    config.vagrant.dotfile_name = Vagrant::VERSION < '1.1' ? '.vagrant-1' : '.vagrant-2'
+    config.vagrant.dotfile_name = '.vagrant-1' if Vagrant::VERSION < '1.1'
 
     config.vm.define name, :options => options[:primary] do |box_config|
 
@@ -179,24 +190,46 @@ Vagrant::Config.run do |config|
 
       box_config.vm.host_name = name.to_s
 
-      box_config.vm.network   :hostonly, options[:ip]
+      if Vagrant::VERSION < '1.1'
+        box_config.vm.network   :hostonly, options[:ip]
+      else
+        config.vm.network :private_network, ip: options[:ip]
+      end
 
       box_config.berkshelf.enabled = true if Vagrant::VERSION > '1.1'
 
       # Box customizations
-      #
+
       # 1. Limit memory to 512 MB
       #
-      box_config.vm.customize ["modifyvm", :id, "--memory", 512]
-      #
+      if Vagrant::VERSION < '1.1'
+        box_config.vm.customize ["modifyvm", :id, "--memory", 512]
+      else
+        config.vm.provider :virtualbox do |vb|
+          vb.customize ["modifyvm", :id, "--memory", 512]
+        end
+      end
+
       # 2. Create additional disks
       #
-      if name == :precise64 or name == :centos6
-        disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
-        box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 1,"--type", "hdd", "--medium", disk1]
-        box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
-        box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 2,"--type", "hdd", "--medium", disk2]
+      if Vagrant::VERSION < '1.1'
+        if name == :precise64 or name == :centos6
+          disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
+          box_config.vm.customize ["createhd", "--filename", disk1, "--size", 250]
+          box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 1,"--type", "hdd", "--medium", disk1]
+          box_config.vm.customize ["createhd", "--filename", disk2, "--size", 250]
+          box_config.vm.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 2,"--type", "hdd", "--medium", disk2]
+        end
+      else
+        if name == :precise64 or name == :centos6
+          config.vm.provider :virtualbox do |vb|
+            disk1, disk2 = "tmp/disk-#{Time.now.to_f}.vdi", "tmp/disk-#{Time.now.to_f}.vdi"
+            vb.customize ["createhd", "--filename", disk1, "--size", 250]
+            vb.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 1,"--type", "hdd", "--medium", disk1]
+            vb.customize ["createhd", "--filename", disk2, "--size", 250]
+            vb.customize ["storageattach", :id, "--storagectl", "SATAController", "--port", 2,"--type", "hdd", "--medium", disk2]
+          end
+        end
       end
 
       # Update packages on the machine
@@ -228,7 +261,8 @@ Vagrant::Config.run do |config|
         chef.log_level         = :debug
 
         chef.run_list = options[:run_list]
-        chef.json     = node_config.dup.deep_merge!(options[:node])
+        chef.run_list << 'elasticsearch::test' if ENV['TEST']
+        chef.json     = node_config.dup.deep_merge!(options[:node]).deep_merge!(custom_config)
       end
     end
 

@@ -66,7 +66,7 @@ CONFIG
 # By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
 # you may want to disable it.
 #
-default.elasticsearch[:bootstrap][:mlockall] = true
+default.elasticsearch[:bootstrap][:mlockall] = ( node.memory.total.to_i >= 1048576 ? true : false )
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
@@ -86,6 +86,10 @@ default.elasticsearch[:thread_stack_size] = "256k"
 
 default.elasticsearch[:env_options] = ""
 
+# === OTHER SETTINGS
+#
+default.elasticsearch[:skip_restart] = false
+
 # === PORT
 #
 default.elasticsearch[:http][:port] = 9200
@@ -93,6 +97,12 @@ default.elasticsearch[:http][:port] = 9200
 # === CUSTOM CONFIGURATION
 #
 default.elasticsearch[:custom_config] = {}
+
+# === LOGGING
+#
+# See `attributes/logging.rb`
+#
+default.elasticsearch[:logging] = {}
 
 # --------------------------------------------------
 # NOTE: Setting the attributes for elasticsearch.yml

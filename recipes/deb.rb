@@ -1,4 +1,5 @@
 include_recipe "elasticsearch::_default"
+# See <http://www.elasticsearch.org/guide/en/elasticsearch/reference/current/_linux.html>
 
 filename = node.elasticsearch[:deb_url].split('/').last
 

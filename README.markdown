@@ -59,7 +59,7 @@ echo '{
   },
 
   "elasticsearch": {
-    "cluster_name" : "elasticsearch_test_chef",
+    "cluster" : { "name" : "elasticsearch_test_chef" },
     "bootstrap.mlockall" : false
   }
 }
@@ -88,6 +88,8 @@ Finally, let's install latest Chef, install dependent cookbooks, and run `chef-s
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
 
 ssh -t -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com <<END
+  sudo apt-get update
+  sudo apt-get install build-essential curl git vim -y
   curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
   sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/elasticsearch
   sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf cookbook-elasticsearch-master.tar.gz
@@ -146,11 +148,10 @@ the information in an "elasticsearch" _data bag_:
     echo '{
       "id" : "aws",
       "_default" : {
-        "discovery" : { "type": "ec2" },
+        "discovery" : { "type": "ec2", "ec2" : { "groups": "elasticsearch" } },
 
         "cloud"   : {
-          "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" },
-          "ec2"     : { "groups": "elasticsearch" }
+          "aws"     : { "access_key": "YOUR ACCESS KEY", "secret_key": "YOUR SECRET ACCESS KEY" }
         }
       }
     }' > ./data_bags/elasticsearch/aws.json
@@ -188,6 +189,73 @@ or store the configuration in a data bag called `elasticsearch/data`:
         }
       }
     }
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Customizing the cookbook
+------------------------
+
+When you want to significantly customize the cookbook - changing the templates, adding a specific logic -,
+the best way is to use the "wrapper cookbook" pattern: creating a lightweight cookbook which will
+customize this one. Let's see how to change the template for the `logging.yml` file in this way.
+
+First, we need to create our "wrapper" cookbook:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+knife cookbook create my-elasticsearch --cookbook-path=. --verbose --yes
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Next, we'll include the main cookbook in our _default_ recipe:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/recipes/default.rb
+
+include_recipe 'java'
+include_recipe 'elasticsearch::default'
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Then, we'll change the `cookbook` for the appropriate template resource:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/recipes/default.rb
+
+logging_template = resources(:template => "logging.yml")
+logging_template.cookbook "my-elasticsearch"
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Of course, we may redefine the whole `logging.yml` template definition, or other parts of the cookbook.
+
+Don't forget to put your custom template into the appropriate path:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+cat <<-CONFIG >> ./cookbooks/my-elasticsearch/templates/default/logging.yml.erb
+# My custom logging template...
+CONFIG
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+We can configure a node with our custom cookbook, now:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+echo '{
+  "name": "elasticsearch-wrapper-cookbook-test",
+  "run_list": [
+    "recipe[my-elasticsearch]"
+  ]
+' > node.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Upload your "wrapper" cookbook to the server, and run Chef on the node,
+eg. following the instructions for _Chef Solo_ above:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+scp -R ... cookbooks/my-elasticsearch ...
+ssh ... "sudo mv --force --verbose /tmp/my-elasticsearch /var/chef/cookbooks/my-elasticsearch"
+ssh ... <<END
+....
+END
+ssh ... "sudo chef-solo -N elasticsearch-wrapper-cookbook-test -j node.json"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -312,11 +380,13 @@ The data bag name can be changed by settings the attribute node.elasticsearch[:j
 The SSL can't be customize.
 
 
-Testing with Vagrant
---------------------
+Vagrant Integration
+-------------------
 
 The cookbook comes with a [`Vagrantfile`](https://github.com/elasticsearch/cookbook-elasticsearch/blob/master/Vagrantfile), which allows you to test-drive the installation and configuration with
 [_Vagrant_](http://vagrantup.com/), a tool for building virtualized infrastructures.
+
+**NOTE: Currently, the integration supports only "gem" variant of Vagrant, i.e. [1.0.x](http://rubygems.org/gems/vagrant).**
 
 First, make sure, you have both _VirtualBox_ and _Vagrant_
 [installed](http://docs.vagrantup.com/v1/docs/getting-started/index.html).
@@ -392,15 +462,57 @@ Of course, you should connect to the box with SSH and check things out:
     sudo monit status elasticsearch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+To change the system after the installation, you can just update node attributes and run the
+`vagrant provision` command. Instead of changing the `default/attributes.rb` file or
+the `Vagrantfile`, you can provide a separate JSON file with the node configuration.
 
-Tests
------
+For example, let's upgrade the Elasticsearch version. First, we have to create
+the node configuration file:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    echo '{
+      "elasticsearch" : {
+        "version" : "1.0.0.Beta2"
+      }
+    }
+    ' > node.json
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Now, pass the path to the configuration file to the `vagrant provision` command:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    time CONFIG=node.json bundle exec vagrant provision precise64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Verify that the Elasticsearch version has been upgraded to `1.0.0.Beta2`, in fact:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    curl '33.33.33.10:9200?pretty'
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Tutorial
+--------
+
+You can follow a comprehensive tutorial,
+["Deploying Elasticsearch with Chef Solo"](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/),
+which walks through the process of installing a production-ready Elasticsearch system on Amazon EC2.
+
+
+Cookbook Integration Tests
+--------------------------
 
 The cookbook provides test cases in the `files/default/tests/minitest/` directory,
 which are executed as a part of the _Chef_ run in _Vagrant_
 (via the [Minitest Chef Handler](https://github.com/calavera/minitest-chef-handler) support).
 They check the basic installation mechanics, populate the `test_chef_cookbook` index
 with some sample data, perform a simple search, etc.
+
+To run the tests, set the `TEST` environment when running Vagrant:
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+    time CHEF=latest TEST=yes bundle exec vagrant up precise64
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
 Repository
