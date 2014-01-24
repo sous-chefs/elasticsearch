@@ -36,7 +36,6 @@ module Extensions
       block do
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
-        name    = params['name']  
       
         command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
         

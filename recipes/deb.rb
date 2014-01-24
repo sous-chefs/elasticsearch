@@ -8,6 +8,11 @@ service "elasticsearch" do
   action [ :nothing ]
 end
 
+execute "stop_es_after_install" do
+  command "sleep 5 && /etc/init.d/elasticsearch stop"
+  action :nothing
+end
+
 if node.elasticsearch[:deb_type] == "source"   
   remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
     source   node.elasticsearch[:deb_url]
@@ -23,7 +28,7 @@ else
   package "elasticsearch" do
     action :install
      options("--force-yes")
-    notifies  :stop, "service[elasticsearch]" , :immediately	
+    notifies  :run, "execute[stop_es_after_install]", :immediately
   end
 end
 

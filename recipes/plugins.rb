@@ -8,7 +8,5 @@ end
 
 node[:elasticsearch][:plugins].each do | name, config |
   next if name == 'elasticsearch/elasticsearch-cloud-aws' && !node.recipe?('aws')
-  plugname=/-(\w+)/.match(name)
-  next if plugname != nil && !File.directory?("#{node.elasticsearch[:dir]}/elasticsearch/plugins/#{plugname[1]}")
   install_plugin name, config
 end
