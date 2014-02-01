@@ -13,10 +13,10 @@ if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
 # Set limits for environments ignoring `/etc/security/limits.d`
 #
-<% unless node[:elasticsearch][:limits][:nofile].nil? %>
+<% unless node[:elasticsearch][:limits][:nofile].empty? %>
 ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
 <% end %>
-<% unless node[:elasticsearch][:limits][:memlock].nil? %>
+<% unless node[:elasticsearch][:limits][:memlock].empty? %>
 ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
 <% end %>
 
