@@ -6,13 +6,13 @@ search engine on a Linux compatible operating system.
 
 It requires a working _Java_ installation on the target node; add your preferred `java` cookbook to the node `run_list`.
 
-The cookbook downloads the _elasticsearch_ tarball (via the [`ark`](http://github.com/bryanwb/chef-ark) provider),
+The cookbook downloads the _Elasticsearch_ tarball (via the [`ark`](http://github.com/bryanwb/chef-ark) provider),
 unpacks and moves it to the directory you have specified in the node configuration (`/usr/local/elasticsearch` by default).
 
-It installs a service which enables you to start, stop, restart and check status of the _elasticsearch_ process.
+It installs a service which enables you to start, stop, restart and check status of the _Elasticsearch_ process.
 
 If you include the `elasticsearch::monit` recipe, it will create a configuration file for _Monit_,
-which will check whether _elasticsearch_ is running, reachable by HTTP and the cluster is in the "green" state.
+which will check whether _Elasticsearch_ is running, reachable by HTTP and the cluster is in the "green" state.
 (Assumed you have included a compatible ["monit" cookbook](http://community.opscode.com/cookbooks/monit)
 in your run list first.)
 
@@ -107,7 +107,7 @@ ssh -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com "curl local
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a full and thorough walktrough, please read the tutorial on
-[deploying elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/)
+[deploying Elasticsearch with _Chef Solo_](http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/)
 which uses this cookbook as an example.
 
 This cookbook comes with a Rake task which allows to create, bootstrap and configure an Amazon EC2 with a single command. Save your node configuration into `tmp/node.json` file and run:
@@ -269,7 +269,7 @@ management tool such as [_BigDesk_](http://github.com/lukas-vlcek/bigdesk) or
 (Don't forget to set the `node.elasticsearch[:nginx][:allow_cluster_api]` attribute to _true_
 if you want to access these tools via the proxy.)
 
-To enable authorized access to _elasticsearch_, you need to include the `elasticsearch::proxy` recipe,
+To enable authorized access to _Elasticsearch_, you need to include the `elasticsearch::proxy` recipe,
 which will install, configure and run [_Nginx_](http://nginx.org) as a reverse proxy, allowing users with proper
 credentials to connect.
 
@@ -360,7 +360,7 @@ You may want to test-drive this cookbook on a different distribution; check out 
 Launch the virtual machine (it will download the box unless you already have it):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    time CHEF=latest bundle exec vagrant up precise64
+    time UPDATE=yes CHEF=latest bundle exec vagrant up precise64
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The machine will be started and automatically provisioned with
@@ -372,13 +372,13 @@ You'll see _Chef_ debug messages flying by in your terminal, downloading, instal
 _Nginx_, _Elasticsearch_, and all the other components.
 The process should take less then 10 minutes on a reasonable machine and internet connection.
 
-After the process is done, you may connect to _elasticsearch_ via the _Nginx_ proxy from the outside:
+After the process is done, try connecting to _Elasticsearch_ via the _Nginx_ proxy from the outside:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    curl 'http://USERNAME:PASSWORD@33.33.33.10:8080/test_chef_cookbook/_search?pretty&q=*'
+    curl -i 'http://USERNAME:PASSWORD@33.33.33.10:8080'
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Of course, you should connect to the box with SSH and check things out:
+Of course, you can connect to the box with SSH and check things out:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
     bundle exec vagrant ssh precise64
