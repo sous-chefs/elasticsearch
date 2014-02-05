@@ -59,8 +59,7 @@ echo '{
   },
 
   "elasticsearch": {
-    "cluster" : { "name" : "elasticsearch_test_chef" },
-    "bootstrap.mlockall" : false
+    "cluster" : { "name" : "elasticsearch_test_chef" }
   }
 }
 ' > node.json
@@ -69,41 +68,45 @@ echo '{
 Let's upload it to our server (assuming Ubuntu on Amazon EC2):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-scp -o User=ubuntu \
-    -o IdentityFile=/path/to/your/key.pem \
-    -o StrictHostKeyChecking=no \
-    -o UserKnownHostsFile=/dev/null \
-    node.json ec2-12-45-67-89.compute-1.amazonaws.com:
+export HOST=ec2-12-45-67-89.compute-1.amazonaws.com
+export SSH_OPTIONS="-o User=ubuntu -o IdentityFile=/path/to/your/key.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+scp $SSH_OPTIONS node.json $HOST:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Let's download the cookbook on the target system:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-ssh -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com \
-  "curl -# -L -k -o cookbook-elasticsearch-master.tar.gz https://github.com/elasticsearch/cookbook-elasticsearch/archive/master.tar.gz"
+ssh -t $SSH_OPTIONS $HOST \
+  "curl -# -L -k -o /tmp/cookbook-elasticsearch-master.tar.gz https://github.com/elasticsearch/cookbook-elasticsearch/archive/master.tar.gz"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Finally, let's install latest Chef, install dependent cookbooks, and run `chef-solo`:
+Let's bootstrap the server now -- install latest Chef, couple of software packages and Ruby gems,
+and install dependent cookbooks via [_Berkshelf_](http://berkshelf.com):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-
-ssh -t -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com <<END
+time ssh -t $SSH_OPTIONS $HOST <<END
   sudo apt-get update
   sudo apt-get install build-essential curl git vim -y
   curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
   sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/elasticsearch
-  sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf cookbook-elasticsearch-master.tar.gz
+  sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf /tmp/cookbook-elasticsearch-master.tar.gz
   sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
-  sudo /opt/chef/embedded/bin/gem install berkshelf --version 1.4.5 --no-rdoc --no-ri
+  sudo /opt/chef/embedded/bin/gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
   sudo /opt/chef/embedded/bin/berks install --path=/var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/elasticsearch/Berksfile
-  sudo chef-solo -N elasticsearch-test-chef-solo -j node.json
 END
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Finally, let's run `chef-solo` to provision the node!
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
+ssh -t $SSH_OPTIONS $HOST "sudo chef-solo -N elasticsearch-test-chef-solo -j node.json"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Verify the installation with:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-ssh -i /path/to/your/key.pem ec2-12-45-67-89.compute-1.amazonaws.com "curl localhost:9200"
+ssh $SSH_OPTIONS $HOST "curl localhost:9200"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a full and thorough walktrough, please read the tutorial on
