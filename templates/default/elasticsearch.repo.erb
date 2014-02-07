@@ -1,0 +1,6 @@
+[elasticsearch]
+name=Elasticsearch repository
+baseurl=<%= node.elasticsearch[:repo_url] %>
+gpgcheck=1
+gpgkey=<%= node.elasticsearch[:repo_gpgkey] %>
+enabled=1
