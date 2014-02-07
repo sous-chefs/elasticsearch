@@ -6,7 +6,5 @@ if node.elasticsearch[:method] == "pkg"
   node.force_override[:elasticsearch][:bindir]      = "/usr/share/elasticsearch/bin"
   node.force_override[:elasticsearch][:path][:conf] = "/etc/elasticsearch"
   node.force_override[:elasticsearch][:nginx][:passwords_file] = "#{node.elasticsearch[:path][:conf]}/passwords"
-  node.force_override[:elasticsearch][:pid_path] = "/var/run/"
-  node.force_override[:elasticsearch][:pid_file] = "/var/run/elasticsearch.pid"
 end
 
