@@ -29,7 +29,7 @@ class Hash
   end unless respond_to?(:deep_merge!)
 end
 
-puts "[Vagrant   ] #{Vagrant::VERSION}"
+STDERR.puts "[Vagrant   ] #{Vagrant::VERSION}"
 
 # Automatically install and mount cookbooks from Berksfile on old Vagrant
 #
