@@ -2,6 +2,8 @@
 
 Erubis::Context.send(:include, Extensions::Templates)
 
+require 'yaml'
+
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
 include_recipe "elasticsearch::curl"
@@ -129,6 +131,9 @@ template "elasticsearch.yml" do
   path   "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml"
   source "elasticsearch.yml.erb"
   owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+  variables(
+    'custom_config' => node.elasticsearch[:custom_config].to_yaml.gsub(/^---/,''),
+  )
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
