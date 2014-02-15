@@ -24,13 +24,15 @@ describe_recipe 'elasticsearch::proxy' do
       timeout -= 1
     end
 
+    response = nil
+
     Net::HTTP.start('localhost', 8080) do |http|
       req = Net::HTTP::Get.new('/')
       req.basic_auth 'USERNAME', 'PASSWORD'
       response = http.request(req)
-      status = JSON.parse(response.body)['ok']
-      assert_equal status, true
     end
+
+    assert_equal "200", response.code
   end
 
 end
