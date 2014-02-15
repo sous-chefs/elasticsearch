@@ -99,10 +99,6 @@ distributions = {
     :ip       => '33.33.33.12',
     :primary  => false,
     :node     => {
-      :java => {
-        :install_flavor => "openjdk",
-        :jdk_version => "7"
-      },
       :elasticsearch => {
         :path => {
           :data => "/usr/local/var/data/elasticsearch/disk1"
@@ -128,6 +124,11 @@ distributions = {
 }
 
 node_config = {
+  :java => {
+    :install_flavor => "openjdk",
+    :jdk_version    => "7"
+  },
+
   :elasticsearch => {
     :cluster => { :name => "elasticsearch_vagrant" },
 
