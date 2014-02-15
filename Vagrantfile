@@ -235,21 +235,31 @@ Vagrant::Config.run do |config|
       #
       config.vm.provision :shell do |shell|
         shell.inline = %Q{
-          which apt-get > /dev/null 2>&1 && apt-get update --quiet --yes && apt-get install curl --quiet --yes || true;
-          which yum > /dev/null 2>&1 && yum update -y && yum install curl -y || true;
+          which apt-get > /dev/null 2>&1 && apt-get update --quiet --yes || true;
+          which yum > /dev/null 2>&1 && yum update -y || true;
         }
       end if ENV['UPDATE']
 
       # Install latest Chef on the machine
       #
       config.vm.provision :shell do |shell|
-        version = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
-        shell.inline = %Q{
-          which apt-get > /dev/null 2>&1 && apt-get install curl --quiet --yes || true;
-          which yum > /dev/null 2>&1 && yum install curl -y || true;
-          test -d "/opt/chef" || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''} || true;
-          /opt/chef/embedded/bin/gem list pry | grep pry || /opt/chef/embedded/bin/gem install pry --no-ri --no-rdoc || true;
-        }
+        version   = ENV['CHEF'].match(/^\d+/) ? ENV['CHEF'] : nil
+
+        if version
+          shell.inline = %Q{
+            which apt-get > /dev/null 2>&1 && apt-get install curl --quiet --yes || true;
+            which yum > /dev/null 2>&1 && yum install curl -y || true;
+            test -d "/opt/chef" && grep 'chef #{version}' /opt/chef/version-manifest.txt || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s -- #{version ? "-v #{version}" : ''};
+            /opt/chef/embedded/bin/gem list pry | grep pry || /opt/chef/embedded/bin/gem install pry --no-ri --no-rdoc || true;
+          }
+        else
+          shell.inline = %Q{
+            which apt-get > /dev/null 2>&1 && apt-get install curl --quiet --yes || true;
+            which yum > /dev/null 2>&1 && yum install curl -y || true;
+            test -d "/opt/chef" && chef-solo -v | grep 11 || curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --;
+            /opt/chef/embedded/bin/gem list pry | grep pry || /opt/chef/embedded/bin/gem install pry --no-ri --no-rdoc;
+          }
+        end
       end if ENV['CHEF']
 
       # Provision the machine with Chef Solo
