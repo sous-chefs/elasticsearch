@@ -42,7 +42,7 @@ start() {
     <% if node.platform_family == 'debian' %>
     ES_INCLUDE=$ES_INCLUDE start-stop-daemon --background --start --quiet --pidfile $PIDFILE --chuid <%= node[:elasticsearch][:user] %> --exec /usr/local/bin/elasticsearch -- -p $PIDFILE
     <% else %>
-    su <%= node[:elasticsearch][:user] %> -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch -p $PIDFILE"
+    su <%= node[:elasticsearch][:user] %> -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch<%= node[:elasticsearch][:version] > '1' ? ' -d' : '' %> -p $PIDFILE"
     <% end %>
 
     return $?
