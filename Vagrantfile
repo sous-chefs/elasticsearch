@@ -68,35 +68,11 @@ distributions = {
     }
   },
 
-  :precise32 => {
-    :url      => 'http://files.vagrantup.com/precise32.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
-    :ip       => '33.33.33.10',
-    :primary  => false,
-    :node     => {}
-  },
-
-  :lucid64 => {
-    :url      => 'http://files.vagrantup.com/lucid64.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
-    :ip       => '33.33.33.10',
-    :primary  => false,
-    :node     => {}
-  },
-
-  :lucid32 => {
-    :url      => 'http://files.vagrantup.com/lucid32.box',
-    :run_list => %w| apt vim java monit elasticsearch elasticsearch::proxy elasticsearch::monit |,
-    :ip       => '33.33.33.11',
-    :primary  => false,
-    :node     => {}
-  },
-
   :centos6 => {
     # Note: Monit cookbook broken on CentOS
     :url      => 'https://opscode-vm.s3.amazonaws.com/vagrant/boxes/opscode-centos-6.3.box',
     :run_list => %w| yum::epel build-essential vim java elasticsearch elasticsearch::proxy elasticsearch::data |,
-    :ip       => '33.33.33.12',
+    :ip       => '33.33.33.11',
     :primary  => false,
     :node     => {
       :elasticsearch => {
