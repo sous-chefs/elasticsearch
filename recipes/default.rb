@@ -28,10 +28,10 @@ end
 bash "remove the elasticsearch user home" do
   user    'root'
   code    "rm -rf  #{node.elasticsearch[:dir]}/elasticsearch"
-
-  not_if  "test -L #{node.elasticsearch[:dir]}/elasticsearch"
-  only_if "test -d #{node.elasticsearch[:dir]}/elasticsearch"
+  not_if  { ::File.symlink?("#{node.elasticsearch[:dir]}/elasticsearch") } 
+  only_if { ::File.directory?("#{node.elasticsearch[:dir]}/elasticsearch") }
 end
+
 
 # Create ES directories
 #
