@@ -49,7 +49,7 @@ appender:
     type: dailyRollingFile
     file: ${path.logs}/${cluster.name}.log
     datePattern: "'.'yyyy-MM-dd"
-<%= "maxBackupIndex: #{node.elasticsearch.maxbackupindex}" if node.elasticsearch.maxbackupindex%>
+    <%= "maxBackupIndex: #{node.elasticsearch.maxbackupindex}" if node.elasticsearch.maxbackupindex%>
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
