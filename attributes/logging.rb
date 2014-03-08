@@ -3,7 +3,9 @@ default.elasticsearch[:logging]['com.amazonaws'] = 'WARN'
 default.elasticsearch[:logging]['index.search.slowlog'] = 'TRACE, index_search_slow_log_file'
 default.elasticsearch[:logging]['index.indexing.slowlog'] = 'TRACE, index_indexing_slow_log_file'
 
-default.elasticsearch['maxbackupindex'] = nil
+# Configure how many archived files will be kept
+#
+default.elasticsearch[:logging]['max_backup_index'] = nil
 
 # --------------------------------------------
 # NOTE: Setting the attributes for logging.yml
