@@ -73,7 +73,7 @@ ark_prefix_root = node.elasticsearch[:dir] || node.ark[:prefix_root]
 ark_prefix_home = node.elasticsearch[:dir] || node.ark[:prefix_home]
 
 ark "elasticsearch" do
-  url   node.elasticsearch[:download_url]
+  url   [node.elasticsearch[:host], node.elasticsearch[:repository], "elasticsearch-#{node.elasticsearch[:version]}.tar.gz" ].join('/')
   owner node.elasticsearch[:user]
   group node.elasticsearch[:user]
   version node.elasticsearch[:version]
