@@ -12,7 +12,7 @@ end
 # Install the Fog gem for Chef run
 #
 chef_gem("fog") do
-  version '1.12.1'
+  version '1.21.0'
   action :install
 end
 
