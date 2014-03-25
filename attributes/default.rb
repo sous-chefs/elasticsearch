@@ -82,6 +82,7 @@ default.elasticsearch[:env_options] = ""
 # === OTHER SETTINGS
 #
 default.elasticsearch[:skip_restart] = false
+default.elasticsearch[:skip_start] = false
 
 # === PORT
 #
