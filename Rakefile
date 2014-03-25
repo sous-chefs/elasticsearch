@@ -248,13 +248,13 @@ task :provision => :setup do
 end
 
 task :setup do
-  ENV['AWS_ACCESS_KEY'] || ( puts "\n[!] Missing AWS_ACCESS_KEY environment variable...".ansi(:red) and exit(1) )
+  ENV['AWS_ACCESS_KEY_ID'] || ( puts "\n[!] Missing AWS_ACCESS_KEY_ID environment variable...".ansi(:red) and exit(1) )
   ENV['AWS_SECRET_ACCESS_KEY'] || ( puts "\n[!] Missing AWS_SECRET_ACCESS_KEY environment variable...".ansi(:red) and exit(1) )
 
   @args = {}
   @args[:name]                  = ENV['NAME']           || 'test-chef-cookbook-elasticsearch'
   @args[:aws_ssh_key_id]        = ENV['AWS_SSH_KEY_ID'] || ENV['USER']
-  @args[:aws_access_key_id]     = ENV['AWS_ACCESS_KEY']
+  @args[:aws_access_key_id]     = ENV['AWS_ACCESS_KEY_ID']
   @args[:aws_secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY']
   @args[:aws_region]            = ENV['AWS_REGION'] || 'us-east-1'
   @args[:aws_groups]            = ENV['AWS_GROUPS'] || 'elasticsearch'
