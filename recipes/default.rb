@@ -82,7 +82,7 @@ ark "elasticsearch" do
   prefix_root   ark_prefix_root
   prefix_home   ark_prefix_home
 
-  notifies :start,   'service[elasticsearch]'
+  notifies :start,   'service[elasticsearch]' unless node.elasticsearch[:skip_start]
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
   not_if do
