@@ -2,10 +2,22 @@
 #
 # elasticsearch
 #
+<% if node.platform_family?('debian') %>
+### BEGIN INIT INFO
+# Provides:          elasticsearch
+# Required-Start:    $network $remote_fs $named
+# Required-Stop:     $network $remote_fs $named
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: Starts elasticsearch
+# Description:       Starts elasticsearch using start-stop-daemon
+### END INIT INFO
+<% else %>
 # chkconfig:   - 57 47
 # description: elasticsearch
 # processname: elasticsearch
 # config:      <%= node[:elasticsearch][:path][:conf] %>/elasticsearch.yml
+<% end %>
 
 # Source networking configuration
 #
