@@ -132,3 +132,5 @@ default.elasticsearch[:logging] = {}
 #     'threadpool.index.size' => '2'
 #     // ...
 #
+
+include_attribute 'elasticsearch::customize'
