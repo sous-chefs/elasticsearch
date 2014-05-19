@@ -10,6 +10,7 @@ include_recipe "ark"
 # Create user and group
 #
 group node.elasticsearch[:user] do
+  gid node.elasticsearch[:gid]
   action :create
   system true
 end
@@ -18,6 +19,7 @@ user node.elasticsearch[:user] do
   comment "ElasticSearch User"
   home    "#{node.elasticsearch[:dir]}/elasticsearch"
   shell   "/bin/bash"
+  uid     node.elasticsearch[:uid]
   gid     node.elasticsearch[:user]
   supports :manage_home => false
   action  :create
