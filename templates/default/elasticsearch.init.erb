@@ -39,24 +39,30 @@ CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's
 start() {
     if [ -f $PIDFILE ]; then
       # PIDFILE EXISTS -- ES RUNNING?
-      echo -e "\033[31;1mPID file found in $PIDFILE, elasticsearch already running?\033[0m"
+      echo -e "PID file found in $PIDFILE"
       es_pid="$(cat $PIDFILE)"
       pid_running="$( ps ax | grep 'java' | grep $es_pid )"
 
       if [ ! -z "$pid_running" ] ; then
         # EXIT IF ES IS ALREADY RUNNING
-	      echo -e "\033[31;1mPID $es_pid still alive, already running...\033[0m"
+	      echo -e "\033[31;1mPID $es_pid still alive, Elasticsearch already running...\033[0m"
 	      return 1
       fi
     fi
 
-    echo -e "\033[1mStarting elasticsearch...\033[0m"
+    echo -en "\033[1mStarting Elasticsearch...\033[0m"
     touch $PIDFILE && chown <%= node[:elasticsearch][:user] %> $PIDFILE
     <% if node.platform_family == 'debian' %>
     ES_INCLUDE=$ES_INCLUDE start-stop-daemon --background --start --quiet --pidfile $PIDFILE --chuid <%= node[:elasticsearch][:user] %> --exec /usr/local/bin/elasticsearch -- -p $PIDFILE
     <% else %>
     su <%= node[:elasticsearch][:user] %> -c "ES_INCLUDE=$ES_INCLUDE /usr/local/bin/elasticsearch<%= node[:elasticsearch][:version] > '1' ? ' -d' : '' %> -p $PIDFILE"
     <% end %>
+
+    if [ $? ]; then
+      echo -e " \e[32m[OK]\e[0m"
+    else
+      echo -e " \e[31m[FAILURE]\e[0m"
+    fi
 
     return $?
 }
@@ -85,7 +91,7 @@ stop() {
         (( timeout ++))
         if [ $timeout -gt '30' ]; then return; fi
         sleep 1
-      done;
+      done
 
       # Check for pidfile
       timeout=0
@@ -94,7 +100,10 @@ stop() {
         (( timeout++ ))
         if [ $timeout -gt '15' ]; then return; fi
         sleep 1
-      done; echo
+      done
+
+      echo;
+
       return $r
     else
       echo -e "\033[1mNo PID file found -- elasticsearch not running?\033[0m"
