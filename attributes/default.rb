@@ -30,6 +30,7 @@ default.elasticsearch[:node][:name]    = node.name
 # === USER & PATHS
 #
 default.elasticsearch[:dir]       = "/usr/local"
+default.elasticsearch[:bindir]    = "/usr/local/bin"
 default.elasticsearch[:user]      = "elasticsearch"
 
 default.elasticsearch[:path][:conf] = "/usr/local/etc/elasticsearch"
