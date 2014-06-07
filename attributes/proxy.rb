@@ -32,9 +32,4 @@ default.elasticsearch[:nginx][:allow_status] = false
 # Other Nginx proxy settings
 #
 default.elasticsearch[:nginx][:client_max_body_size] = "50M"
-
-# Define where nginx should expose elasticsearch
-#
-# This has been added to prevent CORS problems with kibana
-#
 default.elasticsearch[:nginx][:location] = "/"
