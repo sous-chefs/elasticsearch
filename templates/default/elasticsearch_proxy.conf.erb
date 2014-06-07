@@ -6,7 +6,7 @@ server {
   error_log   <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch-errors.log;
   access_log  <%= node.elasticsearch[:nginx][:log_dir] %>/elasticsearch.log;
 
-  location / {
+  location <%= node.elasticsearch[:nginx][:location] %> {
 
     # Deny Nodes Shutdown API
     if ($request_filename ~ "_shutdown") {
