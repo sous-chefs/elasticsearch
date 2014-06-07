@@ -32,3 +32,4 @@ default.elasticsearch[:nginx][:allow_status] = false
 # Other Nginx proxy settings
 #
 default.elasticsearch[:nginx][:client_max_body_size] = "50M"
+default.elasticsearch[:nginx][:location] = "/"
