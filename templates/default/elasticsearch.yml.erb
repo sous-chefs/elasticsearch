@@ -140,6 +140,6 @@ jmx.domain: elasticsearch
 
 ################################## Custom #####################################
 
-<% node.elasticsearch[:custom_config].sort.each do |key, value| %>
-<%= key %>: <%= value %>
+<% @custom_config.lines.each do |line| %>
+<%= line.gsub(/!ruby.*$/,'').gsub(/\n$/,'') %>
 <% end %>
