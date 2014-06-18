@@ -40,6 +40,10 @@ default.elasticsearch[:path][:logs] = "/usr/local/var/log/elasticsearch"
 default.elasticsearch[:pid_path]  = "/usr/local/var/run"
 default.elasticsearch[:pid_file]  = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
 
+default.elasticsearch[:templates][:elasticsearch_env] = "elasticsearch-env.sh.erb"
+default.elasticsearch[:templates][:elasticsearch_yml] = "elasticsearch.yml.erb"
+default.elasticsearch[:templates][:logging_yml]       = "logging.yml.erb"
+
 # === MEMORY
 #
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.

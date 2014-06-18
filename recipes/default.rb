@@ -28,7 +28,7 @@ end
 bash "remove the elasticsearch user home" do
   user    'root'
   code    "rm -rf  #{node.elasticsearch[:dir]}/elasticsearch"
-  not_if  { ::File.symlink?("#{node.elasticsearch[:dir]}/elasticsearch") } 
+  not_if  { ::File.symlink?("#{node.elasticsearch[:dir]}/elasticsearch") }
   only_if { ::File.directory?("#{node.elasticsearch[:dir]}/elasticsearch") }
 end
 
@@ -124,8 +124,8 @@ end
 #
 template "elasticsearch-env.sh" do
   path   "#{node.elasticsearch[:path][:conf]}/elasticsearch-env.sh"
-  source "elasticsearch-env.sh.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+  source node.elasticsearch[:templates][:elasticsearch_env]
+  owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
@@ -134,8 +134,8 @@ end
 #
 template "elasticsearch.yml" do
   path   "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml"
-  source "elasticsearch.yml.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+  source node.elasticsearch[:templates][:elasticsearch_yml]
+  owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
@@ -144,8 +144,8 @@ end
 #
 template "logging.yml" do
   path   "#{node.elasticsearch[:path][:conf]}/logging.yml"
-  source "logging.yml.erb"
-  owner node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
+  source node.elasticsearch[:templates][:logging_yml]
+  owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
