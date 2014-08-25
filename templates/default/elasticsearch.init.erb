@@ -35,6 +35,15 @@ ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
 PIDFILE='<%= node.elasticsearch[:pid_file] %>'
 ES_INCLUDE='<%= node.elasticsearch[:path][:conf] %>/elasticsearch-env.sh'
 CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
+RUBY_BIN=""
+
+if command -v ruby >/dev/null 2>&1; then
+  RUBY_BIN=$(command -v ruby)
+  # ruby < 1.9 needs this, afterwards it doesn't work _at all_
+  if $RUBY_BIN -rubygems -e "puts Gem::VERSION" >/dev/null 2>&1; then
+    RUBY_BIN="$RUBY_BIN -rubygems "
+  fi
+fi
 
 start() {
     if [ -f $PIDFILE ]; then
@@ -128,27 +137,36 @@ status() {
 
   # RUNNING
   if [[ $pid && -d "/proc/$pid" ]]; then
-    version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | ruby -rubygems -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
-    echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
+    if [ -z "$RUBY_BIN" ]; then
+      version=$(curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>' | $RUBY_BIN -e 'require "json"; print JSON.parse(STDIN.read)["version"]["number"]')
+      echo -e "\033[1;37;46melasticsearch $version running with PID $pid\033[0m"
+    else
+      echo -e "\033[1;37;46melasticsearch running with PID $pid\033[0m"
+    fi
     # VERBOSE
     if [[ $pid && $1 == '-v' || $1 == '--verbose' ]]; then
-      curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
-      ruby -rubygems -e '
-        begin
-          require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
-          def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
-          e "HTTP Address",  node["http_address"]
-          e "Node Name",     node["name"]
-          e "Cluster Name",  h["cluster_name"]
-          e "Started",       Time.at(node["jvm"]["start_time"].to_i/1000)
-          e "JVM",           "#{node["jvm"]["vm_name"]} (#{node["jvm"]["version"]})"
-          e "Memory Total",  node["os"]["mem"]["total"]
-          e "Open Files",    node["process"]["max_file_descriptors"]
-          e "Configuration", node["settings"]["config"]
-        rescue
-          puts "Metadata cannot be retrieved."
-        end
-      '
+      if [ -z "$RUBY_BIN" ]; then
+        curl -s 'http://localhost:<%= node.elasticsearch[:http][:port] %>/_cluster/nodes/<%= node.elasticsearch[:node][:name] %>?os&process&jvm&network&transport&settings&pretty' | \
+        $RUBY_BIN -e '
+          begin
+            require "json"; h = JSON.parse(STDIN.read); id, node = h["nodes"].first;
+            def e(name, value); puts %Q|\e[1;36m#{(name.to_s+":").ljust(20)}\e[0m #{value || "N/A" rescue "N/A"}|; end
+            e "HTTP Address",  node["http_address"]
+            e "Node Name",     node["name"]
+            e "Cluster Name",  h["cluster_name"]
+            e "Started",       Time.at(node["jvm"]["start_time"].to_i/1000)
+            e "JVM",           "#{node["jvm"]["vm_name"]} (#{node["jvm"]["version"]})"
+            e "Memory Total",  node["os"]["mem"]["total"]
+            e "Open Files",    node["process"]["max_file_descriptors"]
+            e "Configuration", node["settings"]["config"]
+          rescue
+            puts "Metadata cannot be retrieved."
+          end
+        '
+      else
+        echo >&2 "verbose requires ruby but it is not installed"
+        exit 1
+      fi
     fi
     # INCORRECT PID?
     if [ $pid != $CHECK_PID_RUNNING ]; then
@@ -170,7 +188,6 @@ status() {
     return 1
   fi
 }
-
 
 case "$1" in
   start)
