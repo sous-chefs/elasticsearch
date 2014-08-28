@@ -25,8 +25,8 @@
 #     // ...
 #
 
-es.logger.level: INFO
-rootLogger: INFO, console, file
+<%= print_value 'es.logger.level' -%>
+rootLogger: ERROR, console, file
 
 # ----- Configuration set by Chef ---------------------------------------------
 <% node.elasticsearch[:logging].sort.each do |key, value| %>
@@ -48,6 +48,7 @@ appender:
   file:
     type: dailyRollingFile
     file: ${path.logs}/${cluster.name}.log
+    maxBackupIndex: 1
     datePattern: "'.'yyyy-MM-dd"
     layout:
       type: pattern
@@ -56,6 +57,7 @@ appender:
   index_search_slow_log_file:
     type: dailyRollingFile
     file: ${path.logs}/${cluster.name}_index_search_slowlog.log
+    maxBackupIndex: 1
     datePattern: "'.'yyyy-MM-dd"
     layout:
       type: pattern
@@ -63,6 +65,7 @@ appender:
 
   index_indexing_slow_log_file:
     type: dailyRollingFile
+    maxBackupIndex: 1
     file: ${path.logs}/${cluster.name}_index_indexing_slowlog.log
     datePattern: "'.'yyyy-MM-dd"
     layout:
