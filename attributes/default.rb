@@ -53,10 +53,8 @@ default.elasticsearch[:templates][:logging_yml]       = "logging.yml.erb"
 #
 if node[:memory]
   allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
-else
-  allocated_memory = 1024
+  default.elasticsearch[:allocated_memory] = allocated_memory
 end
-default.elasticsearch[:allocated_memory] = allocated_memory
 
 # === GARBAGE COLLECTION SETTINGS
 #

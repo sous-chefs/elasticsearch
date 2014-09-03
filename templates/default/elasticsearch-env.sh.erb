@@ -6,14 +6,14 @@
 <%= "JAVA_HOME='#{node.elasticsearch[:java_home]}'\n" if node.elasticsearch[:java_home] -%>
 ES_HOME='<%= "#{node.elasticsearch[:dir]}/elasticsearch" %>'
 ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
-ES_HEAP_SIZE=<%= node.elasticsearch[:allocated_memory] %>
+ES_HEAP_SIZE=<%= node.elasticsearch[:allocated_memory] || 1024 %>
 
 ES_JAVA_OPTS="
   -server
   -Djava.net.preferIPv4Stack=true
   -Des.config=<%= node.elasticsearch[:path][:conf] %>/elasticsearch.yml
-  -Xms<%= node.elasticsearch[:allocated_memory] %>
-  -Xmx<%= node.elasticsearch[:allocated_memory] %>
+  -Xms<%= node.elasticsearch[:allocated_memory] || 1024 %>
+  -Xmx<%= node.elasticsearch[:allocated_memory] || 1024 %>
   -Xss<%= node.elasticsearch[:thread_stack_size] %>
   <%= node.elasticsearch[:gc_settings] %>
 <% if node.elasticsearch[:jmx] %>
