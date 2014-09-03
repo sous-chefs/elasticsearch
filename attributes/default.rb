@@ -51,7 +51,11 @@ default.elasticsearch[:templates][:logging_yml]       = "logging.yml.erb"
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.
 # You may choose to set it in your node/role configuration instead.
 #
-allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
+if node[:memory]
+  allocated_memory = "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m"
+else
+  allocated_memory = 1024
+end
 default.elasticsearch[:allocated_memory] = allocated_memory
 
 # === GARBAGE COLLECTION SETTINGS
@@ -69,7 +73,11 @@ CONFIG
 # By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
 # you may want to disable it.
 #
-default.elasticsearch[:bootstrap][:mlockall] = ( node.memory.total.to_i >= 1048576 ? true : false )
+if node[:memory]
+  default.elasticsearch[:bootstrap][:mlockall] = ( node.memory.total.to_i >= 1048576 ? true : false )
+else
+  default.elasticsearch[:bootstrap][:mlockall] = false
+end
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
