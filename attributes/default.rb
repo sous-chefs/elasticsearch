@@ -73,11 +73,7 @@ CONFIG
 # By default, the `mlockall` is set to true: on weak machines and Vagrant boxes,
 # you may want to disable it.
 #
-if node[:memory]
-  default.elasticsearch[:bootstrap][:mlockall] = ( node.memory.total.to_i >= 1048576 ? true : false )
-else
-  default.elasticsearch[:bootstrap][:mlockall] = false
-end
+default.elasticsearch[:bootstrap][:mlockall] = ( node[:memory] && node.memory.total.to_i < 1048576 ? false : true )
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
