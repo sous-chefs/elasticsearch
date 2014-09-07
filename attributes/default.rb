@@ -142,3 +142,8 @@ default.elasticsearch[:logging] = {}
 #     'threadpool.index.size' => '2'
 #     // ...
 #
+
+# When you have only one node, health will always be yellow.
+# And if you are use `recipe[elasticsearch::monit]`, will be better to turn off the heath check.
+#
+default.elasticsearch[:monit][:health] = true

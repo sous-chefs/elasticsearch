@@ -15,6 +15,7 @@ check host elasticsearch_connection with address 0.0.0.0
   if failed url http://0.0.0.0:<%= node.elasticsearch[:http][:port] %>/ with timeout 15 seconds then alert
   group elasticsearch
 
+  <% if node.elasticsearch[:monit][:health] %>
 check host elasticsearch_cluster_health with address 0.0.0.0
   if failed url http://0.0.0.0:<%= node.elasticsearch[:http][:port] %>/_cluster/health
      and content == 'green'
@@ -29,4 +30,5 @@ check host elasticsearch_cluster_health with address 0.0.0.0
                  <% end %>
      }
   group elasticsearch
+  <% end %>
 <% end %>
