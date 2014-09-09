@@ -42,6 +42,7 @@ module Extensions
           options = { :device                => ebs_device,
                       :size                  => params[:ebs][:size],
                       :delete_on_termination => params[:ebs][:delete_on_termination],
+                      :encrypted             => params[:ebs][:encrypted],
                       :availability_zone     => server.availability_zone,
                       :server                => server }
 
