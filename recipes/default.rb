@@ -4,6 +4,13 @@ Erubis::Context.send(:include, Extensions::Templates)
 
 elasticsearch = "elasticsearch-#{node.elasticsearch[:version]}"
 
+# This needs to happen in the recipe; included cookbooks' attributes are evaluated before the caller's.
+# Compiling attributes in attribute files will prevent modification by wrapper cookbooks
+#
+node.default.elasticsearch[:filename]     = "elasticsearch-#{node.elasticsearch[:version]}.tar.gz"
+node.default.elasticsearch[:download_url] = [node.elasticsearch[:host], node.elasticsearch[:repository], node.elasticsearch[:filename]].join('/')
+node.default.elasticsearch[:pid_file]     = "#{node.elasticsearch[:pid_path]}/#{node.elasticsearch[:node][:name].to_s.gsub(/\W/, '_')}.pid"
+
 include_recipe "elasticsearch::curl"
 include_recipe "ark"
 
@@ -80,12 +87,12 @@ ark_prefix_root = node.elasticsearch[:dir] || node.ark[:prefix_root]
 ark_prefix_home = node.elasticsearch[:dir] || node.ark[:prefix_home]
 
 ark "elasticsearch" do
-  url   node.elasticsearch[:download_url]
-  owner node.elasticsearch[:user]
-  group node.elasticsearch[:user]
-  version node.elasticsearch[:version]
-  has_binaries ['bin/elasticsearch', 'bin/plugin']
-  checksum node.elasticsearch[:checksum]
+  url           node.elasticsearch[:download_url]
+  owner         node.elasticsearch[:user]
+  group         node.elasticsearch[:user]
+  version       node.elasticsearch[:version]
+  has_binaries  ['bin/elasticsearch', 'bin/plugin']
+  checksum      node.elasticsearch[:checksum]
   prefix_root   ark_prefix_root
   prefix_home   ark_prefix_home
 
