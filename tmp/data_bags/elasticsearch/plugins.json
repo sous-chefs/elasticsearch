@@ -1,0 +1,10 @@
+{
+  "id" : "plugins",
+
+  "_default" : {
+
+    "plugins": {
+      "polyfractal/elasticsearch-inquisitor" : {}
+    }
+  }
+}
