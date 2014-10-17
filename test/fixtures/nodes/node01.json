@@ -1,0 +1,27 @@
+{
+  "name": "node01",
+  "chef_environment": "_default",
+  "json_class": "Chef::Node",
+  "automatic": {
+    "hostname": "vagrant.vm",
+    "recipes": [
+      "elasticsearch::default"
+    ],
+    "roles": [
+    ],
+    "ipaddress": "192.168.0.1"
+  },
+  "tags": [
+    "app"
+  ],
+  "normal": {
+  },
+  "chef_type": "node",
+  "default": {
+  },
+  "override": {
+  },
+  "run_list": [
+    "recipe[elasticsearch::default]"
+  ]
+}
