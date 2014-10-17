@@ -1,0 +1,10 @@
+{
+  "platform": "ubuntu",
+  "platform_family": "debian",
+  "platform_version": "12.04",
+  "version": "12.04",
+  "lsb": {
+    "codename": "lucid"
+  },
+  "curl_package" : "curl"
+}

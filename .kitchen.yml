@@ -1,0 +1,41 @@
+---
+################################################################################
+# Any local customizations should be placed inside the .kitchen.local.yml, which
+# will not be checked in or overwritten. You may also use ~/.kitchen/config.yml
+# or environment variables like VAGRANT_DEFAULT_PROVIDER. Anything in those will
+# take precedence over anything set in `.kitchen.yml`.
+################################################################################
+driver:
+  name: vagrant # provide a default test-kitchen driver, vagrant
+
+driver_config:
+  require_chef_omnibus: latest
+
+provisioner:
+  name: chef_zero
+  nodes_path: 'test/fixtures/nodes'
+  data_bags_path: 'test/fixtures/data_bags'
+  environments_path: 'test/fixtures/environments'
+  # commented as it doesn't currently exist
+  # encrypted_data_bag_secret_key_path: "test/fixtures/encrypted_data_bag_secret_for_test"
+  client_rb:
+    environment: _default
+  attributes:
+    foo: 'bar'
+
+platforms:
+  - name: ubuntu-14.04
+    run_list:
+    - recipe[apt]
+  - name: ubuntu-12.04
+    run_list:
+    - recipe[apt]
+  - name: centos-6.5
+    run_list:
+    - recipe[yum]
+
+suites:
+  - name: default
+    run_list: recipe[elasticsearch]
+    attributes:
+      foo: 'bar'
