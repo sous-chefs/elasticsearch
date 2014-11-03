@@ -11,5 +11,6 @@ end
 
 default[:nginx][:keepalive]          = "on"
 default[:nginx][:keepalive_timeout]  = 65
+default[:nginx][:start_timeout]      = 60
 default[:nginx][:worker_processes]   = node[:cpu][:total] rescue 1
 default[:nginx][:worker_connections] = 2048

@@ -89,7 +89,7 @@ stop() {
       while [ $(ps -p $pid | wc -l ) -gt '1' ]; do
         echo -n '.'
         (( timeout ++))
-        if [ $timeout -gt '30' ]; then return; fi
+        if [ $timeout -gt '<%= node[:elasticsearch][:process_check_timeout] %>' ]; then return; fi
         sleep 1
       done
 
@@ -98,7 +98,7 @@ stop() {
       while [ -f $PIDFILE  ]; do
         echo -n '.'
         (( timeout++ ))
-        if [ $timeout -gt '15' ]; then return; fi
+        if [ $timeout -gt '<%= node[:elasticsearch][:pid_check_timeout] %>' ]; then return; fi
         sleep 1
       done
 
@@ -112,7 +112,7 @@ stop() {
 
 restart() {
     stop
-    timeout=30
+    timeout=<%= node[:elasticsearch][:process_check_timeout] %>
     while ps aux | grep 'java' | grep -e "es.pidfile"; do
       echo -n '.'
       (( timeout-- ))

@@ -73,6 +73,17 @@ default.elasticsearch[:bootstrap][:mlockall] = ( node.memory.total.to_i >= 10485
 default.elasticsearch[:limits][:memlock] = 'unlimited'
 default.elasticsearch[:limits][:nofile]  = '64000'
 
+# === TIMEOUTS
+# timeout values are expressed in seconds
+#
+default.elasticsearch[:start_timeout] = 60
+default.elasticsearch[:process_check_timeout] = 30
+default.elasticsearch[:process_stop_timeout]=30
+default.elasticsearch[:pid_check_timeout] = 15
+default.elasticsearch[:cluster_healthcheck_timeout]=60
+default.elasticsearch[:host_healthcheck_timeout]=15
+
+
 # === PRODUCTION SETTINGS
 #
 default.elasticsearch[:index][:mapper][:dynamic]   = true

@@ -1,5 +1,5 @@
 check process nginx with pidfile /var/run/nginx.pid
-  start program = "/etc/init.d/nginx start" with timeout 60 seconds
+  start program = "/etc/init.d/nginx start" with timeout <%= node[:nginx][:start_timeout] %> seconds
   stop program  = "/etc/init.d/nginx stop"
   if cpu > 90% for 15 cycles then alert
   if totalmem > 90% for 15 cycles then alert
