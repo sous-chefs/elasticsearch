@@ -46,6 +46,9 @@ default.elasticsearch[:templates][:elasticsearch_env] = "elasticsearch-env.sh.er
 default.elasticsearch[:templates][:elasticsearch_yml] = "elasticsearch.yml.erb"
 default.elasticsearch[:templates][:logging_yml]       = "logging.yml.erb"
 
+default.elasticsearch[:templates][:elasticsearch_yml_cookbook] = "elasticsearch"
+default.elasticsearch[:templates][:logging_yml_cookbook]       = "elasticsearch"
+
 # === MEMORY
 #
 # Maximum amount of memory to use is automatically computed as one half of total available memory on the machine.

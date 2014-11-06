@@ -141,6 +141,7 @@ end
 template "elasticsearch.yml" do
   path   "#{node.elasticsearch[:path][:conf]}/elasticsearch.yml"
   source node.elasticsearch[:templates][:elasticsearch_yml]
+  cookbook node.elasticsearch[:templates][:elasticsearch_yml_cookbook]
   owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
@@ -151,6 +152,7 @@ end
 template "logging.yml" do
   path   "#{node.elasticsearch[:path][:conf]}/logging.yml"
   source node.elasticsearch[:templates][:logging_yml]
+  cookbook node.elasticsearch[:templates][:logging_yml_cookbook]
   owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
