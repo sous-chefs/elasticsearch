@@ -1,4 +1,4 @@
-metadata
+source 'https://api.berkshelf.com'
 
 cookbook 'apt', git: 'git://github.com/opscode-cookbooks/apt.git'
 cookbook 'yum', git: 'git://github.com/opscode-cookbooks/yum.git', ref: 'v2.4.4'
