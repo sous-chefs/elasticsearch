@@ -100,7 +100,7 @@ default.elasticsearch[:http][:port] = 9200
 
 # === HTTP
 #
-default.elasticsearch[:http][:cors_enabled] = false
+default.elasticsearch[:http][:cors][:enabled] = false
 
 # === CUSTOM CONFIGURATION
 #
