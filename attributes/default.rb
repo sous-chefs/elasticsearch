@@ -98,6 +98,10 @@ default.elasticsearch[:skip_start] = false
 #
 default.elasticsearch[:http][:port] = 9200
 
+# === HTTP
+#
+default.elasticsearch[:http][:cors_enabled] = false
+
 # === CUSTOM CONFIGURATION
 #
 default.elasticsearch[:custom_config] = {}
