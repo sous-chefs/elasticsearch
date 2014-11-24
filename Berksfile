@@ -1,3 +1,5 @@
+source 'https://api.berkshelf.com'
+
 metadata
 
 cookbook 'apt', git: 'git://github.com/opscode-cookbooks/apt.git'
