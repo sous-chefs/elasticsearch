@@ -138,10 +138,6 @@ end
 
 
 
-bash "add es include path" do
-  code "export ES_INCLUDE=/usr/local/etc/elasticsearch/elasticsearch-env.sh"
-end
-
 # Create ES config file
 #
 template "elasticsearch.yml" do
