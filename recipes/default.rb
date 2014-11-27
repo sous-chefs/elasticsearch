@@ -138,10 +138,8 @@ end
 
 
 
-bash "add ES_INCLUDE path" do
-  code <<-EOF
-    echo ES_INCLUDE=/usr/local/etc/elasticsearch/elasticsearch-env.sh
-  EOF
+bash "add es include path" do
+  code "export ES_INCLUDE=/usr/local/etc/elasticsearch/elasticsearch-env.sh"
 end
 
 # Create ES config file
