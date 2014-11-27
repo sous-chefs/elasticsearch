@@ -136,6 +136,14 @@ template "elasticsearch-env.sh" do
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
 
+
+
+bash "add ES_INCLUDE path" do
+  code <<-EOF
+    echo ES_INCLUDE=/usr/local/etc/elasticsearch/elasticsearch-env.sh
+  EOF
+end
+
 # Create ES config file
 #
 template "elasticsearch.yml" do
