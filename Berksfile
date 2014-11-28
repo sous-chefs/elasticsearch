@@ -10,3 +10,5 @@ cookbook 'monit', git: 'git://github.com/apsoto/monit.git'
 
 cookbook 'vim'
 cookbook 'minitest-handler', git: 'git://github.com/btm/minitest-handler-cookbook.git'
+
+cookbook 'flume', git: 'git://github.com/gilt/cookbook-flume.git'
