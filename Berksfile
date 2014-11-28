@@ -12,4 +12,4 @@ cookbook 'vim'
 cookbook 'minitest-handler', git: 'git://github.com/btm/minitest-handler-cookbook.git'
 
 cookbook 'flume', git: 'git://github.com/gilt/cookbook-flume.git'
-cookbook "route53", ">= 0.3.4"
+cookbook "r53", git: 'git://github.com/gilt/cookbook-route53.git'
