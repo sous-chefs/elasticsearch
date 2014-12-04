@@ -23,11 +23,6 @@
 #
 if [ -f /etc/sysconfig/network ]; then source /etc/sysconfig/network; fi
 
-# Set limits for environments ignoring `/etc/security/limits.d`
-#
-ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
-ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
-
 # Exit if networking is not up
 #
 [ "$NETWORKING" = "no" ] && exit
@@ -37,6 +32,11 @@ ES_INCLUDE='<%= node.elasticsearch[:path][:conf] %>/elasticsearch-env.sh'
 CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
 
 start() {
+    # Set limits for environments ignoring `/etc/security/limits.d`
+    #
+    ulimit -n <%= node[:elasticsearch][:limits][:nofile] %>
+    ulimit -l <%= node[:elasticsearch][:limits][:memlock] %>
+
     if [ -f $PIDFILE ]; then
       # PIDFILE EXISTS -- ES RUNNING?
       echo -e "PID file found in $PIDFILE"
