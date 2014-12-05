@@ -13,3 +13,4 @@ cookbook 'minitest-handler', git: 'git://github.com/btm/minitest-handler-cookboo
 
 cookbook 'flume', git: 'git://github.com/gilt/cookbook-flume.git'
 cookbook "r53", git: 'git://github.com/gilt/cookbook-route53.git'
+cookbook 'kibana', git: 'git://github.com/gilt/chef-kibana.git'
