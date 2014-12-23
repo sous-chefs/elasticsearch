@@ -1,4 +1,4 @@
-metadata
+source 'https://api.berkshelf.com'
 
 cookbook 'apt', git: 'git://github.com/opscode-cookbooks/apt.git'
 cookbook 'yum', git: 'git://github.com/opscode-cookbooks/yum.git', ref: 'v2.4.4'
@@ -10,3 +10,7 @@ cookbook 'monit', git: 'git://github.com/apsoto/monit.git'
 
 cookbook 'vim'
 cookbook 'minitest-handler', git: 'git://github.com/btm/minitest-handler-cookbook.git'
+
+cookbook 'flume', git: 'git://github.com/gilt/cookbook-flume.git'
+cookbook "r53", git: 'git://github.com/gilt/cookbook-route53.git'
+cookbook 'kibana', git: 'git://github.com/gilt/chef-kibana.git'

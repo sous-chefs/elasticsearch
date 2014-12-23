@@ -26,7 +26,7 @@
 #
 
 es.logger.level: INFO
-rootLogger: INFO, console, file
+rootLogger: INFO, console, file, flume
 
 # ----- Configuration set by Chef ---------------------------------------------
 <% node.elasticsearch[:logging].sort.each do |key, value| %>
@@ -53,6 +53,19 @@ appender:
     layout:
       type: pattern
       conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
+  flume:
+    type: com.gilt.flume.logback.FlumeLogstashV1Appender
+    flumeAgents: <%= node.elasticsearch[:flume][:agents] %>
+    batchSize: 100
+    reportingWindow: 10000
+    application: <%= node.elasticsearch[:flume][:application] %>
+    type: <%= node.elasticsearch[:flume][:type] %>
+
+    layout:
+      type: pattern
+      conversionPattern: "[%d{ISO8601}][%-5p][%-25c] %m%n"
+
 
   index_search_slow_log_file:
     type: dailyRollingFile
