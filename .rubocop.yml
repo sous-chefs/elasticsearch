@@ -1,5 +1,13 @@
 # Rubocop,  we're buddies and all,  but we're going to have to disagree on the following -
 
+# Allow compact class definitions
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Allow more complex ruby methods
+Metrics/AbcSize:
+  Max: 50
+
 # Disable requirement of "encoding" headers on files
 Encoding:
   Enabled: false

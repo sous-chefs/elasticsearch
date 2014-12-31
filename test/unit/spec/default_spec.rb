@@ -17,22 +17,9 @@ describe 'elasticsearch::default' do
         # any platform specific data you want available to your test can be loaded here
         property = load_platform_properties(platform: platform, platform_version: version)
 
-        # added as an example, but this probably isn't a great one, since we shouldn't be
-        # testing resources that are not created/executed by our cookbook.
-        it 'upgrades curl' do
-
-          # example of using a platform specific property to override a package name
-          curl_package_name = property['curl_package'] || 'curl'
-
-          # ensure package is installed (action is :upgrade)
-          expect(chef_run).to upgrade_package(curl_package_name)
-
+        it 'creates elasticsearch_user' do
+          expect(chef_run).to create_elasticsearch_user('elasticsearch')
         end
-
-        it 'creates a dummy ruby block for test coverage' do
-          expect(chef_run).to run_ruby_block('dummy_block for test coverage')
-        end
-
       end
     end
   end
