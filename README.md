@@ -1,6 +1,34 @@
 # Elasticsearch Chef Cookbook
 
-This branch contains the next version of the cookbook.
+This branch contains the next version of the cookbook. This cookbook has been
+converted into a library cookbook.
+
+## Recipes
+
+### default
+
+The default recipe creates an elasticsearch user and group with the default
+options.
+
+## Resources
+
+### elasticsearch_user
+
+Creates a user and group on the system for use by elasticsearch. Here is an
+example with many of the default options and default values (all options except
+a resource name may be omitted):
+
+```ruby
+elasticsearch_user 'elasticsearch' do
+  username 'elasticsearch'
+  groupname 'elasticsearch'
+  homedir '/usr/local/elasticsearch'
+  shell '/bin/bash'
+  comment 'Elasticsearch User'
+
+  action :create
+end
+```
 
 ## Testing
 
