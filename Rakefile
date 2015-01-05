@@ -31,9 +31,9 @@ end
 desc 'Run all style checks'
 task style: ['style:chef', 'style:ruby']
 
-require 'kitchen'
 desc 'Run Test Kitchen integration tests'
 task :integration do
+  require 'kitchen'
   Kitchen.logger = Kitchen.default_file_logger
   sh 'kitchen test -c'
 end
@@ -58,6 +58,6 @@ task default: ['style', 'spec', 'integration']
 begin
   require 'kitchen/rake_tasks'
   Kitchen::RakeTasks.new
-  rescue LoadError
+  rescue LoadError, Kitchen::ClientError
     puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
 end
