@@ -1,0 +1,14 @@
+language: ruby
+
+branches:
+  only:
+    - next
+
+rvm:
+  - 2.1
+
+script:
+  - bundle exec rake spec
+
+notifications:
+  disable: true
