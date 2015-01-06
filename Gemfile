@@ -8,7 +8,7 @@ end
 group :unit do
   gem 'rspec'
   gem 'chef', '>= 11.16'
-  gem 'chefspec'
+  gem 'chefspec', '>= 4.2'
   gem 'chef-sugar'
   gem 'berkshelf', '~> 3'
 end
