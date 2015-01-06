@@ -1,4 +1,6 @@
 # Encoding: utf-8
+
+require 'timeout'
 require 'bundler/setup'
 
 namespace :style do
@@ -56,8 +58,14 @@ end
 task default: ['style', 'spec', 'integration']
 
 begin
-  require 'kitchen/rake_tasks'
-  Kitchen::RakeTasks.new
-  rescue LoadError, Kitchen::ClientError
-    puts '>>>>> Kitchen gem not loaded, omitting tasks' unless ENV['CI']
+  Timeout.timeout(15) do
+    require 'kitchen/rake_tasks'
+    Kitchen::RakeTasks.new
+  end
+rescue Exception => e
+  if e.class.to_s =~ /^Timeout::|^Kitchen::|LoadError/
+    STDERR.puts "[!] Omitting Kitchen tasks [#{e.class}: #{e.message} at #{e.backtrace.first}]\n\n"
+  else
+    raise e
+  end
 end
