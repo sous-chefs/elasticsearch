@@ -7,6 +7,8 @@ branches:
 rvm:
   - 2.1
 
+install: bundle install --jobs=3 --retry=3 --without kitchen_vagrant kitchen_rackspace kitchen_ec2 development
+
 script:
   - bundle exec rake spec
 
