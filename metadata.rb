@@ -1,4 +1,4 @@
-name             "elasticsearch"
+name             "elasticsearch142"
 
 maintainer       "karmi"
 maintainer_email "karmi@karmi.cz"
