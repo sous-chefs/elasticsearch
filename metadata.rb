@@ -1,4 +1,4 @@
-name             "elasticsearch"
+name             "droid-elasticsearch142"
 
 maintainer       "karmi"
 maintainer_email "karmi@karmi.cz"
@@ -14,12 +14,12 @@ recommends 'xml'
 recommends 'java'
 recommends 'monit'
 
-provides 'elasticsearch'
-provides 'elasticsearch::data'
-provides 'elasticsearch::ebs'
-provides 'elasticsearch::aws'
-provides 'elasticsearch::nginx'
-provides 'elasticsearch::proxy'
-provides 'elasticsearch::plugins'
-provides 'elasticsearch::monit'
-provides 'elasticsearch::search_discovery'
+# provides 'elasticsearch'
+# provides 'elasticsearch::data'
+# provides 'elasticsearch::ebs'
+# provides 'elasticsearch::aws'
+# provides 'elasticsearch::nginx'
+# provides 'elasticsearch::proxy'
+# provides 'elasticsearch::plugins'
+# provides 'elasticsearch::monit'
+# provides 'elasticsearch::search_discovery'
