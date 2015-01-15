@@ -20,7 +20,7 @@ module Extensions
         require 'open-uri'
 
         region      = params[:region] || node.elasticsearch[:cloud][:aws][:region]
-        instance_id = open('http://169.254.169.254/latest/meta-data/instance-id'){|f| f.gets}
+        instance_id = open('http://169.254.169.254/latest/meta-data/instance-id', options = {:proxy => false}) {|f| f.gets}
         raise "[!] Cannot get instance id from AWS meta-data API" unless instance_id
 
         Chef::Log.debug("Region: #{region}, instance ID: #{instance_id}")
@@ -32,6 +32,17 @@ module Extensions
         else  # Lack of credentials implies a IAM role will provide keys
           fog_options.merge!(:use_iam_profile => true)
         end
+
+        proxy_host = node.elasticsearch[:cloud][:aws][:proxy_host]
+        proxy_port = node.elasticsearch[:cloud][:aws][:proxy_port]
+        proxy_protocol = node.elasticsearch[:cloud][:aws][:proxy_protocol]
+
+        if proxy_host && proxy_port
+          proxy_uri = "#{proxy_protocol}://#{proxy_host}:#{proxy_port}"
+          fog_options.merge!(:connection_options => { :proxy => proxy_uri })
+          Chef::Log.info("using proxy #{proxy_uri}")
+        end
+
         aws = Fog::Compute.new(fog_options)
 
         server = aws.servers.get instance_id

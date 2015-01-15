@@ -38,5 +38,8 @@ default.elasticsearch[:cloud][:aws][:access_key]     = ( aws['cloud']['aws']['ac
 default.elasticsearch[:cloud][:aws][:secret_key]     = ( aws['cloud']['aws']['secret_key']     rescue nil )
 default.elasticsearch[:cloud][:aws][:region]         = ( aws['cloud']['aws']['region']         rescue nil )
 default.elasticsearch[:cloud][:aws][:ec2][:endpoint] = ( aws['cloud']['aws']['ec2']['endpoint'] rescue nil )
+default.elasticsearch[:cloud][:aws][:proxy_host]     = ( aws['cloud']['aws']['proxy_host']     rescue nil )
+default.elasticsearch[:cloud][:aws][:proxy_port]     = ( aws['cloud']['aws']['proxy_port']     rescue nil )
+default.elasticsearch[:cloud][:aws][:proxy_protocol] = ( aws['cloud']['aws']['proxy_protocol'] rescue 'https' )
 
 default.elasticsearch[:cloud][:node][:auto_attributes] = true
