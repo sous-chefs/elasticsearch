@@ -9,10 +9,10 @@ version          "0.3.13"
 
 depends 'ark', '>= 0.2.4'
 
-recommends 'build-essential'
-recommends 'xml'
-recommends 'java'
-recommends 'monit'
+suggests 'build-essential'
+suggests 'xml'
+suggests 'java'
+suggests 'monit'
 
 provides 'elasticsearch'
 provides 'elasticsearch::data'
