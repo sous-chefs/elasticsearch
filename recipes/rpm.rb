@@ -10,3 +10,5 @@ end
 package 'elasticsearch' do
   action :install
 end
+
+include_recipe 'elasticsearch'

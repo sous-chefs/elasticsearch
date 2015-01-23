@@ -21,3 +21,5 @@ ruby_block "Set heap size in /etc/default/elasticsearch" do
     fe.write_file
   end
 end
+
+include_recipe 'elasticsearch::default'
