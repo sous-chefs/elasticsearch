@@ -162,8 +162,3 @@ template "logging.yml" do
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
 
-# Start the elastic service
-#
-service "elasticsearch" do
-  action :restart
-end
