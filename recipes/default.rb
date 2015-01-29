@@ -136,6 +136,12 @@ template "elasticsearch-env.sh" do
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 end
 
+
+
+bash "add es include path" do
+  code "export ES_INCLUDE=/usr/local/etc/elasticsearch/elasticsearch-env.sh"
+end
+
 # Create ES config file
 #
 template "elasticsearch.yml" do
@@ -154,4 +160,10 @@ template "logging.yml" do
   owner  node.elasticsearch[:user] and group node.elasticsearch[:user] and mode 0755
 
   notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
+end
+
+# Start the elastic service
+#
+service "elasticsearch" do
+  action :restart
 end
