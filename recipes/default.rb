@@ -165,5 +165,5 @@ end
 # Start the elastic service
 #
 service "elasticsearch" do
-  action :start
+  action :restart
 end
