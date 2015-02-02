@@ -28,7 +28,7 @@ module Extensions
   #       }
   #     }
   #
-  # See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
+  # See <https://docs.chef.io/attributes.html> for more info.
   #
   def install_plugin name, params={}
 
