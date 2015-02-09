@@ -31,25 +31,22 @@ module Extensions
   # See <http://wiki.opscode.com/display/chef/Setting+Attributes+(Examples)> for more info.
   #
   def install_plugin name, params={}
-
+    Chef::Resource::RubyBlock.send(:include,Chef::Mixin::ShellOut)
     ruby_block "Install plugin: #{name}" do
       block do
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
 
-        command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
-        Chef::Log.debug command
-
-        raise "[!] Failed to install plugin" unless system command
+        shell_out!("#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}")
 
         # Ensure proper permissions
-        raise "[!] Failed to set permission" unless system "chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/"
+        shell_out!("chown -R #{node.elasticsearch[:user]}:#{node.elasticsearch[:user]} #{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/")
       end
 
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
       not_if do
-        plugins = `#{node.elasticsearch[:bindir]}/plugin --list`.split("\n")[1..-1].map{|r|r[/^\s+-\s+(.+)$/,1]}
+        plugins = shell_out!("#{node.elasticsearch[:bindir]}/plugin --list").stdout.split("\n")[1..-1].map{|r|r[/^\s+-\s+(.+)$/,1]}
         plugins.any? do |plugin|
           next if plugin =~ /^\./
           name.include? plugin
