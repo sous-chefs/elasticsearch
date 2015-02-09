@@ -49,7 +49,8 @@ module Extensions
       notifies :restart, 'service[elasticsearch]' unless node.elasticsearch[:skip_restart]
 
       not_if do
-        Dir.entries("#{node.elasticsearch[:dir]}/elasticsearch-#{node.elasticsearch[:version]}/plugins/").any? do |plugin|
+        plugins = `#{node.elasticsearch[:bindir]}/plugin --list`.split("\n")[1..-1].map{|r|r[/^\s+-\s+(.+)$/,1]}
+        plugins.any? do |plugin|
           next if plugin =~ /^\./
           name.include? plugin
         end rescue false
