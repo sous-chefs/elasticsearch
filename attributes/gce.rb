@@ -27,7 +27,7 @@ default.elasticsearch['plugins']['elasticsearch/elasticsearch-cloud-gce']['versi
 # You may choose to configure them in your node configuration instead.
 #
 default.elasticsearch[:discovery][:type]             = ( gce['discovery']['type']              rescue nil )
-default.elasticsearch[:discovery][:gce][:tags]       = ( gce['discovery']['gce']['tags']       rescue {} )
+default.elasticsearch[:discovery][:gce][:tags]       = ( gce['discovery']['gce']['tags']       rescue nil )
 
 default.elasticsearch[:cloud][:gce][:project_id]     = ( gce['cloud']['gce']['project_id']     rescue nil )
 default.elasticsearch[:cloud][:gce][:zone]		     = ( gce['cloud']['gce']['zone']     	   rescue nil )
