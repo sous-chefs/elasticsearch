@@ -101,6 +101,11 @@
 <%- node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| -%>
 discovery.ec2.tag.<%= key %>: <%= value %>
 <%- end unless node.elasticsearch[:discovery][:ec2][:tag].keys.empty? rescue false -%>
+
+<%= print_value 'cloud.gce.project_id' -%>
+<%= print_value 'cloud.gce.zone' -%>
+<%= print_value 'cloud.gce.tags' -%>
+<%= print_value 'discovery.gce.tags' -%>
 <%- end -%>
 
 ################################## Slow Log ###################################
