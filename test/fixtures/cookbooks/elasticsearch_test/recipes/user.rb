@@ -1,5 +1,5 @@
 # create user with all non-default overriden options
-elasticsearch_user 'foo bar baz' do
+elasticsearch_user 'foobar' do
   groupname 'bar'
   username 'foo'
   uid 1111

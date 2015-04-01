@@ -9,7 +9,7 @@ driver:
   name: vagrant # provide a default test-kitchen driver, vagrant
 
 driver_config:
-  require_chef_omnibus: 11.16.4
+  require_chef_omnibus: true
 
 provisioner:
   name: chef_zero
@@ -30,17 +30,17 @@ platforms:
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
-  - name: centos-6.5
+  - name: centos-6.6
     run_list:
     - recipe[yum]
 
 suites:
-  - name: default
+  - name: default # the normal use-case
     run_list: recipe[elasticsearch]
     attributes:
       foo: 'bar'
 
-  - name: elasticsearch_test
-    run_list: recipe[elasticsearch_test]
+  - name: elasticsearch_test # the override-everything use case
+    run_list: recipe[elasticsearch_test::default]
     attributes:
       foo: 'bar'

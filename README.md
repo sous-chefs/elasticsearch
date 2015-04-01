@@ -30,6 +30,58 @@ elasticsearch_user 'elasticsearch' do
 end
 ```
 
+### elasticsearch_install
+
+Downloads the elasticsearch software, and unpacks it on the system. There are
+currently two ways to install -- `package`, which downloads the appropriate
+package from elasticsearch.org and uses the package manager to install it, and
+`source` which downloads a tarball from elasticsearch.org and unpacks it in
+/usr/local on the system. The resource name is not used for anything in
+particular. This resource also comes with a `:remove` action which will remove
+the package or directory elasticsearch was unpacked into.
+
+Examples:
+
+```
+elasticsearch_install 'my_es_installation' do
+  type :source # type of install
+  dir '/usr/local' # where to install
+
+  owner 'elasticsearch' # user and group to install under
+  group 'elasticsearch'
+
+  source_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
+  source_checksum "acf572c606552bc446cceef3f8e93814a363ba0d215b323a2864682b3abfbe45"
+
+  action :install # could be :remove as well
+end
+```
+
+```
+elasticsearch_install 'my_es_installation' do
+  type :source # type of install
+  version '1.5.0'
+  action :install # could be :remove as well
+end
+```
+
+```
+elasticsearch_install 'my_es_installation' do
+  type :package # type of install
+  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.deb"
+  package_checksum "15a02a2bea74da2330bb78718efb3a8f83a2b2e040a6ee859e100a6556981f36"
+  action :install # could be :remove as well
+end
+```
+
+```
+elasticsearch_install 'my_es_installation' do
+  type :package # type of install
+  version "1.5.0"
+  action :install # could be :remove as well
+end
+```
+
 ## Testing
 
 This cookbook is equipped with both unit tests (chefspec) and integration tests

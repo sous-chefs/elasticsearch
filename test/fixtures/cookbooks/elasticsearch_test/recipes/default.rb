@@ -2,3 +2,4 @@
 # resources, providers, and recipes can be used correctly from a wrapper
 
 include_recipe 'elasticsearch_test::user'
+include_recipe 'elasticsearch_test::install'
