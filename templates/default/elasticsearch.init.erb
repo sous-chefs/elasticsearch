@@ -76,7 +76,7 @@ stop() {
         echo -e "\033[1mPID file found, but no matching process running?\033[0m"
         echo    "Removing PID file..."
         rm $PIDFILE
-        exit 0
+        return 1
       fi
 
       # KILL PROCESS
