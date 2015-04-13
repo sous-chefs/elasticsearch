@@ -61,7 +61,20 @@
 <%= print_value 'transport.tcp.compress' -%>
 <%= print_value 'http.host' -%>
 <%= print_value 'http.port' -%>
+<%= print_value 'http.bind_port' -%>
+<%= print_value 'http.publish_port' -%>
 <%= print_value 'http.max_content_length' -%>
+<%= print_value 'http.max_initial_line_length' -%>
+<%= print_value 'http.compression' -%>
+<%= print_value 'http.compression_level' -%>
+<%= print_value 'http.cors.enabled' -%>
+<%= print_value 'http.cors.allow-origin' -%>
+<%= print_value 'http.cors.max-age' -%>
+<%= print_value 'http.cors.allow-methods' -%>
+<%= print_value 'http.cors.allow-headers' -%>
+<%= print_value 'http.cors.allow-credentials' -%>
+<%= print_value 'http.pipelining' -%>
+<%= print_value 'http.pipelining.max_events' -%>
 <%= print_value 'http.enabled' -%>
 
 ################################### Gateway ###################################
@@ -101,6 +114,11 @@
 <%- node.elasticsearch[:discovery][:ec2][:tag].sort.each do |key, value| -%>
 discovery.ec2.tag.<%= key %>: <%= value %>
 <%- end unless node.elasticsearch[:discovery][:ec2][:tag].keys.empty? rescue false -%>
+
+<%= print_value 'cloud.gce.project_id' -%>
+<%= print_value 'cloud.gce.zone' -%>
+<%= print_value 'cloud.gce.tags' -%>
+<%= print_value 'discovery.gce.tags' -%>
 <%- end -%>
 
 ################################## Slow Log ###################################

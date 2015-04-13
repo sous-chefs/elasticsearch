@@ -81,32 +81,30 @@ ssh -t $SSH_OPTIONS $HOST \
   "curl -# -L -k -o /tmp/cookbook-elasticsearch-master.tar.gz https://github.com/elasticsearch/cookbook-elasticsearch/archive/master.tar.gz"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Let's bootstrap the server now -- install latest Chef, couple of software packages and Ruby gems,
-and install dependent cookbooks via [_Berkshelf_](http://berkshelf.com):
+Let's bootstrap the server now -- install Chef itself and install dependent cookbooks via [_Berkshelf_](http://berkshelf.com):
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
 time ssh -t $SSH_OPTIONS $HOST <<END
   sudo apt-get update
   sudo apt-get install build-essential curl git vim -y
-  curl -# -L http://www.opscode.com/chef/install.sh | sudo bash -s --
+  curl -O https://opscode-omnibus-packages.s3.amazonaws.com/ubuntu/12.04/x86_64/chefdk_0.4.0-1_amd64.deb
+  sudo dpkg -i chefdk_0.4.0-1_amd64.deb
   sudo mkdir -p /etc/chef/; sudo mkdir -p /var/chef/cookbooks/elasticsearch
   sudo tar --strip 1 -C /var/chef/cookbooks/elasticsearch -xf /tmp/cookbook-elasticsearch-master.tar.gz
-  sudo apt-get install bison zlib1g-dev libopenssl-ruby1.9.1 libssl-dev libyaml-0-2 libxslt-dev libxml2-dev libreadline-gplv2-dev libncurses5-dev file ruby1.9.1-dev git --yes --fix-missing
-  sudo /opt/chef/embedded/bin/gem install berkshelf --version 2.0.14 --no-rdoc --no-ri
-  sudo /opt/chef/embedded/bin/berks install --path=/var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/elasticsearch/Berksfile
+  sudo /usr/bin/berks vendor /var/chef/cookbooks/ --berksfile=/var/chef/cookbooks/elasticsearch/Berksfile
 END
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Finally, let's run `chef-solo` to provision the node!
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-ssh -t $SSH_OPTIONS $HOST "sudo chef-solo -N elasticsearch-test-chef-solo -j node.json"
+time ssh -t $SSH_OPTIONS $HOST "sudo chef-solo -N elasticsearch-test-chef-solo -j node.json"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Verify the installation with:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-ssh $SSH_OPTIONS $HOST "curl localhost:9200"
+ssh $SSH_OPTIONS $HOST "curl -s localhost:9200"
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 For a full and thorough walktrough, please read the tutorial on
@@ -354,7 +352,7 @@ All the required third-party cookbooks will be automatically installed via the
 locally (eg. to inspect them), use the `berks` command:
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~bash
-    berks install --path ./tmp/cookbooks
+    berks vendor ./tmp/cookbooks
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The `Vagrantfile` supports four Linux distributions:
