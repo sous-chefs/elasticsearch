@@ -37,7 +37,17 @@ module Extensions
         version = params['version'] ? "/#{params['version']}" : nil
         url     = params['url']     ? " -url #{params['url']}" : nil
 
-        command = "#{node.elasticsearch[:bindir]}/plugin -install #{name}#{version}#{url}"
+        http_proxy = params['http_proxy'] || ENV['http_proxy']
+        proxy_args = ''
+
+        Chef::Log.debug "Using proxy: #{http_proxy || 'none'}"
+
+        # FIXME: what happens if proxy is https?
+        if http_proxy and http_proxy =~ /^(?:http:\/\/)?([^:]+)(?::(\d+))?$/
+          proxy_args = "-DproxyHost=#{$1} -DproxyPort=#{$2||'8080'} "
+        end
+
+        command = "#{node.elasticsearch[:bindir]}/plugin #{proxy_args}-install #{name}#{version}#{url}"
         Chef::Log.debug command
 
         raise "[!] Failed to install plugin" unless system command
