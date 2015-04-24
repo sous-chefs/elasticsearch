@@ -52,7 +52,11 @@
 
 <%= print_value 'bootstrap.mlockall' -%>
 <%= print_value 'indices.fielddata.cache.size' -%>
-<%= print_value 'indices.fielddata.cache.expire' -%>
+<%= print_value 'indices.breaker.total.limit' -%>
+<%= print_value 'indices.breaker.fielddata.limit' -%>
+<%= print_value 'indices.breaker.fielddata.overhead' -%>
+<%= print_value 'indices.breaker.request.limit' -%>
+<%= print_value 'indices.breaker.request.overhead' -%>
 
 ############################## Network And HTTP ###############################
 
@@ -78,7 +82,7 @@
 <%= print_value 'http.pipelining' -%>
 <%= print_value 'http.pipelining.max_events' -%>
 <%= print_value 'http.enabled' -%>
-
+m
 ################################### Gateway ###################################
 
 <%= print_value 'gateway.type', node.elasticsearch[:gateway][:type] -%>
