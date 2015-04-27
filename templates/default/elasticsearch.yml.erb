@@ -1,0 +1,159 @@
+######################### ElasticSearch Configuration  ########################
+
+# This file is managed by Chef, do not edit manually, your changes *will* be overwritten!
+#
+# Please see the source file for context and more information:
+#
+# https://github.com/elasticsearch/elasticsearch/blob/master/config/elasticsearch.yml
+#
+# To set configurations not exposed by this template, set the
+# `@config[:custom_config]` attribute in your node configuration,
+# `elasticsearch/settings` data bag, role/environment definition, etc:
+#
+#     // ...
+#     'threadpool.index.type' => 'fixed',
+#     'threadpool.index.size' => '2'
+#     // ...
+
+################################### Cluster ###################################
+
+<%= print_value(@config, 'cluster.name') -%>
+
+#################################### Node #####################################
+
+<%= print_value(@config, 'node.name') -%>
+<%= print_value(@config, 'node.master') -%>
+<%= print_value(@config, 'node.data') -%>
+<%= print_value(@config, 'node.max_local_storage_nodes') -%>
+
+#################################### Index ####################################
+
+<%= print_value(@config, 'index.number_of_shards') -%>
+<%= print_value(@config, 'index.number_of_replicas') -%>
+<%= print_value(@config, 'index.auto_expand_replicas') -%>
+<%= print_value(@config, 'index.mapper.dynamic') -%>
+<%= print_value(@config, 'action.auto_create_index') -%>
+<%= print_value(@config, 'action.disable_delete_all_indices') -%>
+
+#################################### Paths ####################################
+
+<%= print_value(@config, 'path.conf') -%>
+<%= print_value(@config, 'path.data') -%>
+<%= print_value(@config, 'path.work') -%>
+<%= print_value(@config, 'path.logs') -%>
+<%= print_value(@config, 'path.plugins') -%>
+
+#################################### Plugin ###################################
+
+<%= print_value(@config, 'plugin.mandatory') -%>
+
+################################### Memory ####################################
+
+<%= print_value(@config, 'bootstrap.mlockall') -%>
+
+############################## Network And HTTP ###############################
+
+<%= print_value(@config, 'network.bind_host') -%>
+<%= print_value(@config, 'network.publish_host') -%>
+<%= print_value(@config, 'network.host') -%>
+<%= print_value(@config, 'transport.tcp.port') -%>
+<%= print_value(@config, 'transport.tcp.compress') -%>
+<%= print_value(@config, 'http.host') -%>
+<%= print_value(@config, 'http.port') -%>
+<%= print_value(@config, 'http.bind_port') -%>
+<%= print_value(@config, 'http.publish_port') -%>
+<%= print_value(@config, 'http.max_content_length') -%>
+<%= print_value(@config, 'http.max_initial_line_length') -%>
+<%= print_value(@config, 'http.compression') -%>
+<%= print_value(@config, 'http.compression_level') -%>
+<%= print_value(@config, 'http.cors.enabled') -%>
+<%= print_value(@config, 'http.cors.allow-origin') -%>
+<%= print_value(@config, 'http.cors.max-age') -%>
+<%= print_value(@config, 'http.cors.allow-methods') -%>
+<%= print_value(@config, 'http.cors.allow-headers') -%>
+<%= print_value(@config, 'http.cors.allow-credentials') -%>
+<%= print_value(@config, 'http.pipelining') -%>
+<%= print_value(@config, 'http.pipelining.max_events') -%>
+<%= print_value(@config, 'http.enabled') -%>
+
+################################### Gateway ###################################
+
+<%= print_value(@config, 'gateway.type') -%>
+<%= print_value(@config, 'gateway.recover_after_nodes') -%>
+<%= print_value(@config, 'gateway.recover_after_time') -%>
+<%= print_value(@config, 'gateway.expected_nodes') -%>
+
+############################# Recovery Throttling #############################
+
+<%= print_value(@config, 'cluster.routing.allocation.node_initial_primaries_recoveries') -%>
+<%= print_value(@config, 'cluster.routing.allocation.node_concurrent_recoveries') -%>
+<%= print_value(@config, 'indices.recovery.max_bytes_per_sec') -%>
+<%= print_value(@config, 'indices.recovery.concurrent_streams') -%>
+
+################################## Discovery ##################################
+
+<%= print_value(@config, 'discovery.type') -%>
+
+<%= print_value(@config, 'discovery.zen.minimum_master_nodes') -%>
+<%= print_value(@config, 'discovery.zen.ping.timeout') -%>
+<%= print_value(@config, 'discovery.zen.ping.multicast.enabled') -%>
+<%= print_value(@config, 'discovery.zen.ping.unicast.hosts') -%>
+
+<%= print_value(@config, 'cloud.node.auto_attributes') -%>
+<%= print_value(@config, 'cloud.aws.access_key') -%>
+<%= print_value(@config, 'cloud.aws.secret_key') -%>
+<%= print_value(@config, 'cloud.aws.region') -%>
+<%= print_value(@config, 'cloud.aws.ec2.endpoint') -%>
+<%= print_value(@config, 'discovery.ec2.groups') -%>
+<%= print_value(@config, 'discovery.ec2.host_type') -%>
+<%= print_value(@config, 'discovery.ec2.availability_zones') -%>
+<%= print_value(@config, 'discovery.ec2.any_group') -%>
+<%= print_value(@config, 'discovery.ec2.ping_timeout') -%>
+
+<%= print_value(@config, 'cloud.gce.project_id') -%>
+<%= print_value(@config, 'cloud.gce.zone') -%>
+<%= print_value(@config, 'cloud.gce.tags') -%>
+<%= print_value(@config, 'discovery.gce.tags') -%>
+
+################################## Slow Log ###################################
+
+<%= print_value(@config, 'index.search.slowlog.threshold.query.warn') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.query.info') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.query.debug') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.query.trace') -%>
+<%=                                                          -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.fetch.warn') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.fetch.info') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.fetch.debug') -%>
+<%= print_value(@config, 'index.search.slowlog.threshold.fetch.trace') -%>
+<%=                                                          -%>
+<%= print_value(@config, 'index.indexing.slowlog.threshold.index.warn') -%>
+<%= print_value(@config, 'index.indexing.slowlog.threshold.index.info') -%>
+<%= print_value(@config, 'index.indexing.slowlog.threshold.index.debug') -%>
+<%= print_value(@config, 'index.indexing.slowlog.threshold.index.trace') -%>
+
+################################## GC Logging #################################
+
+<%= print_value(@config, 'monitor.jvm.gc.ParNew.warn') -%>
+<%= print_value(@config, 'monitor.jvm.gc.ParNew.info') -%>
+<%= print_value(@config, 'monitor.jvm.gc.ParNew.debug') -%>
+<%=                                           -%>
+<%= print_value(@config, 'monitor.jvm.gc.ConcurrentMarkSweep.warn') -%>
+<%= print_value(@config, 'monitor.jvm.gc.ConcurrentMarkSweep.info') -%>
+<%= print_value(@config, 'monitor.jvm.gc.ConcurrentMarkSweep.debug') -%>
+
+################################## JMX ########################################
+
+<%= print_value(@config, 'jmx.create_connector') -%>
+<%= print_value(@config, 'jmx.port') -%>
+<%= print_value(@config, 'jmx.domain') -%>
+
+################################## Custom #####################################
+
+<%
+  seen_state = @config[:_seen]
+  @config.sort.each do |key, value|
+    # skip this config value if we've already seen it
+    next if seen_state[key] or key == :_seen %>
+<%= key %>: <%= value %>
+<% end %>

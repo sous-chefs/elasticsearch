@@ -16,12 +16,11 @@ provisioner:
   nodes_path: 'test/fixtures/nodes'
   data_bags_path: 'test/fixtures/data_bags'
   environments_path: 'test/fixtures/environments'
-  # commented as it doesn't currently exist
-  # encrypted_data_bag_secret_key_path: "test/fixtures/encrypted_data_bag_secret_for_test"
   client_rb:
     environment: _default
   attributes:
-    foo: 'bar'
+    java:
+      jdk_version: '7'
 
 platforms:
   - name: ubuntu-14.04
@@ -36,11 +35,11 @@ platforms:
 
 suites:
   - name: default # the normal use-case
-    run_list: recipe[elasticsearch]
-    attributes:
-      foo: 'bar'
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch]
 
   - name: elasticsearch_test # the override-everything use case
-    run_list: recipe[elasticsearch_test::default]
-    attributes:
-      foo: 'bar'
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default]

@@ -1,0 +1,26 @@
+# JVM Configuration for ElasticSearch
+# ===================================
+# See <https://github.com/elasticsearch/elasticsearch/blob/master/bin/elasticsearch.in.sh>
+#
+
+<%= "JAVA_HOME='#{@java_home}'\n" if @java_home -%>
+ES_HOME='<%= "#{@es_home}/elasticsearch" %>'
+ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
+ES_HEAP_SIZE=<%= @allocated_memory %>
+
+ES_JAVA_OPTS="
+  -server
+  -Djava.net.preferIPv4Stack=true
+  -Des.config=<%= @es_config %>/elasticsearch.yml
+  -Xms<%= @Xms %>
+  -Xmx<%= @Xmx %>
+  -Xss<%= @Xss %>
+  <%= @gc_settings %>
+<% if @jmx %>
+  -Dcom.sun.management.jmxremote.ssl=false
+  -Dcom.sun.management.jmxremote.authenticate=false
+  -Dcom.sun.management.jmxremote.port=3333
+  -Djava.rmi.server.hostname=<%= @java_rmi_server_hostname %>
+<% end %>
+  <%= @env_options %>
+"

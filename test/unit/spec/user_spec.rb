@@ -2,7 +2,7 @@
 
 require_relative 'spec_helper'
 
-describe 'elasticsearch_test::user' do
+describe 'elasticsearch_test::default' do
   before { stub_resources }
   supported_platforms.each do |platform, versions|
     versions.each do |version|

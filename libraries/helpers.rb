@@ -31,5 +31,39 @@ module ElasticsearchCookbook
     def get_source_root_dir(new_resource, node)
       new_resource.dir || node.ark[:prefix_root]
     end
+
+    # This method takes a hash, but will convert to mash
+    def print_value(data, key, options={})
+      separator = options[:separator] || ': '
+
+      final_value = format_value(find_value(data, key))
+
+      # track what we've returned in state var
+      unless final_value.nil?
+        data[:_seen][key] = true
+      end
+
+      # keyseparatorexisting_value\n
+      [key, separator, final_value, "\n"].join unless final_value.nil?
+    end
+
+    # given a hash and a key, get a value out or return nil
+    # -- and check for symbols
+    def find_value(data, key)
+      data[key] unless data[key].nil?
+    end
+
+    def format_value(value)
+      unless value.nil?
+        if value.is_a?(Array)
+          value.join(',').to_s
+        elsif value.respond_to?(:empty?) && value.empty?
+          nil # anything that answers to empty? should be nil again
+        else
+          value.to_s
+        end
+      end
+    end
+
   end
 end
