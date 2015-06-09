@@ -29,6 +29,9 @@ class Hash
   end unless respond_to?(:deep_merge!)
 end
 
+VAGRANTFILE_CONFIG_VERSION = "2"
+I18n.enforce_available_locales = false
+
 STDERR.puts "[Vagrant   ] #{Vagrant::VERSION}"
 
 # Automatically install and mount cookbooks from Berksfile on old Vagrant
@@ -152,7 +155,8 @@ else
   custom_config = {}
 end
 
-Vagrant::Config.run do |config|
+
+Vagrant.configure(VAGRANTFILE_CONFIG_VERSION) do |config|
 
   distributions.each_pair do |name, options|
 
