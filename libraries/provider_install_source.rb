@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Provider for installing or removing Elasticsearch from tarball
   # downloaded from elasticsearch.org and unpacked into (by default) /usr/local

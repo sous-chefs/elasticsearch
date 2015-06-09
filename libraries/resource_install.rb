@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Resource for installing or removing Elasticsearch from package or source
   class Resource::ElasticsearchInstall < Resource

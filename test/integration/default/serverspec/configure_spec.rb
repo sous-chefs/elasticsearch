@@ -28,8 +28,6 @@ describe file('/usr/local/etc/elasticsearch/elasticsearch-env.sh') do
     '-server',
     '-Djava.net.preferIPv4Stack=true',
     '-Des.config=\/.+',
-    '-Xms218m',
-    '-Xmx218m',
     '-Xss256k',
     'UseParNewGC',
     'UseConcMarkSweepGC',

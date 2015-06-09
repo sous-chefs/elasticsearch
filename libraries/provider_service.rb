@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Provider for configuring an elasticsearch service in the init system
   class Provider::ElasticsearchService < Provider
@@ -29,7 +31,8 @@ class Chef
           bindir: new_resource.bindir,
           http_port: 9200, # TODO: does the init script really need this?
           node_name: new_resource.node_name,
-          service_name: new_resource.service_name
+          service_name: new_resource.service_name,
+          args: new_resource.args
           })
       end
 

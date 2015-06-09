@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   class Provider::ElasticsearchPlugin < Provider
     include Poise

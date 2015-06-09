@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Resource for declaring a user and group for Elasticsearch
   class Resource::ElasticsearchUser < Resource

@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Resource for configuring an elasticsearch instance
   class Resource::ElasticsearchConfigure < Resource

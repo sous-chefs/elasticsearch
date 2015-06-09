@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Resource for declaring a service for Elasticsearch
   class Resource::ElasticsearchService < Resource
@@ -9,6 +11,7 @@ class Chef
     attribute(:node_name, kind_of: String, default: lazy { node.name } )
     attribute(:path_conf, kind_of: String, default: "/usr/local/etc/elasticsearch")
     attribute(:bindir, kind_of: String, default: "/usr/local/bin")
+    attribute(:args, kind_of: String, default: '-d')
 
     attribute(:pid_path, kind_of: String, default: "/usr/local/var/run")
     attribute(:pid_file, kind_of: String,

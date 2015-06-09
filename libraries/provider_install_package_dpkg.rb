@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Provider for installing or removing Elasticsearch from package
   # downloaded from elasticsearch.org and installed by dpkg. We break this out

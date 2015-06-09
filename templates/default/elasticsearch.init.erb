@@ -55,7 +55,7 @@ start() {
     <% if @platform_family == 'debian' %>
       ES_INCLUDE=$ES_INCLUDE start-stop-daemon --start --background --quiet --pidfile $PIDFILE --chuid <%= @user %> --exec <%= @bindir %>/elasticsearch -- -p $PIDFILE
     <% else %>
-      su <%= @user %> -c "ES_INCLUDE=$ES_INCLUDE <%= @bindir %>/elasticsearch<%= @version > '1' ? ' -d' : '' %> -p $PIDFILE"
+      su <%= @user %> -c "ES_INCLUDE=$ES_INCLUDE <%= @bindir %>/elasticsearch <%= @args %> -p $PIDFILE"
     <% end %>
 
     if [ $? ]; then

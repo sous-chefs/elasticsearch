@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Provider for configuring an elasticsearch instance
   class Provider::ElasticsearchConfigure < Provider

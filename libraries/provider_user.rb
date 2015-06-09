@@ -1,3 +1,5 @@
+require 'poise'
+
 class Chef
   # Chef Provider for creating a user and group for Elasticsearch
   class Provider::ElasticsearchUser < Provider
