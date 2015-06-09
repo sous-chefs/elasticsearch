@@ -1,6 +1,8 @@
 Description
 -----------
 
+#### Note: We are working on a new version of this cookbook, which can be found under the [next branch](https://github.com/elastic/cookbook-elasticsearch/tree/next). It's a greatly simplified, library version, and we are seeking [contributions and feedback](https://github.com/elastic/cookbook-elasticsearch/labels/next).
+
 This _Chef_ cookbook installs and configures the [_Elasticsearch_](http://www.elasticsearch.org)
 search engine on a Linux compatible operating system.
 
