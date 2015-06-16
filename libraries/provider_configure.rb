@@ -47,9 +47,7 @@ class Chef
           Xms: new_resource.allocated_memory,
           Xmx: new_resource.allocated_memory,
           Xss: new_resource.thread_stack_size,
-          jmx: new_resource.jmx,
           gc_settings: new_resource.gc_settings,
-          java_rmi_server_hostname: new_resource.java_rmi_server_hostname,
           env_options: new_resource.env_options
           })
       end

@@ -62,13 +62,7 @@ describe file('/usr/local/etc/elasticsearch/logging.yml') do
   it { should be_grouped_into 'elasticsearch' }
 
   [
-    'Configuration set by Chef',
-    'es.logger.level: INFO',
-    'rootLogger: INFO, console, file',
-    'logger.action: DEBUG',
-    'logger.com.amazonaws: WARN',
-    'logger.index.indexing.slowlog: TRACE, index_indexing_slow_log_file',
-    'logger.index.search.slowlog: TRACE, index_search_slow_log_file'
+    'Configuration set by Chef'
   ].each do |line|
     its(:content) { should match(/#{line}/)}
   end
