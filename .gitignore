@@ -18,6 +18,7 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+.kitchen.*.yml
 
 # chefspec
 .coverage/
