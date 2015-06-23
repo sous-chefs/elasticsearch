@@ -18,7 +18,7 @@ class Chef
     attribute(:user, kind_of: String, default: 'elasticsearch')
     attribute(:group, kind_of: String, default: 'elasticsearch')
 
-    attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch-env.sh.erb')
+    attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
     attribute(:template_elasticsearch_yml, kind_of: String, default: 'elasticsearch.yml.erb')
     attribute(:template_logging_yml, kind_of: String, default: 'logging.yml.erb')
 
@@ -37,6 +37,7 @@ class Chef
         -XX:CMSInitiatingOccupancyFraction=75
         -XX:+UseCMSInitiatingOccupancyOnly
         -XX:+HeapDumpOnOutOfMemoryError
+        -XX:+DisableExplicitGC
       CONFIG
     )
 

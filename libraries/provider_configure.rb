@@ -32,8 +32,8 @@ class Chef
         end
       end
 
-      template "elasticsearch-env.sh" do
-        path "#{new_resource.path_conf}/elasticsearch-env.sh"
+      template "elasticsearch.in.sh" do
+        path "#{new_resource.path_conf}/elasticsearch.in.sh"
         source new_resource.template_elasticsearch_env
         cookbook 'elasticsearch'
         owner new_resource.user

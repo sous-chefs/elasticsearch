@@ -15,7 +15,7 @@ require_relative 'spec_helper'
   end
 end
 
-describe file('/usr/local/awesome/etc/elasticsearch/elasticsearch-env.sh') do
+describe file('/usr/local/awesome/etc/elasticsearch/elasticsearch.in.sh') do
   it { should be_file }
   it { should be_owned_by 'foo' }
   it { should be_grouped_into 'bar' }

@@ -35,9 +35,6 @@ elasticsearch_configure 'my_elasticsearch' do
   group 'bar'
   logging({:"action" => 'INFO'})
 
-  java_rmi_server_hostname 'localhost'
-  jmx true
-
   allocated_memory '123m'
   thread_stack_size '512k'
 

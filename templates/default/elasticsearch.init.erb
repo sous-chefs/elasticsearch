@@ -33,7 +33,7 @@ ulimit -l <%= @memlock_limit %>
 [ "$NETWORKING" = "no" ] && exit
 
 PIDFILE='<%= @pid_file %>'
-ES_INCLUDE='<%= @path_conf %>/elasticsearch-env.sh'
+ES_INCLUDE='<%= @path_conf %>/elasticsearch.in.sh'
 CHECK_PID_RUNNING=$(ps ax | grep 'java' | grep -e "es.pidfile=$PIDFILE" | sed 's/^\s*\([0-9]*\)\s.*/\1/')
 
 start() {

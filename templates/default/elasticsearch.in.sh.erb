@@ -1,0 +1,26 @@
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# THIS FILE IS MANAGED BY CHEF, DO NOT EDIT MANUALLY, YOUR CHANGES WILL BE OVERWRITTEN!
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Environment configuration
+# See <https://github.com/elastic/elasticsearch/blob/master/core/bin/elasticsearch.in.sh>
+#
+
+<%= "JAVA_HOME='#{@java_home}'\n" if @java_home -%>
+ES_HOME='<%= "#{@es_home}/elasticsearch" %>'
+ES_CLASSPATH=$ES_CLASSPATH:$ES_HOME/lib/*:$ES_HOME/lib/sigar/*
+ES_HEAP_SIZE=<%= @allocated_memory %>
+
+ES_JAVA_OPTS="
+  -server
+  -Djava.awt.headless=true
+  -Djava.net.preferIPv4Stack=true
+  -Des.config=<%= @es_config %>/elasticsearch.yml
+  -Xms<%= @Xms %>
+  -Xmx<%= @Xmx %>
+  -Xss<%= @Xss %>
+  <%= @gc_settings %>
+  -Dfile.encoding=UTF-8
+  -Djna.nosys=true
+  <%= @env_options %>
+"
