@@ -8,6 +8,7 @@ class Chef
     include Poise
 
     actions(:manage, :remove)
+    default_action :manage
 
     attribute(:dir, kind_of: String, default: "/usr/local")
 

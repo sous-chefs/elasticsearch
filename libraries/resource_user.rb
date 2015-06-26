@@ -6,6 +6,7 @@ class Chef
     include Poise
 
     actions(:create, :remove)
+    default_action :create
 
     attribute(:username, kind_of: String, default: lazy { name }) # default to resource name
     attribute(:uid, kind_of: Integer)

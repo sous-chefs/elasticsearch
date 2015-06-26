@@ -7,6 +7,9 @@ class Chef
     provides :elasticsearch_install
 
     actions(:install, :remove)
+    default_action :install
+
+
     attribute(:type, kind_of: Symbol, :equal_to => [:source, :package], default: :source)
     attribute(:version, kind_of: String, default: '1.5.0')
 
