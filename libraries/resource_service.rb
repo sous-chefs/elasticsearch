@@ -6,6 +6,7 @@ class Chef
     include Poise
 
     actions(:configure, :remove)
+    default_action :configure
 
     attribute(:service_name, kind_of: String, :name_attribute => true)
     attribute(:node_name, kind_of: String, default: lazy { node.name } )

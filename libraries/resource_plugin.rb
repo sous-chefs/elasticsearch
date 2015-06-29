@@ -6,6 +6,7 @@ class Chef
     include ElasticsearchCookbook::Helpers
 
     actions(:install, :remove)
+    default_action :install
 
     # /usr/local/awesome/elasticsearch-version/plugins or packaged location
     attribute(:plugin_dir, kind_of: String)
