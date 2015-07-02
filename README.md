@@ -1,7 +1,12 @@
 # Elasticsearch Chef Cookbook
 
 This branch contains the next version of the cookbook. This cookbook has been
-converted into a library cookbook.
+converted into a library cookbook, and supports CI as well as more modern
+testing with chefspec and test-kitchen. It no longer supports some of the more
+extraneous features such as discovery (use chef search in the wrapper) or EBS
+device creation (use the aws cookbook).
+
+The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
 ## Recipes
 
@@ -159,7 +164,7 @@ Integration tests can be executed using `rake integration` or `kitchen test`.
 
 This software is licensed under the Apache 2 license, quoted below.
 
-    Copyright (c) 2014 Elasticsearch <http://www.elasticsearch.org>
+    Copyright (c) 2015 Elasticsearch <http://www.elasticsearch.org>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
