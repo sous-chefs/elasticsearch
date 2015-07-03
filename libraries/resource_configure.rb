@@ -28,7 +28,7 @@ class Chef
     attribute(:java_home, kind_of: String, default: nil)
     attribute(:es_home, kind_of: String, default: lazy { dir })
 
-    attribute(:allocated_memory, kind_of: String, default: lazy { "#{(node.memory.total.to_i * 0.6 ).floor / 1024}m" } )
+    attribute(:allocated_memory, kind_of: String, default: lazy { compute_allocated_memory } )
     attribute(:thread_stack_size, kind_of: String, default: "256k")
     attribute(:env_options, kind_of: String, default: '')
     attribute(:gc_settings, kind_of: String, default:
@@ -68,5 +68,9 @@ class Chef
     #
     attribute(:configuration, kind_of: Hash, default: Hash.new)
 
+    def compute_allocated_memory
+      half = (node.memory.total.to_i * 0.5 ).floor / 1024
+      half > 31000 ? "31g" : "#{half}m"
+    end
   end
 end
