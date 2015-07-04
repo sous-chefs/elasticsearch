@@ -14,9 +14,10 @@ class Chef
           package_url = get_package_url(new_resource, node)
           filename = package_url.split('/').last
           checksum = get_package_checksum(new_resource, node)
+          package_options = new_resource.package_options
 
           download_package(package_url, "#{Chef::Config[:file_cache_path]}/#{filename}", checksum)
-          install_package("#{Chef::Config[:file_cache_path]}/#{filename}")
+          install_package("#{Chef::Config[:file_cache_path]}/#{filename}", package_options)
         end
       end
     end
@@ -49,8 +50,9 @@ class Chef
       end
     end
 
-    def install_package(path)
+    def install_package(path, package_options)
       package path do
+        options package_options
         action :install
       end
     end

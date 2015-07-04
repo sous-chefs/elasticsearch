@@ -15,6 +15,7 @@ class Chef
     # attributes used by the package-flavor provider
     attribute(:package_url, kind_of: String, default: nil)
     attribute(:package_checksum, kind_of: String, default: nil)
+    attribute(:package_options, kind_of: String, default: nil)
 
     # attributes used by the source-flavor provider
     attribute(:source_url, kind_of: String, default: lazy {  "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-#{version}.tar.gz" } )
