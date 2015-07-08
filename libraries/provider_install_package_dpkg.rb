@@ -8,8 +8,9 @@ class Chef
   class Provider::ElasticsearchInstallPackageDpkg <  Chef::Provider::ElasticsearchInstallPackage
     provides :elasticsearch_install, platform_family: [ "debian", "ubuntu" ] if respond_to?(:provides)
 
-    def install_package(path)
+    def install_package(path, package_options)
       dpkg_package path do
+        options package_options
         action :install
       end
     end
