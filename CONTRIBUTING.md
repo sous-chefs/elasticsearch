@@ -18,3 +18,12 @@ Contributing to cookbook-elasticsearch
 1. After reviewing commits for documentation, passing CI tests, and good descriptive commit messages, merge it with --no-ff switch, so it's indicated in the Git history
 
 1. Do not use the Github "merge button", since it doesn't do a fast-forward merge (see previous item).
+
+
+### Releasing
+
+1. Create/update the changelog. We are using the `github_changelog_generator`
+gem.
+
+1. We highly recommend using the `stove` project, which pushes cookbooks to
+Supermarket and tags to Github.
