@@ -1,10 +1,11 @@
 # Elasticsearch Chef Cookbook
 
-This branch contains the next version of the cookbook. This cookbook has been
-converted into a library cookbook, and supports CI as well as more modern
-testing with chefspec and test-kitchen. It no longer supports some of the more
-extraneous features such as discovery (use chef search in the wrapper) or EBS
-device creation (use the aws cookbook).
+This cookbook has been converted into a library cookbook as of version 1.0.0,
+and supports Chef 12.x and higher. It implements supports CI as well as more
+modern testing with chefspec and test-kitchen. It no longer supports some of
+the more extraneous features such as discovery (use [chef search](http://docs.chef.io/chef_search.html)
+in your wrapper cookbook) or EBS device creation (use
+[the aws cookbook](https://github.com/opscode-cookbooks/aws)).
 
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
@@ -18,6 +19,7 @@ options.
 ## Resources
 
 ### elasticsearch_user
+Actions: `:create`, `:remove`
 
 Creates a user and group on the system for use by elasticsearch. Here is an
 example with many of the default options and default values (all options except
@@ -36,6 +38,7 @@ end
 ```
 
 ### elasticsearch_install
+Actions: `:install`, `:remove`
 
 Downloads the elasticsearch software, and unpacks it on the system. There are
 currently two ways to install -- `package`, which downloads the appropriate
@@ -84,6 +87,94 @@ elasticsearch_install 'my_es_installation' do
   type :package # type of install
   version "1.5.0"
   action :install # could be :remove as well
+end
+```
+
+### elasticsearch_configure
+Actions: `:manage`, `:remove`
+
+Configures an elasticsearch instance; creates directories for configuration,
+logs, and data. Writes files logging.yml, elasticsearch.in.sh and
+elasticsearch.yml.
+
+The main attribute for this resource is `configuration`,
+which is a hash of any elasticsearch configuration directives. The
+other important attribute is `default_configuration` -- this contains the
+minimal set of required defaults.
+
+Note that these are both _not_ a Chef mash, everything must be in a single level
+of keys and values. Any settings you pass in configuration will be merged into
+(and potentially overwrite) any default settings.
+
+See the examples, [as well as the attributes in the resource file](libraries/resource_configure.rb),
+for more.
+
+Examples:
+
+With all defaults -
+```
+elasticsearch_configure 'elasticsearch'
+```
+
+More complicated -
+```
+elasticsearch_configure 'my_elasticsearch' do
+  dir '/usr/local/awesome'
+  user 'foo'
+  group 'bar'
+  logging({:"action" => 'INFO'})
+
+  allocated_memory '123m'
+  thread_stack_size '512k'
+
+  env_options '-DFOO=BAR'
+  gc_settings <<-CONFIG
+                -XX:+UseParNewGC
+                -XX:+UseConcMarkSweepGC
+                -XX:CMSInitiatingOccupancyFraction=75
+                -XX:+UseCMSInitiatingOccupancyOnly
+                -XX:+HeapDumpOnOutOfMemoryError
+                -XX:+PrintGCDetails
+              CONFIG
+
+  configuration ({
+    'node.name' => 'crazy'
+  })
+
+  action :manage
+end
+```
+
+### elasticsearch_service
+Actions: `:configure`, `:remove`
+
+Writes out a system service configuration of the appropriate type, and enables
+it to start on boot. You can override almost all of the relevant settings in
+such a way that you may run multiple instances.
+
+```
+elasticsearch_service 'elasticsearch'
+```
+
+```
+elasticsearch_service 'elasticsearch-crazy' do
+  node_name 'crazy'
+  path_conf '/usr/local/awesome/etc/elasticsearch'
+  pid_path '/usr/local/awesome/var/run'
+  user 'foo'
+  group 'bar'
+end
+```
+
+### elasticsearch_plugin
+Actions: `:install`, `:remove`
+
+Installs or removes a plugin to a given elasticsearch instance and plugin
+directory.
+
+```
+elasticsearch_plugin 'mobz/elasticsearch-head' do
+  plugin_dir '/usr/local/awesome/elasticsearch-1.5.0/plugins'
 end
 ```
 
