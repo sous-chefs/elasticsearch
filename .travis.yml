@@ -2,7 +2,7 @@ language: ruby
 
 branches:
   only:
-    - next
+    - master
 
 rvm:
   - 2.1
