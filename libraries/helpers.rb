@@ -24,11 +24,11 @@ module ElasticsearchCookbook
       end
     end
 
-    def get_source_home_dir(new_resource, node)
+    def get_tarball_home_dir(new_resource, node)
       new_resource.dir || node.ark[:prefix_home]
     end
 
-    def get_source_root_dir(new_resource, node)
+    def get_tarball_root_dir(new_resource, node)
       new_resource.dir || node.ark[:prefix_root]
     end
 

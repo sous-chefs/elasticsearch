@@ -23,7 +23,7 @@ elasticsearch_install 'elasticsearch_p' do
 end
 
 elasticsearch_install 'elasticsearch_s' do
-  type :source
+  type :tarball
   dir '/usr/local/awesome'
   owner 'foo'
   group 'bar'

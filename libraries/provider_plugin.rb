@@ -19,7 +19,7 @@ class Chef
 
           install_resource = found_installs.first
           es_version = install_resource.instance_variable_get(:@version)
-          es_dir = get_source_root_dir(install_resource, node)
+          es_dir = get_tarball_root_dir(install_resource, node)
 
           new_resource.plugin_dir "#{es_dir}/elasticsearch-#{es_version}/plugins"
         end

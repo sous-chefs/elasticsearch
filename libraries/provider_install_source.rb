@@ -15,14 +15,14 @@ class Chef
           include_recipe 'curl'
 
           ark "elasticsearch" do
-            url   new_resource.source_url
+            url   new_resource.tarball_url
             owner new_resource.owner
             group new_resource.group
             version new_resource.version
             has_binaries ['bin/elasticsearch', 'bin/plugin']
-            checksum new_resource.source_checksum
-            prefix_root   get_source_root_dir(new_resource, node)
-            prefix_home   get_source_home_dir(new_resource, node)
+            checksum new_resource.tarball_checksum
+            prefix_root   get_tarball_root_dir(new_resource, node)
+            prefix_home   get_tarball_home_dir(new_resource, node)
 
             not_if do
               link   = "#{new_resource.dir}/elasticsearch"
@@ -61,7 +61,7 @@ class Chef
     class << self
       # supports the given resource and action (late binding)
       def supports?(resource, action)
-        resource.type == :source
+        resource.type == :tarball
       end
     end
 

@@ -40,7 +40,7 @@ end
 Downloads the elasticsearch software, and unpacks it on the system. There are
 currently two ways to install -- `package`, which downloads the appropriate
 package from elasticsearch.org and uses the package manager to install it, and
-`source` which downloads a tarball from elasticsearch.org and unpacks it in
+`tarball` which downloads a tarball from elasticsearch.org and unpacks it in
 /usr/local on the system. The resource name is not used for anything in
 particular. This resource also comes with a `:remove` action which will remove
 the package or directory elasticsearch was unpacked into.
@@ -49,14 +49,14 @@ Examples:
 
 ```
 elasticsearch_install 'my_es_installation' do
-  type :source # type of install
+  type :tarball # type of install
   dir '/usr/local' # where to install
 
   owner 'elasticsearch' # user and group to install under
   group 'elasticsearch'
 
-  source_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
-  source_checksum "acf572c606552bc446cceef3f8e93814a363ba0d215b323a2864682b3abfbe45"
+  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
+  tarball_checksum "acf572c606552bc446cceef3f8e93814a363ba0d215b323a2864682b3abfbe45"
 
   action :install # could be :remove as well
 end
@@ -64,7 +64,7 @@ end
 
 ```
 elasticsearch_install 'my_es_installation' do
-  type :source # type of install
+  type :tarball # type of install
   version '1.5.0'
   action :install # could be :remove as well
 end
