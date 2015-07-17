@@ -182,9 +182,15 @@ Actions: `:install`, `:remove`
 Installs or removes a plugin to a given elasticsearch instance and plugin
 directory.
 
+When running a single instance per machine (VM, etc), it's typically
+sufficient to rely on the default value of `plugin_dir`:
+
 ```
 elasticsearch_plugin 'mobz/elasticsearch-head'
 ```
+
+To run multiple instances per machine, an explicit `plugin_dir` location
+has to be provided:
 
 ```
 elasticsearch_plugin 'mobz/elasticsearch-head' do
