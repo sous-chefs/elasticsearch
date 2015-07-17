@@ -23,9 +23,15 @@ Actions: `:create`, `:remove`
 
 Creates a user and group on the system for use by elasticsearch. Here is an
 example with many of the default options and default values (all options except
-a resource name may be omitted):
+a resource name may be omitted).
 
-```ruby
+Examples:
+
+```
+elasticsearch_user 'elasticsearch'
+```
+
+```
 elasticsearch_user 'elasticsearch' do
   username 'elasticsearch'
   groupname 'elasticsearch'
@@ -49,6 +55,10 @@ particular. This resource also comes with a `:remove` action which will remove
 the package or directory elasticsearch was unpacked into.
 
 Examples:
+
+```
+elasticsearch_install 'elasticsearch'
+```
 
 ```
 elasticsearch_install 'my_es_installation' do
@@ -171,6 +181,10 @@ Actions: `:install`, `:remove`
 
 Installs or removes a plugin to a given elasticsearch instance and plugin
 directory.
+
+```
+elasticsearch_plugin 'mobz/elasticsearch-head'
+```
 
 ```
 elasticsearch_plugin 'mobz/elasticsearch-head' do
