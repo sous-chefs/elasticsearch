@@ -37,7 +37,7 @@ suites:
   - name: default # the normal use-case
     run_list:
       - recipe[java]
-      - recipe[elasticsearch]
+      - recipe[elasticsearch_test::default_with_plugins]
 
   - name: elasticsearch_test # the override-everything use case
     run_list:
