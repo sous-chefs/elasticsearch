@@ -14,6 +14,9 @@ class Chef
     attribute(:bindir, kind_of: String, default: "/usr/local/bin")
     attribute(:args, kind_of: String, default: '-d')
 
+    attribute(:init_source, kind_of: String, default: 'elasticsearch.init.erb')
+    attribute(:init_cookbook, kind_of: String, default: 'elasticsearch')
+
     attribute(:pid_path, kind_of: String, default: "/usr/local/var/run")
     attribute(:pid_file, kind_of: String,
       default: lazy { "#{pid_path}/#{node_name.to_s.gsub(/\W/, '_')}.pid" })
