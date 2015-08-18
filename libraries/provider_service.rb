@@ -63,7 +63,7 @@ class Chef
 
       service new_resource.service_name do
         supports :status => true, :restart => true
-        action [ :enable ]
+        action   new_resource.service_actions
       end
     end
   end
