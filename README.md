@@ -54,6 +54,14 @@ package from elasticsearch.org and uses the package manager to install it, and
 particular. This resource also comes with a `:remove` action which will remove
 the package or directory elasticsearch was unpacked into.
 
+You may always specify a download_url and/or download_checksum. You may use `%s`
+in your URL and this cookbook will use sprintf/format to insert the version
+parameter as a string into your download_url.
+
+By default, this cookbook will use download URLs and checksums are determined
+by `attributes/versions.rb`. You may adjust the node attributes to force this
+cookbook to use different checksums or different download URLs.
+
 Examples:
 
 ```
@@ -68,9 +76,9 @@ elasticsearch_install 'my_es_installation' do
   owner 'elasticsearch' # user and group to install under
   group 'elasticsearch'
 
-  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
+  download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
   # sha256
-  tarball_checksum "6f81935e270c403681e120ec4395c28b2ddc87e659ff7784608b86beb5223dd2"
+  download_checksum "6f81935e270c403681e120ec4395c28b2ddc87e659ff7784608b86beb5223dd2"
 
   action :install # could be :remove as well
 end
@@ -87,9 +95,9 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
-  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
+  download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
   # sha256
-  package_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
+  download_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
   action :install # could be :remove as well
 end
 ```

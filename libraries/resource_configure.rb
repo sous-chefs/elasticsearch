@@ -6,6 +6,7 @@ class Chef
   #
   class Resource::ElasticsearchConfigure < Resource
     include Poise
+    resource_name :elasticsearch_configure if respond_to?(:resource_name)
 
     actions(:manage, :remove)
     default_action :manage

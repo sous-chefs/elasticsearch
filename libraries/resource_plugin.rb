@@ -4,7 +4,7 @@ class Chef
   class Resource::ElasticsearchPlugin < Resource
     include Poise
     include ElasticsearchCookbook::Helpers
-
+    resource_name :elasticsearch_plugin if respond_to?(:resource_name)
     actions(:install, :remove)
     default_action :install
 

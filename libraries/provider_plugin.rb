@@ -16,7 +16,6 @@ class Chef
         found_installs = run_context.resource_collection.select { |r| r.instance_variable_get(:@resource_name) == :elasticsearch_install }
 
         unless found_installs.empty?
-
           install_resource = found_installs.first
           es_version = install_resource.instance_variable_get(:@version)
           es_dir = get_tarball_root_dir(install_resource, node)
