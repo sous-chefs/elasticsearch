@@ -40,10 +40,10 @@ class Chef
       end
 
       # automatically raises on error, logs command output
-      shell_out!("#{new_resource.bindir}/plugin -install #{name}#{version}#{url}".split(' '))
+      shell_out!("#{new_resource.bindir}/plugin -install #{name}#{version}#{url}".split(' '), user: new_resource.user, group: new_resource.group)
 
       # Ensure proper permissions
-      shell_out!("chown -R #{new_resource.user}:#{new_resource.group} #{new_resource.plugin_dir}".split(' '))
+      shell_out!("chown -R #{new_resource.user}:#{new_resource.group} #{new_resource.plugin_dir}".split(' '), user: new_resource.user, group: new_resource.group)
     end # action
   end # provider
 end # chef class
