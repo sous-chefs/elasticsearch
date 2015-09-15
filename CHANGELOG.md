@@ -2,6 +2,34 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [1.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.1) (2015-09-15)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.0...1.0.1)
+
+**Implemented enhancements:**
+
+- Plugin resource's plugin\_dir should have a sensible default [\#345](https://github.com/elastic/cookbook-elasticsearch/issues/345)
+
+**Fixed bugs:**
+
+- Elasticsearch user homedir deleted  [\#328](https://github.com/elastic/cookbook-elasticsearch/issues/328)
+
+**Closed issues:**
+
+- Use predictable attributes/values for version, download URL, and checksum [\#366](https://github.com/elastic/cookbook-elasticsearch/issues/366)
+- elasticsearch\_plugin installs plugins with the wrong permissions [\#363](https://github.com/elastic/cookbook-elasticsearch/issues/363)
+- Double-dependency on curl [\#360](https://github.com/elastic/cookbook-elasticsearch/issues/360)
+- poise dependency not found [\#356](https://github.com/elastic/cookbook-elasticsearch/issues/356)
+- Documentation for using JSON node configuration [\#355](https://github.com/elastic/cookbook-elasticsearch/issues/355)
+- Hardcoded checksums in library helpers [\#350](https://github.com/elastic/cookbook-elasticsearch/issues/350)
+- Document default values for all resources [\#348](https://github.com/elastic/cookbook-elasticsearch/issues/348)
+- 1.0 should have sensible documentation [\#344](https://github.com/elastic/cookbook-elasticsearch/issues/344)
+
+**Merged pull requests:**
+
+- Adds integration test for plugins in default environment [\#361](https://github.com/elastic/cookbook-elasticsearch/pull/361) ([bwvoss](https://github.com/bwvoss))
+- Clarify when overriding plugin\_dir is necessary [\#349](https://github.com/elastic/cookbook-elasticsearch/pull/349) ([michaelklishin](https://github.com/michaelklishin))
+- Remove duplicate node.max\_local\_storage\_nodes setting from the config template [\#346](https://github.com/elastic/cookbook-elasticsearch/pull/346) ([eheydrick](https://github.com/eheydrick))
+
 ## [v1.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v1.0.0) (2015-07-16)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v0.3.13...v1.0.0)
 
