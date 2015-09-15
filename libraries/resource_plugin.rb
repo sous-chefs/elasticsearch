@@ -1,8 +1,6 @@
-require 'poise'
 
 class Chef
-  class Resource::ElasticsearchPlugin < Resource
-    include Poise
+  class Resource::ElasticsearchPlugin < Chef::Resource::LWRPBase
     include ElasticsearchCookbook::Helpers
     resource_name :elasticsearch_plugin if respond_to?(:resource_name)
     actions(:install, :remove)

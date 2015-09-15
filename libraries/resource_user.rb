@@ -1,9 +1,7 @@
-require 'poise'
 
 class Chef
   # Chef Resource for declaring a user and group for Elasticsearch
-  class Resource::ElasticsearchUser < Resource
-    include Poise
+  class Resource::ElasticsearchUser < Chef::Resource::LWRPBase
     resource_name :elasticsearch_user if respond_to?(:resource_name)
     actions(:create, :remove)
     default_action :create
