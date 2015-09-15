@@ -69,8 +69,10 @@ class Chef
           supports :status => true, :restart => true
           action :nothing
         end
-        svc_r.run_action(:enable)
-        new_resource.updated_by_last_action(true) if svc_r.updated_by_last_action?
+        new_resource.service_actions.each do |act|
+          svc_r.run_action(act)
+          new_resource.updated_by_last_action(true) if svc_r.updated_by_last_action?
+        end
       end
     end
   end

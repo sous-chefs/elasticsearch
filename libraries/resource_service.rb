@@ -22,5 +22,8 @@ class Chef
     # default user limits
     attribute(:memlock_limit, kind_of: String, default: 'unlimited')
     attribute(:nofile_limit, kind_of: String, default: '64000')
+
+    # service actions
+    attribute(:service_actions, kind_of: [Symbol, Array], default: [ :enable ])
   end
 end
