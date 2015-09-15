@@ -19,8 +19,8 @@ class Chef
         # Create service
         #
         init_r = template "/etc/init.d/#{new_resource.service_name}" do
-          source "elasticsearch.init.erb"
-          cookbook 'elasticsearch'
+          source new_resource.init_source
+          cookbook new_resource.init_cookbook
           owner 'root'
           mode 0755
           variables({
