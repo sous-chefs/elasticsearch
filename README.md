@@ -197,6 +197,7 @@ elasticsearch_plugin 'mobz/elasticsearch-head' do
   plugin_dir '/usr/local/awesome/elasticsearch-1.5.0/plugins'
 end
 ```
+NB: You [may encounter issues on certain distros](http://blog.backslasher.net/java-ssl-crash.html) with NSS 3.16.1 and OpenJDK 7.x.
 
 ## Testing
 

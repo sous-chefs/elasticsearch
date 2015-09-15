@@ -32,6 +32,7 @@ platforms:
   - name: centos-6.6
     run_list:
     - recipe[yum]
+    - recipe[elasticsearch_test::fix_nss] # see recipe header
 
 suites:
   - name: default # the normal use-case

@@ -56,6 +56,8 @@ elasticsearch_configure 'my_elasticsearch' do
 end
 
 elasticsearch_plugin 'mobz/elasticsearch-head' do
+  user 'foo'
+  group 'bar'
   plugin_dir '/usr/local/awesome/elasticsearch-1.5.0/plugins'
 end
 
