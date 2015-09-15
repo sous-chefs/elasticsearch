@@ -24,13 +24,6 @@ class Chef
             action  :create
             system true
           end
-
-          bash 'remove the elasticsearch user home' do
-            user    'root'
-            code    "rm -rf #{new_resource.homedir}"
-            not_if  { ::File.symlink?("#{new_resource.homedir}") }
-            only_if { ::File.directory?("#{new_resource.homedir}") }
-          end
         end
       end
     end
