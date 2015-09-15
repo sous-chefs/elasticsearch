@@ -18,9 +18,9 @@ module ElasticsearchCookbook
 
       case node['platform_family']
       when 'debian'
-        '15a02a2bea74da2330bb78718efb3a8f83a2b2e040a6ee859e100a6556981f36'
+        '791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2'
       when 'rhel'
-        'b72a9fb9a2c0471e8fe1a35373cdcfe39d29e72b7281bfccbdc32d03ee0eff70'
+        'c5410b88494d5cc9fdadf59353430b46c28e58eddc5c610ea4c4516eacc2fa09'
       end
     end
 

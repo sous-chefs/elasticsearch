@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 # normal elasticsearch install with defaults
-describe file('/usr/local/elasticsearch-1.5.0') do
+describe file('/usr/local/elasticsearch-1.7.2') do
   it { should be_directory }
 end
 
@@ -11,5 +11,5 @@ end
 
 describe file('/usr/local/bin/elasticsearch') do
   it { should be_symlink }
-  it { should be_linked_to('/usr/local/elasticsearch-1.5.0/bin/elasticsearch') }
+  it { should be_linked_to('/usr/local/elasticsearch-1.7.2/bin/elasticsearch') }
 end

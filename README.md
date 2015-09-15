@@ -68,8 +68,9 @@ elasticsearch_install 'my_es_installation' do
   owner 'elasticsearch' # user and group to install under
   group 'elasticsearch'
 
-  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
-  tarball_checksum "acf572c606552bc446cceef3f8e93814a363ba0d215b323a2864682b3abfbe45"
+  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
+  # sha256
+  tarball_checksum "6f81935e270c403681e120ec4395c28b2ddc87e659ff7784608b86beb5223dd2"
 
   action :install # could be :remove as well
 end
@@ -78,7 +79,7 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
-  version '1.5.0'
+  version '1.7.2'
   action :install # could be :remove as well
 end
 ```
@@ -86,8 +87,9 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
-  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.deb"
-  package_checksum "15a02a2bea74da2330bb78718efb3a8f83a2b2e040a6ee859e100a6556981f36"
+  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
+  # sha256
+  package_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
   action :install # could be :remove as well
 end
 ```
@@ -95,7 +97,7 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
-  version "1.5.0"
+  version "1.7.2"
   action :install # could be :remove as well
 end
 ```
@@ -194,7 +196,7 @@ has to be provided:
 
 ```
 elasticsearch_plugin 'mobz/elasticsearch-head' do
-  plugin_dir '/usr/local/awesome/elasticsearch-1.5.0/plugins'
+  plugin_dir '/usr/local/awesome/elasticsearch-1.7.2/plugins'
 end
 ```
 NB: You [may encounter issues on certain distros](http://blog.backslasher.net/java-ssl-crash.html) with NSS 3.16.1 and OpenJDK 7.x.
