@@ -68,8 +68,9 @@ elasticsearch_install 'my_es_installation' do
   owner 'elasticsearch' # user and group to install under
   group 'elasticsearch'
 
-  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.tar.gz"
-  tarball_checksum "acf572c606552bc446cceef3f8e93814a363ba0d215b323a2864682b3abfbe45"
+  tarball_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.0.tar.gz"
+  # sha256
+  tarball_checksum "6fabed2db09e1b88587df15269df328ecef33e155b3c675a2a6d2299bda09c95"
 
   action :install # could be :remove as well
 end
@@ -78,7 +79,9 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
-  version '1.5.0'
+  version '1.7.0'
+  # sha256
+  package_checksum '6fabed2db09e1b88587df15269df328ecef33e155b3c675a2a6d2299bda09c95'
   action :install # could be :remove as well
 end
 ```
@@ -86,8 +89,9 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
-  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.5.0.deb"
-  package_checksum "15a02a2bea74da2330bb78718efb3a8f83a2b2e040a6ee859e100a6556981f36"
+  package_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.0.deb"
+  # sha256
+  package_checksum "ce0db2227cbf3a50f4acf74b9f1fa75e7457f72e450b933e279e5db3bc14ce8e"
   action :install # could be :remove as well
 end
 ```
@@ -95,7 +99,9 @@ end
 ```
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
-  version "1.5.0"
+  version "1.7.0"
+  # sha256
+  package_checksum "ce0db2227cbf3a50f4acf74b9f1fa75e7457f72e450b933e279e5db3bc14ce8e"
   action :install # could be :remove as well
 end
 ```
