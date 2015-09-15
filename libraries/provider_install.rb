@@ -9,7 +9,7 @@ class Chef
     provides :elasticsearch_install if respond_to?(:provides)
 
     def action_install
-      install_type = determine_install_type(new_resource)
+      install_type = determine_install_type(new_resource, node)
       if install_type == 'tarball' || install_type == 'tar'
         install_tarball_wrapper_action
       elsif install_type == 'package'
@@ -89,7 +89,7 @@ class Chef
             url   determine_download_url(new_resource, node)
             owner new_resource.owner
             group new_resource.group
-            version determine_version(new_resource)
+            version determine_version(new_resource, node)
             has_binaries ['bin/elasticsearch', 'bin/plugin']
             checksum determine_download_checksum(new_resource, node)
             prefix_root   get_tarball_root_dir(new_resource, node)
@@ -97,7 +97,7 @@ class Chef
 
             not_if do
               link   = "#{new_resource.dir}/elasticsearch"
-              target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
+              target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
               binary = "#{target}/bin/elasticsearch"
 
               ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exists?(binary)
@@ -115,14 +115,14 @@ class Chef
             action :delete
             only_if do
               link   = "#{new_resource.dir}/elasticsearch"
-              target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
+              target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
 
               ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
             end
           end
 
           # remove the specific version
-          directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
+          directory "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}" do
             action :delete
           end
         end

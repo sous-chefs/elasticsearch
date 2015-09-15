@@ -1,26 +1,30 @@
 module ElasticsearchCookbook
   module Helpers
 
-    def determine_version(new_resource)
+    def determine_version(new_resource, node)
       if new_resource.version
         new_resource.version.to_s
+      elsif node['elasticsearch'] && node['elasticsearch']['version']
+        node['elasticsearch']['version'].to_s
       else
-        nil
+        raise 'could not determine version of elasticsearch to install'
       end
     end
 
-    def determine_install_type(new_resource)
+    def determine_install_type(new_resource, node)
       if new_resource.type
         new_resource.type.to_s
+      elsif node['elasticsearch'] && node['elasticsearch']['install_type']
+        node['elasticsearch']['install_type'].to_s
       else
-        nil
+        raise 'could not determine how to install elasticsearch (package? tarball?)'
       end
     end
 
     def determine_download_url(new_resource, node)
       platform_family = node['platform_family']
-      install_type = determine_install_type(new_resource)
-      version = determine_version(new_resource)
+      install_type = determine_install_type(new_resource, node)
+      version = determine_version(new_resource, node)
 
       url_string = nil
       if new_resource.download_url
@@ -40,8 +44,8 @@ module ElasticsearchCookbook
 
     def determine_download_checksum(new_resource, node)
       platform_family = node['platform_family']
-      install_type = determine_install_type(new_resource)
-      version = determine_version(new_resource)
+      install_type = determine_install_type(new_resource, node)
+      version = determine_version(new_resource, node)
 
       if new_resource.download_checksum
         new_resource.download_checksum

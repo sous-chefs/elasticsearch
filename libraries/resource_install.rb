@@ -10,10 +10,16 @@ class Chef
     actions(:install, :remove)
     default_action :install
 
-    attribute(:type, kind_of: Symbol, :equal_to => [:tarball, :tar, :package], default: :tar)
-    attribute(:version, kind_of: String, default: '1.7.2')
+    # if this version parameter is not set by the caller, we look at
+    # `attributes/default.rb` for a default value to use, or we raise
+    attribute(:version, kind_of: String, default: nil)
 
-    # these use `attributes/versions.rb` for default values per platform and install type
+    # we allow a string or symbol for this value
+    attribute(:type, kind_of: [Symbol, String],
+      :equal_to => ['tarball', 'tar', 'package', :tarball, :tar, :package], default: 'tarball')
+
+
+    # these use `attributes/default.rb` for default values per platform and install type
     attribute(:download_url, kind_of: String, default: nil)
     attribute(:download_checksum, kind_of: String, default: nil) # sha256
 

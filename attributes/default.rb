@@ -1,4 +1,6 @@
-# see libraries/resource_install.rb for the default Elasticsearch version
+# elasticsearch version & install type
+default['elasticsearch']['version'] = '1.7.2'
+default['elasticsearch']['install_type'] = 'tarball'
 
 # platform_family keyed download URLs
 default['elasticsearch']['download_urls']['debian'] = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb"

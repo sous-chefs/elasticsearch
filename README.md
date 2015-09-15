@@ -9,6 +9,18 @@ in your wrapper cookbook) or EBS device creation (use
 
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
+## Default version, download URLs, and checksums
+Please consult [attributes/default.rb](attributes/default.rb) for these values.
+Both the recipes and resources/providers here source their default values for
+Elasticsearch version, download URL, and Checksum from `attributes/default.rb`.
+
+Please take note that you may use `%s` in your URL and this cookbook will use
+sprintf/format to insert the version parameter as a string into your
+download_url.
+
+You may adjust the node attributes to force this cookbook to use different
+default values for all three settings.
+
 ## Recipes
 
 ### default
@@ -54,13 +66,12 @@ package from elasticsearch.org and uses the package manager to install it, and
 particular. This resource also comes with a `:remove` action which will remove
 the package or directory elasticsearch was unpacked into.
 
-You may always specify a download_url and/or download_checksum. You may use `%s`
-in your URL and this cookbook will use sprintf/format to insert the version
-parameter as a string into your download_url.
+You may always specify a download_url and/or download_checksum, and you may
+include `%s` which will be replaced by the version parameter you supply.
 
-By default, this cookbook will use download URLs and checksums are determined
-by `attributes/versions.rb`. You may adjust the node attributes to force this
-cookbook to use different checksums or different download URLs.
+Please be sure to consult the above section 'Default version, download URLs,
+and checksums' as that controls how Elasticsearch version, download URL and
+checksum are determined if you omit them.
 
 Examples:
 
