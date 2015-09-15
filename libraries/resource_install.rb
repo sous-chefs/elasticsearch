@@ -13,6 +13,7 @@ class Chef
     attribute(:type, kind_of: Symbol, :equal_to => [:tarball, :tar, :package], default: :tar)
     attribute(:version, kind_of: String, default: '1.7.2')
 
+    # these use `attributes/versions.rb` for default values per platform and install type
     attribute(:download_url, kind_of: String, default: nil)
     attribute(:download_checksum, kind_of: String, default: nil) # sha256
 
