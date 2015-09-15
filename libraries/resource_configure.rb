@@ -11,11 +11,11 @@ class Chef
     actions(:manage, :remove)
     default_action :manage
 
-    attribute(:dir, kind_of: String, default: "/usr/local")
-
-    attribute(:path_conf, kind_of: String, default: lazy { "#{dir}/etc/elasticsearch" })
-    attribute(:path_data, kind_of: String, default: lazy { "#{dir}/var/data/elasticsearch" })
-    attribute(:path_logs, kind_of: String, default: lazy { "#{dir}/var/log/elasticsearch" })
+    # if you override one of these, you should probably override them all
+    attribute(:dir, kind_of: String, default: "/usr/local") # creates /usr/local/elasticsearch
+    attribute(:path_conf, kind_of: String, default: "/usr/local/etc/elasticsearch")
+    attribute(:path_data, kind_of: String, default: "/usr/local/var/data/elasticsearch")
+    attribute(:path_logs, kind_of: String, default: "/usr/local/var/log/elasticsearch")
 
     attribute(:user, kind_of: String, default: 'elasticsearch')
     attribute(:group, kind_of: String, default: 'elasticsearch')
@@ -27,9 +27,12 @@ class Chef
     attribute(:logging, kind_of: Hash, default: {})
 
     attribute(:java_home, kind_of: String, default: nil)
-    attribute(:es_home, kind_of: String, default: lazy { dir })
+    attribute(:es_home, kind_of: String, default: "/usr/local")
 
-    attribute(:allocated_memory, kind_of: String, default: lazy { compute_allocated_memory } )
+    # Calculations for this are done in the provider, as we can't do them in the
+    # resource definition. default is 50% of RAM or 31GB, which ever is smaller.
+    attribute(:allocated_memory, kind_of: String)
+
     attribute(:thread_stack_size, kind_of: String, default: "256k")
     attribute(:env_options, kind_of: String, default: '')
     attribute(:gc_settings, kind_of: String, default:
@@ -45,14 +48,15 @@ class Chef
 
     # These are the default settings. Most of the time, you want to override the `configuration` attribute below.
     #
-    attribute(:default_configuration, kind_of: Hash, default: lazy { {
+    attribute(:default_configuration, kind_of: Hash, default: {
       # === NAMING
       'cluster.name' => 'elasticsearch',
-      'node.name' => node.name,
+      # can't access node.name, so expect to have to set set this
+      'node.name' => Chef::Config[:node_name],
 
-      'path.conf' => path_conf,
-      'path.data' => path_data,
-      'path.logs' => path_logs,
+      'path.conf' => "/usr/local/etc/elasticsearch",
+      'path.data' => "/usr/local/var/data/elasticsearch",
+      'path.logs' => "/usr/local/var/log/elasticsearch",
 
       'action.destructive_requires_name' => true,
       'node.max_local_storage_nodes' => 1,
@@ -62,16 +66,11 @@ class Chef
       'gateway.expected_nodes' => 1,
 
       'http.port' => 9200,
-    } })
+    })
 
     # These settings are merged with the `default_configuration` attribute,
     # allowing you to override and set specific settings.
     #
     attribute(:configuration, kind_of: Hash, default: Hash.new)
-
-    def compute_allocated_memory
-      half = (node.memory.total.to_i * 0.5 ).floor / 1024
-      half > 31000 ? "31g" : "#{half}m"
-    end
   end
 end

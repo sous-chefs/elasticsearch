@@ -6,6 +6,13 @@ class Chef
     include Poise
 
     def action_manage
+      # calculation for memory allocation; 50% or 31g, whatever is smaller
+      unless new_resource.allocated_memory
+        half = ((node.memory.total.to_i * 0.5 ).floor / 1024)
+        new_resource.allocated_memory (half > 31000 ? "31g" : "#{half}m")
+      end
+
+
       # Create ES directories
       #
       [ new_resource.path_conf, new_resource.path_logs ].each do |path|

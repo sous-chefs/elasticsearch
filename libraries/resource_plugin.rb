@@ -8,8 +8,8 @@ class Chef
     actions(:install, :remove)
     default_action :install
 
-    # /usr/local/awesome/elasticsearch-version/plugins or packaged location
-    attribute(:plugin_dir, kind_of: String)
+    # You must override these for the package-installed version
+    attribute(:plugin_dir, kind_of: String, default: "/usr/local/elasticsearch/plugins")
     attribute(:bindir, kind_of: String, default: "/usr/local/bin")
 
     attribute(:plugin_name, kind_of: String, :name_attribute => true)

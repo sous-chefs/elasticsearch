@@ -8,6 +8,12 @@ class Chef
     def action_create
       converge_by("create elasticsearch_user resource #{new_resource.name}") do
         notifying_block do
+          unless new_resource.homedir
+            # if unset, default it to a calculated value
+            new_resource.homedir ::File.join(new_resource.homedir_parent, new_resource.homedir_name)
+          end
+
+
           group new_resource.groupname do
             gid new_resource.gid
             action :create

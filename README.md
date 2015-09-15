@@ -150,7 +150,12 @@ elasticsearch_configure 'elasticsearch'
 More complicated -
 ```
 elasticsearch_configure 'my_elasticsearch' do
+  # if you override one of these, you probably want to override all
   dir '/usr/local/awesome'
+  path_conf "/usr/local/awesome/etc/elasticsearch"
+  path_data "/usr/local/awesome/var/data/elasticsearch"
+  path_logs "/usr/local/awesome/var/log/elasticsearch"
+
   user 'foo'
   group 'bar'
   logging({:"action" => 'INFO'})
