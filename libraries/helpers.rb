@@ -1,5 +1,6 @@
 module ElasticsearchCookbook
   module Helpers
+    include Chef::DSL::IncludeRecipe
 
     def determine_version(new_resource, node)
       if new_resource.version
