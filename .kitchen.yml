@@ -8,9 +8,6 @@
 driver:
   name: vagrant # provide a default test-kitchen driver, vagrant
 
-driver_config:
-  require_chef_omnibus: true # 11.18.12
-
 provisioner:
   name: chef_zero
   nodes_path: 'test/fixtures/nodes'
@@ -36,11 +33,41 @@ platforms:
 
 suites:
   - name: default # the normal use-case
+    require_chef_omnibus: 12.4.1
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
   - name: elasticsearch_test # the override-everything use case
+    driver_config:
+      require_chef_omnibus: 12.4.1
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default]
+
+  - name: chef-12.3.0
+    driver_config:
+      require_chef_omnibus: 12.3.0
+    includes:
+      - ubuntu-14.04
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default_with_plugins]
+
+  - name: chef-12.2.1
+    driver_config:
+      require_chef_omnibus: 12.2.1
+    includes:
+      - ubuntu-14.04
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default_with_plugins]
+
+  - name: chef-12.1.2
+    driver_config:
+      require_chef_omnibus: 12.1.2
+    includes:
+      - ubuntu-14.04
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default_with_plugins]

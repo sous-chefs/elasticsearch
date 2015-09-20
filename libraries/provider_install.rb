@@ -4,6 +4,7 @@ class Chef
   # downloaded from elasticsearch.org and installed by package manager or ark resource
   class Provider::ElasticsearchInstall < Chef::Provider::LWRPBase
     include ElasticsearchCookbook::Helpers
+    include Chef::DSL::IncludeRecipe
     provides :elasticsearch_install if respond_to?(:provides)
 
     action :install do
