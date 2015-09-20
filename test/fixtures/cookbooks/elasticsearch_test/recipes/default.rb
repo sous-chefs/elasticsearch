@@ -31,9 +31,6 @@ end
 
 elasticsearch_configure 'my_elasticsearch' do
   dir '/usr/local/awesome'
-  path_conf "/usr/local/awesome/etc/elasticsearch"
-  path_data "/usr/local/awesome/var/data/elasticsearch"
-  path_logs "/usr/local/awesome/var/log/elasticsearch"
   user 'foo'
   group 'bar'
   logging({:"action" => 'INFO'})

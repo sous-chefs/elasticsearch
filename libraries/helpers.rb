@@ -72,7 +72,7 @@ module ElasticsearchCookbook
 
       # track what we've returned in state var
       unless final_value.nil?
-        data[:_seen][key] = true
+        data['#_seen'][key] = true
       end
 
       # keyseparatorexisting_value\n

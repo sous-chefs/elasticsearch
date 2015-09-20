@@ -11,9 +11,9 @@ class Chef
 
     # if you override one of these, you should probably override them all
     attribute(:dir, kind_of: String, default: "/usr/local") # creates /usr/local/elasticsearch
-    attribute(:path_conf, kind_of: String, default: "/usr/local/etc/elasticsearch")
-    attribute(:path_data, kind_of: String, default: "/usr/local/var/data/elasticsearch")
-    attribute(:path_logs, kind_of: String, default: "/usr/local/var/log/elasticsearch")
+    attribute(:path_conf, kind_of: String, default: nil) # default "/usr/local/etc/elasticsearch"
+    attribute(:path_data, kind_of: String, default: nil) # default "/usr/local/var/data/elasticsearch"
+    attribute(:path_logs, kind_of: String, default: nil) # default "/usr/local/var/log/elasticsearch"
 
     attribute(:user, kind_of: String, default: 'elasticsearch')
     attribute(:group, kind_of: String, default: 'elasticsearch')
@@ -44,17 +44,18 @@ class Chef
       CONFIG
     )
 
-    # These are the default settings. Most of the time, you want to override the `configuration` attribute below.
-    #
+    # These are the default settings. Most of the time, you want to override
+    # the `configuration` attribute below. If you do override the defaults, you
+    # must supply ALL needed defaults, and don't use nil as a value in the hash.
     attribute(:default_configuration, kind_of: Hash, default: {
       # === NAMING
       'cluster.name' => 'elasticsearch',
       # can't access node.name, so expect to have to set set this
       'node.name' => Chef::Config[:node_name],
 
-      'path.conf' => "/usr/local/etc/elasticsearch",
-      'path.data' => "/usr/local/var/data/elasticsearch",
-      'path.logs' => "/usr/local/var/log/elasticsearch",
+      'path.conf' => nil, # default "/usr/local/etc/elasticsearch"
+      'path.data' => nil, # default "/usr/local/var/data/elasticsearch"
+      'path.logs' => nil, # default "/usr/local/var/log/elasticsearch"
 
       'action.destructive_requires_name' => true,
       'node.max_local_storage_nodes' => 1,

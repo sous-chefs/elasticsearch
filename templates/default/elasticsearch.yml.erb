@@ -8,9 +8,9 @@
 # See the documentation for further information on configuration options:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration.html>
 #
-# To set configurations not exposed by this template, set the
-# `@config[:custom_config]` attribute in your node configuration,
-# `elasticsearch/settings` data bag, role/environment definition, etc:
+# To set configurations not exposed by this template, set the `configuration`
+# parameter in your `elasticsearch_configure` resource, as a hash of dotted keys
+# and string values.
 #
 #     // ...
 #     'threadpool.index.type' => 'fixed',
@@ -62,9 +62,11 @@
 # -------------------------- Custom Chef Configuration --------------------------
 #
 <%
-  seen_state = @config[:_seen]
-  @config.sort.each do |key, value|
+  seen_state = @config['#_seen']
+
+  # ensure all the keys are strings before we call sort
+  @config.keys.map { |k| k.to_s }.sort.each do |key|
     # skip this config value if we've already seen it
-    next if seen_state[key] or key == :_seen %>
-<%= key %>: <%= value %>
+    next if key.nil? || @config[key].nil? || seen_state[key] || key == '#_seen' %>
+<%= key %>: <%= @config[key] %>
 <% end %>

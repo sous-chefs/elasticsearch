@@ -8,6 +8,12 @@ class Chef
 
     action :configure do
       converge_by('configure elasticsearch service') do
+
+        # pick one if we have been given a path
+        unless new_resource.pid_file
+          new_resource.pid_file "#{new_resource.pid_path}/var/run/#{Chef::Config[:node_name].to_s.gsub(/\W/, '_')}.pid"
+        end
+
         d_r = directory new_resource.pid_path do
           mode '0755'
           recursive true

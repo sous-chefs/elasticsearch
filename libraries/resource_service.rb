@@ -13,8 +13,7 @@ class Chef
     attribute(:args, kind_of: String, default: '-d')
 
     attribute(:pid_path, kind_of: String, default: "/usr/local/var/run")
-    attribute(:pid_file, kind_of: String,
-      default: "/usr/local/var/run/#{Chef::Config[:node_name].to_s.gsub(/\W/, '_')}.pid" )
+    attribute(:pid_file, kind_of: String, default: nil ) # default to pid_path/var/run/short_node_name.pid
 
     attribute(:user, kind_of: String, name_attribute: true) # default to resource name
     attribute(:group, kind_of: String, name_attribute: true) # default to resource name
