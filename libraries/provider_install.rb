@@ -15,7 +15,7 @@ class Chef
         elsif install_type == 'package'
           install_package_wrapper_action
         else
-          raise "#{install_type} is not a valid install type"
+          fail "#{install_type} is not a valid install type"
         end
       end
     end
@@ -28,7 +28,7 @@ class Chef
         elsif install_type == 'package'
           remove_package_wrapper_action
         else
-          raise "#{install_type} is not a valid install type"
+          fail "#{install_type} is not a valid install type"
         end
       end
     end
@@ -90,7 +90,7 @@ class Chef
       include_recipe 'ark'
       include_recipe 'curl'
 
-      ark_r = ark "elasticsearch" do
+      ark_r = ark 'elasticsearch' do
         url   determine_download_url(new_resource, node)
         owner new_resource.owner
         group new_resource.group
@@ -105,7 +105,7 @@ class Chef
           target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
           binary = "#{target}/bin/elasticsearch"
 
-          ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exists?(binary)
+          ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exist?(binary)
         end
         action :nothing
       end

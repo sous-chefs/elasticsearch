@@ -8,12 +8,12 @@ class Chef
 
     attribute(:service_name, kind_of: String, name_attribute: true)
     attribute(:node_name, kind_of: String, default: Chef::Config[:node_name])
-    attribute(:path_conf, kind_of: String, default: "/usr/local/etc/elasticsearch")
-    attribute(:bindir, kind_of: String, default: "/usr/local/bin")
+    attribute(:path_conf, kind_of: String, default: '/usr/local/etc/elasticsearch')
+    attribute(:bindir, kind_of: String, default: '/usr/local/bin')
     attribute(:args, kind_of: String, default: '-d')
 
-    attribute(:pid_path, kind_of: String, default: "/usr/local/var/run")
-    attribute(:pid_file, kind_of: String, default: nil ) # default to pid_path/var/run/short_node_name.pid
+    attribute(:pid_path, kind_of: String, default: '/usr/local/var/run')
+    attribute(:pid_file, kind_of: String, default: nil) # default to pid_path/var/run/short_node_name.pid
 
     attribute(:user, kind_of: String, name_attribute: true) # default to resource name
     attribute(:group, kind_of: String, name_attribute: true) # default to resource name
@@ -23,7 +23,7 @@ class Chef
     attribute(:nofile_limit, kind_of: String, default: '64000')
 
     # service actions
-    attribute(:service_actions, kind_of: [Symbol, Array], default: [ :enable ])
+    attribute(:service_actions, kind_of: [Symbol, Array], default: [:enable])
 
     # allow overridable init script
     attribute(:init_source, kind_of: String, default: 'elasticsearch.init.erb')

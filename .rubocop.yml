@@ -16,6 +16,10 @@ Encoding:
 LineLength:
   Max: 180
 
+# Longer classes aren't _so_ bad
+Metrics/ClassLength:
+  Max: 125
+
 # Increase allowed lines in a method.  Short methods are good, but 10 lines
 #   is a bit too low.
 MethodLength:
@@ -30,9 +34,12 @@ RedundantReturn:
 IfUnlessModifier:
   Enabled: false
 
-# Raise allowed CyclomaticComplexity to 10.
+# Raise allowed CyclomaticComplexity & Perceivedto 10.
 CyclomaticComplexity:
-  Max: 10
+  Max: 15
+
+Metrics/PerceivedComplexity:
+  Max: 15
 
 # Disable Single Space before first arg
 SingleSpaceBeforeFirstArg:
@@ -44,6 +51,10 @@ WordArray:
 
 # Don't complain about unused block args
 UnusedBlockArgument:
+  Enabled: false
+
+# allow both hash syntaxes
+Style/HashSyntax:
   Enabled: false
 
 # There are too many non-ruby files that run up against rubocop rules in a cookbook

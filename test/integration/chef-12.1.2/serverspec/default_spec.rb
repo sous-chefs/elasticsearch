@@ -7,5 +7,5 @@ describe 'standard elasticsearch install and configure' do
   it_behaves_like 'elasticsearch plugin', 'head'
   it_behaves_like 'elasticsearch service'
 
-  it_behaves_like 'chef version', '12.1.2'  
+  it_behaves_like 'chef version', '12.1.2'
 end

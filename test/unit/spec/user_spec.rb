@@ -15,7 +15,7 @@ describe 'elasticsearch_test::default' do
         end
 
         # any platform specific data you want available to your test can be loaded here
-        property = load_platform_properties(platform: platform, platform_version: version)
+        _property = load_platform_properties(platform: platform, platform_version: version)
 
         it 'creates elasticsearch user foo in group bar' do
           expect(chef_run).to create_elasticsearch_user('foobar')
@@ -24,7 +24,6 @@ describe 'elasticsearch_test::default' do
         it 'deletes user deleteme' do
           expect(chef_run).to remove_elasticsearch_user('deleteme')
         end
-
       end
     end
   end

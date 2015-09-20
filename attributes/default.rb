@@ -3,9 +3,9 @@ default['elasticsearch']['version'] = '1.7.2'
 default['elasticsearch']['install_type'] = 'tarball'
 
 # platform_family keyed download URLs
-default['elasticsearch']['download_urls']['debian'] = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb"
-default['elasticsearch']['download_urls']['rhel'] = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm"
-default['elasticsearch']['download_urls']['tar'] = "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz"
+default['elasticsearch']['download_urls']['debian'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'
+default['elasticsearch']['download_urls']['rhel'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'
+default['elasticsearch']['download_urls']['tar'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'
 
 # platform_family keyed download checksums
 default['elasticsearch']['checksums']['1.4.5']['debian'] = '68dce951181e9802e94fd83b894f4b628394fc44bb01c77eb61fdbd1940d94b5'

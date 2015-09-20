@@ -15,7 +15,7 @@ describe 'elasticsearch_test::default' do
         end
 
         # any platform specific data you want available to your test can be loaded here
-        property = load_platform_properties(platform: platform, platform_version: version)
+        _property = load_platform_properties(platform: platform, platform_version: version)
 
         it 'installs elasticsearch' do
           expect(chef_run).to install_elasticsearch('elasticsearch_p')

@@ -1,14 +1,10 @@
 require_relative 'spec_helper'
 
 shared_examples_for 'elasticsearch configure' do |args = {}|
-
   dir = args[:dir] || '/usr/local'
   path_conf = args[:path_conf] || "#{dir}/etc/elasticsearch"
   path_data = args[:path_data] || "#{dir}/var/data/elasticsearch"
   path_logs = args[:path_logs] || "#{dir}/var/log/elasticsearch"
-
-  version = args[:version] || '1.7.2'
-  package_name = args[:package] || false
 
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'
@@ -18,7 +14,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'node.name: .+',
     'path.conf: \/.+',
     'path.data: \/.+',
-    'path.logs: \/.+',
+    'path.logs: \/.+'
   ]
 
   expected_environment = args[:env] || [
@@ -37,7 +33,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'HeapDumpOnOutOfMemoryError'
   ]
 
-  [ path_conf, path_data, path_logs ].each do |p|
+  [path_conf, path_data, path_logs].each do |p|
     describe file(p) do
       it { should be_directory }
       it { should be_mode 755 }
@@ -76,7 +72,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
       'es.logger.level: INFO',
       'rootLogger: INFO, console, file'
     ].each do |line|
-      its(:content) { should match(/#{line}/)}
+      its(:content) { should match(/#{line}/) }
     end
   end
 end

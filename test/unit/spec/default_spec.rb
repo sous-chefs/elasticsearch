@@ -15,7 +15,7 @@ describe 'elasticsearch::default' do
         end
 
         # any platform specific data you want available to your test can be loaded here
-        property = load_platform_properties(platform: platform, platform_version: version)
+        _property = load_platform_properties(platform: platform, platform_version: version)
 
         it 'creates elasticsearch_user' do
           expect(chef_run).to create_elasticsearch_user('elasticsearch')

@@ -66,6 +66,6 @@ rescue Exception => e
   if e.class.to_s =~ /^Timeout::|^Kitchen::|LoadError/
     STDERR.puts "[!] Omitting Kitchen tasks [#{e.class}: #{e.message} at #{e.backtrace.first}]\n\n"
   else
-    raise e
+    fail e
   end
 end

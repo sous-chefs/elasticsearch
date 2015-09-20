@@ -1,13 +1,13 @@
 module ElasticsearchCookbook
+  # Helper methods included by various providers and passed to the template engine
   module Helpers
-
     def determine_version(new_resource, node)
       if new_resource.version
         new_resource.version.to_s
       elsif node['elasticsearch'] && node['elasticsearch']['version']
         node['elasticsearch']['version'].to_s
       else
-        raise 'could not determine version of elasticsearch to install'
+        fail 'could not determine version of elasticsearch to install'
       end
     end
 
@@ -17,7 +17,7 @@ module ElasticsearchCookbook
       elsif node['elasticsearch'] && node['elasticsearch']['install_type']
         node['elasticsearch']['install_type'].to_s
       else
-        raise 'could not determine how to install elasticsearch (package? tarball?)'
+        fail 'could not determine how to install elasticsearch (package? tarball?)'
       end
     end
 
@@ -57,15 +57,15 @@ module ElasticsearchCookbook
     end
 
     def get_tarball_home_dir(new_resource, node)
-      new_resource.dir || node.ark[:prefix_home]
+      new_resource.dir || node['ark']['prefix_home']
     end
 
     def get_tarball_root_dir(new_resource, node)
-      new_resource.dir || node.ark[:prefix_root]
+      new_resource.dir || node['ark']['prefix_root']
     end
 
     # This method takes a hash, but will convert to mash
-    def print_value(data, key, options={})
+    def print_value(data, key, options = {})
       separator = options[:separator] || ': '
 
       final_value = format_value(find_value(data, key))
@@ -86,16 +86,15 @@ module ElasticsearchCookbook
     end
 
     def format_value(value)
-      unless value.nil?
-        if value.is_a?(Array)
-          value.join(',').to_s
-        elsif value.respond_to?(:empty?) && value.empty?
-          nil # anything that answers to empty? should be nil again
-        else
-          value.to_s
-        end
+      if value.nil?
+        nil # just pass through nil
+      elsif value.is_a?(Array)
+        value.join(',').to_s
+      elsif value.respond_to?(:empty?) && value.empty?
+        nil # anything that answers to empty? should be nil again
+      else
+        value.to_s
       end
     end
-
   end
 end

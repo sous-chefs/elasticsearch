@@ -1,7 +1,6 @@
 require_relative 'spec_helper'
 
 shared_examples_for 'elasticsearch install' do |args = {}|
-
   dir = args[:dir] || '/usr/local'
   version = args[:version] || '1.7.2'
   package_name = args[:package] || false
@@ -29,5 +28,4 @@ shared_examples_for 'elasticsearch install' do |args = {}|
       it { should be_installed }
     end
   end
-
 end

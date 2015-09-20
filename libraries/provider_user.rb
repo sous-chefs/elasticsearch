@@ -2,7 +2,6 @@
 class Chef
   # Chef Provider for creating a user and group for Elasticsearch
   class Provider::ElasticsearchUser < Chef::Provider::LWRPBase
-
     action :create do
       converge_by("create elasticsearch_user resource #{new_resource.name}") do
         unless new_resource.homedir
@@ -25,7 +24,7 @@ class Chef
           uid     new_resource.uid
           gid     new_resource.groupname
           supports manage_home: false
-          action  :nothing
+          action :nothing
           system true
         end
         user_r.run_action(:create)

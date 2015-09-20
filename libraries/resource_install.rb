@@ -14,8 +14,7 @@ class Chef
 
     # we allow a string or symbol for this value
     attribute(:type, kind_of: [Symbol, String],
-      :equal_to => ['tarball', 'tar', 'package', :tarball, :tar, :package], default: 'tarball')
-
+                     :equal_to => ['tarball', 'tar', 'package', :tarball, :tar, :package], default: 'tarball')
 
     # these use `attributes/default.rb` for default values per platform and install type
     attribute(:download_url, kind_of: String, default: nil)
