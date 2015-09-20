@@ -2,6 +2,26 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [1.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.2) (2015-09-20)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.1...1.0.2)
+
+**Implemented enhancements:**
+
+- enhancement : attribut path\_xxx and path.xxx [\#352](https://github.com/elastic/cookbook-elasticsearch/issues/352)
+- It would be nice to be able to pass options to elasticsearch\_service [\#334](https://github.com/elastic/cookbook-elasticsearch/issues/334)
+
+**Closed issues:**
+
+- elasticsearch\_install broken with v1.0.1 [\#371](https://github.com/elastic/cookbook-elasticsearch/issues/371)
+- Compile Error [\#370](https://github.com/elastic/cookbook-elasticsearch/issues/370)
+- wrong number of arguments \(1 for 0\) [\#369](https://github.com/elastic/cookbook-elasticsearch/issues/369)
+- missing chef resource expectations in specs in 1.0.1 [\#367](https://github.com/elastic/cookbook-elasticsearch/issues/367)
+- Rubocop & foodcritic cleanup  [\#365](https://github.com/elastic/cookbook-elasticsearch/issues/365)
+
+**Merged pull requests:**
+
+- add missing matchers [\#368](https://github.com/elastic/cookbook-elasticsearch/pull/368) ([thomasdziedzic](https://github.com/thomasdziedzic))
+
 ## [1.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.1) (2015-09-15)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.0...1.0.1)
 
