@@ -2,6 +2,13 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.3) (2015-09-20)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.2...1.0.3)
+
+**Closed issues:**
+
+-  1.0.2 Issues with pid files [\#374](https://github.com/elastic/cookbook-elasticsearch/issues/374)
+
 ## [1.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.2) (2015-09-20)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.1...1.0.2)
 
