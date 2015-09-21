@@ -9,7 +9,7 @@ class Chef
       converge_by('configure elasticsearch service') do
         # pick one if we have been given a path
         unless new_resource.pid_file
-          new_resource.pid_file "#{new_resource.pid_path}/var/run/#{Chef::Config[:node_name].to_s.gsub(/\W/, '_')}.pid"
+          new_resource.pid_file "#{new_resource.pid_path}/#{Chef::Config[:node_name].to_s.gsub(/\W/, '_')}.pid"
         end
 
         d_r = directory new_resource.pid_path do
