@@ -3,14 +3,14 @@
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
 ## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.3) (2015-09-20)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.2...1.0.3)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.2...v1.0.3)
 
 **Closed issues:**
 
 -  1.0.2 Issues with pid files [\#374](https://github.com/elastic/cookbook-elasticsearch/issues/374)
 
 ## [1.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.2) (2015-09-20)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.1...1.0.2)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.1...v1.0.2)
 
 **Implemented enhancements:**
 
@@ -30,7 +30,7 @@
 - add missing matchers [\#368](https://github.com/elastic/cookbook-elasticsearch/pull/368) ([thomasdziedzic](https://github.com/thomasdziedzic))
 
 ## [1.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.1) (2015-09-15)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.0...1.0.1)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.0...v1.0.1)
 
 **Implemented enhancements:**
 
