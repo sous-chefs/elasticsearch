@@ -1,8 +1,8 @@
 # Elasticsearch Chef Cookbook
 
 This cookbook has been converted into a library cookbook as of version 1.0.0,
-and supports Chef 12.4.1, 12.3.0, 12.2.1, and higher. It implements supports CI
-as well as more modern testing with chefspec and test-kitchen. It no longer
+and supports Chef 12.4.1, 12.3.0, 12.2.1, and higher. It implements support for
+CI as well as more modern testing with chefspec and test-kitchen. It no longer
 supports some of the more extraneous features such as discovery (use [chef search](http://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS
 device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws)).
 
