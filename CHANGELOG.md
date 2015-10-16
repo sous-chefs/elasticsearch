@@ -1,5 +1,10 @@
 # Change Log
 
+## [1.0.4](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.4) (2015-10-15)
+
+**Fixed Bugs:**
+Fixed plugin install issue [\#382](https://github.com/elastic/cookbook-elasticsearch/issues/382)
+
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
 ## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.3) (2015-09-20)
