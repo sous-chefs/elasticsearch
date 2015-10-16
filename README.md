@@ -205,7 +205,13 @@ end
 Actions: `:install`, `:remove`
 
 Installs or removes a plugin to a given elasticsearch instance and plugin
-directory.
+directory. Please note that there is currently no way to upgrade an existing
+plugin using commandline tools, so we haven't exposed that feature here either.
+Furthermore, there isn't a way to determine if a plugin is compatible with ES or
+even what version it is. So once we install a plugin to a directory, we
+generally assume that is the desired one and we don't touch it further.
+
+See https://github.com/elastic/cookbook-elasticsearch/issues/264 for more info.
 
 When running a single instance per machine (VM, etc), it's typically
 sufficient to rely on the default value of `plugin_dir`:
