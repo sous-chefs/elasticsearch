@@ -26,24 +26,43 @@ platforms:
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
-  - name: centos-6.6
+  - name: centos-6.7
     run_list:
     - recipe[yum]
     - recipe[elasticsearch_test::fix_nss] # see recipe header
 
 suites:
-  - name: default # the normal use-case
-    require_chef_omnibus: 12.4.1
+  - name: default # install by tarball
+    require_chef_omnibus: 12.5.1
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default_with_plugins]
+
+  - name: package # install from package
+    require_chef_omnibus: 12.5.1
+    attributes:
+      elasticsearch:
+        install_type: 'package'
+
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
   - name: elasticsearch_test # the override-everything use case
     driver_config:
-      require_chef_omnibus: 12.4.1
+      require_chef_omnibus: 12.5.1
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default]
+
+  - name: chef-12.4.3
+    driver_config:
+      require_chef_omnibus: 12.4.3
+    includes:
+      - ubuntu-14.04
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::default_with_plugins]
 
   - name: chef-12.3.0
     driver_config:

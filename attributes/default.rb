@@ -1,5 +1,5 @@
 # elasticsearch version & install type
-default['elasticsearch']['version'] = '1.7.2'
+default['elasticsearch']['version'] = '1.7.3'
 default['elasticsearch']['install_type'] = 'tarball'
 
 # platform_family keyed download URLs
@@ -7,7 +7,7 @@ default['elasticsearch']['download_urls']['debian'] = 'https://download.elastics
 default['elasticsearch']['download_urls']['rhel'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'
 default['elasticsearch']['download_urls']['tar'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'
 
-# platform_family keyed download checksums
+# platform_family keyed download sha256 checksums
 default['elasticsearch']['checksums']['1.4.5']['debian'] = '68dce951181e9802e94fd83b894f4b628394fc44bb01c77eb61fdbd1940d94b5'
 default['elasticsearch']['checksums']['1.4.5']['rhel'] = '29b005c4148036556f78d6bd01a5e7c8e4ea60e2c20f82b63d8362ab46d83a19'
 default['elasticsearch']['checksums']['1.4.5']['tar'] = 'dc28aa9e441cbc3282ecc9cb498bea219355887b102aac872bdf05d5977356e2'
@@ -23,3 +23,6 @@ default['elasticsearch']['checksums']['1.7.1']['tar'] = '86a0c20eea6ef55b14345bf
 default['elasticsearch']['checksums']['1.7.2']['debian'] = '791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2'
 default['elasticsearch']['checksums']['1.7.2']['rhel'] = 'c5410b88494d5cc9fdadf59353430b46c28e58eddc5c610ea4c4516eacc2fa09'
 default['elasticsearch']['checksums']['1.7.2']['tar'] = '6f81935e270c403681e120ec4395c28b2ddc87e659ff7784608b86beb5223dd2'
+default['elasticsearch']['checksums']['1.7.3']['debian'] = '52950c688cb3d6a13686753b4e8b1c80183e81174059924ee08b2df172afbb1c'
+default['elasticsearch']['checksums']['1.7.3']['rhel'] = '2380343487ffafc6a7a834cf51d2abbfb7c5ad9d9d45301671adebf97abc632a'
+default['elasticsearch']['checksums']['1.7.3']['tar'] = 'af517611493374cfb2daa8897ae17e63e2efea4d0377d316baa351c1776a2bca'
