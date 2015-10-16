@@ -2,6 +2,21 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [1.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/1.2.0) (2015-10-16)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.3...1.2.0)
+
+**Closed issues:**
+
+- Compile error w/ 1.0.3 and Chef Server 12 [\#379](https://github.com/elastic/cookbook-elasticsearch/issues/379)
+- OS X Support [\#358](https://github.com/elastic/cookbook-elasticsearch/issues/358)
+- Dealing with plugin versions that don't match, Elasticsearch failing to start [\#330](https://github.com/elastic/cookbook-elasticsearch/issues/330)
+- ruby command not found [\#378](https://github.com/elastic/cookbook-elasticsearch/issues/378)
+
+**Merged pull requests:**
+
+- Update the README to remove a typo [\#381](https://github.com/elastic/cookbook-elasticsearch/pull/381) ([jtwarren](https://github.com/jtwarren))
+- Correct the full changelog links [\#375](https://github.com/elastic/cookbook-elasticsearch/pull/375) ([eheydrick](https://github.com/eheydrick))
+
 ## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.3) (2015-09-20)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.2...v1.0.3)
 

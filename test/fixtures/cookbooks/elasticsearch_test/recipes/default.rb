@@ -56,7 +56,7 @@ end
 elasticsearch_plugin 'mobz/elasticsearch-head' do
   user 'foo'
   group 'bar'
-  plugin_dir '/usr/local/awesome/elasticsearch-1.7.2/plugins'
+  plugin_dir '/usr/local/awesome/elasticsearch-1.7.3/plugins'
 end
 
 elasticsearch_service 'elasticsearch-crazy' do
