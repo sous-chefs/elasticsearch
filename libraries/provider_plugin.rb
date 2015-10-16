@@ -23,7 +23,7 @@ class Chef
 
         unless plugin_exists
           # automatically raises on error, logs command output
-          shell_out!("#{new_resource.bindir}/plugin -install #{name}#{version}#{url}".split(' '), user: new_resource.user, group: new_resource.group)
+          shell_out!("#{new_resource.bindir}/plugin install #{name}#{version}#{url}".split(' '), user: new_resource.user, group: new_resource.group)
           new_resource.updated_by_last_action(true)
         end
       end
