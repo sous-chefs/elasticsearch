@@ -42,18 +42,25 @@ suites:
     require_chef_omnibus: 12.5.1
     attributes:
       elasticsearch:
-        install_type: 'package'
+        install_type: package
 
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
-  - name: elasticsearch_test # the override-everything use case
+  - name: override_default # the override-everything use case
     driver_config:
       require_chef_omnibus: 12.5.1
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default]
+
+  - name: override_package # the override-everything use case
+    driver_config:
+      require_chef_omnibus: 12.5.1
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::package]
 
   - name: chef-12.4.3
     driver_config:
@@ -85,15 +92,6 @@ suites:
   - name: chef-12.1.2
     driver_config:
       require_chef_omnibus: 12.1.2
-    includes:
-      - ubuntu-14.04
-    run_list:
-      - recipe[java]
-      - recipe[elasticsearch_test::default_with_plugins]
-
-  - name: chef-11.18.12
-    driver_config:
-      require_chef_omnibus: 11.18.12
     includes:
       - ubuntu-14.04
     run_list:

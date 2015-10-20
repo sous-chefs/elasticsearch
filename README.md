@@ -1,7 +1,7 @@
 # Elasticsearch Chef Cookbook
 
 This cookbook has been converted into a library cookbook as of version 1.0.0,
-and supports Chef 12.4.1, 12.3.0, 12.2.1, and higher. It implements support for
+and supports Chef 12.5.1, 12.4.3, 12.3.0, 12.2.1, 12.1.2, and higher. It implements support for
 CI as well as more modern testing with chefspec and test-kitchen. It no longer
 supports some of the more extraneous features such as discovery (use [chef search](http://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS
 device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws)).
@@ -9,18 +9,35 @@ device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
 ## Default version, download URLs, and checksums
-Please consult [attributes/default.rb](attributes/default.rb) for these values.
-Both the recipes and resources/providers here source their default values for
-Elasticsearch version, download URL, and Checksum from `attributes/default.rb`.
+
+
+
+## Attributes
+
+Please consult [attributes/default.rb](attributes/default.rb) for a large list
+of checksums for many different archives and package files of different
+elasticsearch versions. Both recipes and resources/providers here use those
+default values.
 
 Please take note that you may use `%s` in your URL and this cookbook will use
 sprintf/format to insert the version parameter as a string into your
 download_url.
 
-You may adjust the node attributes to force this cookbook to use different
-default values for all three settings.
+|Name|Default|Other values|
+|----|-------|------------|
+|`default['elasticsearch']['version']`|`'1.7.3'`|[See list](attributes/default.rb).|
+|`default['elasticsearch']['install_type']`|`:tarball`|`:package`|
+|`default['elasticsearch']['download_urls']['debian']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'`|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['rhel']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'`|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['tar']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'`|`%s` will be replaced with the version attribute above|
 
 ## Recipes
+
+Resources are the intended way to consume this cookbook, however we have
+provided a single recipe that configures Elasticsearch by downloading an archive
+containing a distribution of Elasticsearch, and extracting that into /usr/local.
+
+See the attributes section above to for what defaults you can adjust.
 
 ### default
 
@@ -28,6 +45,14 @@ The default recipe creates an elasticsearch user and group with the default
 options.
 
 ## Resources
+
+You should be aware that potentially all resources in this cookbook look each
+other up in the resource collection. By default, they will look for appropriate
+resources named 'default' or 'elasticsearch', as in the examples below. For
+example, if you use `elasticsearch_install 'default'`, `elasticsearch_config`
+will use the first resource to determine how you installed Elasticsearch. If you
+need to override this behavior, all resources accept `instance_name` as an
+additional parameter, to be used for matching.
 
 ### elasticsearch_user
 Actions: `:create`, `:remove`
@@ -58,9 +83,9 @@ end
 Actions: `:install`, `:remove`
 
 Downloads the elasticsearch software, and unpacks it on the system. There are
-currently two ways to install -- `package`, which downloads the appropriate
+currently two ways to install -- `:package`, which downloads the appropriate
 package from elasticsearch.org and uses the package manager to install it, and
-`tarball` which downloads a tarball from elasticsearch.org and unpacks it in
+`:tarball` which downloads a tarball from elasticsearch.org and unpacks it in
 /usr/local on the system. The resource name is not used for anything in
 particular. This resource also comes with a `:remove` action which will remove
 the package or directory elasticsearch was unpacked into.
@@ -68,9 +93,9 @@ the package or directory elasticsearch was unpacked into.
 You may always specify a download_url and/or download_checksum, and you may
 include `%s` which will be replaced by the version parameter you supply.
 
-Please be sure to consult the above section 'Default version, download URLs,
-and checksums' as that controls how Elasticsearch version, download URL and
-checksum are determined if you omit them.
+Please be sure to consult the above attribute section as that controls how
+Elasticsearch version, download URL and checksum are determined if you omit
+them.
 
 Examples:
 
@@ -82,9 +107,6 @@ elasticsearch_install 'elasticsearch'
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
   dir '/usr/local' # where to install
-
-  owner 'elasticsearch' # user and group to install under
-  group 'elasticsearch'
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
   # sha256
@@ -108,6 +130,7 @@ elasticsearch_install 'my_es_installation' do
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
   # sha256
   download_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
+  instance_name 'elasticsearch'
   action :install # could be :remove as well
 end
 ```
@@ -151,12 +174,13 @@ More complicated -
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
   dir '/usr/local/awesome'
-  path_conf "/usr/local/awesome/etc/elasticsearch"
-  path_data "/usr/local/awesome/var/data/elasticsearch"
-  path_logs "/usr/local/awesome/var/log/elasticsearch"
+  path_conf     tarball: "/usr/local/awesome/etc/elasticsearch"
+  path_data     tarball: "/usr/local/awesome/var/data/elasticsearch"
+  path_logs     tarball: "/usr/local/awesome/var/log/elasticsearch"
+  path_pid      tarball: "/usr/local/awesome/var/run/elasticsearch"
+  path_plugins  tarball: "/usr/local/elasticsearch/plugins"
+  path_bin      tarball: "/usr/local/bin"
 
-  user 'foo'
-  group 'bar'
   logging({:"action" => 'INFO'})
 
   allocated_memory '123m'
@@ -194,10 +218,6 @@ elasticsearch_service 'elasticsearch'
 ```
 elasticsearch_service 'elasticsearch-crazy' do
   node_name 'crazy'
-  path_conf '/usr/local/awesome/etc/elasticsearch'
-  pid_path '/usr/local/awesome/var/run'
-  user 'foo'
-  group 'bar'
 end
 ```
 
@@ -224,9 +244,7 @@ To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
 ```
-elasticsearch_plugin 'mobz/elasticsearch-head' do
-  plugin_dir '/usr/local/awesome/elasticsearch-1.7.2/plugins'
-end
+elasticsearch_plugin 'mobz/elasticsearch-head'
 ```
 NB: You [may encounter issues on certain distros](http://blog.backslasher.net/java-ssl-crash.html) with NSS 3.16.1 and OpenJDK 7.x.
 

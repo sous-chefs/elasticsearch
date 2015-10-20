@@ -3,30 +3,22 @@
 
 # create user with all non-default overriden options
 elasticsearch_user 'foobar' do
-  username 'foo'
   groupname 'bar'
+  username 'foo'
   uid 1111
   gid 2222
   shell '/bin/sh'
   homedir '/usr/local/myhomedir'
-  instance_name 'special_tarball_instance'
+  instance_name 'special_package_instance'
 end
 
-elasticsearch_install 'elasticsearch_s' do
-  type :tarball
-  dir tarball: '/usr/local/awesome'
-  instance_name 'special_tarball_instance'
+# we're going to test both types on a single system!
+elasticsearch_install 'elasticsearch_p' do
+  type :package
+  instance_name 'special_package_instance'
 end
 
 elasticsearch_configure 'my_elasticsearch' do
-
-  path_conf     tarball: '/usr/local/awesome/etc/elasticsearch'
-  path_data     tarball: '/usr/local/awesome/var/data/elasticsearch'
-  path_logs     tarball: '/usr/local/awesome/var/log/elasticsearch'
-  path_pid      tarball: '/usr/local/awesome/var/run'
-  path_plugins  tarball: '/usr/local/awesome/elasticsearch/plugins'
-  path_bin      tarball: '/usr/local/bin'
-
   logging(:action => 'INFO')
 
   allocated_memory '123m'
@@ -42,18 +34,17 @@ elasticsearch_configure 'my_elasticsearch' do
                 -XX:+PrintGCDetails
               CONFIG
 
-  configuration('node.name' => 'crazy')
+  configuration('node.name' => 'arbitrary_name')
+  # plugin_dir '/usr/local/awesome/elasticsearch-1.7.3/plugins'
   action :manage
-  instance_name 'special_tarball_instance'
+  instance_name 'special_package_instance'
 end
 
 elasticsearch_plugin 'mobz/elasticsearch-head' do
-  instance_name 'special_tarball_instance'
+  instance_name 'special_package_instance'
 end
 
 elasticsearch_service 'elasticsearch-crazy' do
-  node_name 'crazy'
-  # path_conf '/usr/local/awesome/etc/elasticsearch'
-  # path_pid '/usr/local/awesome/var/run'
-  instance_name 'special_tarball_instance'
+  node_name 'arbitrary_name'
+  instance_name 'special_package_instance'
 end

@@ -2,7 +2,7 @@
 
 require_relative 'spec_helper'
 
-describe 'elasticsearch_test::default' do
+describe 'elasticsearch_test::user' do
   before { stub_resources }
   supported_platforms.each do |platform, versions|
     versions.each do |version|
@@ -17,8 +17,8 @@ describe 'elasticsearch_test::default' do
         # any platform specific data you want available to your test can be loaded here
         _property = load_platform_properties(platform: platform, platform_version: version)
 
-        it 'creates elasticsearch user foo in group bar' do
-          expect(chef_run).to create_elasticsearch_user('foobar')
+        it 'creates elasticsearch user deleteme in group foo' do
+          expect(chef_run).to create_elasticsearch_user('deleteme')
         end
 
         it 'deletes user deleteme' do
