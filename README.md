@@ -8,9 +8,8 @@ device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws
 
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
-## Default version, download URLs, and checksums
-
-
+**NOTE: This cookbook requires java, but does not provide it. Please install 
+Java before using any recipe in this cookbook. We recommend [this one](https://github.com/agileorbit-cookbooks/java).**
 
 ## Attributes
 
