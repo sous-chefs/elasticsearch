@@ -71,7 +71,6 @@ elasticsearch_user 'elasticsearch'
 elasticsearch_user 'elasticsearch' do
   username 'elasticsearch'
   groupname 'elasticsearch'
-  homedir '/usr/local/elasticsearch'
   shell '/bin/bash'
   comment 'Elasticsearch User'
 
@@ -209,16 +208,11 @@ Actions: `:configure`, `:remove`
 
 Writes out a system service configuration of the appropriate type, and enables
 it to start on boot. You can override almost all of the relevant settings in
-such a way that you may run multiple instances.
+such a way that you may run multiple instances. Most settings will be taken from
+a matching `elasticsearch_config` resource in the collection.
 
 ```
 elasticsearch_service 'elasticsearch'
-```
-
-```
-elasticsearch_service 'elasticsearch-crazy' do
-  node_name 'crazy'
-end
 ```
 
 ### elasticsearch_plugin

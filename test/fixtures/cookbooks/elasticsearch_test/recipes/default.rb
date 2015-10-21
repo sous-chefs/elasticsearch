@@ -8,7 +8,6 @@ elasticsearch_user 'foobar' do
   uid 1111
   gid 2222
   shell '/bin/sh'
-  homedir '/usr/local/myhomedir'
   instance_name 'special_tarball_instance'
 end
 
@@ -52,7 +51,6 @@ elasticsearch_plugin 'mobz/elasticsearch-head' do
 end
 
 elasticsearch_service 'elasticsearch-crazy' do
-  node_name 'crazy'
   # path_conf '/usr/local/awesome/etc/elasticsearch'
   # path_pid '/usr/local/awesome/var/run'
   instance_name 'special_tarball_instance'

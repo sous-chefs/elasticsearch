@@ -3,7 +3,6 @@ require_relative 'spec_helper'
 describe 'non-standard elasticsearch install and configure' do
   it_behaves_like 'elasticsearch user',     user: 'foo',
                                             uid: 1111,
-                                            home: '/usr/local/myhomedir',
                                             shell: '/bin/sh',
                                             group: 'bar',
                                             gid: 2222

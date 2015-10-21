@@ -10,12 +10,16 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:instance_name, kind_of: String, default: nil)
 
   # if you override one of these, you should probably override them all
+  attribute(:path_home, kind_of: Hash, default: {
+    package: '/usr/share/elasticsearch',
+    tarball: '/usr/local/elasticsearch',
+    })
   attribute(:path_conf, kind_of: Hash, default: {
     package: '/etc/elasticsearch',
     tarball: '/usr/local/etc/elasticsearch',
     })
   attribute(:path_data, kind_of: Hash, default: {
-    package: '/var/lib/elasticsearch',
+    package: '/usr/share/elasticsearch',
     tarball: '/usr/local/var/data/elasticsearch',
   })
   attribute(:path_logs, kind_of: Hash, default: {
@@ -51,14 +55,18 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:env_options, kind_of: String, default: '')
   attribute(:gc_settings, kind_of: String, default:
     <<-CONFIG
-      -XX:+UseParNewGC
-      -XX:+UseConcMarkSweepGC
-      -XX:CMSInitiatingOccupancyFraction=75
-      -XX:+UseCMSInitiatingOccupancyOnly
-      -XX:+HeapDumpOnOutOfMemoryError
-      -XX:+DisableExplicitGC
+     -XX:+UseParNewGC
+     -XX:+UseConcMarkSweepGC
+     -XX:CMSInitiatingOccupancyFraction=75
+     -XX:+UseCMSInitiatingOccupancyOnly
+     -XX:+HeapDumpOnOutOfMemoryError
+     -XX:+DisableExplicitGC
     CONFIG
-           )
+    )
+
+   # default user limits
+   attribute(:memlock_limit, kind_of: String, default: 'unlimited')
+   attribute(:nofile_limit, kind_of: String, default: '64000')
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

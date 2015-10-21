@@ -5,6 +5,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   path_conf = args[:path_conf] || (package? ? '/etc/elasticsearch' : "#{dir}/etc/elasticsearch")
   path_data = args[:path_data] || (package? ? '/var/lib/elasticsearch' : "#{dir}/var/data/elasticsearch")
   path_logs = args[:path_logs] || (package? ? '/var/log/elasticsearch' : "#{dir}/var/log/elasticsearch")
+  path_sysconfig = args[:path_sysconfig] || (rhel? ? '/etc/sysconfig/elasticsearch' : "/etc/default/elasticsearch")
 
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'
@@ -19,12 +20,12 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
   expected_environment = args[:env] || [
     'ES_HOME=.+',
-    'ES_CLASSPATH=.+',
-    'ES_HEAP_SIZE=[0-9]+m',
+    'ES_USER=.+',
+    'ES_HEAP_SIZE="?[0-9]+m"?',
     'ES_JAVA_OPTS=',
     '-server',
     '-Djava.net.preferIPv4Stack=true',
-    '-Des.config=\/.+',
+    'CONF_FILE=\/.+',
     '-Xss256k',
     'UseParNewGC',
     'UseConcMarkSweepGC',
@@ -37,15 +38,13 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     describe file(p) do
       it { should be_directory }
       it { should be_mode 755 }
-      it { should be_owned_by expected_user }
-      it { should be_grouped_into expected_group }
+      it { should be_owned_by expected_user } unless package?
+      it { should be_grouped_into expected_group } unless package?
     end
   end
 
-  describe file("#{path_conf}/elasticsearch.in.sh") do
+  describe file(path_sysconfig) do
     it { should be_file }
-    it { should be_owned_by expected_user }
-    it { should be_grouped_into expected_group }
 
     expected_environment.each do |line|
       its(:content) { should contain(/#{line}/) }

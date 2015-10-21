@@ -6,6 +6,8 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
   action :manage do
     converge_by('configure elasticsearch instance') do
+      # lookup existing ES resources
+      es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
       es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
 
       # if a subdir parameter is missing but dir is set, infer the subdir name
@@ -28,9 +30,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
         malloc_str = (half > 31_000 ? '31g' : "#{half}m")
         new_resource.allocated_memory malloc_str
       end
-
-      # lookup existing user resource
-      es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
 
       # Create ES directories
       #
@@ -62,22 +61,40 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
         new_resource.updated_by_last_action(true) if d.updated_by_last_action?
       end
 
+      # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
+      # ES_HOME CONF_DIR CONF_FILE DATA_DIR LOG_DIR WORK_DIR PID_DIR
+      # ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
+      # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_USER ES_GROUP
+      # MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
+      params = {}
+
+      params[:JAVA_HOME] = new_resource.java_home
+      params[:ES_HOME] = new_resource.path_home[es_install.type]
+      params[:CONF_FILE] = "#{new_resource.path_conf[es_install.type]}/elasticsearch.yml"
+      params[:ES_HEAP_SIZE] = new_resource.allocated_memory
+      params[:MAX_OPEN_FILES] = new_resource.nofile_limit
+      params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
+      params[:ES_USER] = es_user.username
+      params[:ES_GROUP] = es_user.groupname
+
+      params[:ES_JAVA_OPTS] = ""
+      params[:ES_JAVA_OPTS] << "-server "
+      params[:ES_JAVA_OPTS] << "-Djava.awt.headless=true "
+      params[:ES_JAVA_OPTS] << "-Djava.net.preferIPv4Stack=true "
+      params[:ES_JAVA_OPTS] << "-Xms#{new_resource.allocated_memory} "
+      params[:ES_JAVA_OPTS] << "-Xmx#{new_resource.allocated_memory} "
+      params[:ES_JAVA_OPTS] << "-Xss#{new_resource.thread_stack_size} "
+      params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", " ")} " if new_resource.gc_settings
+      params[:ES_JAVA_OPTS] << "-Dfile.encoding=UTF-8 "
+      params[:ES_JAVA_OPTS] << "-Djna.nosys=true "
+      params[:ES_JAVA_OPTS] << "#{new_resource.env_options} " if new_resource.env_options
+
       shell_template = template 'elasticsearch.in.sh' do
-        path "#{new_resource.path_conf[es_install.type]}/elasticsearch.in.sh"
+        path node['platform_family'] == 'rhel' ? '/etc/sysconfig/elasticsearch' : '/etc/default/elasticsearch'
         source new_resource.template_elasticsearch_env
         cookbook 'elasticsearch'
-        owner es_user.username
-        group es_user.groupname
         mode 0755
-        variables(java_home: new_resource.java_home,
-                  es_home: es_user.homedir,
-                  es_config: new_resource.path_conf[es_install.type],
-                  allocated_memory: new_resource.allocated_memory,
-                  Xms: new_resource.allocated_memory,
-                  Xmx: new_resource.allocated_memory,
-                  Xss: new_resource.thread_stack_size,
-                  gc_settings: new_resource.gc_settings,
-                  env_options: new_resource.env_options)
+        variables(params: params)
         action :nothing
       end
       shell_template.run_action(:create)

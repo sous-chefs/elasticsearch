@@ -6,11 +6,6 @@ class ElasticsearchCookbook::UserProvider < Chef::Provider::LWRPBase
 
   action :create do
     converge_by("create elasticsearch_user resource #{new_resource.name}") do
-      unless new_resource.homedir
-        # if unset, default it to a calculated value
-        new_resource.homedir ::File.join(new_resource.homedir_parent, new_resource.homedir_name)
-      end
-
       group_r = group new_resource.groupname do
         gid new_resource.gid
         action :nothing
@@ -21,11 +16,10 @@ class ElasticsearchCookbook::UserProvider < Chef::Provider::LWRPBase
 
       user_r = user new_resource.username do
         comment new_resource.comment
-        home    new_resource.homedir
         shell   new_resource.shell
         uid     new_resource.uid
         gid     new_resource.groupname
-        supports manage_home: false
+        supports(manage_home: false)
         action :nothing
         system true
       end
