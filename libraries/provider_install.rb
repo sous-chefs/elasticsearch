@@ -9,6 +9,10 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   action :install do
     install_type = determine_install_type(new_resource, node)
     converge_by("#{new_resource.name} - install #{install_type}") do
+      unless new_resource.version
+        new_resource.version determine_version(new_resource, node)
+      end
+
       if install_type == 'tarball' || install_type == 'tar'
         install_tarball_wrapper_action
       elsif install_type == 'package'
@@ -110,7 +114,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       end
       action :nothing
     end
-    #ark_p = Chef::ProviderResolver.new(node, ark_r, :install).resolve
+    #ark_p = Chef::ProviderResolver.new(node, ark_r.class, :install).resolve
     ark_r.run_action(:install)
     new_resource.updated_by_last_action(true) if ark_r.updated_by_last_action?
   end

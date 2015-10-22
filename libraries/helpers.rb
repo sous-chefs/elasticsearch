@@ -86,18 +86,23 @@ module ElasticsearchCookbook
       platform_family = node['platform_family']
       install_type = determine_install_type(new_resource, node)
       version = determine_version(new_resource, node)
+      newer_url_style = version.to_f >= 2.0
+
+      # v2 and greater has a different set of URLs
+      url_hash_key = newer_url_style ? 'download_urls_v2' : 'download_urls'
 
       url_string = nil
       if new_resource.download_url
         url_string = new_resource.download_url
       elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
-        url_string = new_resource.tarball_url || node['elasticsearch']['download_urls']['tar']
-      elsif install_type.to_s == 'package' && node['elasticsearch']['download_urls'][platform_family]
-        url_string = new_resource.package_url || node['elasticsearch']['download_urls'][platform_family]
+        url_string = new_resource.tarball_url || node['elasticsearch'][url_hash_key]['tar']
+      elsif install_type.to_s == 'package' && node['elasticsearch'][url_hash_key][platform_family]
+        url_string = new_resource.package_url || node['elasticsearch'][url_hash_key][platform_family]
       end
 
       if url_string && version
-        return format(url_string, version)
+        # v2 and greater has two %s entries for version
+        return (newer_url_style ? format(url_string, version, version) : format(url_string, version))
       elsif url_string
         return url_string
       end

@@ -8,7 +8,7 @@ device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws
 
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
-**NOTE: This cookbook requires java, but does not provide it. Please install 
+**NOTE: This cookbook requires java, but does not provide it. Please install
 Java before using any recipe in this cookbook. We recommend [this one](https://github.com/agileorbit-cookbooks/java).**
 
 ## Attributes
@@ -24,7 +24,7 @@ download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
-|`default['elasticsearch']['version']`|`'1.7.3'`|[See list](attributes/default.rb).|
+|`default['elasticsearch']['version']`|`'2.0.0-rc1'`|[See list](attributes/default.rb).|
 |`default['elasticsearch']['install_type']`|`:tarball`|`:package`|
 |`default['elasticsearch']['download_urls']['debian']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'`|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'`|`%s` will be replaced with the version attribute above|

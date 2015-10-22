@@ -11,8 +11,8 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
 
     begin
-      if es_user.username != 'root' && es_install.version.to_f < 2
-        Chef::Log.warn('Elasticsearch < 2.0.0 requires plugins be installed as root')
+      if es_user.username != 'root' && es_install.version.to_f < 2.0
+        Chef::Log.warn("Elasticsearch < 2.0.0 (you are using #{es_install.version}) requires plugins be installed as root (you are using #{es_user.username})")
       end
     rescue
       Chef::Log.warn("Could not parse #{es_install.version} as floating point number")
