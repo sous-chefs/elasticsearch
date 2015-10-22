@@ -40,8 +40,13 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   })
 
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
+  attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
+
   attribute(:template_elasticsearch_yml, kind_of: String, default: 'elasticsearch.yml.erb')
+  attribute(:cookbook_elasticsearch_yml, kind_of: String, default: 'elasticsearch')
+
   attribute(:template_logging_yml, kind_of: String, default: 'logging.yml.erb')
+  attribute(:cookbook_logging_yml, kind_of: String, default: 'elasticsearch')
 
   attribute(:logging, kind_of: Hash, default: {})
 

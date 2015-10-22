@@ -92,7 +92,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       shell_template = template 'elasticsearch.in.sh' do
         path node['platform_family'] == 'rhel' ? '/etc/sysconfig/elasticsearch' : '/etc/default/elasticsearch'
         source new_resource.template_elasticsearch_env
-        cookbook 'elasticsearch'
+        cookbook new_resource.cookbook_elasticsearch_env
         mode 0755
         variables(params: params)
         action :nothing
@@ -105,7 +105,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       logging_template = template 'logging.yml' do
         path   "#{new_resource.path_conf[es_install.type]}/logging.yml"
         source new_resource.template_logging_yml
-        cookbook 'elasticsearch'
+        cookbook new_resource.cookbook_logging_yml
         owner es_user.username
         group es_user.groupname
         mode 0755
@@ -127,7 +127,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       yml_template = template 'elasticsearch.yml' do
         path "#{new_resource.path_conf[es_install.type]}/elasticsearch.yml"
         source new_resource.template_elasticsearch_yml
-        cookbook 'elasticsearch'
+        cookbook new_resource.cookbook_elasticsearch_yml
         owner es_user.username
         group es_user.groupname
         mode 0755
