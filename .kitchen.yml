@@ -23,12 +23,15 @@ platforms:
   - name: ubuntu-14.04
     run_list:
     - recipe[apt]
+    - recipe[curl]
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
+    - recipe[curl]
   - name: centos-6.7
     run_list:
     - recipe[yum]
+    - recipe[curl]
     - recipe[elasticsearch_test::fix_nss] # see recipe header
 
 suites:

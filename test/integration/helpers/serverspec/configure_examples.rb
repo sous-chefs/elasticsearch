@@ -25,7 +25,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'ES_JAVA_OPTS=',
     '-server',
     '-Djava.net.preferIPv4Stack=true',
-    'CONF_FILE=\/.+',
+    'CONF_DIR=\/.+',
     '-Xss256k',
     'UseParNewGC',
     'UseConcMarkSweepGC',

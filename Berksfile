@@ -7,4 +7,5 @@ group :integration do
 
   # not a strict dependency, but necessary for TK testing
   cookbook 'java'
+  cookbook 'curl'
 end

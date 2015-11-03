@@ -19,6 +19,7 @@ end
 
 elasticsearch_configure 'my_elasticsearch' do
 
+  path_home     tarball: '/usr/local/awesome/elasticsearch'
   path_conf     tarball: '/usr/local/awesome/etc/elasticsearch'
   path_data     tarball: '/usr/local/awesome/var/data/elasticsearch'
   path_logs     tarball: '/usr/local/awesome/var/log/elasticsearch'
@@ -54,4 +55,5 @@ elasticsearch_service 'elasticsearch-crazy' do
   # path_conf '/usr/local/awesome/etc/elasticsearch'
   # path_pid '/usr/local/awesome/var/run'
   instance_name 'special_tarball_instance'
+  service_actions [:enable, :start]
 end

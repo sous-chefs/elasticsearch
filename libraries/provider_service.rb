@@ -15,6 +15,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
 
       d_r = directory es_conf.path_pid[es_install.type] do
+        owner es_user.username
+        group es_user.groupname
         mode '0755'
         recursive true
         action :nothing
@@ -31,6 +33,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         mode 0755
         variables(
           # we need to include something about #{progname} fixed in here.
+          program_name: new_resource.service_name
         )
         action :nothing
       end

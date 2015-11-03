@@ -9,6 +9,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       # lookup existing ES resources
       es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
       es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
+      es_svc = find_es_resource(run_context, :elasticsearch_service, new_resource)
 
       # if a subdir parameter is missing but dir is set, infer the subdir name
       # then go and be sure it's also set in the YML hash if it wasn't given there
@@ -33,7 +34,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
       # Create ES directories
       #
-      [new_resource.path_conf[es_install.type], new_resource.path_logs[es_install.type]].each do |path|
+      [new_resource.path_conf[es_install.type], "#{new_resource.path_conf[es_install.type]}/scripts", new_resource.path_logs[es_install.type]].each do |path|
         d = directory path do
           owner es_user.username
           group es_user.groupname
@@ -68,14 +69,19 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       # MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
       params = {}
 
-      params[:JAVA_HOME] = new_resource.java_home
       params[:ES_HOME] = new_resource.path_home[es_install.type]
-      params[:CONF_FILE] = "#{new_resource.path_conf[es_install.type]}/elasticsearch.yml"
+      params[:CONF_DIR] = new_resource.path_conf[es_install.type]
+      params[:DATA_DIR] = new_resource.path_data[es_install.type]
+      params[:LOG_DIR] = new_resource.path_logs[es_install.type]
+      params[:PID_DIR] = new_resource.path_pid[es_install.type]
+
+      params[:ES_USER] = es_user.username
+      params[:ES_GROUP] = es_user.groupname
+
+      params[:JAVA_HOME] = new_resource.java_home
       params[:ES_HEAP_SIZE] = new_resource.allocated_memory
       params[:MAX_OPEN_FILES] = new_resource.nofile_limit
       params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
-      params[:ES_USER] = es_user.username
-      params[:ES_GROUP] = es_user.groupname
 
       params[:ES_JAVA_OPTS] = ""
       params[:ES_JAVA_OPTS] << "-server "
@@ -89,8 +95,10 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       params[:ES_JAVA_OPTS] << "-Djna.nosys=true "
       params[:ES_JAVA_OPTS] << "#{new_resource.env_options} " if new_resource.env_options
 
+      default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
+
       shell_template = template 'elasticsearch.in.sh' do
-        path node['platform_family'] == 'rhel' ? '/etc/sysconfig/elasticsearch' : '/etc/default/elasticsearch'
+        path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
         source new_resource.template_elasticsearch_env
         cookbook new_resource.cookbook_elasticsearch_env
         mode 0755
