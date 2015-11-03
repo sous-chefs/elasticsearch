@@ -1,5 +1,5 @@
 # elasticsearch version & install type
-default['elasticsearch']['version'] = '2.0.0-rc1'
+default['elasticsearch']['version'] = '2.0.0'
 default['elasticsearch']['install_type'] = :tarball
 
 # platform_family keyed download URLs
@@ -33,3 +33,6 @@ default['elasticsearch']['checksums']['1.7.3']['tar'] = 'af517611493374cfb2daa88
 default['elasticsearch']['checksums']['2.0.0-rc1']['debian'] = '6ba92f96676932756ff7113f42d8946679e9be2144acece59bd79367568eb712'
 default['elasticsearch']['checksums']['2.0.0-rc1']['rhel'] = '4dd4bdd1b4333f221bc5d2a2638bdc89282d57923842ce4c76607497abafb44d'
 default['elasticsearch']['checksums']['2.0.0-rc1']['tar'] = 'cfd97bba0c49000a2799fffd359ec351f0ca7ef5f0a8c160920137db6b057784'
+default['elasticsearch']['checksums']['2.0.0']['debian'] = 'f846cab2b7e99159650d38767249275c2fd5d3574fe700ef199cd1cb06ef28bf'
+default['elasticsearch']['checksums']['2.0.0']['rhel'] = '6bd2d7840447836450d8781fffa9e296dfb257b523598c6e55433850e37feb25'
+default['elasticsearch']['checksums']['2.0.0']['tar'] = 'b25f13f615337c2072964fd9fc5c7250f8a2a983b22198daf93548285d5d16df'

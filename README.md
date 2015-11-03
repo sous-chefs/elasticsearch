@@ -24,7 +24,7 @@ download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
-|`default['elasticsearch']['version']`|`'2.0.0-rc1'`|[See list](attributes/default.rb).|
+|`default['elasticsearch']['version']`|`'2.0.0'`|[See list](attributes/default.rb).|
 |`default['elasticsearch']['install_type']`|`:tarball`|`:package`|
 |`default['elasticsearch']['download_urls']['debian']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'`|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'`|`%s` will be replaced with the version attribute above|
