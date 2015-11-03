@@ -91,7 +91,6 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
 
   def install_tarball_wrapper_action
     include_recipe 'ark'
-    include_recipe 'curl'
 
     es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
 

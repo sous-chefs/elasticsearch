@@ -5,7 +5,6 @@
 #
 
 include_recipe 'chef-sugar'
-include_recipe 'curl'
 
 # see README.md and test/fixtures/cookbooks for more examples!
 elasticsearch_user 'elasticsearch'
