@@ -3,8 +3,8 @@
 This cookbook has been converted into a library cookbook as of version 1.0.0,
 and supports Chef 12.4.1, 12.3.0, 12.2.1, and higher. It implements support for
 CI as well as more modern testing with chefspec and test-kitchen. It no longer
-supports some of the more extraneous features such as discovery (use [chef search](http://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS
-device creation (use [the aws cookbook](https://github.com/opscode-cookbooks/aws)).
+supports some of the more extraneous features such as discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS
+device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
 
 The previous version of this cookbook may be found in the [0.3.x branch](https://github.com/elastic/cookbook-elasticsearch/tree/0.3.x).
 
@@ -307,7 +307,7 @@ Integration tests can be executed using `rake integration` or `kitchen test`.
 
 This software is licensed under the Apache 2 license, quoted below.
 
-    Copyright (c) 2015 Elasticsearch <http://www.elasticsearch.org>
+    Copyright (c) 2015 Elasticsearch <https://www.elastic.co/>
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
