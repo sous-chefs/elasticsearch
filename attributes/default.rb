@@ -1,6 +1,6 @@
 # elasticsearch version & install type
 default['elasticsearch']['version'] = '2.0.0'
-default['elasticsearch']['install_type'] = :tarball
+default['elasticsearch']['install_type'] = :package
 
 # platform_family keyed download URLs
 default['elasticsearch']['download_urls']['debian'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'

@@ -3,7 +3,10 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
   resource_name :elasticsearch_service
   provides :elasticsearch_service
 
-  actions(:configure, :remove)
+  actions(
+    :configure, :remove, # our custom actions
+    :enable, :disable, :start, :stop, :restart, :status # passthrough to service resource
+  )
   default_action :configure
 
   # this is what helps the various resources find each other

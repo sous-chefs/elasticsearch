@@ -22,5 +22,8 @@ elasticsearch_service 'elasticsearch' do
   service_actions [:enable, :start]
 end
 
-# by default, no plugins
-elasticsearch_plugin 'mobz/elasticsearch-head'
+# by default, no plugins, but we do one here.
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
+  notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
+end

@@ -82,9 +82,16 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
               # can't access node.name, so expect to have to set set this
               'node.name' => Chef::Config[:node_name],
 
-              'path.conf' => nil, # default "/usr/local/etc/elasticsearch"
-              'path.data' => nil, # default "/usr/local/var/data/elasticsearch"
-              'path.logs' => nil, # default "/usr/local/var/log/elasticsearch"
+              # if omitted or nil, these will be populated from attributes above
+              'path.conf' => nil, # see path_conf above
+              'path.data' => nil, # see path_data above
+              'path.logs' => nil, # see path_logs above
+
+              # Refer to ES documentation on how to configure these to a
+              # specific node role/type instead of using the defaults
+              #
+              # 'node.data' => ?,
+              # 'node.master' => ?,
 
               'action.destructive_requires_name' => true,
               'node.max_local_storage_nodes' => 1,
@@ -97,7 +104,8 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
             })
 
   # These settings are merged with the `default_configuration` attribute,
-  # allowing you to override and set specific settings.
+  # allowing you to override and set specific settings. Unless you intend to
+  # wipe out all default settings, your configuration items should go here.
   #
   attribute(:configuration, kind_of: Hash, default: {})
 end

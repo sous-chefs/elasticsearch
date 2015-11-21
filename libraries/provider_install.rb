@@ -6,33 +6,33 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   include Chef::DSL::IncludeRecipe
   provides :elasticsearch_install
 
+  def whyrun_supported?
+    false
+  end
+
   action :install do
     install_type = determine_install_type(new_resource, node)
-    converge_by("#{new_resource.name} - install #{install_type}") do
-      unless new_resource.version
-        new_resource.version determine_version(new_resource, node)
-      end
+    unless new_resource.version
+      new_resource.version determine_version(new_resource, node)
+    end
 
-      if install_type == 'tarball' || install_type == 'tar'
-        install_tarball_wrapper_action
-      elsif install_type == 'package'
-        install_package_wrapper_action
-      else
-        fail "#{install_type} is not a valid install type"
-      end
+    if install_type == 'tarball' || install_type == 'tar'
+      install_tarball_wrapper_action
+    elsif install_type == 'package'
+      install_package_wrapper_action
+    else
+      fail "#{install_type} is not a valid install type"
     end
   end
 
   action :remove do
     install_type = determine_install_type(new_resource, node)
-    converge_by("#{new_resource.name} - remove #{install_type}") do
-      if install_type == 'tarball' || install_type == 'tar'
-        remove_tarball_wrapper_action
-      elsif install_type == 'package'
-        remove_package_wrapper_action
-      else
-        fail "#{install_type} is not a valid install type"
-      end
+    if install_type == 'tarball' || install_type == 'tar'
+      remove_tarball_wrapper_action
+    elsif install_type == 'package'
+      remove_package_wrapper_action
+    else
+      fail "#{install_type} is not a valid install type"
     end
   end
 
