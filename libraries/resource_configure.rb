@@ -11,33 +11,33 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
 
   # if you override one of these, you should probably override them all
   attribute(:path_home, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch',
-    tarball: '/usr/local/elasticsearch',
-    })
+              package: '/usr/share/elasticsearch',
+              tarball: '/usr/local/elasticsearch'
+            })
   attribute(:path_conf, kind_of: Hash, default: {
-    package: '/etc/elasticsearch',
-    tarball: '/usr/local/etc/elasticsearch',
-    })
+              package: '/etc/elasticsearch',
+              tarball: '/usr/local/etc/elasticsearch'
+            })
   attribute(:path_data, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch',
-    tarball: '/usr/local/var/data/elasticsearch',
-  })
+              package: '/usr/share/elasticsearch',
+              tarball: '/usr/local/var/data/elasticsearch'
+            })
   attribute(:path_logs, kind_of: Hash, default: {
-    package: '/var/log/elasticsearch',
-    tarball: '/usr/local/var/log/elasticsearch',
-  })
+              package: '/var/log/elasticsearch',
+              tarball: '/usr/local/var/log/elasticsearch'
+            })
   attribute(:path_pid, kind_of: Hash, default: {
-    package: '/var/run/elasticsearch',
-    tarball: '/usr/local/var/run',
-  })
+              package: '/var/run/elasticsearch',
+              tarball: '/usr/local/var/run'
+            })
   attribute(:path_plugins, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch/plugins',
-    tarball: '/usr/local/elasticsearch/plugins',
-  })
+              package: '/usr/share/elasticsearch/plugins',
+              tarball: '/usr/local/elasticsearch/plugins'
+            })
   attribute(:path_bin, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch/bin',
-    tarball: '/usr/local/bin',
-  })
+              package: '/usr/share/elasticsearch/bin',
+              tarball: '/usr/local/bin'
+            })
 
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
@@ -67,11 +67,11 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
      -XX:+HeapDumpOnOutOfMemoryError
      -XX:+DisableExplicitGC
     CONFIG
-    )
+           )
 
-   # default user limits
-   attribute(:memlock_limit, kind_of: String, default: 'unlimited')
-   attribute(:nofile_limit, kind_of: String, default: '64000')
+  # default user limits
+  attribute(:memlock_limit, kind_of: String, default: 'unlimited')
+  attribute(:nofile_limit, kind_of: String, default: '64000')
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

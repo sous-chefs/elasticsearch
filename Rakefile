@@ -24,7 +24,7 @@ namespace :style do
     # rubocop:disable Style/HashSyntax
     t.options = { :search_gems => true, # allows us to add addl gems with more rules
                   :fail_tags => ['correctness'],
-                  :chef_version => '11.6.0'
+                  :chef_version => '12.4.1'
                 }
     # rubocop:enable Style/HashSyntax
   end

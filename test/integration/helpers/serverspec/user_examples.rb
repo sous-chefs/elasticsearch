@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 shared_examples_for 'elasticsearch user' do |args = {}|
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'
-  expected_home = args[:home] || (package? ? "/usr/share/#{expected_user}" : "/usr/local/#{expected_user}")
+  # expected_home = args[:home] || (package? ? "/usr/share/#{expected_user}" : "/usr/local/#{expected_user}")
   expected_shell = args[:shell] || '/bin/bash'
 
   describe group(expected_group) do

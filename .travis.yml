@@ -15,6 +15,7 @@ cache:
   - vendor/bundle
 
 script:
+  - bundle exec rake style
   - bundle exec rake spec
 
 notifications:

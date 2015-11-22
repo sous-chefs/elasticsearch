@@ -113,7 +113,6 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       end
       action :nothing
     end
-    #ark_p = Chef::ProviderResolver.new(node, ark_r.class, :install).resolve
     ark_r.run_action(:install)
     new_resource.updated_by_last_action(true) if ark_r.updated_by_last_action?
   end

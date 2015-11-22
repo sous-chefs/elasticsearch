@@ -1,7 +1,6 @@
 module ElasticsearchCookbook
   # Helper methods included by various providers and passed to the template engine
   module Helpers
-
     def find_es_resource(run_context, resource_type, resource)
       resource_name = resource.name
       instance_name = resource.instance_name
@@ -22,7 +21,7 @@ module ElasticsearchCookbook
       return name_default if name_default && !name_elasticsearch
       return name_elasticsearch if name_elasticsearch && !name_default
 
-      raise "Could not find exactly one #{resource_type} resource, and no specific resource or instance name was given"
+      fail "Could not find exactly one #{resource_type} resource, and no specific resource or instance name was given"
     end
 
     # find exactly the resource name and type, but raise if there's multiple matches
@@ -31,11 +30,11 @@ module ElasticsearchCookbook
       rc = run_context.resource_collection
       result = rc.find(resource_type => resource_name)
 
-      if result && result.kind_of?(Array)
+      if result && result.is_a?(Array)
         str = ''
         str << "more than one #{resource_type} was found, "
-        str << "you must specify a precise resource name"
-        raise str
+        str << 'you must specify a precise resource name'
+        fail str
       end
 
       return result
@@ -53,8 +52,8 @@ module ElasticsearchCookbook
       if !results.empty? && results.length > 1
         str = ''
         str << "more than one #{resource_type} was found, "
-        str << "you must specify a precise instance name"
-        raise str
+        str << 'you must specify a precise instance name'
+        fail str
       elsif !results.empty?
         return results.first
       end

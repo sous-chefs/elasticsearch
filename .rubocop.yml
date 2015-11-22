@@ -6,7 +6,7 @@ Style/ClassAndModuleChildren:
 
 # Allow more complex ruby methods
 Metrics/AbcSize:
-  Max: 50
+  Max: 55
 
 # Disable requirement of "encoding" headers on files
 Encoding:
@@ -56,6 +56,14 @@ UnusedBlockArgument:
 # allow both hash syntaxes
 Style/HashSyntax:
   Enabled: false
+
+# allow final rescue
+Style/RescueModifier:
+  Enabled: false
+
+# allow larger modules
+Metrics/ModuleLength:
+  Max: 125
 
 # There are too many non-ruby files that run up against rubocop rules in a cookbook
 AllCops:

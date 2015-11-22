@@ -22,7 +22,7 @@ def package?
   elsif rhel?
     system('rpm -qa | grep elasticsearch >/dev/null 2>&1')
   else
-    raise "I don't recognize #{os[:family]}, so I can't check for an elasticsearch package"
+    fail "I don't recognize #{os[:family]}, so I can't check for an elasticsearch package"
   end
 end
 

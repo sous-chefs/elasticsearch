@@ -25,8 +25,13 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     name = new_resource.plugin_name
     url  = new_resource.url
 
-    fail "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]." unless es_conf.path_plugins[es_install.type] # may not exist yet if first plugin
-    fail "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]." unless es_conf.path_bin[es_install.type] && ::File.exist?(es_conf.path_bin[es_install.type])
+    unless es_conf.path_plugins[es_install.type] # may not exist yet if first plugin
+      fail "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+    end
+
+    unless es_conf.path_bin[es_install.type] && ::File.exist?(es_conf.path_bin[es_install.type])
+      fail "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+    end
 
     # shell_out! automatically raises on error, logs command output
     unless plugin_exists(es_conf.path_plugins[es_install.type], name)
@@ -64,5 +69,4 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   rescue
     false
   end
-
 end # provider

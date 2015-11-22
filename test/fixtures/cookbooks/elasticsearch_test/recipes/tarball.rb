@@ -18,7 +18,6 @@ elasticsearch_install 'elasticsearch_s' do
 end
 
 elasticsearch_configure 'my_elasticsearch' do
-
   path_home     tarball: '/usr/local/awesome/elasticsearch'
   path_conf     tarball: '/usr/local/awesome/etc/elasticsearch'
   path_data     tarball: '/usr/local/awesome/var/data/elasticsearch'

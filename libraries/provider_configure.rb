@@ -86,16 +86,16 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
 
-    params[:ES_JAVA_OPTS] = ""
-    params[:ES_JAVA_OPTS] << "-server "
-    params[:ES_JAVA_OPTS] << "-Djava.awt.headless=true "
-    params[:ES_JAVA_OPTS] << "-Djava.net.preferIPv4Stack=true "
+    params[:ES_JAVA_OPTS] = ''
+    params[:ES_JAVA_OPTS] << '-server '
+    params[:ES_JAVA_OPTS] << '-Djava.awt.headless=true '
+    params[:ES_JAVA_OPTS] << '-Djava.net.preferIPv4Stack=true '
     params[:ES_JAVA_OPTS] << "-Xms#{new_resource.allocated_memory} "
     params[:ES_JAVA_OPTS] << "-Xmx#{new_resource.allocated_memory} "
     params[:ES_JAVA_OPTS] << "-Xss#{new_resource.thread_stack_size} "
-    params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", " ")} " if new_resource.gc_settings
-    params[:ES_JAVA_OPTS] << "-Dfile.encoding=UTF-8 "
-    params[:ES_JAVA_OPTS] << "-Djna.nosys=true "
+    params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", ' ')} " if new_resource.gc_settings
+    params[:ES_JAVA_OPTS] << '-Dfile.encoding=UTF-8 '
+    params[:ES_JAVA_OPTS] << '-Djna.nosys=true '
     params[:ES_JAVA_OPTS] << "#{new_resource.env_options} " if new_resource.env_options
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'

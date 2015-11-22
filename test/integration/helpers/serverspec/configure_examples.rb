@@ -5,7 +5,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   path_conf = args[:path_conf] || (package? ? '/etc/elasticsearch' : "#{dir}/etc/elasticsearch")
   path_data = args[:path_data] || (package? ? '/var/lib/elasticsearch' : "#{dir}/var/data/elasticsearch")
   path_logs = args[:path_logs] || (package? ? '/var/log/elasticsearch' : "#{dir}/var/log/elasticsearch")
-  path_sysconfig = args[:path_sysconfig] || (rhel? ? '/etc/sysconfig/elasticsearch' : "/etc/default/elasticsearch")
+  path_sysconfig = args[:path_sysconfig] || (rhel? ? '/etc/sysconfig/elasticsearch' : '/etc/default/elasticsearch')
 
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'

@@ -1,6 +1,5 @@
 # Chef Provider for configuring an elasticsearch service in the init system
 class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
-
   provides :elasticsearch_service
   include ElasticsearchCookbook::Helpers
 

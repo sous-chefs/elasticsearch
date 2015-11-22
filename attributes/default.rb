@@ -3,13 +3,17 @@ default['elasticsearch']['version'] = '2.0.0'
 default['elasticsearch']['install_type'] = :package
 
 # platform_family keyed download URLs
-default['elasticsearch']['download_urls']['debian'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'
-default['elasticsearch']['download_urls']['rhel'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'
-default['elasticsearch']['download_urls']['tar'] = 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'
+default['elasticsearch']['download_urls'] = {
+  'debian' => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb',
+  'rhel' => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm',
+  'tar' => 'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'
+}
 
-default['elasticsearch']['download_urls_v2']['debian'] = 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/%s/elasticsearch-%s.deb'
-default['elasticsearch']['download_urls_v2']['rhel'] = 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/%s/elasticsearch-%s.rpm'
-default['elasticsearch']['download_urls_v2']['tar'] = 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/%s/elasticsearch-%s.tar.gz'
+default['elasticsearch']['download_urls_v2'] = {
+  'debian' => 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/deb/elasticsearch/%s/elasticsearch-%s.deb',
+  'rhel' => 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/rpm/elasticsearch/%s/elasticsearch-%s.rpm',
+  'tar' => 'https://download.elasticsearch.org/elasticsearch/release/org/elasticsearch/distribution/tar/elasticsearch/%s/elasticsearch-%s.tar.gz'
+}
 
 # platform_family keyed download sha256 checksums
 default['elasticsearch']['checksums']['1.4.5']['debian'] = '68dce951181e9802e94fd83b894f4b628394fc44bb01c77eb61fdbd1940d94b5'

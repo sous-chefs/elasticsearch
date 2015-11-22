@@ -1,7 +1,7 @@
 require_relative 'spec_helper'
 
 describe 'non-standard elasticsearch install and configure' do
-  path_component = rhel? ? "sysconfig" : "default"
+  path_component = rhel? ? 'sysconfig' : 'default'
 
   it_behaves_like 'elasticsearch user',     user: 'foo',
                                             uid: 1111,
