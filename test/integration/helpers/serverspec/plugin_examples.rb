@@ -11,4 +11,8 @@ shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
     it { should be_owned_by expected_user }
     it { should be_grouped_into expected_group }
   end
+
+  describe command("curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:9200/_plugin/#{plugin_name}/") do
+    its(:stdout) { should match(/200/) }
+  end
 end
