@@ -139,6 +139,14 @@ elasticsearch_install 'elasticsearch'
 
 ```
 elasticsearch_install 'my_es_installation' do
+  type :package # type of install
+  version "1.7.2"
+  action :install # could be :remove as well
+end
+```
+
+```
+elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
   dir '/usr/local' # where to install
 
@@ -169,13 +177,7 @@ elasticsearch_install 'my_es_installation' do
 end
 ```
 
-```
-elasticsearch_install 'my_es_installation' do
-  type :package # type of install
-  version "1.7.2"
-  action :install # could be :remove as well
-end
-```
+
 
 ### elasticsearch_configure
 Actions: `:manage`, `:remove`
