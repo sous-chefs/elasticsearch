@@ -27,7 +27,7 @@ the version parameter as a string into your download_url.
 |Name|Default|Other values|
 |----|-------|------------|
 |`default['elasticsearch']['version']`|`'2.0.0'`|[See list](attributes/default.rb).|
-|`default['elasticsearch']['install_type']`|`:tarball`|`:package`|
+|`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
 |`default['elasticsearch']['download_urls']['debian']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'`|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'`|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['tar']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'`|`%s` will be replaced with the version attribute above|
