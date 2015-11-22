@@ -46,7 +46,8 @@ elasticsearch_configure 'my_elasticsearch' do
   instance_name 'special_tarball_instance'
 end
 
-elasticsearch_plugin 'mobz/elasticsearch-head' do
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
   instance_name 'special_tarball_instance'
 end
 

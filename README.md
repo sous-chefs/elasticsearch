@@ -28,9 +28,9 @@ the version parameter as a string into your download_url.
 |----|-------|------------|
 |`default['elasticsearch']['version']`|`'2.0.0'`|[See list](attributes/default.rb).|
 |`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
-|`default['elasticsearch']['download_urls']['debian']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.deb'`|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['rhel']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.noarch.rpm'`|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['tar']`|`'https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-%s.tar.gz'`|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['tar']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 
 ## Recipes
 
@@ -86,7 +86,9 @@ elasticsearch_install 'default'
 elasticsearch_configure 'default'
 elasticsearch_service 'default'
 
-elasticsearch_plugin 'mobz/elasticsearch-head'
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
+end
 ```
 
 ### elasticsearch_user
@@ -120,9 +122,8 @@ Downloads the elasticsearch software, and unpacks it on the system. There are
 currently two ways to install -- `:package`, which downloads the appropriate
 package from elasticsearch.org and uses the package manager to install it, and
 `:tarball` which downloads a tarball from elasticsearch.org and unpacks it in
-/usr/local on the system. The resource name is not used for anything in
-particular. This resource also comes with a `:remove` action which will remove
-the package or directory elasticsearch was unpacked into.
+/usr/local on the system. This resource also comes with a `:remove` action
+which will remove the package or directory elasticsearch was unpacked into.
 
 You may always specify a download_url and/or download_checksum, and you may
 include `%s` which will be replaced by the version parameter you supply.
@@ -177,14 +178,12 @@ elasticsearch_install 'my_es_installation' do
 end
 ```
 
-
-
 ### elasticsearch_configure
 Actions: `:manage`, `:remove`
 
 Configures an elasticsearch instance; creates directories for configuration,
-logs, and data. Writes files logging.yml, elasticsearch.in.sh and
-elasticsearch.yml.
+logs, and data. Writes files `logging.yml`, `elasticsearch.in.sh` and
+`elasticsearch.yml`.
 
 The main attribute for this resource is `configuration`,
 which is a hash of any elasticsearch configuration directives. The
@@ -205,7 +204,19 @@ With all defaults -
 elasticsearch_configure 'elasticsearch'
 ```
 
-More complicated -
+With mostly defaults -
+```ruby
+elasticsearch_configure 'elasticsearch' do
+    allocated_memory '512m'
+    configuration ({
+      'cluster.name' => 'escluster',
+      'node.name' => 'node01',
+      'http.port' => 9201
+    })
+end
+```
+
+Very complicated -
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
@@ -315,7 +326,8 @@ To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
 ```ruby
-elasticsearch_plugin 'mobz/elasticsearch-head' do
+elasticsearch_plugin 'head' do
+  url 'mobz/elasticsearch-head'
   plugin_dir '/usr/share/elasticsearch_foo/plugins'
 end
 ```
