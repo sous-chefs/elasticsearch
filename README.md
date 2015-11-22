@@ -80,7 +80,7 @@ Elasticsearch setup:
 Examples of more complicated resource names are left to the reader, but here we
 present a typical example that should work in most cases:
 
-```
+```ruby
 elasticsearch_user 'default'
 elasticsearch_install 'default'
 elasticsearch_configure 'default'
@@ -98,11 +98,11 @@ a resource name may be omitted).
 
 Examples:
 
-```
+```ruby
 elasticsearch_user 'elasticsearch'
 ```
 
-```
+```ruby
 elasticsearch_user 'elasticsearch' do
   username 'elasticsearch'
   groupname 'elasticsearch'
@@ -133,11 +133,11 @@ them.
 
 Examples:
 
-```
+```ruby
 elasticsearch_install 'elasticsearch'
 ```
 
-```
+```ruby
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
   version "1.7.2"
@@ -145,7 +145,7 @@ elasticsearch_install 'my_es_installation' do
 end
 ```
 
-```
+```ruby
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
   dir '/usr/local' # where to install
@@ -158,7 +158,7 @@ elasticsearch_install 'my_es_installation' do
 end
 ```
 
-```
+```ruby
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
   version '1.7.2'
@@ -166,7 +166,7 @@ elasticsearch_install 'my_es_installation' do
 end
 ```
 
-```
+```ruby
 elasticsearch_install 'my_es_installation' do
   type :package # type of install
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
@@ -201,12 +201,12 @@ for more.
 Examples:
 
 With all defaults -
-```
+```ruby
 elasticsearch_configure 'elasticsearch'
 ```
 
 More complicated -
-```
+```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
   dir '/usr/local/awesome'
@@ -248,7 +248,7 @@ it to start on boot. You can override almost all of the relevant settings in
 such a way that you may run multiple instances. Most settings will be taken from
 a matching `elasticsearch_config` resource in the collection.
 
-```
+```ruby
 elasticsearch_service 'elasticsearch'
 ```
 
@@ -267,7 +267,7 @@ NB: You [may encounter issues on certain distros](http://blog.backslasher.net/ja
 
 Officially supported or commercial plugins require just the plugin name:
 
-```
+```ruby
 elasticsearch_plugin 'analysis-icu' do
   action :install
 end
@@ -278,7 +278,7 @@ end
 
 Plugins from GitHub require a URL of 'username/repository' or 'username/repository/version':
 
-```
+```ruby
 elasticsearch_plugin 'kopf' do
   url 'lmenezes/elasticsearch-kopf'
   action :install
@@ -291,7 +291,7 @@ end
 ```
 
 Plugins from Maven Central or Sonatype require 'groupId/artifactId/version':
-```
+```ruby
 elasticsearch_plugin 'mapper-attachments' do
   url 'org.elasticsearch/elasticsearch-mapper-attachments/2.6.0'
   action :install
@@ -299,7 +299,7 @@ end
 ```
 
 Plugins can be installed from a custom URL or file location as follows:
-```
+```ruby
 elasticsearch_plugin 'mapper-attachments' do
   url 'http://some.domain.name//my-plugin-1.0.0.zip'
   action :install
@@ -314,7 +314,7 @@ end
 To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
-```
+```ruby
 elasticsearch_plugin 'mobz/elasticsearch-head' do
   plugin_dir '/usr/share/elasticsearch_foo/plugins'
 end
@@ -323,7 +323,7 @@ end
 If for some reason, you want to name the resource something else, you may
 provide the plugin name using the `name` parameter:
 
-```
+```ruby
 elasticsearch_plugin 'xyzzy' do
   name 'kopf'
   url 'lmenezes/elasticsearch-kopf'
