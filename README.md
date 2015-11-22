@@ -72,7 +72,7 @@ Search order: In order to make this easy, all resources in this cookbook use the
 search order to locate resources that apply to the same overall
 Elasticsearch setup:
 
-1. Resources that share the same resource name, e.g.:
+1. Resources that share the same resource name
 1. Resources that share the same value for `instance_name`
 1. Resources named `default`
 1. Resources named `elasticsearch`
