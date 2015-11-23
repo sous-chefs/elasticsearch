@@ -42,8 +42,8 @@ See the attributes section above to for what defaults you can adjust.
 
 ### default
 
-The default recipe creates an elasticsearch user and group with the default
-options.
+The default recipe creates an elasticsearch user, group, package installation,
+configuration files, and service with all of the default options.
 
 ## Resources
 
@@ -76,17 +76,17 @@ Elasticsearch setup:
 
 1. Resources that share the same resource name
 1. Resources that share the same value for `instance_name`
-1. Resources named `default`
-1. Resources named `elasticsearch`
+1. Resources named `default` or resources named `elasticsearch`
+   - This fails if both `default` and `elasticsearch` resources exist
 
 Examples of more complicated resource names are left to the reader, but here we
 present a typical example that should work in most cases:
 
 ```ruby
-elasticsearch_user 'default'
-elasticsearch_install 'default'
-elasticsearch_configure 'default'
-elasticsearch_service 'default'
+elasticsearch_user 'elasticsearch'
+elasticsearch_install 'elasticsearch'
+elasticsearch_configure 'elasticsearch'
+elasticsearch_service 'elasticsearch'
 
 elasticsearch_plugin 'head' do
   url 'mobz/elasticsearch-head'
