@@ -2,6 +2,41 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [2.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/2.0.0) (2015-11-23)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.2.0...2.0.0)
+
+**Implemented enhancements:**
+
+- Upgrading by package needs cleanup [\#331](https://github.com/elastic/cookbook-elasticsearch/issues/331)
+- Minimal init scripts, preferrably from the packaged versions of ES [\#321](https://github.com/elastic/cookbook-elasticsearch/issues/321)
+- Remove extra env file, or follow packaged conventions [\#320](https://github.com/elastic/cookbook-elasticsearch/issues/320)
+- Remove system limit adjustments [\#319](https://github.com/elastic/cookbook-elasticsearch/issues/319)
+
+**Fixed bugs:**
+
+- Init script can't start [\#390](https://github.com/elastic/cookbook-elasticsearch/issues/390)
+
+**Closed issues:**
+
+- elasticsearch\_service resource doesn't work with short syntax [\#397](https://github.com/elastic/cookbook-elasticsearch/issues/397)
+- What is supposed to happen when a config file is changed? [\#394](https://github.com/elastic/cookbook-elasticsearch/issues/394)
+- Doc request - how to create data nodes vs master nodes [\#393](https://github.com/elastic/cookbook-elasticsearch/issues/393)
+- Plugin install isn't idempotent [\#392](https://github.com/elastic/cookbook-elasticsearch/issues/392)
+- Question - Are custom configs required everywhere?  [\#391](https://github.com/elastic/cookbook-elasticsearch/issues/391)
+- Is :tarball or :package the preferred installation type?  [\#389](https://github.com/elastic/cookbook-elasticsearch/issues/389)
+- Support Amazon platform for init scripts [\#387](https://github.com/elastic/cookbook-elasticsearch/issues/387)
+- "ArgumentError: wrong number of arguments \(1 for 0\)" at resource\_configure.rb [\#386](https://github.com/elastic/cookbook-elasticsearch/issues/386)
+- Do I need to do a Java Installation myself for this to work? [\#385](https://github.com/elastic/cookbook-elasticsearch/issues/385)
+- plugin install does not work [\#382](https://github.com/elastic/cookbook-elasticsearch/issues/382)
+- Allow template cookbook override in \_configure [\#376](https://github.com/elastic/cookbook-elasticsearch/issues/376)
+- Consider using the resource name as a common shared set of resources [\#373](https://github.com/elastic/cookbook-elasticsearch/issues/373)
+- Recreate deploying-elasticsearch-with-chef tutorial [\#293](https://github.com/elastic/cookbook-elasticsearch/issues/293)
+
+**Merged pull requests:**
+
+- Makes code examples have color [\#396](https://github.com/elastic/cookbook-elasticsearch/pull/396) ([spuder](https://github.com/spuder))
+- Updates docs to show package are now default install [\#395](https://github.com/elastic/cookbook-elasticsearch/pull/395) ([spuder](https://github.com/spuder))
+
 ## [1.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/1.2.0) (2015-10-16)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.3...1.2.0)
 
