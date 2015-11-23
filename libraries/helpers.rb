@@ -90,15 +90,7 @@ module ElasticsearchCookbook
       # v2 and greater has a different set of URLs
       url_hash_key = newer_url_style ? 'download_urls_v2' : 'download_urls'
 
-      url_string = nil
-      if new_resource.download_url
-        url_string = new_resource.download_url
-      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
-        url_string = new_resource.tarball_url || node['elasticsearch'][url_hash_key]['tar']
-      elsif install_type.to_s == 'package' && node['elasticsearch'][url_hash_key][platform_family]
-        url_string = new_resource.package_url || node['elasticsearch'][url_hash_key][platform_family]
-      end
-
+      url_string = new_resource.download_url
       if url_string && version
         # v2 and greater has two %s entries for version
         return (newer_url_style ? format(url_string, version, version) : format(url_string, version))
@@ -115,9 +107,9 @@ module ElasticsearchCookbook
       if new_resource.download_checksum
         new_resource.download_checksum
       elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
-        new_resource.tarball_checksum || node['elasticsearch']['checksums'][version]['tar']
+        node['elasticsearch']['checksums'][version]['tar']
       elsif install_type.to_s == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
-        new_resource.package_checksum || node['elasticsearch']['checksums'][version][platform_family]
+        node['elasticsearch']['checksums'][version][platform_family]
       end
     end
 

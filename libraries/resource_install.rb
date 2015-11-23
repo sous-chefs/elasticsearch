@@ -29,10 +29,4 @@ class ElasticsearchCookbook::InstallResource < Chef::Resource::LWRPBase
 
   # attributes used by the package-flavor provider
   attribute(:package_options, kind_of: String, default: nil)
-
-  # deprecated, use download_url and download_checksum
-  attribute(:package_url, kind_of: String, default: nil)
-  attribute(:package_checksum, kind_of: String, default: nil) # sha256
-  attribute(:tarball_url, kind_of: String, default: nil)
-  attribute(:tarball_checksum, kind_of: String, default: nil) # sha256
 end
