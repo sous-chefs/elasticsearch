@@ -47,18 +47,20 @@ options.
 
 ## Resources
 
-## Notifications and Service Restarts
+## Notifications and Service Start/Restart
 
-The resources provided in this cookbook **do not automatically restart**
-services when changes have occurred. This has been done to protect you from
-accidental data loss and service outages, as nodes might restart simultaneously
-or may not restart at all when bad configuration values are supplied.
+The resources provided in this cookbook **do not automatically start or
+restart** services when changes have occurred. This has been done to protect you
+from accidental data loss and service outages, as nodes might restart
+simultaneously or may not restart at all when bad configuration values are
+supplied.
+
+elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled`, but not `:started`). It will also pass through all of the standard `service` resource
+actions to the underlying service resource if you wish to notify it.
+
 
 You **must** supply your desired notifications when using each resource if you
 want Chef to automatically restart services. Again, we don't recommend this.
-
-elasticsearch_service will pass through all of the standard `service` resource
-actions to the underlying service resource if you wish to notify it.
 
 ### Resource names
 
