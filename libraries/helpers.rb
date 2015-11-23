@@ -90,7 +90,15 @@ module ElasticsearchCookbook
       # v2 and greater has a different set of URLs
       url_hash_key = newer_url_style ? 'download_urls_v2' : 'download_urls'
 
-      url_string = new_resource.download_url
+      url_string = nil
+      if new_resource.download_url
+        url_string = new_resource.download_url
+      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
+        url_string = node['elasticsearch'][url_hash_key]['tar']
+      elsif install_type.to_s == 'package' && node['elasticsearch'][url_hash_key][platform_family]
+        url_string = node['elasticsearch'][url_hash_key][platform_family]
+      end
+
       if url_string && version
         # v2 and greater has two %s entries for version
         return (newer_url_style ? format(url_string, version, version) : format(url_string, version))
