@@ -69,7 +69,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     [
       'Configuration set by Chef',
       'es.logger.level: INFO',
-      'rootLogger: INFO, console, file'
+      'rootLogger: \$\{es.logger.level\}, console, file'
     ].each do |line|
       its(:content) { should match(/#{line}/) }
     end
