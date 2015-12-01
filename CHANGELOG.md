@@ -2,8 +2,15 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
-## [2.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/2.0.1) (2015-12-01)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.0.0...2.0.1)
+## [2.1.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.1.0) (2015-12-01)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.0.1...v2.1.0)
+
+**Closed issues:**
+
+- ES 2.1.0 support [\#402](https://github.com/elastic/cookbook-elasticsearch/issues/402)
+
+## [2.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.0.1) (2015-12-01)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.0.0...v2.0.1)
 
 **Closed issues:**
 
@@ -11,8 +18,8 @@
 - gateway.expected\_nodes default should be 0 [\#399](https://github.com/elastic/cookbook-elasticsearch/issues/399)
 - Add the defaults for slowlogs in logging.yml [\#398](https://github.com/elastic/cookbook-elasticsearch/issues/398)
 
-## [2.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/2.0.0) (2015-11-23)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.2.0...2.0.0)
+## [2.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.0.0) (2015-11-23)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.2.0...v2.0.0)
 
 **Implemented enhancements:**
 
@@ -46,8 +53,8 @@
 - Makes code examples have color [\#396](https://github.com/elastic/cookbook-elasticsearch/pull/396) ([spuder](https://github.com/spuder))
 - Updates docs to show package are now default install [\#395](https://github.com/elastic/cookbook-elasticsearch/pull/395) ([spuder](https://github.com/spuder))
 
-## [1.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/1.2.0) (2015-10-16)
-[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.3...1.2.0)
+## [1.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/v1.2.0) (2015-10-16)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.3...v1.2.0)
 
 **Closed issues:**
 
@@ -61,14 +68,14 @@
 - Update the README to remove a typo [\#381](https://github.com/elastic/cookbook-elasticsearch/pull/381) ([jtwarren](https://github.com/jtwarren))
 - Correct the full changelog links [\#375](https://github.com/elastic/cookbook-elasticsearch/pull/375) ([eheydrick](https://github.com/eheydrick))
 
-## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.3) (2015-09-20)
+## [1.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/v1.0.3) (2015-09-20)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.2...v1.0.3)
 
 **Closed issues:**
 
 -  1.0.2 Issues with pid files [\#374](https://github.com/elastic/cookbook-elasticsearch/issues/374)
 
-## [1.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.2) (2015-09-20)
+## [1.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/v1.0.2) (2015-09-20)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.1...v1.0.2)
 
 **Implemented enhancements:**
@@ -88,7 +95,7 @@
 
 - add missing matchers [\#368](https://github.com/elastic/cookbook-elasticsearch/pull/368) ([thomasdziedzic](https://github.com/thomasdziedzic))
 
-## [1.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/1.0.1) (2015-09-15)
+## [1.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/v1.0.1) (2015-09-15)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.0.0...v1.0.1)
 
 **Implemented enhancements:**
