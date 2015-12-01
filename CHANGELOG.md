@@ -2,6 +2,15 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [2.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/2.0.1) (2015-12-01)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.0.0...2.0.1)
+
+**Closed issues:**
+
+- Any provision to make it Chef 11.10 compatible? [\#401](https://github.com/elastic/cookbook-elasticsearch/issues/401)
+- gateway.expected\_nodes default should be 0 [\#399](https://github.com/elastic/cookbook-elasticsearch/issues/399)
+- Add the defaults for slowlogs in logging.yml [\#398](https://github.com/elastic/cookbook-elasticsearch/issues/398)
+
 ## [2.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/2.0.0) (2015-11-23)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v1.2.0...2.0.0)
 
