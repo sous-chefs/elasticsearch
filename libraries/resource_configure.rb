@@ -98,7 +98,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
 
               'discovery.zen.ping.multicast.enabled' => true,
               'discovery.zen.minimum_master_nodes' => 1,
-              'gateway.expected_nodes' => 1,
+              'gateway.expected_nodes' => 0,
 
               'http.port' => 9200
             })
