@@ -52,6 +52,8 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
 
   attribute(:java_home, kind_of: String, default: nil)
 
+  attribute(:startup_sleep_seconds, kind_of: [String, Integer], default: 5)
+
   # Calculations for this are done in the provider, as we can't do them in the
   # resource definition. default is 50% of RAM or 31GB, which ever is smaller.
   attribute(:allocated_memory, kind_of: String)

@@ -68,16 +68,16 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
     # ES_HOME CONF_DIR CONF_FILE DATA_DIR LOG_DIR WORK_DIR PID_DIR
     # ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
-    # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_USER ES_GROUP
-    # MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
+    # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_STARTUP_SLEEP_TIME
+    # ES_USER ES_GROUP MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
     params = {}
-
     params[:ES_HOME] = new_resource.path_home[es_install.type]
     params[:CONF_DIR] = new_resource.path_conf[es_install.type]
     params[:DATA_DIR] = new_resource.path_data[es_install.type]
     params[:LOG_DIR] = new_resource.path_logs[es_install.type]
     params[:PID_DIR] = new_resource.path_pid[es_install.type]
 
+    params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:ES_USER] = es_user.username
     params[:ES_GROUP] = es_user.groupname
 
