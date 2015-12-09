@@ -220,6 +220,19 @@ elasticsearch_configure 'elasticsearch' do
 end
 ```
 
+Enumerate `node['elasticsearch']['config']` attributes from role\environment
+
+```ruby
+node.default['elasticsearch']['config']['cluster.name'] = foobar
+node.default['elasticsearch']['config']['node.name'] = Chef::Config['node_name']
+
+elasticsearch_configure 'elasticsearch' do
+  configuration (node['elasticsearch']['config'])
+  action :manage
+  notifies :restart, 'elasticsearch_service[elasticsearch]'
+end
+```
+
 Very complicated -
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
