@@ -224,13 +224,13 @@ Very complicated -
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
-  dir '/usr/local/awesome'
-  path_conf     tarball: "/usr/local/awesome/etc/elasticsearch"
-  path_data     tarball: "/usr/local/awesome/var/data/elasticsearch"
-  path_logs     tarball: "/usr/local/awesome/var/log/elasticsearch"
-  path_pid      tarball: "/usr/local/awesome/var/run/elasticsearch"
-  path_plugins  tarball: "/usr/local/elasticsearch/plugins"
-  path_bin      tarball: "/usr/local/bin"
+  path_home     tarball: "/opt/elasticsearch"
+  path_conf     tarball: "/etc/opt/elasticsearch"
+  path_data     tarball: "/var/opt/elasticsearch"
+  path_logs     tarball: "/var/log/elasticsearch"
+  path_pid      tarball: "/var/run/elasticsearch"
+  path_plugins  tarball: "/opt/elasticsearch/plugins"
+  path_bin      tarball: "/opt/elasticsearch/bin"
 
   logging({:"action" => 'INFO'})
 
