@@ -153,5 +153,22 @@ module ElasticsearchCookbook
         value.to_s
       end
     end
+
+    # proxy helpers for chef
+    def get_configured_proxy
+      if Chef::Config['http_proxy'] && !Chef::Config['http_proxy'].empty?
+        Chef::Config['http_proxy']
+      elsif Chef::Config['https_proxy'] && !Chef::Config['https_proxy'].empty?
+        Chef::Config['https_proxy']
+      end
+    end
+
+    def get_java_proxy_arguments
+      require 'uri'
+      parsed_uri = URI(get_configured_proxy)
+      "-DproxyHost=#{parsed_uri.host} -DproxyPort=#{parsed_uri.port}"
+    rescue
+      nil
+    end
   end
 end

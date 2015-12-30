@@ -33,6 +33,13 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
       fail "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
+    # respect chef proxy settings unless they have been disabled explicitly
+    if new_resource.chef_proxy
+      proxy_arguments = " #{get_java_proxy_arguments}"
+    else
+      proxy_arguments = ''
+    end
+
     # shell_out! automatically raises on error, logs command output
     unless plugin_exists(es_conf.path_plugins[es_install.type], name)
       # required for package installs that show up with parent dir owned by root
@@ -40,7 +47,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
       shell_out!("chown #{es_user.username}:#{es_user.groupname} #{es_conf.path_plugins[es_install.type]}")
 
       # do the actual install
-      shell_out!("#{es_conf.path_bin[es_install.type]}/plugin install #{url}".split(' '), user: es_user.username, group: es_user.groupname)
+      shell_out!("#{es_conf.path_bin[es_install.type]}/plugin install #{url}#{proxy_arguments}".split(' '), user: es_user.username, group: es_user.groupname)
 
       new_resource.updated_by_last_action(true)
     end

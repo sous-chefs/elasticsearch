@@ -326,6 +326,17 @@ elasticsearch_plugin 'mapper-attachments' do
 end
 ```
 
+The plugin resource respects the `https_proxy` or `http_proxy` (non-SSL)
+[Chef settings](https://docs.chef.io/config_rb_client.html) unless explicitly
+disabled using `chef_proxy false`:
+```
+elasticsearch_plugin 'kopf' do
+  url 'lmenezes/elasticsearch-kopf'
+  chef_proxy false
+  action :install
+end
+```
+
 To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
