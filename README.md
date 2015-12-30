@@ -14,7 +14,7 @@ repository.
 [Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install
 Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has specific minimum Java version requirements. We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
 
-[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook has been upgraded to support Elasticsearch 2.0 and greater. While this cookbook still works with ES 1.7.x at the time of this writing, we expect to eventually **break compatibility in a minor release bump**. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific `major.minor` version and only leave the patch release to float.
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 2.x and greater. While this cookbook presently, by sheer luck, still works with ES 1.7.x at the time of this writing, we are not testing against versions < 2.0.0. Should Elasticsearch 2.x somehow break 1.7.x compatibility in a minor release of 2.x, this cookbook could potentially stop working with ES 1.7.x. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific `major.minor` version and only leave the patch release to float.
 
 ## Attributes
 
