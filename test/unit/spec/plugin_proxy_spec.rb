@@ -20,8 +20,8 @@ describe 'elasticsearch_test::default_with_plugins' do
 
         before do
           extend ElasticsearchCookbook::Helpers
-          Chef::Config['http_proxy'] = ''
-          Chef::Config['https_proxy'] = ''
+          Chef::Config['http_proxy'] = nil
+          Chef::Config['https_proxy'] = nil
         end
 
         it 'installs elasticsearch without proxy' do
