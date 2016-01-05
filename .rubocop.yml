@@ -61,9 +61,12 @@ Style/HashSyntax:
 Style/RescueModifier:
   Enabled: false
 
+Style/AccessorMethodName:
+  Enabled: false
+
 # allow larger modules
 Metrics/ModuleLength:
-  Max: 125
+  Max: 150
 
 # There are too many non-ruby files that run up against rubocop rules in a cookbook
 AllCops:
