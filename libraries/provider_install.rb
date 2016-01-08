@@ -44,6 +44,10 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     checksum = determine_download_checksum(new_resource, node)
     package_options = new_resource.package_options
 
+    unless checksum
+      Chef::Log.warn("No checksum was provided for #{download_url}, this may download a new package on every chef run!")
+    end
+
     remote_file_r = remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
       source download_url
       checksum checksum
