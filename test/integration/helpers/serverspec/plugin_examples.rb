@@ -1,10 +1,11 @@
 require_relative 'spec_helper'
 
 shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
-  expected_user = args[:user] || 'elasticsearch'
+  expected_user = args[:user] || (package? ? 'root' : 'elasticsearch')
   expected_group = args[:group] || expected_user || 'elasticsearch'
-  expected_home = args[:home] || (package? ? "/usr/share/#{expected_user}" : "/usr/local/#{expected_user}")
+  expected_home = args[:home] || (package? ? '/usr/share/elasticsearch' : '/usr/local/elasticsearch')
   expected_plugin = args[:plugin] || (package? ? "#{expected_home}/plugins/#{plugin_name}" : "#{expected_home}/plugins/#{plugin_name}")
+  expected_response_code = args[:response_code] || 200
 
   describe file(expected_plugin) do
     it { should be_directory }
@@ -13,6 +14,6 @@ shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
   end
 
   describe command("curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:9200/_plugin/#{plugin_name}/") do
-    its(:stdout) { should match(/200/) }
+    its(:stdout) { should match(/#{expected_response_code}/) }
   end
 end

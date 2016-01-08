@@ -32,11 +32,11 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     # shell_out! automatically raises on error, logs command output
     # required for package installs that show up with parent dir owned by root
-    shell_out!("mkdir -p #{es_conf.path_plugins[es_install.type]}") unless ::File.exist?(es_conf.path_plugins[es_install.type])
-    shell_out!("chown #{es_user.username}:#{es_user.groupname} #{es_conf.path_plugins[es_install.type]}")
+    plugin_dir_exists = ::File.exist?(es_conf.path_plugins[es_install.type])
+    shell_out_as_user!("mkdir -p #{es_conf.path_plugins[es_install.type]}", run_context) unless plugin_dir_exists
 
-    shell_out!("#{es_conf.path_bin[es_install.type]}/plugin #{arguments.chomp(' ')}".chomp(' ').split(' '), user: es_user.username, group: es_user.groupname)
-
+    command_array = "#{es_conf.path_bin[es_install.type]}/plugin #{arguments.chomp(' ')}".chomp(' ').split(' ')
+    shell_out_as_user!(command_array, run_context)
     new_resource.updated_by_last_action(true)
   end
 
@@ -71,5 +71,20 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     end
 
     return true
+  end
+
+  def shell_out_as_user!(command, run_ctx)
+    es_install = find_es_resource(run_ctx, :elasticsearch_install, new_resource)
+
+    # See this link for an explanation:
+    # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
+    if es_install.type == :package
+      # package installations should install plugins as root
+      shell_out!(command)
+    else
+      # non-package installations should install plugins as the ES user
+      es_user = find_es_resource(run_ctx, :elasticsearch_user, new_resource)
+      shell_out!(command, user: es_user.username, group: es_user.groupname)
+    end
   end
 end # provider

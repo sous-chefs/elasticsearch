@@ -102,3 +102,12 @@ suites:
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
+
+  - name: shieldwatcher # install licensed plugins for testing
+    require_chef_omnibus: true
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::shieldwatcher]
+    attributes:
+      elasticsearch:
+        install_type: package
