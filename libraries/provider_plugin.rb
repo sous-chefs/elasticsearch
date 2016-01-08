@@ -12,12 +12,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   action :install do
     unless plugin_exists(new_resource.plugin_name)
       # respect chef proxy settings unless they have been disabled explicitly
-      if new_resource.chef_proxy
-        proxy_arguments = "#{get_java_proxy_arguments}"
-      else
-        proxy_arguments = ''
-      end
-
+      proxy_arguments = get_java_proxy_arguments(new_resource.chef_proxy)
       manage_plugin("install #{new_resource.url} #{proxy_arguments}")
     end
   end # action
@@ -40,7 +35,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     shell_out!("mkdir -p #{es_conf.path_plugins[es_install.type]}") unless ::File.exist?(es_conf.path_plugins[es_install.type])
     shell_out!("chown #{es_user.username}:#{es_user.groupname} #{es_conf.path_plugins[es_install.type]}")
 
-    shell_out!("#{es_conf.path_bin[es_install.type]}/plugin #{arguments}".split(' '), user: es_user.username, group: es_user.groupname)
+    shell_out!("#{es_conf.path_bin[es_install.type]}/plugin #{arguments.chomp(' ')}".chomp(' ').split(' '), user: es_user.username, group: es_user.groupname)
 
     new_resource.updated_by_last_action(true)
   end

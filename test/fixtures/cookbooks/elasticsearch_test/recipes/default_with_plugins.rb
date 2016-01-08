@@ -27,3 +27,16 @@ elasticsearch_plugin 'head' do
   url 'mobz/elasticsearch-head'
   notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
 end
+
+# remove an installed plugin
+elasticsearch_plugin 'kopf' do
+  url 'lmenezes/elasticsearch-kopf'
+  action [:install, :remove]
+  notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
+end
+
+# remove a non-existent plugin
+elasticsearch_plugin 'pleasedontexist' do
+  action :remove
+  notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
+end

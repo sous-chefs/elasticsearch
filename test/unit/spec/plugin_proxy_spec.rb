@@ -26,7 +26,7 @@ describe 'elasticsearch_test::default_with_plugins' do
 
         it 'installs elasticsearch without proxy' do
           args = get_java_proxy_arguments
-          expect(args).to eq(nil)
+          expect(args).to eq('')
         end
 
         it 'installs elasticsearch with proxy host' do

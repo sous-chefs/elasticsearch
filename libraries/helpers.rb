@@ -163,12 +163,14 @@ module ElasticsearchCookbook
       end
     end
 
-    def get_java_proxy_arguments
+    def get_java_proxy_arguments(enabled = true)
+      return '' unless enabled
+
       require 'uri'
       parsed_uri = URI(get_configured_proxy)
       "-DproxyHost=#{parsed_uri.host} -DproxyPort=#{parsed_uri.port}"
     rescue
-      nil
+      ''
     end
   end
 end
