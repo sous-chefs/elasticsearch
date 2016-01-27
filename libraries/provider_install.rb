@@ -16,24 +16,18 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       new_resource.version determine_version(new_resource, node)
     end
 
-    if install_type == 'tarball' || install_type == 'tar'
-      install_tarball_wrapper_action
-    elsif install_type == 'package'
-      install_package_wrapper_action
-    else
-      fail "#{install_type} is not a valid install type"
-    end
+    return install_tarball_wrapper_action if install_type == 'tarball' || install_type == 'tar'
+    return install_package_wrapper_action if install_type == 'package'
+
+    fail "#{install_type} is not a valid install type"
   end
 
   action :remove do
     install_type = determine_install_type(new_resource, node)
-    if install_type == 'tarball' || install_type == 'tar'
-      remove_tarball_wrapper_action
-    elsif install_type == 'package'
-      remove_package_wrapper_action
-    else
-      fail "#{install_type} is not a valid install type"
-    end
+
+    return remove_tarball_wrapper_action if install_type == 'tarball' || install_type == 'tar'
+    return remove_package_wrapper_action if install_type == 'package'
+    fail "#{install_type} is not a valid install type"
   end
 
   protected
@@ -57,40 +51,38 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     remote_file_r.run_action(:create)
     new_resource.updated_by_last_action(true) if remote_file_r.updated_by_last_action?
 
-    if node['platform_family'] == 'debian'
-      pkg_r = dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
-        options package_options
-        action :nothing
-      end
-      pkg_r.run_action(:install)
-      new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-    else
-      pkg_r = package "#{Chef::Config[:file_cache_path]}/#{filename}" do
-        options package_options
-        action :nothing
-      end
-      pkg_r.run_action(:install)
-      new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-    end
+    pkg_r = if node['platform_family'] == 'debian'
+              dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+                options package_options
+                action :nothing
+              end
+            else
+              package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+                options package_options
+                action :nothing
+              end
+            end
+
+    pkg_r.run_action(:install)
+    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
   end
 
   def remove_package_wrapper_action
     package_url = get_package_url(new_resource, node)
     filename = package_url.split('/').last
 
-    if node['platform_family'] == 'debian'
-      pkg_r = dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
-        action :nothing
-      end
-      pkg_r.run_action(:remove)
-      new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-    else
-      pkg_r = package "#{Chef::Config[:file_cache_path]}/#{filename}" do
-        action :nothing
-      end
-      pkg_r.run_action(:remove)
-      new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
-    end
+    pkg_r = if node['platform_family'] == 'debian'
+              dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+                action :nothing
+              end
+            else
+              package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+                action :nothing
+              end
+            end
+
+    pkg_r.run_action(:remove)
+    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
   end
 
   def install_tarball_wrapper_action

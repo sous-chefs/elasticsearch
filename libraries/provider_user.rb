@@ -33,7 +33,7 @@ class ElasticsearchCookbook::UserProvider < Chef::Provider::LWRPBase
   action :remove do
     # delete user before deleting the group
     user_r = user new_resource.username do
-      action  :nothing
+      action :nothing
     end
     user_r.run_action(:remove)
     new_resource.updated_by_last_action(true) if user_r.updated_by_last_action?

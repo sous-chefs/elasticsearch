@@ -4,7 +4,7 @@ shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
   expected_user = args[:user] || (package? ? 'root' : 'elasticsearch')
   expected_group = args[:group] || expected_user || 'elasticsearch'
   expected_home = args[:home] || (package? ? '/usr/share/elasticsearch' : '/usr/local/elasticsearch')
-  expected_plugin = args[:plugin] || (package? ? "#{expected_home}/plugins/#{plugin_name}" : "#{expected_home}/plugins/#{plugin_name}")
+  expected_plugin = args[:plugin] || "#{expected_home}/plugins/#{plugin_name}"
   expected_response_code = args[:response_code] || 200
 
   describe file(expected_plugin) do

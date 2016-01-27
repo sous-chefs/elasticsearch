@@ -62,23 +62,17 @@ module ElasticsearchCookbook
     end
 
     def determine_version(new_resource, node)
-      if new_resource.version
-        new_resource.version.to_s
-      elsif node['elasticsearch'] && node['elasticsearch']['version']
-        node['elasticsearch']['version'].to_s
-      else
-        fail 'could not determine version of elasticsearch to install'
-      end
+      return new_resource.version.to_s if new_resource.version
+      return node['elasticsearch']['version'].to_s if node['elasticsearch'] && node['elasticsearch']['version']
+
+      fail 'could not determine version of elasticsearch to install'
     end
 
     def determine_install_type(new_resource, node)
-      if new_resource.type
-        new_resource.type.to_s
-      elsif node['elasticsearch'] && node['elasticsearch']['install_type']
-        node['elasticsearch']['install_type'].to_s
-      else
-        fail 'could not determine how to install elasticsearch (package? tarball?)'
-      end
+      return new_resource.type.to_s if new_resource.type
+      return node['elasticsearch']['install_type'].to_s if node['elasticsearch'] && node['elasticsearch']['install_type']
+
+      fail 'could not determine how to install elasticsearch (package? tarball?)'
     end
 
     def determine_download_url(new_resource, node)

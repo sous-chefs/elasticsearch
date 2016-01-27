@@ -41,10 +41,6 @@ CyclomaticComplexity:
 Metrics/PerceivedComplexity:
   Max: 15
 
-# Disable Single Space before first arg
-SingleSpaceBeforeFirstArg:
-  Enabled: false
-
 # Don't force a word array unless 5 elements
 WordArray:
   MinSize: 5
