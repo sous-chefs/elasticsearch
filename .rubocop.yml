@@ -4,6 +4,10 @@
 Style/ClassAndModuleChildren:
   Enabled: false
 
+# Allow if statements!
+Style/GuardClause:
+  Enabled: false
+
 # Allow more complex ruby methods
 Metrics/AbcSize:
   Max: 55

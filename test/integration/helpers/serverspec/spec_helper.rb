@@ -17,9 +17,13 @@ def debian?
 end
 
 def package?
-  return system('dpkg -l elasticsearch >/dev/null 2>&1') if debian?
-  return system('rpm -qa | grep elasticsearch >/dev/null 2>&1') if rhel?
-  fail "I don't recognize #{os[:family]}, so I can't check for an elasticsearch package"
+  if debian?
+    system('dpkg -l elasticsearch >/dev/null 2>&1')
+  elsif rhel?
+    system('rpm -qa | grep elasticsearch >/dev/null 2>&1')
+  else
+    fail "I don't recognize #{os[:family]}, so I can't check for an elasticsearch package"
+  end
 end
 
 def tarball?
