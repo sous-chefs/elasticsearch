@@ -115,8 +115,16 @@ module ElasticsearchCookbook
       if new_resource.download_checksum
         new_resource.download_checksum
       elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
+        node && version &&
+        node['elasticsearch'] &&
+        node['elasticsearch']['checksums'] &&
+        node['elasticsearch']['checksums'][version] &&
         node['elasticsearch']['checksums'][version]['tar']
       elsif install_type.to_s == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
+        node && version && platform_family &&
+        node['elasticsearch'] &&
+        node['elasticsearch']['checksums'] &&
+        node['elasticsearch']['checksums'][version] &&
         node['elasticsearch']['checksums'][version][platform_family]
       end
     end
