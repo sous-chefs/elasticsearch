@@ -40,10 +40,10 @@ IfUnlessModifier:
 
 # Raise allowed CyclomaticComplexity & Perceivedto 10.
 CyclomaticComplexity:
-  Max: 15
+  Max: 25
 
 Metrics/PerceivedComplexity:
-  Max: 15
+  Max: 25
 
 # Don't force a word array unless 5 elements
 WordArray:
