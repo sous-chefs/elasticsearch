@@ -2,6 +2,66 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [v2.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.0) (2016-02-08)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.1.1...v2.2.0)
+
+**Implemented enhancements:**
+
+- Max heap size is too large [\#427](https://github.com/elastic/cookbook-elasticsearch/issues/427)
+- How to define discovery.zen.ping.unicast.hosts [\#426](https://github.com/elastic/cookbook-elasticsearch/issues/426)
+- elasticsearch\_plugin install lacks proxy support [\#415](https://github.com/elastic/cookbook-elasticsearch/issues/415)
+- Default ES version needs upgrading \(2.1.0 \> 2.1.1\) [\#411](https://github.com/elastic/cookbook-elasticsearch/issues/411)
+- config dirs/files and install dirs/files should be owned by root, not es\_user [\#405](https://github.com/elastic/cookbook-elasticsearch/issues/405)
+- Reinstalls elasticserach every chef run [\#404](https://github.com/elastic/cookbook-elasticsearch/issues/404)
+
+**Fixed bugs:**
+
+- Permission problem when installing Watcher or Shield [\#423](https://github.com/elastic/cookbook-elasticsearch/issues/423)
+- Installing shield and watcher plugins fail with AccessDeniedException [\#421](https://github.com/elastic/cookbook-elasticsearch/issues/421)
+- Plugin removal is broken [\#418](https://github.com/elastic/cookbook-elasticsearch/issues/418)
+- elasticsearch\_configure documentation example missing path\_home [\#413](https://github.com/elastic/cookbook-elasticsearch/issues/413)
+- Init script can't start [\#390](https://github.com/elastic/cookbook-elasticsearch/issues/390)
+- ruby command not found [\#378](https://github.com/elastic/cookbook-elasticsearch/issues/378)
+
+**Closed issues:**
+
+- ES 2.2.0 installation fails [\#429](https://github.com/elastic/cookbook-elasticsearch/issues/429)
+- Can't install plugin twice [\#408](https://github.com/elastic/cookbook-elasticsearch/issues/408)
+- Error running recipe on AWS Opsworks [\#403](https://github.com/elastic/cookbook-elasticsearch/issues/403)
+- ES 2.1.0 support [\#402](https://github.com/elastic/cookbook-elasticsearch/issues/402)
+- Any provision to make it Chef 11.10 compatible? [\#401](https://github.com/elastic/cookbook-elasticsearch/issues/401)
+- gateway.expected\_nodes default should be 0 [\#399](https://github.com/elastic/cookbook-elasticsearch/issues/399)
+- Add the defaults for slowlogs in logging.yml [\#398](https://github.com/elastic/cookbook-elasticsearch/issues/398)
+- elasticsearch\_service resource doesn't work with short syntax [\#397](https://github.com/elastic/cookbook-elasticsearch/issues/397)
+- What is supposed to happen when a config file is changed? [\#394](https://github.com/elastic/cookbook-elasticsearch/issues/394)
+- Doc request - how to create data nodes vs master nodes [\#393](https://github.com/elastic/cookbook-elasticsearch/issues/393)
+- Plugin install isn't idempotent [\#392](https://github.com/elastic/cookbook-elasticsearch/issues/392)
+- Question - Are custom configs required everywhere?  [\#391](https://github.com/elastic/cookbook-elasticsearch/issues/391)
+- Is :tarball or :package the preferred installation type?  [\#389](https://github.com/elastic/cookbook-elasticsearch/issues/389)
+- Support Amazon platform for init scripts [\#387](https://github.com/elastic/cookbook-elasticsearch/issues/387)
+- "ArgumentError: wrong number of arguments \(1 for 0\)" at resource\_configure.rb [\#386](https://github.com/elastic/cookbook-elasticsearch/issues/386)
+- Do I need to do a Java Installation myself for this to work? [\#385](https://github.com/elastic/cookbook-elasticsearch/issues/385)
+- Support ES 2.0 [\#384](https://github.com/elastic/cookbook-elasticsearch/issues/384)
+- plugin install does not work [\#382](https://github.com/elastic/cookbook-elasticsearch/issues/382)
+- Compile error w/ 1.0.3 and Chef Server 12 [\#379](https://github.com/elastic/cookbook-elasticsearch/issues/379)
+- Allow template cookbook override in \_configure [\#376](https://github.com/elastic/cookbook-elasticsearch/issues/376)
+- 1.0.2 Issues with pid files [\#374](https://github.com/elastic/cookbook-elasticsearch/issues/374)
+- Consider using the resource name as a common shared set of resources [\#373](https://github.com/elastic/cookbook-elasticsearch/issues/373)
+- elasticsearch\_install broken with v1.0.1 [\#371](https://github.com/elastic/cookbook-elasticsearch/issues/371)
+- Compile Error [\#370](https://github.com/elastic/cookbook-elasticsearch/issues/370)
+- wrong number of arguments \(1 for 0\) [\#369](https://github.com/elastic/cookbook-elasticsearch/issues/369)
+
+**Merged pull requests:**
+
+- fixes typo in readme [\#428](https://github.com/elastic/cookbook-elasticsearch/pull/428) ([spuder](https://github.com/spuder))
+- Plugin removal functionality restored [\#420](https://github.com/elastic/cookbook-elasticsearch/pull/420) ([dbaggott](https://github.com/dbaggott))
+- Update to ES 2.1.1 [\#412](https://github.com/elastic/cookbook-elasticsearch/pull/412) ([dbaggott](https://github.com/dbaggott))
+- Makes code examples have color [\#396](https://github.com/elastic/cookbook-elasticsearch/pull/396) ([spuder](https://github.com/spuder))
+- Updates docs to show package are now default install [\#395](https://github.com/elastic/cookbook-elasticsearch/pull/395) ([spuder](https://github.com/spuder))
+- Update the README to remove a typo [\#381](https://github.com/elastic/cookbook-elasticsearch/pull/381) ([jtwarren](https://github.com/jtwarren))
+- Correct the full changelog links [\#375](https://github.com/elastic/cookbook-elasticsearch/pull/375) ([eheydrick](https://github.com/eheydrick))
+- add missing matchers [\#368](https://github.com/elastic/cookbook-elasticsearch/pull/368) ([thomasdziedzic](https://github.com/thomasdziedzic))
+
 ## [v2.1.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.1.1) (2016-01-08)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.1.0...v2.1.1)
 
