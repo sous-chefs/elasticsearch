@@ -31,7 +31,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # calculation for memory allocation; 50% or 31g, whatever is smaller
     unless new_resource.allocated_memory
       half = ((node['memory']['total'].to_i * 0.5).floor / 1024)
-      malloc_str = (half > 31_000 ? '31g' : "#{half}m")
+      malloc_str = (half > 30_500 ? '30500m' : "#{half}m")
       new_resource.allocated_memory malloc_str
     end
 
@@ -90,8 +90,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:ES_JAVA_OPTS] << '-server '
     params[:ES_JAVA_OPTS] << '-Djava.awt.headless=true '
     params[:ES_JAVA_OPTS] << '-Djava.net.preferIPv4Stack=true '
-    params[:ES_JAVA_OPTS] << "-Xms#{new_resource.allocated_memory} "
-    params[:ES_JAVA_OPTS] << "-Xmx#{new_resource.allocated_memory} "
     params[:ES_JAVA_OPTS] << "-Xss#{new_resource.thread_stack_size} "
     params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", ' ')} " if new_resource.gc_settings
     params[:ES_JAVA_OPTS] << '-Dfile.encoding=UTF-8 '

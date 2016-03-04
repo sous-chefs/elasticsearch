@@ -42,7 +42,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     init_r.run_action(:create)
     new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
 
-    new_resource.service_actions.each do |act|
+    # flatten in an array here, in case the service_actions are a symbol vs. array
+    [new_resource.service_actions].flatten.each do |act|
       passthrough_action(act)
     end
   end
