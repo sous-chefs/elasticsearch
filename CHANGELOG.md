@@ -2,6 +2,14 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [v2.2.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.1) (2016-03-04)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.0...v2.2.1)
+
+**Fixed bugs:**
+
+- Incorrectly setting allocated memory in the `ES\_JAVA\_OPTS` variable [\#434](https://github.com/elastic/cookbook-elasticsearch/issues/434)
+- elasticsearch_service/service_actions accepts (but does not support) Symbols [\#438](https://github.com/elastic/cookbook-elasticsearch/issues/438)
+
 ## [v2.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.0) (2016-02-08)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.1.1...v2.2.0)
 
