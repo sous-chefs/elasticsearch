@@ -63,11 +63,11 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     end
 
     unless es_conf.path_plugins[es_install.type] # we do not check existence (may not exist if no plugins installed)
-      fail "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+      raise "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
     unless es_conf.path_bin[es_install.type] && ::File.exist?(es_conf.path_bin[es_install.type])
-      fail "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+      raise "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
     return true

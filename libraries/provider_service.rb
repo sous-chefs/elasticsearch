@@ -8,7 +8,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   end
 
   action :remove do
-    fail "#{new_resource} remove not currently implemented"
+    raise "#{new_resource} remove not currently implemented"
   end
 
   action :configure do

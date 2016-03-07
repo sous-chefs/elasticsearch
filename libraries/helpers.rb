@@ -21,7 +21,7 @@ module ElasticsearchCookbook
       return name_default if name_default && !name_elasticsearch
       return name_elasticsearch if name_elasticsearch && !name_default
 
-      fail "Could not find exactly one #{resource_type} resource, and no specific resource or instance name was given"
+      raise "Could not find exactly one #{resource_type} resource, and no specific resource or instance name was given"
     end
 
     # find exactly the resource name and type, but raise if there's multiple matches
@@ -34,7 +34,7 @@ module ElasticsearchCookbook
         str = ''
         str << "more than one #{resource_type} was found, "
         str << 'you must specify a precise resource name'
-        fail str
+        raise str
       end
 
       return result
@@ -53,7 +53,7 @@ module ElasticsearchCookbook
         str = ''
         str << "more than one #{resource_type} was found, "
         str << 'you must specify a precise instance name'
-        fail str
+        raise str
       elsif !results.empty?
         return results.first
       end
@@ -67,7 +67,7 @@ module ElasticsearchCookbook
       elsif node['elasticsearch'] && node['elasticsearch']['version']
         node['elasticsearch']['version'].to_s
       else
-        fail 'could not determine version of elasticsearch to install'
+        raise 'could not determine version of elasticsearch to install'
       end
     end
 
@@ -77,7 +77,7 @@ module ElasticsearchCookbook
       elsif node['elasticsearch'] && node['elasticsearch']['install_type']
         node['elasticsearch']['install_type'].to_s
       else
-        fail 'could not determine how to install elasticsearch (package? tarball?)'
+        raise 'could not determine how to install elasticsearch (package? tarball?)'
       end
     end
 
