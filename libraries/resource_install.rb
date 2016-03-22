@@ -25,7 +25,7 @@ class ElasticsearchCookbook::InstallResource < Chef::Resource::LWRPBase
   attribute(:dir, kind_of: Hash, default: {
               package: '/usr/share',
               tarball: '/usr/local'
-            })
+            }.freeze)
 
   # attributes used by the package-flavor provider
   attribute(:package_options, kind_of: String, default: nil)

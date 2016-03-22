@@ -13,31 +13,31 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:path_home, kind_of: Hash, default: {
               package: '/usr/share/elasticsearch',
               tarball: '/usr/local/elasticsearch'
-            })
+            }.freeze)
   attribute(:path_conf, kind_of: Hash, default: {
               package: '/etc/elasticsearch',
               tarball: '/usr/local/etc/elasticsearch'
-            })
+            }.freeze)
   attribute(:path_data, kind_of: Hash, default: {
               package: '/usr/share/elasticsearch',
               tarball: '/usr/local/var/data/elasticsearch'
-            })
+            }.freeze)
   attribute(:path_logs, kind_of: Hash, default: {
               package: '/var/log/elasticsearch',
               tarball: '/usr/local/var/log/elasticsearch'
-            })
+            }.freeze)
   attribute(:path_pid, kind_of: Hash, default: {
               package: '/var/run/elasticsearch',
               tarball: '/usr/local/var/run'
-            })
+            }.freeze)
   attribute(:path_plugins, kind_of: Hash, default: {
               package: '/usr/share/elasticsearch/plugins',
               tarball: '/usr/local/elasticsearch/plugins'
-            })
+            }.freeze)
   attribute(:path_bin, kind_of: Hash, default: {
               package: '/usr/share/elasticsearch/bin',
               tarball: '/usr/local/bin'
-            })
+            }.freeze)
 
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
@@ -48,7 +48,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:template_logging_yml, kind_of: String, default: 'logging.yml.erb')
   attribute(:cookbook_logging_yml, kind_of: String, default: 'elasticsearch')
 
-  attribute(:logging, kind_of: Hash, default: {})
+  attribute(:logging, kind_of: Hash, default: {}.freeze)
 
   attribute(:java_home, kind_of: String, default: nil)
 
@@ -103,11 +103,11 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
               'gateway.expected_nodes' => 0,
 
               'http.port' => 9200
-            })
+            }.freeze)
 
   # These settings are merged with the `default_configuration` attribute,
   # allowing you to override and set specific settings. Unless you intend to
   # wipe out all default settings, your configuration items should go here.
   #
-  attribute(:configuration, kind_of: Hash, default: {})
+  attribute(:configuration, kind_of: Hash, default: {}.freeze)
 end

@@ -14,18 +14,19 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_svc = find_es_resource(run_context, :elasticsearch_service, new_resource)
 
+    default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name
     # then go and be sure it's also set in the YML hash if it wasn't given there
-    if new_resource.path_conf[es_install.type] && new_resource.default_configuration['path.conf'].nil?
-      new_resource.default_configuration['path.conf'] = new_resource.path_conf[es_install.type]
+    if new_resource.path_conf[es_install.type] && default_configuration['path.conf'].nil?
+      default_configuration['path.conf'] = new_resource.path_conf[es_install.type]
     end
 
-    if new_resource.path_data[es_install.type] && new_resource.default_configuration['path.data'].nil?
-      new_resource.default_configuration['path.data'] = new_resource.path_data[es_install.type]
+    if new_resource.path_data[es_install.type] && default_configuration['path.data'].nil?
+      default_configuration['path.data'] = new_resource.path_data[es_install.type]
     end
 
-    if new_resource.path_logs[es_install.type] && new_resource.default_configuration['path.logs'].nil?
-      new_resource.default_configuration['path.logs'] = new_resource.path_logs[es_install.type]
+    if new_resource.path_logs[es_install.type] && default_configuration['path.logs'].nil?
+      default_configuration['path.logs'] = new_resource.path_logs[es_install.type]
     end
 
     # calculation for memory allocation; 50% or 31g, whatever is smaller
@@ -124,7 +125,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     logging_template.run_action(:create)
     new_resource.updated_by_last_action(true) if logging_template.updated_by_last_action?
 
-    merged_configuration = new_resource.default_configuration.merge(new_resource.configuration)
+    merged_configuration = default_configuration.merge(new_resource.configuration.dup)
     merged_configuration['#_seen'] = {} # magic state variable for what we've seen in a config
 
     # warn if someone is using symbols. we don't support.
