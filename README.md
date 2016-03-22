@@ -47,6 +47,9 @@ See the attributes section above to for what defaults you can adjust.
 The default recipe creates an elasticsearch user, group, package installation,
 configuration files, and service with all of the default options.
 
+Please note that there are [additional examples within the test fixtures](test/fixtures/cookbooks/elasticsearch_test),
+including a demonstration of how to configure two instances of Elasticsearch on a single server.
+
 ## Resources
 
 ## Notifications and Service Start/Restart
