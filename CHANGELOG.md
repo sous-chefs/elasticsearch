@@ -2,6 +2,13 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [v2.2.2](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.2) (2016-03-22)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.1...v2.2.2)
+
+**Fixed bugs:**
+
+- elasticsearch_configure provider should not modify default resource parameters [\#445](https://github.com/elastic/cookbook-elasticsearch/issues/445)
+
 ## [v2.2.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.1) (2016-03-04)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.0...v2.2.1)
 
