@@ -2,6 +2,13 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+## [v2.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.3.0) (2016-04-07)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.2...v2.3.0)
+
+**Implemented enhancements:**
+
+- Add checksums for 2.3.1 [\#451](https://github.com/elastic/cookbook-elasticsearch/issues/451)
+
 ## [v2.2.2](https://github.com/elastic/cookbook-elasticsearch/tree/v2.2.2) (2016-03-22)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.1...v2.2.2)
 
