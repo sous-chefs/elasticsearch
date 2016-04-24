@@ -156,7 +156,7 @@ end
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type :tarball # type of install
-  dir '/usr/local' # where to install
+  dir tarball: '/usr/local' # where to install
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
   # sha256
