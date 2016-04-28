@@ -19,7 +19,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
   action :remove do
     if plugin_exists(new_resource.plugin_name)
-      manage_plugin('remove #{new_resource.plugin_name}')
+      manage_plugin("remove #{new_resource.plugin_name}")
     end
   end # action
 
