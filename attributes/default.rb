@@ -1,5 +1,5 @@
 # elasticsearch version & install type
-default['elasticsearch']['version'] = '2.2.0'
+default['elasticsearch']['version'] = '2.3.2'
 default['elasticsearch']['install_type'] = :package
 
 # platform_family keyed download URLs
