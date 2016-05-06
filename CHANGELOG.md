@@ -2,6 +2,22 @@
 
 ## [Unreleased](https://github.com/elastic/cookbook-elasticsearch/tree/HEAD)
 
+
+## [v2.3.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.3.1) (2016-05-06)
+[Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.3.0...v2.3.1)
+
+**Implemented enhancements:**
+
+- Update documentation for dir in elasticsearch_install [\#453](https://github.com/elastic/cookbook-elasticsearch/issues/453)
+- Define custom matchers helpers for notification testing [\#458](https://github.com/elastic/cookbook-elasticsearch/issues/458)
+- Add checksums for version 2.3.2 [\#457](https://github.com/elastic/cookbook-elasticsearch/issues/457)
+- Default ES version bump to 2.3.2 [\#459](https://github.com/elastic/cookbook-elasticsearch/issues/459)
+
+**Fixed bugs:**
+
+- Fix quoting bug in plugin remove action [\#455](https://github.com/elastic/cookbook-elasticsearch/issues/455)
+- Fix typo in README [\#456](https://github.com/elastic/cookbook-elasticsearch/issues/456)
+
 ## [v2.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.3.0) (2016-04-07)
 [Full Changelog](https://github.com/elastic/cookbook-elasticsearch/compare/v2.2.2...v2.3.0)
 
