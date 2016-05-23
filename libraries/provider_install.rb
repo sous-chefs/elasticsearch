@@ -75,7 +75,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   def remove_package_wrapper_action
-    package_url = get_package_url(new_resource, node)
+    package_url = determine_download_url(new_resource, node)
     filename = package_url.split('/').last
 
     pkg_r = if node['platform_family'] == 'debian'
