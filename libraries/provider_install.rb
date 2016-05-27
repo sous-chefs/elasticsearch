@@ -6,6 +6,8 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   include Chef::DSL::IncludeRecipe
   provides :elasticsearch_install
 
+  use_inline_resources if defined?(use_inline_resources)
+
   def whyrun_supported?
     false
   end

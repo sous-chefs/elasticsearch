@@ -4,6 +4,8 @@ class ElasticsearchCookbook::UserProvider < Chef::Provider::LWRPBase
 
   provides :elasticsearch_user
 
+  use_inline_resources if defined?(use_inline_resources)
+
   def whyrun_supported?
     false
   end

@@ -5,6 +5,8 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
   provides :elasticsearch_plugin
 
+  use_inline_resources if defined?(use_inline_resources)
+
   def whyrun_supported?
     false
   end
