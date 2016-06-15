@@ -103,7 +103,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
-      mode 0755
+      mode 0644
       variables(params: params)
       action :nothing
     end
