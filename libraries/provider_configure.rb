@@ -90,7 +90,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:ES_JAVA_OPTS] = ''
     params[:ES_JAVA_OPTS] << '-server '
     params[:ES_JAVA_OPTS] << '-Djava.awt.headless=true '
-    params[:ES_JAVA_OPTS] << '-Djava.net.preferIPv4Stack=true '
+    params[:ES_JAVA_OPTS] << '-Djava.net.preferIPv4Stack=true ' if new_resource.disable_ipv6
     params[:ES_JAVA_OPTS] << "-Xss#{new_resource.thread_stack_size} "
     params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", ' ')} " if new_resource.gc_settings
     params[:ES_JAVA_OPTS] << '-Dfile.encoding=UTF-8 '
