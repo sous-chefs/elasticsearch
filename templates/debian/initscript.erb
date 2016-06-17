@@ -107,6 +107,7 @@ export ES_DIRECT_SIZE
 export ES_JAVA_OPTS
 export ES_GC_LOG_FILE
 export JAVA_HOME
+export ES_INCLUDE
 
 # Check DAEMON exists
 test -x $DAEMON || exit 0
@@ -172,7 +173,7 @@ case "$1" in
 		i=0
 		timeout=10
 		# Wait for the process to be properly started before exiting
-		until { cat "$PID_FILE" | xargs kill -0; } >/dev/null 2>&1
+		until { kill -0 `cat "$PID_FILE"`; } >/dev/null 2>&1
 		do
 			sleep 1
 			i=$(($i + 1))

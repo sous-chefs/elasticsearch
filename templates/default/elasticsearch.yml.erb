@@ -2,20 +2,17 @@
 # THIS FILE IS MANAGED BY CHEF, DO NOT EDIT MANUALLY, YOUR CHANGES WILL BE OVERWRITTEN!
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# See the source file for context and more information:
-# <https://github.com/elastic/elasticsearch/blob/master/core/config/elasticsearch.yml>
+# ======================== Elasticsearch Configuration =========================
 #
-# See the documentation for further information on configuration options:
+# NOTE: Elasticsearch comes with reasonable defaults for most settings.
+#       Before you set out to tweak and tune the configuration, make sure you
+#       understand what are you trying to accomplish and the consequences.
+#
+# The primary way of configuring a node is via this file. This template lists
+# the most important settings you may want to configure for a production cluster.
+#
+# Please see the documentation for further information on configuration options:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration.html>
-#
-# To set configurations not exposed by this template, set the `configuration`
-# parameter in your `elasticsearch_configure` resource, as a hash of dotted keys
-# and string values.
-#
-#     // ...
-#     'threadpool.index.type' => 'fixed',
-#     'threadpool.index.size' => '2'
-#     // ...
 #
 # ---------------------------------- Cluster -----------------------------------
 #
