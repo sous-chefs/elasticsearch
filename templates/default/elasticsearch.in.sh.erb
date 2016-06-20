@@ -9,5 +9,5 @@
 <%
 @params.sort.each do |key, value|
   next if key.nil? || value.nil?
-  %><%= key.to_s %>="<%= value.to_s %>"
+  %><%= key.to_s %>=<%= value.to_s %>
 <% end %>
