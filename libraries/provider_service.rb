@@ -42,6 +42,38 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     init_r.run_action(:create)
     new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
 
+    # Create systemd unit file
+    #
+    if ::File.open('/proc/1/comm').gets.chomp == 'systemd'
+      directory "/etc/systemd/system/#{new_resource.service_name}.service.d" do
+        owner 'root'
+        group 'root'
+        mode 0755
+        action :nothing
+      end.run_action(:create)
+
+      systemd_r = template "/etc/systemd/system/#{new_resource.service_name}.service.d/env.conf" do
+        source 'systemd-env.erb'
+        owner 'root'
+        mode 0644
+        variables(
+          ES_USER: es_user.username,
+          ES_GROUP: es_user.groupname,
+          ES_HOME: es_conf.path_home[es_install.type],
+          CONF_DIR: es_conf.path_conf[es_install.type],
+          DATA_DIR: es_conf.path_data[es_install.type],
+          LOG_DIR: es_conf.path_logs[es_install.type],
+          PID_DIR: es_conf.path_pid[es_install.type],
+          MAX_OPEN_FILES: es_conf.nofile_limit,
+          # Systemd expects 'infinity' instead of 'unlimited'
+          MAX_LOCKED_MEMORY: es_conf.memlock_limit == 'unlimited' ? 'infinity' : es_conf.memlock_limit
+        )
+        action :nothing
+      end
+      systemd_r.run_action(:create)
+      new_resource.updated_by_last_action(true) if systemd_r.updated_by_last_action?
+    end
+
     # flatten in an array here, in case the service_actions are a symbol vs. array
     [new_resource.service_actions].flatten.each do |act|
       passthrough_action(act)
