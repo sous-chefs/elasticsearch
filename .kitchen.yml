@@ -33,6 +33,11 @@ platforms:
     - recipe[yum]
     - recipe[curl]
     - recipe[elasticsearch_test::fix_nss] # see recipe header
+  - name: centos-7.2
+    run_list:
+    - recipe[yum]
+    - recipe[curl]
+    - recipe[elasticsearch_test::fix_nss] # see recipe header
 
 suites:
   - name: package # install from package
