@@ -45,15 +45,9 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     # Create systemd unit file
     #
     if ::File.open('/proc/1/comm').gets.chomp == 'systemd'
-      directory "/etc/systemd/system/#{new_resource.service_name}.service.d" do
-        owner 'root'
-        group 'root'
-        mode 0755
-        action :nothing
-      end.run_action(:create)
-
-      systemd_r = template "/etc/systemd/system/#{new_resource.service_name}.service.d/env.conf" do
-        source 'systemd-env.erb'
+      systemd_r = template "/etc/systemd/system/#{new_resource.service_name}.service" do
+        source new_resource.systemd_source
+        cookbook new_resource.systemd_cookbook
         owner 'root'
         mode 0644
         variables(
