@@ -35,6 +35,5 @@ group :development do
   gem 'guard-kitchen'
   gem 'guard-foodcritic'
   gem 'guard-rubocop'
-  gem 'fauxhai'
   gem 'pry-nav'
 end
