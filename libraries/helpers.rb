@@ -6,16 +6,32 @@ module ElasticsearchCookbook
       instance_name = resource.instance_name
 
       # if we are truly given a specific name to find
-      name_match = find_exact_resource(run_context, resource_type, resource_name) rescue nil
+      name_match = begin
+                     find_exact_resource(run_context, resource_type, resource_name)
+                   rescue
+                     nil
+                   end
       return name_match if name_match
 
       # first try by instance name attribute
-      name_instance = find_instance_name_resource(run_context, resource_type, instance_name) rescue nil
+      name_instance = begin
+                        find_instance_name_resource(run_context, resource_type, instance_name)
+                      rescue
+                        nil
+                      end
       return name_instance if name_instance
 
       # otherwise try the defaults
-      name_default = find_exact_resource(run_context, resource_type, 'default') rescue nil
-      name_elasticsearch = find_exact_resource(run_context, resource_type, 'elasticsearch') rescue nil
+      name_default = begin
+                       find_exact_resource(run_context, resource_type, 'default')
+                     rescue
+                       nil
+                     end
+      name_elasticsearch = begin
+                             find_exact_resource(run_context, resource_type, 'elasticsearch')
+                           rescue
+                             nil
+                           end
 
       # if we found exactly one default name that matched
       return name_default if name_default && !name_elasticsearch
@@ -37,7 +53,7 @@ module ElasticsearchCookbook
         raise str
       end
 
-      return result
+      result
     end
 
     def find_instance_name_resource(run_context, resource_type, instance_name)
@@ -58,7 +74,7 @@ module ElasticsearchCookbook
         return results.first
       end
 
-      return nil # falsey
+      nil # falsey
     end
 
     def determine_version(new_resource, node)
@@ -136,9 +152,7 @@ module ElasticsearchCookbook
       final_value = format_value(find_value(data, key))
 
       # track what we've returned in state var
-      unless final_value.nil?
-        data['#_seen'][key] = true
-      end
+      data['#_seen'][key] = true unless final_value.nil?
 
       # keyseparatorexisting_value\n
       [key, separator, final_value, "\n"].join unless final_value.nil?

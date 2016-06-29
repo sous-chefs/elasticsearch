@@ -26,7 +26,7 @@ elasticsearch_configure 'my_elasticsearch' do
   path_plugins  tarball: '/usr/local/awesome/elasticsearch/plugins'
   path_bin      tarball: '/usr/local/bin'
 
-  logging(:action => 'INFO')
+  logging(action: 'INFO')
 
   allocated_memory '123m'
   thread_stack_size '512k'

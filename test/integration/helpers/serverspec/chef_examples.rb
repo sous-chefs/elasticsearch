@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-shared_examples_for 'chef version' do |version, args = {}|
+shared_examples_for 'chef version' do |version, _args = {}|
   describe package('chef') do
     it { should be_installed }
   end

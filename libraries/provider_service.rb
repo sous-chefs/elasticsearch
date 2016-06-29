@@ -85,7 +85,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     rc.find("service[#{new_resource.service_name}]")
   rescue
     service new_resource.service_name do
-      supports :status => true, :restart => true
+      supports status: true, restart: true
       action :nothing
     end
   end

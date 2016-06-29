@@ -4,6 +4,7 @@ require 'timeout'
 require 'bundler/setup'
 
 namespace :style do
+  require 'cookstyle'
   require 'rubocop/rake_task'
   desc 'Run Ruby style checks'
   RuboCop::RakeTask.new(:ruby) do |task|
@@ -43,19 +44,17 @@ end
 desc 'Destroy test kitchen instances'
 task :destroy do
   Kitchen.logger = Kitchen.default_file_logger
-  Kitchen::Config.new.instances.each do |instance|
-    instance.destroy
-  end
+  Kitchen::Config.new.instances.each(&:destroy)
 end
 
 require 'rspec/core/rake_task'
 desc 'Run ChefSpec unit tests'
-RSpec::Core::RakeTask.new(:spec) do |t, args|
+RSpec::Core::RakeTask.new(:spec) do |t, _args|
   t.rspec_opts = 'test/unit --format documentation'
 end
 
 # The default rake task should just run it all
-task default: ['style', 'spec', 'integration']
+task default: %w(style spec integration)
 
 begin
   Timeout.timeout(15) do
@@ -66,6 +65,6 @@ rescue Exception => e
   if e.class.to_s =~ /^Timeout::|^Kitchen::|LoadError/
     STDERR.puts "[!] Omitting Kitchen tasks [#{e.class}: #{e.message} at #{e.backtrace.first}]\n\n"
   else
-    fail e
+    raise e
   end
 end

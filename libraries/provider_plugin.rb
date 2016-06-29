@@ -70,7 +70,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
       raise "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
-    return true
+    true
   end
 
   def shell_out_as_user!(command, run_ctx)

@@ -18,7 +18,7 @@ elasticsearch_install 'elasticsearch_p' do
 end
 
 elasticsearch_configure 'my_elasticsearch' do
-  logging(:action => 'INFO')
+  logging(action: 'INFO')
 
   allocated_memory '123m'
   thread_stack_size '512k'

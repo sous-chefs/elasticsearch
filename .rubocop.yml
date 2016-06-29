@@ -1,75 +1,12 @@
-# Rubocop,  we're buddies and all,  but we're going to have to disagree on the following -
-
-# Allow compact class definitions
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-# Allow if statements!
-Style/GuardClause:
-  Enabled: false
-
-# Allow more complex ruby methods
-Metrics/AbcSize:
-  Max: 55
-
-# Disable requirement of "encoding" headers on files
-Encoding:
-  Enabled: false
-
-# Increase line length, we're not on VT220s anymore
-LineLength:
-  Max: 180
-
-# Longer classes aren't _so_ bad
-Metrics/ClassLength:
-  Max: 125
-
-# Increase allowed lines in a method.  Short methods are good, but 10 lines
-#   is a bit too low.
-MethodLength:
-  Max: 40
-
-# Favor explicit over implicit code: don't complain of "redundant returns"
-RedundantReturn:
-  Enabled: false
-
-# Don't complain about if/unless modifiers.  The merit of this is debatable
-#   and it will likely require building of over-length lines.
-IfUnlessModifier:
-  Enabled: false
-
-# Raise allowed CyclomaticComplexity & Perceivedto 10.
-CyclomaticComplexity:
-  Max: 25
-
-Metrics/PerceivedComplexity:
-  Max: 25
-
-# Don't force a word array unless 5 elements
-WordArray:
-  MinSize: 5
-
-# Don't complain about unused block args
-UnusedBlockArgument:
-  Enabled: false
-
-# allow both hash syntaxes
-Style/HashSyntax:
-  Enabled: false
-
-# allow final rescue
-Style/RescueModifier:
-  Enabled: false
+Lint/RescueException:
+  Exclude:
+    - 'Rakefile'
 
 Style/AccessorMethodName:
-  Enabled: false
+  Exclude:
+    - 'libraries/helpers.rb'
 
-# allow larger modules
-Metrics/ModuleLength:
-  Max: 150
-
-# There are too many non-ruby files that run up against rubocop rules in a cookbook
-AllCops:
-  Include:
-    - '**/metadata.rb'
-    - '**/*.rb'
+# Configuration parameters: MinBodyLength.
+Style/GuardClause:
+  Exclude:
+    - 'Rakefile'

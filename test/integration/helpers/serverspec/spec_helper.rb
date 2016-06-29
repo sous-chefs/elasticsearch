@@ -27,5 +27,5 @@ def package?
 end
 
 def tarball?
-  return !package?
+  !package?
 end
