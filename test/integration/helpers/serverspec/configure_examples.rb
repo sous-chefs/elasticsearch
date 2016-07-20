@@ -54,7 +54,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
   describe file("#{path_conf}/elasticsearch.yml") do
     it { should be_file }
-    it { should be_mode 644 }
+    it { should be_mode 600 }
     it { should be_owned_by expected_user }
     it { should be_grouped_into expected_group }
 

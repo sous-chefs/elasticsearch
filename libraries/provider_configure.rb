@@ -141,7 +141,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_elasticsearch_yml
       owner es_user.username
       group es_user.groupname
-      mode 0644
+      mode 0600
       helpers(ElasticsearchCookbook::Helpers)
       variables(config: merged_configuration)
       action :nothing
