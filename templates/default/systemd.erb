@@ -10,14 +10,16 @@ Environment=CONF_DIR=<%= @CONF_DIR %>
 Environment=DATA_DIR=<%= @DATA_DIR %>
 Environment=LOG_DIR=<%= @LOG_DIR %>
 Environment=PID_DIR=<%= @PID_DIR %>
-EnvironmentFile=-/etc/default/elasticsearch
+EnvironmentFile=-<%= @environment_file %>
 
 WorkingDirectory=<%= @ES_HOME %>
 
 User=<%= @ES_USER %>
 Group=<%= @ES_GROUP %>
 
+<% if ::File.exists?("#{@ES_HOME}/bin/elasticsearch-systemd-pre-exec") %>
 ExecStartPre=<%= @ES_HOME %>/bin/elasticsearch-systemd-pre-exec
+<% end -%>
 
 ExecStart=<%= @ES_HOME %>/bin/elasticsearch \
                                                 -Des.pidfile=${PID_DIR}/elasticsearch.pid \

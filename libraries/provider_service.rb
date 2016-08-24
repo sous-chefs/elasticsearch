@@ -60,7 +60,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
           PID_DIR: es_conf.path_pid[es_install.type],
           MAX_OPEN_FILES: es_conf.nofile_limit,
           # Systemd expects 'infinity' instead of 'unlimited'
-          MAX_LOCKED_MEMORY: es_conf.memlock_limit == 'unlimited' ? 'infinity' : es_conf.memlock_limit
+          MAX_LOCKED_MEMORY: es_conf.memlock_limit == 'unlimited' ? 'infinity' : es_conf.memlock_limit,
+          environment_file: node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{new_resource.service_name}" : "/etc/default/#{new_resource.service_name}"
         )
         action :nothing
       end
