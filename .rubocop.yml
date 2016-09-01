@@ -1,12 +1,39 @@
 Lint/RescueException:
   Exclude:
     - 'Rakefile'
+    - 'libraries/helpers.rb'
 
 Style/AccessorMethodName:
   Exclude:
+    - 'Rakefile'
     - 'libraries/helpers.rb'
 
-# Configuration parameters: MinBodyLength.
+Style/RescueModifier:
+  Exclude:
+    - 'Rakefile'
+    - 'libraries/helpers.rb'
+
 Style/GuardClause:
   Exclude:
     - 'Rakefile'
+    - 'libraries/helpers.rb'
+
+# Longer classes are okay.
+Metrics/ClassLength:
+  Max: 200
+Metrics/MethodLength:
+  Max: 30
+Metrics/ModuleLength:
+  Max: 150
+
+# Not on VT100s anymore.
+Metrics/LineLength:
+  Max: 180
+
+# We're not against complexity.
+Metrics/AbcSize:
+  Max: 55
+Metrics/CyclomaticComplexity:
+  Max: 20
+Metrics/PerceivedComplexity:
+  Max: 20
