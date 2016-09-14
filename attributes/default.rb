@@ -1,6 +1,7 @@
 # elasticsearch version & install type
 default['elasticsearch']['version'] = '2.3.4'
 default['elasticsearch']['install_type'] = :package
+default['elasticsearch']['service_actions'] = ['enable']
 
 # platform_family keyed download URLs
 default['elasticsearch']['download_urls'] = {
