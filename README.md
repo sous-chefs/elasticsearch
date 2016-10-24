@@ -334,7 +334,7 @@ end
 The plugin resource respects the `https_proxy` or `http_proxy` (non-SSL)
 [Chef settings](https://docs.chef.io/config_rb_client.html) unless explicitly
 disabled using `chef_proxy false`:
-```
+```ruby
 elasticsearch_plugin 'kopf' do
   url 'lmenezes/elasticsearch-kopf'
   chef_proxy false
