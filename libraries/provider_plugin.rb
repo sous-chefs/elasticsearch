@@ -47,7 +47,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     Dir.entries(path).any? do |plugin|
       next if plugin =~ /^\./
-      name.include? plugin
+      name == plugin
     end
   rescue
     false

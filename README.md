@@ -353,7 +353,7 @@ end
 ```
 
 If for some reason, you want to name the resource something else, you may
-provide the plugin name using the `name` parameter:
+provide the true plugin name using the `name` parameter:
 
 ```ruby
 elasticsearch_plugin 'xyzzy' do
