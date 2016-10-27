@@ -45,7 +45,7 @@ suites:
         install_type: package
 
   - name: tarball # install by tarball
-    require_chef_omnibus: 12.6.0
+    require_chef_omnibus: 12.15.19
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
@@ -55,57 +55,30 @@ suites:
 
   - name: override_package # the override-everything use case
     driver_config:
-      require_chef_omnibus: 12.6.0
+      require_chef_omnibus: 12.15.19
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::package]
 
   - name: override_tarball # the override-everything use case
     driver_config:
-      require_chef_omnibus: 12.6.0
+      require_chef_omnibus: 12.15.19
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::tarball]
 
-  - name: chef-12.5.1
+  - name: chef-12.14.89
     driver_config:
-      require_chef_omnibus: 12.5.1
+      require_chef_omnibus: 12.14.89
     includes:
       - ubuntu-14.04
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
-  - name: chef-12.4.3
+  - name: chef-12.13.37
     driver_config:
-      require_chef_omnibus: 12.4.3
-    includes:
-      - ubuntu-14.04
-    run_list:
-      - recipe[java]
-      - recipe[elasticsearch_test::default_with_plugins]
-
-  - name: chef-12.3.0
-    driver_config:
-      require_chef_omnibus: 12.3.0
-    includes:
-      - ubuntu-14.04
-    run_list:
-      - recipe[java]
-      - recipe[elasticsearch_test::default_with_plugins]
-
-  - name: chef-12.2.1
-    driver_config:
-      require_chef_omnibus: 12.2.1
-    includes:
-      - ubuntu-14.04
-    run_list:
-      - recipe[java]
-      - recipe[elasticsearch_test::default_with_plugins]
-
-  - name: chef-12.1.2
-    driver_config:
-      require_chef_omnibus: 12.1.2
+      require_chef_omnibus: 12.13.37
     includes:
       - ubuntu-14.04
     run_list:

@@ -2,21 +2,15 @@
 
 [![Build Status](https://travis-ci.org/elastic/cookbook-elasticsearch.svg?branch=master)](https://travis-ci.org/elastic/cookbook-elasticsearch) [![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)[![Build Status](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/badge/icon)](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/)
 
-This cookbook has been converted into a library cookbook as of version 1.0.0,
-and supports Chef 12.5.1, 12.4.3, 12.3.0, 12.2.1, 12.1.2, and higher. It
-implements support for CI as well as more modern testing with chefspec and
-test-kitchen. It no longer supports some of the more extraneous features such as
-discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook)
-or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
-**Previous versions** of this cookbook may be found using the git tags on this
-repository.
+## Pre-requisites & Supported Versions
 
-## Pre-requisites
+[Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has specific minimum Java version requirements. We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
 
-[Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install
-Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has specific minimum Java version requirements. We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 2.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float.
 
-[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 2.x and greater. While this cookbook presently, by sheer luck, still works with ES 1.7.x at the time of this writing, we are not testing against versions < 2.0.0. Should Elasticsearch 2.x somehow break 1.7.x compatibility in a minor release of 2.x, this cookbook could potentially stop working with ES 1.7.x. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific `major.minor` version and only leave the patch release to float.
+[Chef](https://www.chef.io/) - The latest release of this cookbook is intended to support the three most recent releases of Chef, and tests against those. Earlier versions may also be supported, though we suggest that you use Chef 12.x at a minimum. It implements support for CI as well as more modern testing with chefspec and test-kitchen. It no longer supports some of the more extraneous features such as discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
+
+**Previous versions** of this cookbook may be found using the git tags on this repository.
 
 ## Attributes
 
