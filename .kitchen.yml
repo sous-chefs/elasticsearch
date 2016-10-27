@@ -17,7 +17,7 @@ provisioner:
     environment: _default
   attributes:
     java:
-      jdk_version: '7'
+      jdk_version: '8'
 
 platforms:
   - name: ubuntu-14.04
@@ -32,7 +32,6 @@ platforms:
     run_list:
     - recipe[yum]
     - recipe[curl]
-    - recipe[elasticsearch_test::fix_nss] # see recipe header
 
 suites:
   - name: package # install from package
