@@ -20,6 +20,10 @@ provisioner:
       jdk_version: '7'
 
 platforms:
+  - name: ubuntu-16.04
+    run_list:
+    - recipe[apt]
+    - recipe[curl]
   - name: ubuntu-14.04
     run_list:
     - recipe[apt]
@@ -29,6 +33,11 @@ platforms:
     - recipe[apt]
     - recipe[curl]
   - name: centos-6.7
+    run_list:
+    - recipe[yum]
+    - recipe[curl]
+    - recipe[elasticsearch_test::fix_nss] # see recipe header
+  - name: centos-7.2
     run_list:
     - recipe[yum]
     - recipe[curl]
