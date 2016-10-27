@@ -129,37 +129,6 @@ module ElasticsearchCookbook
       end
     end
 
-    # This method takes a hash, but will convert to mash
-    def print_value(data, key, options = {})
-      separator = options[:separator] || ': '
-
-      final_value = format_value(find_value(data, key))
-
-      # track what we've returned in state var
-      data['#_seen'][key] = true unless final_value.nil?
-
-      # keyseparatorexisting_value\n
-      [key, separator, final_value, "\n"].join unless final_value.nil?
-    end
-
-    # given a hash and a key, get a value out or return nil
-    # -- and check for symbols
-    def find_value(data, key)
-      data[key] unless data[key].nil?
-    end
-
-    def format_value(value)
-      if value.nil?
-        nil # just pass through nil
-      elsif value.is_a?(Array)
-        value.join(',').to_s
-      elsif value.respond_to?(:empty?) && value.empty?
-        nil # anything that answers to empty? should be nil again
-      else
-        value.to_s
-      end
-    end
-
     # proxy helpers for chef
     def get_configured_proxy
       if Chef::Config['http_proxy'] && !Chef::Config['http_proxy'].empty?

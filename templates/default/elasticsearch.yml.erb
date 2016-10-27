@@ -1,63 +1,8 @@
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # THIS FILE IS MANAGED BY CHEF, DO NOT EDIT MANUALLY, YOUR CHANGES WILL BE OVERWRITTEN!
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# ======================== Elasticsearch Configuration =========================
-#
-# NOTE: Elasticsearch comes with reasonable defaults for most settings.
-#       Before you set out to tweak and tune the configuration, make sure you
-#       understand what are you trying to accomplish and the consequences.
-#
-# The primary way of configuring a node is via this file. This template lists
-# the most important settings you may want to configure for a production cluster.
 #
 # Please see the documentation for further information on configuration options:
 # <http://www.elastic.co/guide/en/elasticsearch/reference/current/setup-configuration.html>
 #
-# ---------------------------------- Cluster -----------------------------------
-#
-<%= print_value(@config, 'cluster.name') -%>
-#
-# ------------------------------------ Node ------------------------------------
-#
-<%= print_value(@config, 'node.name') -%>
-<%= print_value(@config, 'node.max_local_storage_nodes') -%>
-#
-# ----------------------------------- Paths ------------------------------------
-#
-<%= print_value(@config, 'path.conf') -%>
-<%= print_value(@config, 'path.data') -%>
-<%= print_value(@config, 'path.logs') -%>
-#
-# ----------------------------------- Memory -----------------------------------
-#
-<%= print_value(@config, 'bootstrap.mlockall') -%>
-#
-# ---------------------------------- Network -----------------------------------
-#
-<%= print_value(@config, 'network.host') -%>
-<%= print_value(@config, 'http.port') -%>
-<%= print_value(@config, 'http.bind_port') -%>
-#
-# ---------------------------------- Gateway -----------------------------------
-#
-<%= print_value(@config, 'gateway.recover_after_nodes') -%>
-#
-# ---------------------------------- Various -----------------------------------
-#
-<%= print_value(@config, 'action.auto_create_index') -%>
-<%= print_value(@config, 'plugin.mandatory') -%>
-<%= print_value(@config, 'action.destructive_requires_name') -%>
-<%= print_value(@config, 'cloud.node.auto_attributes') -%>
-#
-# -------------------------- Custom Chef Configuration --------------------------
-#
-<%
-  seen_state = @config['#_seen']
-
-  # ensure all the keys are strings before we call sort
-  @config.keys.map { |k| k.to_s }.sort.each do |key|
-    # skip this config value if we've already seen it
-    next if key.nil? || @config[key].nil? || seen_state[key] || key == '#_seen' %>
-<%= key %>: <%= @config[key] %>
-<% end %>
+<% require 'yaml' %>
+<%= @config.to_yaml.to_s %>

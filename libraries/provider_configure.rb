@@ -126,7 +126,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     new_resource.updated_by_last_action(true) if logging_template.updated_by_last_action?
 
     merged_configuration = default_configuration.merge(new_resource.configuration.dup)
-    merged_configuration['#_seen'] = {} # magic state variable for what we've seen in a config
 
     # warn if someone is using symbols. we don't support.
     found_symbols = merged_configuration.keys.select { |s| s.is_a?(Symbol) }
