@@ -24,7 +24,6 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'ES_HEAP_SIZE="?[0-9]+m"?',
     'ES_JAVA_OPTS=',
     '-server',
-    '-Djava.net.preferIPv4Stack=true',
     'CONF_DIR=\/.+',
     '-Xss256k',
     'UseParNewGC',
