@@ -98,8 +98,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
     'action.destructive_requires_name' => true,
     'node.max_local_storage_nodes' => 1,
 
-    'discovery.zen.ping.multicast.enabled' => true,
-    'discovery.zen.minimum_master_nodes' => 1,
     'gateway.expected_nodes' => 0,
 
     'http.port' => 9200
