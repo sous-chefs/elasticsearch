@@ -35,7 +35,7 @@ platforms:
 
 suites:
   - name: package # install from package
-    require_chef_omnibus: 12.6.0
+    require_chef_omnibus: 12.15.19
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
