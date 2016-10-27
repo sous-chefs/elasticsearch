@@ -347,11 +347,11 @@ end
 ```
 
 If for some reason, you want to name the resource something else, you may
-provide the true plugin name using the `name` parameter:
+provide the true plugin name using the `plugin_name` parameter:
 
 ```ruby
 elasticsearch_plugin 'xyzzy' do
-  name 'kopf'
+  plugin_name 'kopf'
   url 'lmenezes/elasticsearch-kopf'
   action :install
 end
