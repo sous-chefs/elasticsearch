@@ -59,7 +59,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:allocated_memory, kind_of: String)
 
   attribute(:thread_stack_size, kind_of: String, default: '256k')
-  attribute(:disable_ipv6, kind_of: [TrueClass, FalseClass], default: true)
   attribute(:env_options, kind_of: String, default: nil)
   attribute(:gc_settings, kind_of: String, default:
     <<-CONFIG
