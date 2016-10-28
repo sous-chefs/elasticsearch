@@ -47,7 +47,7 @@ settings = {
       'node.name' => "node_#{instance_name}",
       'network.host' => '127.0.0.1',
       'http.port' => settings[instance_name.to_sym][:http_port].to_s,
-      'transport.tcp.port' => settings[instance_name.to_sym][:transport_port].to_s,
+      'transport.tcp.port' => settings[instance_name.to_sym][:transport_port].to_s
     )
   end
 
