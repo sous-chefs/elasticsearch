@@ -20,13 +20,24 @@ provisioner:
       jdk_version: '8'
 
 platforms:
+  - name: ubuntu-16.04
+    run_list:
+    - recipe[apt]
+    - recipe[curl]
+    - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-14.04
     run_list:
     - recipe[apt]
     - recipe[curl]
+    - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
+    - recipe[curl]
+    - recipe[elasticsearch_test::fix_cacerts]
+  - name: centos-7.2
+    run_list:
+    - recipe[yum]
     - recipe[curl]
   - name: centos-6.7
     run_list:
@@ -70,7 +81,7 @@ suites:
     driver_config:
       require_chef_omnibus: 12.14.89
     includes:
-      - ubuntu-14.04
+      - ubuntu-16.04
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
@@ -79,7 +90,7 @@ suites:
     driver_config:
       require_chef_omnibus: 12.13.37
     includes:
-      - ubuntu-14.04
+      - ubuntu-16.04
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
