@@ -6,7 +6,7 @@
 
 [Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has [specific minimum Java version requirements](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html#jvm-version). We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
 
-[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 2.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float.
+[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 5.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float. Older versions can be found via [Git tags](https://github.com/elastic/cookbook-elasticsearch/tags) or on [Chef Supermarket](https://supermarket.chef.io/cookbooks/elasticsearch). We also maintain bugfix branches for major released lines (0.x, 1.x, 2.x) of this cookbook so that we can still release fixes for older cookbooks.
 
 [Chef](https://www.chef.io/) - The latest release of this cookbook is intended to support the three most recent releases of Chef, and tests against those. Earlier versions may also be supported, though we suggest that you use Chef 12.x at a minimum. It implements support for CI as well as more modern testing with chefspec and test-kitchen. It no longer supports some of the more extraneous features such as discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
 
@@ -24,7 +24,7 @@ the version parameter as a string into your download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
-|`default['elasticsearch']['version']`|`'2.4.1'`|[See list](attributes/default.rb).|
+|`default['elasticsearch']['version']`|`'5.0.0'`|[See list](attributes/default.rb).|
 |`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
 |`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
@@ -88,10 +88,7 @@ elasticsearch_user 'elasticsearch'
 elasticsearch_install 'elasticsearch'
 elasticsearch_configure 'elasticsearch'
 elasticsearch_service 'elasticsearch'
-
-elasticsearch_plugin 'head' do
-  url 'mobz/elasticsearch-head'
-end
+elasticsearch_plugin 'x-pack'
 ```
 
 ### elasticsearch_user
@@ -185,7 +182,7 @@ end
 Actions: `:manage`, `:remove`
 
 Configures an elasticsearch instance; creates directories for configuration,
-logs, and data. Writes files `logging.yml`, `elasticsearch.in.sh` and
+logs, and data. Writes files `log4j2.properties`, `elasticsearch.in.sh` and
 `elasticsearch.yml`.
 
 The main attribute for this resource is `configuration`,
@@ -340,8 +337,7 @@ To run multiple instances per machine, an explicit `plugin_dir` location
 has to be provided:
 
 ```ruby
-elasticsearch_plugin 'head' do
-  url 'mobz/elasticsearch-head'
+elasticsearch_plugin 'x-pack' do
   plugin_dir '/usr/share/elasticsearch_foo/plugins'
 end
 ```

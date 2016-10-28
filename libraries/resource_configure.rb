@@ -42,34 +42,45 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
 
+  attribute(:template_jvm_options, kind_of: String, default: 'jvm_options.erb')
+  attribute(:cookbook_jvm_options, kind_of: String, default: 'elasticsearch')
+
   attribute(:template_elasticsearch_yml, kind_of: String, default: 'elasticsearch.yml.erb')
   attribute(:cookbook_elasticsearch_yml, kind_of: String, default: 'elasticsearch')
 
-  attribute(:template_logging_yml, kind_of: String, default: 'logging.yml.erb')
-  attribute(:cookbook_logging_yml, kind_of: String, default: 'elasticsearch')
+  attribute(:template_log4j2_properties, kind_of: String, default: 'log4j2.properties.erb')
+  attribute(:cookbook_log4j2_properties, kind_of: String, default: 'elasticsearch')
 
   attribute(:logging, kind_of: Hash, default: {}.freeze)
 
   attribute(:java_home, kind_of: String, default: nil)
 
+  attribute(:restart_on_upgrade, kind_of: [TrueClass, FalseClass], default: false)
   attribute(:startup_sleep_seconds, kind_of: [String, Integer], default: 5)
 
   # Calculations for this are done in the provider, as we can't do them in the
   # resource definition. default is 50% of RAM or 31GB, which ever is smaller.
   attribute(:allocated_memory, kind_of: String)
 
-  attribute(:thread_stack_size, kind_of: String, default: '256k')
-  attribute(:env_options, kind_of: String, default: nil)
-  attribute(:gc_settings, kind_of: String, default:
-    <<-CONFIG
-     -XX:+UseParNewGC
+  attribute(:jvm_options, kind_of: Array, default:
+    %w(
      -XX:+UseConcMarkSweepGC
      -XX:CMSInitiatingOccupancyFraction=75
      -XX:+UseCMSInitiatingOccupancyOnly
-     -XX:+HeapDumpOnOutOfMemoryError
      -XX:+DisableExplicitGC
-    CONFIG
-           )
+     -XX:+AlwaysPreTouch
+     -server
+     -Djava.awt.headless=true
+     -Dfile.encoding=UTF-8
+     -Djna.nosys=true
+     -Dio.netty.noUnsafe=true
+     -Dio.netty.noKeySetOptimization=true
+     -Dlog4j.shutdownHookEnabled=false
+     -Dlog4j2.disable.jmx=true
+     -Dlog4j.skipJansi=true
+     -XX:+HeapDumpOnOutOfMemoryError
+    ).freeze
+  )
 
   # default user limits
   attribute(:memlock_limit, kind_of: String, default: 'unlimited')
@@ -94,13 +105,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
     #
     # 'node.data' => ?,
     # 'node.master' => ?,
-
-    'action.destructive_requires_name' => true,
-    'node.max_local_storage_nodes' => 1,
-
-    'gateway.expected_nodes' => 0,
-
-    'http.port' => 9200
   }.freeze)
 
   # These settings are merged with the `default_configuration` attribute,

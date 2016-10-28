@@ -11,11 +11,10 @@ elasticsearch_install 'elasticsearch' do
   type :package
 end
 
-elasticsearch_plugin 'elasticsearch_head' do
-  instance_name 'alpha'
-  url 'mobz/elasticsearch-head'
+elasticsearch_plugin 'elasticsearch_xpack' do
+  instance_name 'x-pack'
   # notifies :restart, "elasticsearch_service[elasticsearch]", :delayed
-  not_if { ::File.exist?('/usr/share/elasticsearch/plugins/head') }
+  not_if { ::File.exist?('/usr/share/elasticsearch/plugins/x-pack') }
 end
 
 settings = {

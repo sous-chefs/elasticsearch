@@ -22,16 +22,8 @@ elasticsearch_service 'elasticsearch' do
   service_actions [:enable, :start]
 end
 
-# by default, no plugins, but we do one here.
-elasticsearch_plugin 'head' do
-  url 'mobz/elasticsearch-head'
-  notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
-end
-
-# remove an installed plugin
-elasticsearch_plugin 'kopf' do
-  url 'lmenezes/elasticsearch-kopf'
-  action [:install, :remove]
+# by default, no plugins, but we do the x-pack
+elasticsearch_plugin 'x-pack' do
   notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
 end
 

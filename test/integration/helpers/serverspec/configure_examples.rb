@@ -19,18 +19,26 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   ]
 
   expected_environment = args[:env] || [
+    'CONF_DIR=.+',
+    'DATA_DIR=.+',
+    'ES_GROUP=.+',
     'ES_HOME=.+',
+    'ES_STARTUP_SLEEP_TIME=.+',
     'ES_USER=.+',
-    'ES_HEAP_SIZE="?[0-9]+m"?',
-    'ES_JAVA_OPTS=',
-    '-server',
-    'CONF_DIR=\/.+',
-    '-Xss256k',
-    'UseParNewGC',
-    'UseConcMarkSweepGC',
-    'CMSInitiatingOccupancyFraction=75',
-    'UseCMSInitiatingOccupancyOnly',
-    'HeapDumpOnOutOfMemoryError'
+    'LOG_DIR=.+',
+    'MAX_LOCKED_MEMORY=.+',
+    'MAX_MAP_COUNT=.+',
+    'MAX_OPEN_FILES=.+',
+    'PID_DIR=.+',
+    'RESTART_ON_UPGRADE=.+'
+  ]
+
+  expected_jvm_options = args[:jvmopts] || [
+    'server',
+    'HeapDumpOnOutOfMemoryError',
+    'DisableExplicitGC',
+    'AlwaysPreTouch',
+    'java.awt.headless=true'
   ]
 
   [path_conf, path_data, path_logs].each do |p|
@@ -62,18 +70,23 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     end
   end
 
-  describe file("#{path_conf}/logging.yml") do
+  describe file("#{path_conf}/jvm.options") do
     it { should be_file }
     it { should be_mode 644 }
     it { should be_owned_by expected_user }
     it { should be_grouped_into expected_group }
 
-    [
-      'Configuration set by Chef',
-      'es.logger.level: INFO',
-      'rootLogger: \$\{es.logger.level\}, console, file'
-    ].each do |line|
-      its(:content) { should match(/#{line}/) }
+    expected_jvm_options.each do |line|
+      its(:content) { should contain(/#{line}/) }
     end
+  end
+
+  describe file("#{path_conf}/log4j2.properties") do
+    it { should be_file }
+    it { should be_mode 644 }
+    it { should be_owned_by expected_user }
+    it { should be_grouped_into expected_group }
+
+    its(:content) { should match(/logger.action.name = org.elasticsearch.action/) }
   end
 end

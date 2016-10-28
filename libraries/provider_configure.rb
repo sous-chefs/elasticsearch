@@ -66,36 +66,29 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       new_resource.updated_by_last_action(true) if d.updated_by_last_action?
     end
 
+    # Create elasticsearch shell variables file
+    #
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
-    # ES_HOME CONF_DIR CONF_FILE DATA_DIR LOG_DIR WORK_DIR PID_DIR
-    # ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
-    # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_STARTUP_SLEEP_TIME
-    # ES_USER ES_GROUP MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
+    # ES_HOME JAVA_HOME CONF_DIR DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
+    # RESTART_ON_UPGRADE ES_USER ES_GROUP ES_STARTUP_SLEEP_TIME MAX_OPEN_FILES
+    # MAX_LOCKED_MEMORY MAX_MAP_COUNT
+    #
+    # We provide these values as resource attributes/parameters directly
+
     params = {}
     params[:ES_HOME] = new_resource.path_home[es_install.type]
+    params[:JAVA_HOME] = new_resource.java_home
     params[:CONF_DIR] = new_resource.path_conf[es_install.type]
     params[:DATA_DIR] = new_resource.path_data[es_install.type]
     params[:LOG_DIR] = new_resource.path_logs[es_install.type]
     params[:PID_DIR] = new_resource.path_pid[es_install.type]
-
-    params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
+    params[:RESTART_ON_UPGRADE] = new_resource.restart_on_upgrade
     params[:ES_USER] = es_user.username
     params[:ES_GROUP] = es_user.groupname
-
-    params[:JAVA_HOME] = new_resource.java_home
-    params[:ES_HEAP_SIZE] = new_resource.allocated_memory
+    params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
-
-    params[:ES_JAVA_OPTS] = '"'
-    params[:ES_JAVA_OPTS] << '-server '
-    params[:ES_JAVA_OPTS] << '-Djava.awt.headless=true '
-    params[:ES_JAVA_OPTS] << "-Xss#{new_resource.thread_stack_size} "
-    params[:ES_JAVA_OPTS] << "#{new_resource.gc_settings.tr("\n", ' ').strip.squeeze(' ')} " if new_resource.gc_settings
-    params[:ES_JAVA_OPTS] << '-Dfile.encoding=UTF-8 '
-    params[:ES_JAVA_OPTS] << '-Djna.nosys=true'
-    params[:ES_JAVA_OPTS] << " #{new_resource.env_options}" if new_resource.env_options
-    params[:ES_JAVA_OPTS] << '"'
+    params[:MAX_MAP_COUNT] = new_resource.memlock_limit
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
@@ -110,12 +103,31 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     shell_template.run_action(:create)
     new_resource.updated_by_last_action(true) if shell_template.updated_by_last_action?
 
+    # Create jvm.options file
+    #
+    jvm_options_template = template 'jvm_options' do
+      path   "#{new_resource.path_conf[es_install.type]}/jvm.options"
+      source new_resource.template_jvm_options
+      cookbook new_resource.cookbook_jvm_options
+      owner es_user.username
+      group es_user.groupname
+      mode 0644
+      variables(jvm_options: [
+          "-Xms#{new_resource.allocated_memory}",
+          "-Xmx#{new_resource.allocated_memory}",
+          new_resource.jvm_options
+        ].flatten.join("\n"))
+      action :nothing
+    end
+    jvm_options_template.run_action(:create)
+    new_resource.updated_by_last_action(true) if jvm_options_template.updated_by_last_action?
+
     # Create ES logging file
     #
-    logging_template = template 'logging.yml' do
-      path   "#{new_resource.path_conf[es_install.type]}/logging.yml"
-      source new_resource.template_logging_yml
-      cookbook new_resource.cookbook_logging_yml
+    logging_template = template 'log4j2_properties' do
+      path   "#{new_resource.path_conf[es_install.type]}/log4j2.properties"
+      source new_resource.template_log4j2_properties
+      cookbook new_resource.cookbook_log4j2_properties
       owner es_user.username
       group es_user.groupname
       mode 0644
@@ -125,6 +137,8 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     logging_template.run_action(:create)
     new_resource.updated_by_last_action(true) if logging_template.updated_by_last_action?
 
+    # Create ES elasticsearch.yml file
+    #
     merged_configuration = default_configuration.merge(new_resource.configuration.dup)
 
     # warn if someone is using symbols. we don't support.

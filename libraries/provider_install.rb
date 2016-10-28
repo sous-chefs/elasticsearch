@@ -102,7 +102,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       owner es_user.username
       group es_user.groupname
       version determine_version(new_resource, node)
-      has_binaries ['bin/elasticsearch', 'bin/plugin']
+      has_binaries ['bin/elasticsearch', 'bin/elasticsearch-plugin']
       checksum determine_download_checksum(new_resource, node)
       prefix_root   new_resource.dir[new_resource.type]
       prefix_home   new_resource.dir[new_resource.type]

@@ -26,7 +26,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     d_r.run_action(:create)
     new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
 
-    # Create service
+    # Create service for init and systemd
     #
     init_r = template "/etc/init.d/#{new_resource.service_name}" do
       source new_resource.init_source
@@ -37,10 +37,26 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         # we need to include something about #{progname} fixed in here.
         program_name: new_resource.service_name
       )
+      only_if { ::File.exist?('/etc/init.d') }
       action :nothing
     end
     init_r.run_action(:create)
     new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
+
+    systemd_r = template "/usr/lib/systemd/system/#{new_resource.service_name}.service" do
+      source new_resource.systemd_source
+      cookbook new_resource.systemd_cookbook
+      owner 'root'
+      mode 0755
+      variables(
+        # we need to include something about #{progname} fixed in here.
+        program_name: new_resource.service_name
+      )
+      only_if { ::File.exist?('/usr/lib/systemd/system') }
+      action :nothing
+    end
+    systemd_r.run_action(:create)
+    new_resource.updated_by_last_action(true) if systemd_r.updated_by_last_action?
 
     # flatten in an array here, in case the service_actions are a symbol vs. array
     [new_resource.service_actions].flatten.each do |act|

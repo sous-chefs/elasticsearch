@@ -35,7 +35,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     plugin_dir_exists = ::File.exist?(es_conf.path_plugins[es_install.type])
     shell_out_as_user!("mkdir -p #{es_conf.path_plugins[es_install.type]}", run_context) unless plugin_dir_exists
 
-    command_array = "#{es_conf.path_bin[es_install.type]}/plugin #{arguments.chomp(' ')}".chomp(' ').split(' ')
+    command_array = "#{es_conf.path_bin[es_install.type]}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ').split(' ')
     shell_out_as_user!(command_array, run_context)
     new_resource.updated_by_last_action(true)
   end
@@ -54,14 +54,6 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   end
 
   def assert_state_is_valid(es_user, es_install, es_conf)
-    begin
-      if es_user.username != 'root' && es_install.version.to_f < 2.0
-        Chef::Log.warn("Elasticsearch < 2.0.0 (you are using #{es_install.version}) requires plugins be installed as root (you are using #{es_user.username})")
-      end
-    rescue
-      Chef::Log.warn("Could not parse #{es_install.version} as floating point number")
-    end
-
     unless es_conf.path_plugins[es_install.type] # we do not check existence (may not exist if no plugins installed)
       raise "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
     end

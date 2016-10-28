@@ -39,9 +39,8 @@ elasticsearch_configure 'my_elasticsearch' do
   instance_name 'special_package_instance'
 end
 
-elasticsearch_plugin 'head' do
+elasticsearch_plugin 'x-pack' do
   instance_name 'special_package_instance'
-  url 'mobz/elasticsearch-head'
 end
 
 elasticsearch_service 'elasticsearch-crazy' do
