@@ -14,7 +14,7 @@ class ElasticsearchCookbook::InstallResource < Chef::Resource::LWRPBase
   attribute(:version, kind_of: String, default: '5.0.0')
 
   # we allow a string or symbol for this value
-  attribute(:type, kind_of: String, equal_to: ['package', 'tarball'], default: 'package')
+  attribute(:type, kind_of: String, equal_to: %w(package tarball), default: 'package')
 
   # these use `attributes/default.rb` for default values per platform and install type
   attribute(:download_url, kind_of: String)

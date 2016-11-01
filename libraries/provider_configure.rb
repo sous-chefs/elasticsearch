@@ -11,7 +11,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
   action :manage do
     # lookup existing ES resources
     es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
-    es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_svc = find_es_resource(run_context, :elasticsearch_service, new_resource)
 
     default_configuration = new_resource.default_configuration.dup
@@ -113,10 +112,10 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       group es_user.groupname
       mode 0644
       variables(jvm_options: [
-          "-Xms#{new_resource.allocated_memory}",
-          "-Xmx#{new_resource.allocated_memory}",
-          new_resource.jvm_options
-        ].flatten.join("\n"))
+        "-Xms#{new_resource.allocated_memory}",
+        "-Xmx#{new_resource.allocated_memory}",
+        new_resource.jvm_options
+      ].flatten.join("\n"))
       action :nothing
     end
     jvm_options_template.run_action(:create)

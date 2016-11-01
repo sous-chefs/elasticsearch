@@ -41,7 +41,6 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   end
 
   def plugin_exists(name)
-    es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
     path = es_conf.path_plugins
 
@@ -53,7 +52,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     false
   end
 
-  def assert_state_is_valid(es_user, es_install, es_conf)
+  def assert_state_is_valid(_es_user, _es_install, es_conf)
     unless es_conf.path_plugins # we do not check existence (may not exist if no plugins installed)
       raise "Could not determine the plugin directory (#{es_conf.path_plugins}). Please check elasticsearch_configure[#{es_conf.name}]."
     end

@@ -46,23 +46,23 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
 
   attribute(:jvm_options, kind_of: Array, default:
     %w(
-     -XX:+UseConcMarkSweepGC
-     -XX:CMSInitiatingOccupancyFraction=75
-     -XX:+UseCMSInitiatingOccupancyOnly
-     -XX:+DisableExplicitGC
-     -XX:+AlwaysPreTouch
-     -server
-     -Djava.awt.headless=true
-     -Dfile.encoding=UTF-8
-     -Djna.nosys=true
-     -Dio.netty.noUnsafe=true
-     -Dio.netty.noKeySetOptimization=true
-     -Dlog4j.shutdownHookEnabled=false
-     -Dlog4j2.disable.jmx=true
-     -Dlog4j.skipJansi=true
-     -XX:+HeapDumpOnOutOfMemoryError
+      -XX:+UseConcMarkSweepGC
+      -XX:CMSInitiatingOccupancyFraction=75
+      -XX:+UseCMSInitiatingOccupancyOnly
+      -XX:+DisableExplicitGC
+      -XX:+AlwaysPreTouch
+      -server
+      -Djava.awt.headless=true
+      -Dfile.encoding=UTF-8
+      -Djna.nosys=true
+      -Dio.netty.noUnsafe=true
+      -Dio.netty.noKeySetOptimization=true
+      -Dlog4j.shutdownHookEnabled=false
+      -Dlog4j2.disable.jmx=true
+      -Dlog4j.skipJansi=true
+      -XX:+HeapDumpOnOutOfMemoryError
     ).freeze
-  )
+           )
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

@@ -13,7 +13,6 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
 
   action :configure do
     es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
-    es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
 
     d_r = directory es_conf.path_pid do
