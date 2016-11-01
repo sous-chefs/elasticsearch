@@ -16,7 +16,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
 
-    d_r = directory es_conf.path_pid[es_install.type] do
+    d_r = directory es_conf.path_pid do
       owner es_user.username
       group es_user.groupname
       mode '0755'
@@ -43,6 +43,13 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     init_r.run_action(:create)
     new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
 
+    systemd_parent_r = directory '/usr/lib/systemd/system' do
+      action :nothing
+      only_if { ::File.exist?('/usr/lib/systemd') }
+    end
+    systemd_parent_r.run_action(:create)
+    new_resource.updated_by_last_action(true) if systemd_parent_r.updated_by_last_action?
+
     systemd_r = template "/usr/lib/systemd/system/#{new_resource.service_name}.service" do
       source new_resource.systemd_source
       cookbook new_resource.systemd_cookbook
@@ -52,11 +59,19 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         # we need to include something about #{progname} fixed in here.
         program_name: new_resource.service_name
       )
-      only_if { ::File.exist?('/usr/lib/systemd/system') }
+      only_if { ::File.exist?('/usr/lib/systemd') }
       action :nothing
     end
     systemd_r.run_action(:create)
-    new_resource.updated_by_last_action(true) if systemd_r.updated_by_last_action?
+    # special case here -- must reload unit files if we modified one
+    if systemd_r.updated_by_last_action?
+      new_resource.updated_by_last_action(true)
+
+      reload_r = execute 'systemctl daemon-reload' do
+        action :nothing
+      end
+      reload_r.run_action(:run)
+    end
 
     # flatten in an array here, in case the service_actions are a symbol vs. array
     [new_resource.service_actions].flatten.each do |act|

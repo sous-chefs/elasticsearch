@@ -44,7 +44,7 @@ CONF_DIR="/etc/elasticsearch"
 PID_DIR="/var/run/elasticsearch"
 
 # Source the default env file
-ES_ENV_FILE="/etc/sysconfig/elasticsearch"
+ES_ENV_FILE="/etc/sysconfig/<%= @program_name %>"
 if [ -f "$ES_ENV_FILE" ]; then
     . "$ES_ENV_FILE"
 fi

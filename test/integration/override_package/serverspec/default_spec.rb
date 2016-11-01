@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 describe 'non-standard elasticsearch install and configure' do
   path_component = rhel? ? 'sysconfig' : 'default'
 
-  it_behaves_like 'elasticsearch user',     user: 'foo',
+  it_behaves_like 'elasticsearch user',     user: 'elasticsearch',
                                             uid: 1111,
                                             shell: '/bin/sh',
                                             group: 'bar',
@@ -11,14 +11,14 @@ describe 'non-standard elasticsearch install and configure' do
 
   it_behaves_like 'elasticsearch install',     dir: '/usr/local/awesome',
                                                package: 'elasticsearch',
-                                               user: 'foo',
+                                               user: 'elasticsearch',
                                                group: 'bar'
 
   it_behaves_like 'elasticsearch configure',     dir: '/usr/local/awesome',
-                                                 user: 'foo',
+                                                 user: 'elasticsearch',
                                                  group: 'bar',
                                                  path_sysconfig: "/etc/#{path_component}/elasticsearch-crazy",
-                                                 env: ['FOO=BAR', 'PrintGCDetails', '-Xss512k']
+                                                 env: ['ES_GROUP=bar']
 
   it_behaves_like 'elasticsearch service', 'elasticsearch-crazy'
 end

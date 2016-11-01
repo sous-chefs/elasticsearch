@@ -10,34 +10,13 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:instance_name, kind_of: String, default: nil)
 
   # if you override one of these, you should probably override them all
-  attribute(:path_home, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch',
-    tarball: '/usr/local/elasticsearch'
-  }.freeze)
-  attribute(:path_conf, kind_of: Hash, default: {
-    package: '/etc/elasticsearch',
-    tarball: '/usr/local/etc/elasticsearch'
-  }.freeze)
-  attribute(:path_data, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch',
-    tarball: '/usr/local/var/data/elasticsearch'
-  }.freeze)
-  attribute(:path_logs, kind_of: Hash, default: {
-    package: '/var/log/elasticsearch',
-    tarball: '/usr/local/var/log/elasticsearch'
-  }.freeze)
-  attribute(:path_pid, kind_of: Hash, default: {
-    package: '/var/run/elasticsearch',
-    tarball: '/usr/local/var/run'
-  }.freeze)
-  attribute(:path_plugins, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch/plugins',
-    tarball: '/usr/local/elasticsearch/plugins'
-  }.freeze)
-  attribute(:path_bin, kind_of: Hash, default: {
-    package: '/usr/share/elasticsearch/bin',
-    tarball: '/usr/local/bin'
-  }.freeze)
+  attribute(:path_home,    kind_of: String, default: '/usr/share/elasticsearch')
+  attribute(:path_conf,    kind_of: String, default: '/etc/elasticsearch')
+  attribute(:path_data,    kind_of: String, default: '/var/lib/elasticsearch')
+  attribute(:path_logs,    kind_of: String, default: '/var/log/elasticsearch')
+  attribute(:path_pid,     kind_of: String, default: '/var/run/elasticsearch')
+  attribute(:path_plugins, kind_of: String, default: '/usr/share/elasticsearch/plugins')
+  attribute(:path_bin,     kind_of: String, default: '/usr/share/elasticsearch/bin')
 
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
@@ -52,11 +31,14 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:cookbook_log4j2_properties, kind_of: String, default: 'elasticsearch')
 
   attribute(:logging, kind_of: Hash, default: {}.freeze)
-
   attribute(:java_home, kind_of: String, default: nil)
 
-  attribute(:restart_on_upgrade, kind_of: [TrueClass, FalseClass], default: false)
+  # other settings in /etc/default or /etc/sysconfig
+  attribute(:memlock_limit, kind_of: String, default: 'unlimited')
+  attribute(:max_map_count, kind_of: String, default: '65535')
+  attribute(:nofile_limit, kind_of: String, default: '64000')
   attribute(:startup_sleep_seconds, kind_of: [String, Integer], default: 5)
+  attribute(:restart_on_upgrade, kind_of: [TrueClass, FalseClass], default: false)
 
   # Calculations for this are done in the provider, as we can't do them in the
   # resource definition. default is 50% of RAM or 31GB, which ever is smaller.
@@ -81,10 +63,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
      -XX:+HeapDumpOnOutOfMemoryError
     ).freeze
   )
-
-  # default user limits
-  attribute(:memlock_limit, kind_of: String, default: 'unlimited')
-  attribute(:nofile_limit, kind_of: String, default: '64000')
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

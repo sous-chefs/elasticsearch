@@ -25,16 +25,16 @@ the version parameter as a string into your download_url.
 |Name|Default|Other values|
 |----|-------|------------|
 |`default['elasticsearch']['version']`|`'5.0.0'`|[See list](attributes/default.rb).|
-|`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
+TODO: |`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
 |`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['tar']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 
 ## Recipes
 
 Resources are the intended way to consume this cookbook, however we have
 provided a single recipe that configures Elasticsearch by downloading an archive
-containing a distribution of Elasticsearch, and extracting that into /usr/local.
+containing a distribution of Elasticsearch, and extracting that into `/usr/share`.
 
 See the attributes section above to for what defaults you can adjust.
 
@@ -220,28 +220,26 @@ Very complicated -
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
-  path_home     tarball: "/opt/elasticsearch"
-  path_conf     tarball: "/etc/opt/elasticsearch"
-  path_data     tarball: "/var/opt/elasticsearch"
-  path_logs     tarball: "/var/log/elasticsearch"
-  path_pid      tarball: "/var/run/elasticsearch"
-  path_plugins  tarball: "/opt/elasticsearch/plugins"
-  path_bin      tarball: "/opt/elasticsearch/bin"
+  path_home     "/opt/elasticsearch"
+  path_conf     "/etc/opt/elasticsearch"
+  path_data     "/var/opt/elasticsearch"
+  path_logs     "/var/log/elasticsearch"
+  path_pid      "/var/run/elasticsearch"
+  path_plugins  "/opt/elasticsearch/plugins"
+  path_bin      "/opt/elasticsearch/bin"
 
   logging({:"action" => 'INFO'})
 
   allocated_memory '123m'
-  thread_stack_size '512k'
 
-  env_options '-DFOO=BAR'
-  gc_settings <<-CONFIG
+  jvm_options %w(
                 -XX:+UseParNewGC
                 -XX:+UseConcMarkSweepGC
                 -XX:CMSInitiatingOccupancyFraction=75
                 -XX:+UseCMSInitiatingOccupancyOnly
                 -XX:+HeapDumpOnOutOfMemoryError
                 -XX:+PrintGCDetails
-              CONFIG
+              )
 
   configuration ({
     'node.name' => 'crazy'

@@ -16,7 +16,7 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
   attribute(:args, kind_of: String, default: '-d')
 
   # service actions
-  attribute(:service_actions, kind_of: [Symbol, Array], default: [:enable].freeze)
+  attribute(:service_actions, kind_of: [Symbol, String, Array], default: [:enable, :start].freeze)
 
   # allow overridable init script
   attribute(:init_source, kind_of: String, default: 'initscript.erb')

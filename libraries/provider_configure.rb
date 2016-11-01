@@ -17,16 +17,16 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name
     # then go and be sure it's also set in the YML hash if it wasn't given there
-    if new_resource.path_conf[es_install.type] && default_configuration['path.conf'].nil?
-      default_configuration['path.conf'] = new_resource.path_conf[es_install.type]
+    if new_resource.path_conf && default_configuration['path.conf'].nil?
+      default_configuration['path.conf'] = new_resource.path_conf
     end
 
-    if new_resource.path_data[es_install.type] && default_configuration['path.data'].nil?
-      default_configuration['path.data'] = new_resource.path_data[es_install.type]
+    if new_resource.path_data && default_configuration['path.data'].nil?
+      default_configuration['path.data'] = new_resource.path_data
     end
 
-    if new_resource.path_logs[es_install.type] && default_configuration['path.logs'].nil?
-      default_configuration['path.logs'] = new_resource.path_logs[es_install.type]
+    if new_resource.path_logs && default_configuration['path.logs'].nil?
+      default_configuration['path.logs'] = new_resource.path_logs
     end
 
     # calculation for memory allocation; 50% or 31g, whatever is smaller
@@ -38,7 +38,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Create ES directories
     #
-    [new_resource.path_conf[es_install.type], "#{new_resource.path_conf[es_install.type]}/scripts", new_resource.path_logs[es_install.type]].each do |path|
+    [new_resource.path_conf, "#{new_resource.path_conf}/scripts", new_resource.path_logs].each do |path|
       d = directory path do
         owner es_user.username
         group es_user.groupname
@@ -52,7 +52,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Create data path directories
     #
-    data_paths = new_resource.path_data[es_install.type].is_a?(Array) ? new_resource.path_data[es_install.type] : new_resource.path_data[es_install.type].split(',')
+    data_paths = new_resource.path_data.is_a?(Array) ? new_resource.path_data : new_resource.path_data.split(',')
 
     data_paths.each do |path|
       d = directory path.strip do
@@ -76,19 +76,19 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # We provide these values as resource attributes/parameters directly
 
     params = {}
-    params[:ES_HOME] = new_resource.path_home[es_install.type]
+    params[:ES_HOME] = new_resource.path_home
     params[:JAVA_HOME] = new_resource.java_home
-    params[:CONF_DIR] = new_resource.path_conf[es_install.type]
-    params[:DATA_DIR] = new_resource.path_data[es_install.type]
-    params[:LOG_DIR] = new_resource.path_logs[es_install.type]
-    params[:PID_DIR] = new_resource.path_pid[es_install.type]
+    params[:CONF_DIR] = new_resource.path_conf
+    params[:DATA_DIR] = new_resource.path_data
+    params[:LOG_DIR] = new_resource.path_logs
+    params[:PID_DIR] = new_resource.path_pid
     params[:RESTART_ON_UPGRADE] = new_resource.restart_on_upgrade
     params[:ES_USER] = es_user.username
     params[:ES_GROUP] = es_user.groupname
     params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
-    params[:MAX_MAP_COUNT] = new_resource.memlock_limit
+    params[:MAX_MAP_COUNT] = new_resource.max_map_count
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
@@ -106,7 +106,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Create jvm.options file
     #
     jvm_options_template = template 'jvm_options' do
-      path   "#{new_resource.path_conf[es_install.type]}/jvm.options"
+      path   "#{new_resource.path_conf}/jvm.options"
       source new_resource.template_jvm_options
       cookbook new_resource.cookbook_jvm_options
       owner es_user.username
@@ -125,7 +125,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Create ES logging file
     #
     logging_template = template 'log4j2_properties' do
-      path   "#{new_resource.path_conf[es_install.type]}/log4j2.properties"
+      path   "#{new_resource.path_conf}/log4j2.properties"
       source new_resource.template_log4j2_properties
       cookbook new_resource.cookbook_log4j2_properties
       owner es_user.username
@@ -148,7 +148,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     end
 
     yml_template = template 'elasticsearch.yml' do
-      path "#{new_resource.path_conf[es_install.type]}/elasticsearch.yml"
+      path "#{new_resource.path_conf}/elasticsearch.yml"
       source new_resource.template_elasticsearch_yml
       cookbook new_resource.cookbook_elasticsearch_yml
       owner es_user.username

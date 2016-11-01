@@ -10,7 +10,7 @@ Environment=CONF_DIR=/etc/elasticsearch
 Environment=DATA_DIR=/var/lib/elasticsearch
 Environment=LOG_DIR=/var/log/elasticsearch
 Environment=PID_DIR=/var/run/elasticsearch
-EnvironmentFile=-/etc/sysconfig/elasticsearch
+EnvironmentFile=-/etc/sysconfig/<%= @program_name %>
 
 WorkingDirectory=/usr/share/elasticsearch
 

@@ -61,42 +61,20 @@ module ElasticsearchCookbook
       nil # falsey
     end
 
-    def determine_version(new_resource, node)
-      if new_resource.version
-        new_resource.version.to_s
-      elsif node['elasticsearch'] && node['elasticsearch']['version']
-        node['elasticsearch']['version'].to_s
-      else
-        raise 'could not determine version of elasticsearch to install'
-      end
-    end
-
-    def determine_install_type(new_resource, node)
-      if new_resource.type
-        new_resource.type.to_s
-      elsif node['elasticsearch'] && node['elasticsearch']['install_type']
-        node['elasticsearch']['install_type'].to_s
-      else
-        raise 'could not determine how to install elasticsearch (package? tarball?)'
-      end
-    end
-
     def determine_download_url(new_resource, node)
       platform_family = node['platform_family']
-      install_type = determine_install_type(new_resource, node)
-      version = determine_version(new_resource, node)
 
       url_string = nil
       if new_resource.download_url
         url_string = new_resource.download_url
-      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
-        url_string = node['elasticsearch']['download_urls']['tar']
-      elsif install_type.to_s == 'package' && node['elasticsearch']['download_urls'][platform_family]
+      elsif new_resource.type == 'tarball'
+        url_string = node['elasticsearch']['download_urls']['tarball']
+      elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
         url_string = node['elasticsearch']['download_urls'][platform_family]
       end
 
-      if url_string && version
-        return format(url_string, version)
+      if url_string && new_resource.version
+        return format(url_string, new_resource.version)
       elsif url_string
         return url_string
       end
@@ -104,18 +82,18 @@ module ElasticsearchCookbook
 
     def determine_download_checksum(new_resource, node)
       platform_family = node['platform_family']
-      install_type = determine_install_type(new_resource, node)
-      version = determine_version(new_resource, node)
+      install_type = new_resource.type
+      version = new_resource.version
 
       if new_resource.download_checksum
         new_resource.download_checksum
-      elsif install_type.to_s == 'tar' || install_type.to_s == 'tarball'
+      elsif install_type == 'tarball'
         node && version &&
           node['elasticsearch'] &&
           node['elasticsearch']['checksums'] &&
           node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version]['tar']
-      elsif install_type.to_s == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
+          node['elasticsearch']['checksums'][version]['tarball']
+      elsif install_type == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
         node && version && platform_family &&
           node['elasticsearch'] &&
           node['elasticsearch']['checksums'] &&

@@ -11,14 +11,9 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   action :install do
-    install_type = determine_install_type(new_resource, node)
-    unless new_resource.version
-      new_resource.version determine_version(new_resource, node)
-    end
-
-    if install_type == 'tarball' || install_type == 'tar'
+    if new_resource.type == 'tarball'
       install_tarball_wrapper_action
-    elsif install_type == 'package'
+    elsif new_resource.type == 'package'
       install_package_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
@@ -26,11 +21,9 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   action :remove do
-    install_type = determine_install_type(new_resource, node)
-
-    if install_type == 'tarball' || install_type == 'tar'
+    if new_resource.type == 'tarball'
       remove_tarball_wrapper_action
-    elsif install_type == 'package'
+    elsif new_resource.type == 'package'
       remove_package_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
@@ -101,15 +94,15 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       url   determine_download_url(new_resource, node)
       owner es_user.username
       group es_user.groupname
-      version determine_version(new_resource, node)
+      version new_resource.version
       has_binaries ['bin/elasticsearch', 'bin/elasticsearch-plugin']
       checksum determine_download_checksum(new_resource, node)
-      prefix_root   new_resource.dir[new_resource.type]
-      prefix_home   new_resource.dir[new_resource.type]
+      prefix_root   new_resource.dir
+      prefix_home   new_resource.dir
 
       not_if do
         link   = "#{new_resource.dir}/elasticsearch"
-        target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
+        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
         binary = "#{target}/bin/elasticsearch"
 
         ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target && ::File.exist?(binary)
@@ -118,6 +111,16 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     end
     ark_r.run_action(:install)
     new_resource.updated_by_last_action(true) if ark_r.updated_by_last_action?
+
+    # destroy the sample config directory for tarball installs, or it will
+    # take precedence beyond the default stuff in /etc/elasticsearch and within
+    # /etc/sysconfig or /etc/default
+    sample_r = directory "#{new_resource.dir}/elasticsearch/config" do
+      action :nothing
+      recursive true
+    end
+    sample_r.run_action(:delete)
+    new_resource.updated_by_last_action(true) if sample_r.updated_by_last_action?
   end
 
   def remove_tarball_wrapper_action
@@ -125,7 +128,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     link_r = link "#{new_resource.dir}/elasticsearch" do
       only_if do
         link   = "#{new_resource.dir}/elasticsearch"
-        target = "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}"
+        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
 
         ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
       end
@@ -135,7 +138,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     new_resource.updated_by_last_action(true) if link_r.updated_by_last_action?
 
     # remove the specific version
-    d_r = directory "#{new_resource.dir}/elasticsearch-#{determine_version(new_resource, node)}" do
+    d_r = directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
       action :nothing
     end
     d_r.run_action(:delete)

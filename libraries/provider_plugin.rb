@@ -32,10 +32,10 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     # shell_out! automatically raises on error, logs command output
     # required for package installs that show up with parent dir owned by root
-    plugin_dir_exists = ::File.exist?(es_conf.path_plugins[es_install.type])
-    shell_out_as_user!("mkdir -p #{es_conf.path_plugins[es_install.type]}", run_context) unless plugin_dir_exists
+    plugin_dir_exists = ::File.exist?(es_conf.path_plugins)
+    shell_out_as_user!("mkdir -p #{es_conf.path_plugins}", run_context) unless plugin_dir_exists
 
-    command_array = "#{es_conf.path_bin[es_install.type]}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ').split(' ')
+    command_array = "#{es_conf.path_bin}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ').split(' ')
     shell_out_as_user!(command_array, run_context)
     new_resource.updated_by_last_action(true)
   end
@@ -43,7 +43,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   def plugin_exists(name)
     es_install = find_es_resource(run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
-    path = es_conf.path_plugins[es_install.type]
+    path = es_conf.path_plugins
 
     Dir.entries(path).any? do |plugin|
       next if plugin =~ /^\./
@@ -54,12 +54,12 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   end
 
   def assert_state_is_valid(es_user, es_install, es_conf)
-    unless es_conf.path_plugins[es_install.type] # we do not check existence (may not exist if no plugins installed)
-      raise "Could not determine the plugin directory (#{es_conf.path_plugins[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+    unless es_conf.path_plugins # we do not check existence (may not exist if no plugins installed)
+      raise "Could not determine the plugin directory (#{es_conf.path_plugins}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
-    unless es_conf.path_bin[es_install.type] && ::File.exist?(es_conf.path_bin[es_install.type])
-      raise "Could not determine the binary directory (#{es_conf.path_bin[es_install.type]}). Please check elasticsearch_configure[#{es_conf.name}]."
+    unless es_conf.path_bin && ::File.exist?(es_conf.path_bin)
+      raise "Could not determine the binary directory (#{es_conf.path_bin}). Please check elasticsearch_configure[#{es_conf.name}]."
     end
 
     true
@@ -70,7 +70,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
-    if es_install.type == :package
+    if es_install.type == 'package'
       # package installations should install plugins as root
       shell_out!(command)
     else

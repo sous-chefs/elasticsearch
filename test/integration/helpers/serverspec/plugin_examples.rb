@@ -3,7 +3,7 @@ require_relative 'spec_helper'
 shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
   expected_user = args[:user] || (package? ? 'root' : 'elasticsearch')
   expected_group = args[:group] || expected_user || 'elasticsearch'
-  expected_home = args[:home] || (package? ? '/usr/share/elasticsearch' : '/usr/local/elasticsearch')
+  expected_home = args[:home] || '/usr/share/elasticsearch'
   expected_plugin = args[:plugin] || "#{expected_home}/plugins/#{plugin_name}"
   expected_response_code = args[:response_code] || 200
   auth_data = args[:auth_data] || 'elastic:changeme@'

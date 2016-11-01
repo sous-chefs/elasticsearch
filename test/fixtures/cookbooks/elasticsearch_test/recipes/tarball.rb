@@ -12,34 +12,32 @@ elasticsearch_user 'foobar' do
 end
 
 elasticsearch_install 'elasticsearch_s' do
-  type :tarball
-  dir tarball: '/usr/local/awesome'
+  type 'tarball'
+  dir '/usr/local/awesome'
   instance_name 'special_tarball_instance'
 end
 
 elasticsearch_configure 'my_elasticsearch' do
-  path_home     tarball: '/usr/local/awesome/elasticsearch'
-  path_conf     tarball: '/usr/local/awesome/etc/elasticsearch'
-  path_data     tarball: '/usr/local/awesome/var/data/elasticsearch'
-  path_logs     tarball: '/usr/local/awesome/var/log/elasticsearch'
-  path_pid      tarball: '/usr/local/awesome/var/run'
-  path_plugins  tarball: '/usr/local/awesome/elasticsearch/plugins'
-  path_bin      tarball: '/usr/local/bin'
+  path_home     '/usr/local/awesome/elasticsearch'
+  path_conf     '/usr/local/awesome/etc/elasticsearch'
+  path_data     '/usr/local/awesome/var/data/elasticsearch'
+  path_logs     '/usr/local/awesome/var/log/elasticsearch'
+  path_pid      '/usr/local/awesome/var/run'
+  path_plugins  '/usr/local/awesome/elasticsearch/plugins'
+  path_bin      '/usr/local/bin'
 
   logging(action: 'INFO')
 
   allocated_memory '123m'
-  thread_stack_size '512k'
 
-  env_options '-DFOO=BAR'
-  gc_settings <<-CONFIG
+  jvm_options %w(
                 -XX:+UseParNewGC
                 -XX:+UseConcMarkSweepGC
                 -XX:CMSInitiatingOccupancyFraction=75
                 -XX:+UseCMSInitiatingOccupancyOnly
                 -XX:+HeapDumpOnOutOfMemoryError
                 -XX:+PrintGCDetails
-              CONFIG
+              )
 
   configuration('node.name' => 'crazy')
   action :manage

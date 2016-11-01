@@ -8,7 +8,7 @@ elasticsearch_user 'elasticsearch'
 
 # for package install, share the various paths across instances
 elasticsearch_install 'elasticsearch' do
-  type :package
+  type 'package'
 end
 
 elasticsearch_plugin 'elasticsearch_xpack' do
@@ -33,13 +33,13 @@ settings = {
 %w(alpha beta).each do |instance_name|
   elasticsearch_configure "elasticsearch_#{instance_name}" do
     instance_name instance_name
-    path_home package:    '/usr/share/elasticsearch'
-    path_conf package:    "/etc/elasticsearch-#{instance_name}"
-    path_data package:    "/var/lib/elasticsearch/#{instance_name}"
-    path_logs package:    "/var/log/elasticsearch-#{instance_name}"
-    path_pid package:     "/var/run/elasticsearch-#{instance_name}"
-    path_plugins package: '/usr/share/elasticsearch/bin/plugin'
-    path_bin package:     '/usr/share/elasticsearch/bin'
+    path_home    '/usr/share/elasticsearch'
+    path_conf    "/etc/elasticsearch-#{instance_name}"
+    path_data    "/var/lib/elasticsearch/#{instance_name}"
+    path_logs    "/var/log/elasticsearch-#{instance_name}"
+    path_pid     "/var/run/elasticsearch-#{instance_name}"
+    path_plugins '/usr/share/elasticsearch/bin/plugin'
+    path_bin     '/usr/share/elasticsearch/bin'
     allocated_memory '256m'
     configuration(
       'cluster.name' => 'mycluster',

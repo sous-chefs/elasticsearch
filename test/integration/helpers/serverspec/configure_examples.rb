@@ -1,10 +1,10 @@
 require_relative 'spec_helper'
 
 shared_examples_for 'elasticsearch configure' do |args = {}|
-  dir = args[:dir] || (package? ? '/usr/share/elasticsearch' : '/usr/local')
-  path_conf = args[:path_conf] || (package? ? '/etc/elasticsearch' : "#{dir}/etc/elasticsearch")
-  path_data = args[:path_data] || (package? ? '/var/lib/elasticsearch' : "#{dir}/var/data/elasticsearch")
-  path_logs = args[:path_logs] || (package? ? '/var/log/elasticsearch' : "#{dir}/var/log/elasticsearch")
+  dir = args[:dir] || '/usr/share'
+  path_conf = args[:path_conf] || '/etc/elasticsearch'
+  path_data = args[:path_data] || '/var/lib/elasticsearch'
+  path_logs = args[:path_logs] || '/var/log/elasticsearch'
   path_sysconfig = args[:path_sysconfig] || (rhel? ? '/etc/sysconfig/elasticsearch' : '/etc/default/elasticsearch')
 
   expected_user = args[:user] || 'elasticsearch'
@@ -36,8 +36,6 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   expected_jvm_options = args[:jvmopts] || [
     'server',
     'HeapDumpOnOutOfMemoryError',
-    'DisableExplicitGC',
-    'AlwaysPreTouch',
     'java.awt.headless=true'
   ]
 
