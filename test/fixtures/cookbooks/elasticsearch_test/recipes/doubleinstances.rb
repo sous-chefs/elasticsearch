@@ -7,9 +7,7 @@
 elasticsearch_user 'elasticsearch'
 
 # for package install, share the various paths across instances
-elasticsearch_install 'elasticsearch' do
-  type 'package'
-end
+elasticsearch_install 'elasticsearch'
 
 settings = {
   alpha: {
@@ -47,7 +45,7 @@ settings = {
 
   elasticsearch_plugin "xpack_#{instance_name}" do
     instance_name instance_name
-    plugin_name "x-pack"
+    plugin_name 'x-pack'
     notifies :restart, "elasticsearch_service[elasticsearch_#{instance_name}]", :delayed
     not_if { ::File.exist?('/usr/share/elasticsearch/plugins/x-pack') }
   end

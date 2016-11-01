@@ -15,6 +15,8 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       install_tarball_wrapper_action
     elsif new_resource.type == 'package'
       install_package_wrapper_action
+    elsif new_resource.type == 'repository'
+      install_repo_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
     end
@@ -25,12 +27,65 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       remove_tarball_wrapper_action
     elsif new_resource.type == 'package'
       remove_package_wrapper_action
+    elsif new_resource.type == 'repository'
+      remove_repo_wrapper_action
     else
       raise "#{install_type} is not a valid install type"
     end
   end
 
   protected
+
+  def install_repo_wrapper_action
+    if new_resource.enable_repository_actions
+      if node['platform_family'] == 'debian'
+        apt_r = apt_repo_resource
+        apt_r.run_action(:add)
+        new_resource.updated_by_last_action(true) if apt_r.updated_by_last_action?
+      else
+        yr_r = yum_repo_resource
+        yr_r.run_action(:create)
+        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
+      end
+    end
+
+    if node['platform_family'] == 'rhel' && !new_resource.version.include?('-')
+      # NB: yum repo packages are broken in Chef if you don't specify a release
+      #     https://github.com/chef/chef/issues/4103
+      new_resource.version = "#{new_resource.version}-1"
+    end
+
+    pkg_r = package 'elasticsearch' do
+      options new_resource.package_options
+      version new_resource.version
+      action :nothing
+    end
+
+    pkg_r.run_action(:install)
+    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
+  end
+
+  def remove_repo_wrapper_action
+    if new_resource.enable_repository_actions
+      if node['platform_family'] == 'debian'
+        apt_r = apt_repo_resource
+        apt_r.run_action(:remove)
+        new_resource.updated_by_last_action(true) if apt_r.updated_by_last_action?
+      else
+        yr_r = yum_repo_resource
+        yr_r.run_action(:delete)
+        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
+      end
+    end
+
+    pkg_r = package 'elasticsearch' do
+      options new_resource.package_options
+      version new_resource.version
+      action :nothing
+    end
+    pkg_r.run_action(:remove)
+    new_resource.updated_by_last_action(true) if pkg_r.updated_by_last_action?
+  end
 
   def install_package_wrapper_action
     download_url = determine_download_url(new_resource, node)
@@ -143,5 +198,23 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     end
     d_r.run_action(:delete)
     new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
+  end
+
+  def yum_repo_resource
+    yum_repository 'elastic-5.x' do
+      baseurl 'https://artifacts.elastic.co/packages/5.x/yum'
+      gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+      action :nothing # :add, remove
+    end
+  end
+
+  def apt_repo_resource
+    apt_repository 'elastic-5.x' do
+      uri 'https://artifacts.elastic.co/packages/5.x/apt'
+      key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+      components ['main']
+      distribution 'stable'
+      action :nothing # :create, :delete
+    end
   end
 end

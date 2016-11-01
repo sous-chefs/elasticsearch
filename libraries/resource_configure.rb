@@ -36,7 +36,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   # other settings in /etc/default or /etc/sysconfig
   attribute(:memlock_limit, kind_of: String, default: 'unlimited')
   attribute(:max_map_count, kind_of: String, default: '65535')
-  attribute(:nofile_limit, kind_of: String, default: '64000')
+  attribute(:nofile_limit, kind_of: String, default: '65536')
   attribute(:startup_sleep_seconds, kind_of: [String, Integer], default: 5)
   attribute(:restart_on_upgrade, kind_of: [TrueClass, FalseClass], default: false)
 

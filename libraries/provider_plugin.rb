@@ -67,7 +67,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
-    if es_install.type == 'package'
+    if es_install.type == 'package' || es_install.type == 'repository'
       # package installations should install plugins as root
       shell_out!(command)
     else
