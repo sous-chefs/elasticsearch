@@ -1,9 +1,9 @@
 #!/bin/bash
 #
-# /etc/init.d/elasticsearch -- startup script for Elasticsearch
+# /etc/init.d/<%= @program_name %> -- startup script for Elasticsearch
 #
 ### BEGIN INIT INFO
-# Provides:          elasticsearch
+# Provides:          <%= @program_name %>
 # Required-Start:    $network $remote_fs $named
 # Required-Stop:     $network $remote_fs $named
 # Default-Start:     2 3 4 5
@@ -82,6 +82,7 @@ DAEMON=$ES_HOME/bin/elasticsearch
 DAEMON_OPTS="-d -p $PID_FILE -Edefault.path.logs=$LOG_DIR -Edefault.path.data=$DATA_DIR -Edefault.path.conf=$CONF_DIR"
 
 export ES_JAVA_OPTS
+export ES_JVM_OPTIONS
 export JAVA_HOME
 export ES_INCLUDE
 

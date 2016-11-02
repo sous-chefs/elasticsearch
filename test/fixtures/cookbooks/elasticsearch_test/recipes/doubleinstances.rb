@@ -11,12 +11,6 @@ elasticsearch_install 'elasticsearch' do
   type 'package'
 end
 
-elasticsearch_plugin 'elasticsearch_xpack' do
-  instance_name 'x-pack'
-  # notifies :restart, "elasticsearch_service[elasticsearch]", :delayed
-  not_if { ::File.exist?('/usr/share/elasticsearch/plugins/x-pack') }
-end
-
 settings = {
   alpha: {
     http_port: 9201,
@@ -40,14 +34,22 @@ settings = {
     path_pid     "/var/run/elasticsearch-#{instance_name}"
     path_plugins '/usr/share/elasticsearch/bin/plugin'
     path_bin     '/usr/share/elasticsearch/bin'
-    allocated_memory '256m'
+    allocated_memory '128m'
     configuration(
       'cluster.name' => 'mycluster',
       'node.name' => "node_#{instance_name}",
       'network.host' => '127.0.0.1',
       'http.port' => settings[instance_name.to_sym][:http_port].to_s,
-      'transport.tcp.port' => settings[instance_name.to_sym][:transport_port].to_s
+      'transport.tcp.port' => settings[instance_name.to_sym][:transport_port].to_s,
+      'discovery.zen.ping.unicast.hosts' => settings[instance_name.to_sym][:discovery_hosts].to_s
     )
+  end
+
+  elasticsearch_plugin "xpack_#{instance_name}" do
+    instance_name instance_name
+    plugin_name "x-pack"
+    notifies :restart, "elasticsearch_service[elasticsearch_#{instance_name}]", :delayed
+    not_if { ::File.exist?('/usr/share/elasticsearch/plugins/x-pack') }
   end
 
   elasticsearch_service "elasticsearch_#{instance_name}" do

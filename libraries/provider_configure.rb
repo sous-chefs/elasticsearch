@@ -88,10 +88,11 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
     params[:MAX_MAP_COUNT] = new_resource.max_map_count
+    params[:ES_JVM_OPTIONS] = "#{new_resource.path_conf}/jvm.options"
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
-    shell_template = template 'elasticsearch.in.sh' do
+    shell_template = template "elasticsearch.in.sh-#{default_config_name}" do
       path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
@@ -104,7 +105,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Create jvm.options file
     #
-    jvm_options_template = template 'jvm_options' do
+    jvm_options_template = template "jvm_options-#{default_config_name}" do
       path   "#{new_resource.path_conf}/jvm.options"
       source new_resource.template_jvm_options
       cookbook new_resource.cookbook_jvm_options
@@ -123,7 +124,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Create ES logging file
     #
-    logging_template = template 'log4j2_properties' do
+    logging_template = template "log4j2_properties-#{default_config_name}" do
       path   "#{new_resource.path_conf}/log4j2.properties"
       source new_resource.template_log4j2_properties
       cookbook new_resource.cookbook_log4j2_properties
@@ -146,7 +147,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       Chef::Log.warn("Please change the following to strings in order to work with this Elasticsearch cookbook: #{found_symbols.join(',')}")
     end
 
-    yml_template = template 'elasticsearch.yml' do
+    yml_template = template "elasticsearch.yml-#{default_config_name}" do
       path "#{new_resource.path_conf}/elasticsearch.yml"
       source new_resource.template_elasticsearch_yml
       cookbook new_resource.cookbook_elasticsearch_yml

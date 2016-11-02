@@ -96,3 +96,10 @@ suites:
     run_list:
       - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
+
+  - name: double
+    driver_config:
+      require_chef_omnibus: true
+    run_list:
+      - recipe[java]
+      - recipe[elasticsearch_test::doubleinstances]

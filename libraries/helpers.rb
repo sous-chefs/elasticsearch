@@ -101,24 +101,5 @@ module ElasticsearchCookbook
           node['elasticsearch']['checksums'][version][platform_family]
       end
     end
-
-    # proxy helpers for chef
-    def get_configured_proxy
-      if Chef::Config['http_proxy'] && !Chef::Config['http_proxy'].empty?
-        Chef::Config['http_proxy']
-      elsif Chef::Config['https_proxy'] && !Chef::Config['https_proxy'].empty?
-        Chef::Config['https_proxy']
-      end
-    end
-
-    def get_java_proxy_arguments(enabled = true)
-      return '' unless enabled
-
-      require 'uri'
-      parsed_uri = URI(get_configured_proxy)
-      "-DproxyHost=#{parsed_uri.host} -DproxyPort=#{parsed_uri.port}"
-    rescue
-      ''
-    end
   end
 end

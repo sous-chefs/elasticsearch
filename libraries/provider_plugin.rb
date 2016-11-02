@@ -11,9 +11,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
   action :install do
     unless plugin_exists(new_resource.plugin_name)
-      # respect chef proxy settings unless they have been disabled explicitly
-      proxy_arguments = get_java_proxy_arguments(new_resource.chef_proxy)
-      manage_plugin("install #{new_resource.url} #{proxy_arguments}")
+      manage_plugin("install #{new_resource.plugin_name}")
     end
   end # action
 

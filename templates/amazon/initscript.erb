@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# elasticsearch <summary>
+# <%= @program_name %> <summary>
 #
 # chkconfig:   2345 80 20
 # description: Starts and stops a single elasticsearch instance on this system
@@ -60,6 +60,7 @@ prog="elasticsearch"
 pidfile="$PID_DIR/${prog}.pid"
 
 export ES_JAVA_OPTS
+export ES_JVM_OPTIONS
 export ES_STARTUP_SLEEP_TIME
 export JAVA_HOME
 export ES_INCLUDE
