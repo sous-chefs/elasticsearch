@@ -24,31 +24,35 @@ platforms:
     run_list:
     - recipe[apt]
     - recipe[curl]
+    - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-14.04
     run_list:
     - recipe[apt]
     - recipe[curl]
+    - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-12.04
     run_list:
     - recipe[apt]
     - recipe[curl]
+    - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
   - name: centos-7.2
     run_list:
     - recipe[yum]
     - recipe[curl]
+    - recipe[java]
   - name: centos-6.7
     run_list:
     - recipe[yum]
     - recipe[curl]
+    - recipe[java]
 
 suites:
   - name: package # install from package
     require_chef_omnibus: 12.15.19
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
     attributes:
       elasticsearch:
@@ -58,7 +62,6 @@ suites:
   - name: tarball # install by tarball
     require_chef_omnibus: 12.15.19
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
     attributes:
       elasticsearch:
@@ -69,14 +72,12 @@ suites:
     driver_config:
       require_chef_omnibus: 12.15.19
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::package]
 
   - name: override_tarball # the override-everything use case
     driver_config:
       require_chef_omnibus: 12.15.19
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::tarball]
 
   - name: chef-12.14.89
@@ -85,7 +86,6 @@ suites:
     includes:
       - ubuntu-16.04
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
   - name: chef-12.13.37
@@ -94,12 +94,10 @@ suites:
     includes:
       - ubuntu-16.04
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
 
   - name: double
     driver_config:
       require_chef_omnibus: true
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::doubleinstances]

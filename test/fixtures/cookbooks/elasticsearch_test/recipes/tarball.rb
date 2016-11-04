@@ -3,7 +3,7 @@
 
 # create user with all non-default overriden options
 elasticsearch_user 'foobar' do
-  username 'foo'
+  username 'elasticsearch'
   groupname 'bar'
   uid 1111
   gid 2222

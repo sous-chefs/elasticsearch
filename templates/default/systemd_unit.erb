@@ -12,14 +12,14 @@ Environment=LOG_DIR=/var/log/elasticsearch
 Environment=PID_DIR=/var/run/elasticsearch
 EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
-WorkingDirectory=/usr/share/elasticsearch
+WorkingDirectory=<%= @path_home %>
 
-User=elasticsearch
-Group=elasticsearch
+User=<%= @es_user %>
+Group=<%= @es_group %>
 
-ExecStartPre=/usr/share/elasticsearch/bin/elasticsearch-systemd-pre-exec
+ExecStartPre=<%= @path_home %>/bin/elasticsearch-systemd-pre-exec
 
-ExecStart=/usr/share/elasticsearch/bin/elasticsearch \
+ExecStart=<%= @path_home %>/bin/elasticsearch \
                                                 -p ${PID_DIR}/elasticsearch.pid \
                                                 --quiet \
                                                 -Edefault.path.logs=${LOG_DIR} \
@@ -36,7 +36,7 @@ StandardOutput=journal
 StandardError=inherit
 
 # Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE=65536
+LimitNOFILE=<%= @nofile_limit %>
 
 # Specifies the maximum number of bytes of memory that may be locked into RAM
 # Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
