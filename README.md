@@ -24,11 +24,25 @@ the version parameter as a string into your download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
-|`default['elasticsearch']['version']`|`'5.0.0'`|[See list](attributes/default.rb).|
-TODO: |`default['elasticsearch']['install_type']`|`:package`|`:tarball`|
 |`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+
+This cookbook's `elasticsearch::default` recipe also supports setting any `elasticsearch_` resource using attributes:
+
+```
+default['elasticsearch']['user'] = {}
+default['elasticsearch']['install'] = {}
+default['elasticsearch']['configure'] = {}
+default['elasticsearch']['service'] = {}
+default['elasticsearch']['plugin'] = {}
+```
+
+For example, this will pass a username 'foo' to `elasticsearch_user` and set a uid to `1234`:
+```
+default['elasticsearch']['user']['username'] = 'foo'
+default['elasticsearch']['user']['uid'] = '1234'
+```
 
 ## Recipes
 
@@ -50,18 +64,12 @@ including a demonstration of how to configure two instances of Elasticsearch on 
 
 ## Notifications and Service Start/Restart
 
-The resources provided in this cookbook **do not automatically start or
-restart** services when changes have occurred. This has been done to protect you
-from accidental data loss and service outages, as nodes might restart
-simultaneously or may not restart at all when bad configuration values are
-supplied.
+The resources provided in this cookbook **do not automatically restart** services when changes have occurred. They ***do start services by default when configuring a new service*** This has been done to protect you from accidental data loss and service outages, as nodes might restart simultaneously or may not restart at all when bad configuration values are supplied.
 
-elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled`, but not `:started`). It will also pass through all of the standard `service` resource
+elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled` and `:started`). It will also pass through all of the standard `service` resource
 actions to the underlying service resource if you wish to notify it.
 
-
-You **must** supply your desired notifications when using each resource if you
-want Chef to automatically restart services. Again, we don't recommend this.
+You **must** supply your desired notifications when using each resource if you want Chef to automatically restart services. Again, we don't recommend this unless you know what you're doing.
 
 ### Resource names
 
@@ -119,11 +127,12 @@ end
 Actions: `:install`, `:remove`
 
 Downloads the elasticsearch software, and unpacks it on the system. There are
-currently two ways to install -- `:package`, which downloads the appropriate
+currently three ways to install -- `'repository'` (the default), which creates an
+apt or yum repo and installs from there, `'package'`, which downloads the appropriate
 package from elasticsearch.org and uses the package manager to install it, and
-`:tarball` which downloads a tarball from elasticsearch.org and unpacks it in
-/usr/local on the system. This resource also comes with a `:remove` action
-which will remove the package or directory elasticsearch was unpacked into.
+`'tarball'` which downloads a tarball from elasticsearch.org and unpacks it.
+This resource also comes with a `:remove` action which will remove the package
+or directory elasticsearch was unpacked into.
 
 You may always specify a download_url and/or download_checksum, and you may
 include `%s` which will be replaced by the version parameter you supply.
@@ -140,15 +149,15 @@ elasticsearch_install 'elasticsearch'
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type :package # type of install
-  version "1.7.2"
+  type 'package' # type of install
+  version "5.0.0"
   action :install # could be :remove as well
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type :tarball # type of install
+  type 'tarball' # type of install
   dir tarball: '/usr/local' # where to install
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
@@ -161,15 +170,15 @@ end
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type :tarball # type of install
-  version '1.7.2'
+  type 'tarball' # type of install
+  version '5.0.0'
   action :install # could be :remove as well
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type :package # type of install
+  type 'package' # type of install
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.deb"
   # sha256
   download_checksum "791fb9f2131be2cf8c1f86ca35e0b912d7155a53f89c2df67467ca2105e77ec2"
