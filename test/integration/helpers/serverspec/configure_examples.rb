@@ -38,10 +38,17 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'java.awt.headless=true'
   ]
 
-  [path_conf, path_data, path_logs].each do |p|
+  describe file(path_data) do
+    it { should be_directory }
+    it { should be_mode 755 }
+    it { should be_owned_by expected_user } unless package?
+    it { should be_grouped_into expected_group } unless package?
+  end
+
+  [path_conf, path_logs].each do |p|
     describe file(p) do
       it { should be_directory }
-      it { should be_mode 755 }
+      it { should be_mode 750 }
       it { should be_owned_by expected_user } unless package?
       it { should be_grouped_into expected_group } unless package?
     end
@@ -58,7 +65,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
   describe file("#{path_conf}/elasticsearch.yml") do
     it { should be_file }
-    it { should be_mode 600 }
+    it { should be_mode 750 }
     it { should be_owned_by expected_user }
     it { should be_grouped_into expected_group }
 
@@ -80,7 +87,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
   describe file("#{path_conf}/log4j2.properties") do
     it { should be_file }
-    it { should be_mode 644 }
+    it { should be_mode 750 }
     it { should be_owned_by expected_user }
     it { should be_grouped_into expected_group }
 
