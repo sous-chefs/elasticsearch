@@ -1,6 +1,10 @@
 # Change Log
 
-## [v3.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.4.0) (2016-11-07)
+## [v3.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.1) (2016-11-09)
+
+- Fix incorrect MAX_MAP_COUNT default to be '262144' to match init scripts (#516)
+
+## [v3.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.0) (2016-11-07)
 
 Breaking changes that were needed for v5.0.0 support (#497, #512, #424, #478, #503):
   - We dropped the fancy logic for figuring out the requested version of Elasticsearch to be installed. You should pass it on the resource or in the recipe, but we no longer do a bunch of logic to figure out what you meant -- we favor being explicit now.
