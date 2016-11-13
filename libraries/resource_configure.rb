@@ -51,6 +51,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:logging, kind_of: Hash, default: {}.freeze)
 
   attribute(:java_home, kind_of: String, default: nil)
+  attribute(:es_include, kind_of: [TrueClass, FalseClass], default: true)
 
   attribute(:startup_sleep_seconds, kind_of: [String, Integer], default: 5)
 
