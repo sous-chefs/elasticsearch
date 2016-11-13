@@ -68,7 +68,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
     # ES_HOME CONF_DIR CONF_FILE DATA_DIR LOG_DIR WORK_DIR PID_DIR
-    # ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
+    # ES_CLASSPATH ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
     # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_STARTUP_SLEEP_TIME
     # ES_USER ES_GROUP MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
     params = {}
@@ -97,6 +97,8 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:ES_JAVA_OPTS] << '-Djna.nosys=true'
     params[:ES_JAVA_OPTS] << " #{new_resource.env_options}" if new_resource.env_options
     params[:ES_JAVA_OPTS] << '"'
+
+    params[:ES_CLASSPATH] = "#{new_resource.path_home[es_install.type]}/lib/*"
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
