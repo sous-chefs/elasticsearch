@@ -12,6 +12,11 @@ elasticsearch_install 'elasticsearch' do
   type node['elasticsearch']['install_type'].to_sym # since TK can't symbol.
 end
 elasticsearch_configure 'elasticsearch'
-elasticsearch_service 'elasticsearch'
+elasticsearch_service 'elasticsearch' do 
+  node['elasticsearch']['service'].each do |key, value|
+    # Skip nils, use false if you want to disable something.
+    send(key, value) unless value.nil?
+  end
+end
 
 # by default, no plugins
