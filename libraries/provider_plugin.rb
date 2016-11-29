@@ -64,16 +64,23 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
   def shell_out_as_user!(command, run_ctx)
     es_install = find_es_resource(run_ctx, :elasticsearch_install, new_resource)
+    es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
+    es_svc = find_es_resource(run_context, :elasticsearch_service, new_resource)
+
+    # we need to figure out the env file path to set environment for plugins
+    default_config_name = es_svc.service_name || es_svc.instance_name || es_conf.instance_name || 'elasticsearch'
+    include_file_resource = find_exact_resource(run_ctx, :template, "elasticsearch.in.sh-#{default_config_name}")
+    env = { ES_INCLUDE: include_file_resource.path }
 
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
     if es_install.type == 'package' || es_install.type == 'repository'
       # package installations should install plugins as root
-      shell_out!(command)
+      shell_out!(command, :env => env)
     else
       # non-package installations should install plugins as the ES user
       es_user = find_es_resource(run_ctx, :elasticsearch_user, new_resource)
-      shell_out!(command, user: es_user.username, group: es_user.groupname)
+      shell_out!(command, user: es_user.username, group: es_user.groupname, :env => env)
     end
   end
 end # provider
