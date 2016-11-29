@@ -1,6 +1,11 @@
 # Change Log
 
-## [v3.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.1) (2016-11-09)
+## [v3.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.2) (2016-11-29)
+
+- Ensure bin/elasticsearch-plugin uses the proper environment (#523)
+- Bump default Elasticsearch version from v5.0.0 to v5.0.1
+
+## [v3.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.1) (2016-11-09)
 
 - Fix incorrect MAX_MAP_COUNT default to be '262144' to match init scripts (#516)
 
