@@ -12,6 +12,8 @@
 
 **Previous versions** of this cookbook may be found using the git tags on this repository.
 
+**Upgrading Elasticsearch** in place is not recommended, and generally not supported by this cookbook. We strongly recommend you pin versions of Elasticsearch and spin up new servers to migrate to a new version, one node at a time. This cookbook does not generally set destructive options like asking the package manager to overwrite configuration files without prompting, either.
+
 ## Attributes
 
 Please consult [attributes/default.rb](attributes/default.rb) for a large list
