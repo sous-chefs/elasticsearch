@@ -61,8 +61,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
       -Dlog4j2.disable.jmx=true
       -Dlog4j.skipJansi=true
       -XX:+HeapDumpOnOutOfMemoryError
-    ).freeze
-           )
+    ).freeze)
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

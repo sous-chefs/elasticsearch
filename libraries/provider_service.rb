@@ -33,7 +33,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       source new_resource.init_source
       cookbook new_resource.init_cookbook
       owner 'root'
-      mode 0755
+      mode '0755'
       variables(
         # we need to include something about #{progname} fixed in here.
         program_name: new_resource.service_name
@@ -57,7 +57,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       source new_resource.systemd_source
       cookbook new_resource.systemd_cookbook
       owner 'root'
-      mode 0644
+      mode '0644'
       variables(
         # we need to include something about #{progname} fixed in here.
         program_name: new_resource.service_name,

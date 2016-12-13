@@ -25,6 +25,7 @@ end
 # use to stub commands or files or other ruby calls
 # e.g. stub_command('/usr/sbin/httpd -t').and_return(0)
 def stub_resources
+  stub_command('/usr/sbin/foo').and_return(0)
 end
 
 def stub_chef_zero(platform, version, server)

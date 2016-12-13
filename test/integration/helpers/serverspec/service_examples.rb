@@ -9,7 +9,7 @@ shared_examples_for 'elasticsearch service' do |service_name = 'elasticsearch', 
   end
 
   # always sleep before checking the service; it needs time to stabilize
-  describe command("sleep 30") do
+  describe command('sleep 30') do
     its(:exit_status) { should eq 0 }
   end
 

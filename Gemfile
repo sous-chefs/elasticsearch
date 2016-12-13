@@ -1,14 +1,14 @@
 source 'https://rubygems.org'
 
 group :lint do
-  gem 'foodcritic', '~> 6.0'
   gem 'cookstyle'
+  gem 'foodcritic', '~> 6.0'
 end
 
 group :unit do
   gem 'berkshelf', '~> 4.3'
-  gem 'chefspec', '>= 4.2'
   gem 'chef-sugar'
+  gem 'chefspec', '>= 4.2'
 end
 
 group :kitchen_common do
@@ -30,10 +30,10 @@ end
 
 group :development do
   gem 'growl'
-  gem 'rb-fsevent'
   gem 'guard'
-  gem 'guard-kitchen'
   gem 'guard-foodcritic'
+  gem 'guard-kitchen'
   gem 'guard-rubocop'
   gem 'pry-nav'
+  gem 'rb-fsevent'
 end

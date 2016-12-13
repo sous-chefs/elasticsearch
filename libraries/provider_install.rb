@@ -100,7 +100,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     remote_file_r = remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
       source download_url
       checksum checksum
-      mode 00644
+      mode '0644'
       action :nothing
     end
     remote_file_r.run_action(:create)

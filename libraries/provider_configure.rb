@@ -41,7 +41,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       d = directory path do
         owner es_user.username
         group es_user.groupname
-        mode 0750
+        mode '0750'
         recursive true
         action :nothing
       end
@@ -57,7 +57,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       d = directory path.strip do
         owner es_user.username
         group es_user.groupname
-        mode 0755
+        mode '0755'
         recursive true
         action :nothing
       end
@@ -96,7 +96,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
-      mode 0644
+      mode '0644'
       variables(params: params)
       action :nothing
     end
@@ -111,7 +111,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_jvm_options
       owner es_user.username
       group es_user.groupname
-      mode 0644
+      mode '0644'
       variables(jvm_options: [
         "-Xms#{new_resource.allocated_memory}",
         "-Xmx#{new_resource.allocated_memory}",
@@ -130,7 +130,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_log4j2_properties
       owner es_user.username
       group es_user.groupname
-      mode 0750
+      mode '0750'
       variables(logging: new_resource.logging)
       action :nothing
     end
@@ -153,7 +153,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_elasticsearch_yml
       owner es_user.username
       group es_user.groupname
-      mode 0750
+      mode '0750'
       helpers(ElasticsearchCookbook::Helpers)
       variables(config: merged_configuration)
       action :nothing

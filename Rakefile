@@ -22,12 +22,9 @@ namespace :style do
   desc 'Run Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     # 'search_gems' doesn't work, but :search_gems does
-    # rubocop:disable Style/HashSyntax
     t.options = { :search_gems => true, # allows us to add addl gems with more rules
                   :fail_tags => ['correctness'],
-                  :chef_version => '12.4.1'
-                }
-    # rubocop:enable Style/HashSyntax
+                  :chef_version => '12.4.1' }
   end
 end
 

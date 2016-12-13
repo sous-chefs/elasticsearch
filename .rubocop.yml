@@ -25,6 +25,8 @@ Metrics/MethodLength:
   Max: 30
 Metrics/ModuleLength:
   Max: 150
+Metrics/BlockLength:
+  Max: 150
 
 # Not on VT100s anymore.
 Metrics/LineLength:
@@ -37,3 +39,13 @@ Metrics/CyclomaticComplexity:
   Max: 20
 Metrics/PerceivedComplexity:
   Max: 20
+
+# Mixlib::ShellOut is nice to have as an older hash syntax
+Style/HashSyntax:
+  Enabled: false
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
