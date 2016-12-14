@@ -38,6 +38,9 @@ StandardError=inherit
 # Specifies the maximum file descriptor number that can be opened by this process
 LimitNOFILE=<%= @nofile_limit %>
 
+# Specifies the maximum number of threads that can be opened by this process
+LimitNPROC=<%= @nproc_limit %>
+
 # Specifies the maximum number of bytes of memory that may be locked into RAM
 # Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
 # in elasticsearch.yml and 'MAX_LOCKED_MEMORY=unlimited' in <%= @default_dir %>/<%= @program_name %>
