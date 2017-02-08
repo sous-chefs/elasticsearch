@@ -194,6 +194,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
 
     # remove the specific version
     d_r = directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
+      recursive true
       action :nothing
     end
     d_r.run_action(:delete)
