@@ -14,7 +14,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'node.name: .+',
     'path.conf: \/.+',
     'path.data: \/.+',
-    'path.logs: \/.+'
+    'path.logs: \/.+',
   ]
 
   expected_environment = args[:env] || [
@@ -29,13 +29,13 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'MAX_MAP_COUNT=.+',
     'MAX_OPEN_FILES=.+',
     'PID_DIR=.+',
-    'RESTART_ON_UPGRADE=.+'
+    'RESTART_ON_UPGRADE=.+',
   ]
 
   expected_jvm_options = args[:jvmopts] || [
     'server',
     'HeapDumpOnOutOfMemoryError',
-    'java.awt.headless=true'
+    'java.awt.headless=true',
   ]
 
   describe file(path_data) do

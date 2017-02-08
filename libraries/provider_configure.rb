@@ -115,7 +115,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       variables(jvm_options: [
         "-Xms#{new_resource.allocated_memory}",
         "-Xmx#{new_resource.allocated_memory}",
-        new_resource.jvm_options
+        new_resource.jvm_options,
       ].flatten.join("\n"))
       action :nothing
     end

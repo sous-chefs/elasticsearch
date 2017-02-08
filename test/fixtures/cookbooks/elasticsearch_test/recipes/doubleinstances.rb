@@ -13,13 +13,13 @@ settings = {
   alpha: {
     http_port: 9201,
     transport_port: 9301,
-    discovery_hosts: '127.0.0.1:9302'
+    discovery_hosts: '127.0.0.1:9302',
   },
   beta: {
     http_port: 9202,
     transport_port: 9302,
-    discovery_hosts: '127.0.0.1:9301'
-  }
+    discovery_hosts: '127.0.0.1:9301',
+  },
 }
 
 %w(alpha beta).each do |instance_name|

@@ -10,7 +10,7 @@ default['elasticsearch']['plugin'] = {}
 default['elasticsearch']['download_urls'] = {
   'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.deb',
   'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.rpm',
-  'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz'
+  'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz',
 }
 
 # platform_family keyed download sha256 checksums
