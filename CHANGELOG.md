@@ -1,5 +1,14 @@
 # Change Log
 
+## [v3.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.3) (2017-02-09)
+- Fix URL support for plugins (#525)
+- Add support for versions 5.0.2, 5.1.1, 5.1.2, 5.2.0
+- Make 5.2.0 the default version
+- Add a note about upgrading to new versions (#527)
+- Foodcritic/Rubocop style cleanup
+- Fix ruby version build on travis
+- remove tarball directory recursively
+
 ## [v3.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.2) (2016-11-29)
 
 - Ensure bin/elasticsearch-plugin uses the proper environment (#523)
