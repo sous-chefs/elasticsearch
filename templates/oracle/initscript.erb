@@ -37,11 +37,12 @@ ES_GROUP="elasticsearch"
 ES_HOME="/usr/share/elasticsearch"
 MAX_OPEN_FILES=65536
 MAX_MAP_COUNT=262144
-LOG_DIR="/var/log/elasticsearch"
-DATA_DIR="/var/lib/elasticsearch"
-CONF_DIR="/etc/elasticsearch"
 
-PID_DIR="/var/run/elasticsearch"
+ES_HOME="<%= @path_home %>"
+LOG_DIR="<%= @path_logs %>"
+DATA_DIR="<%= @path_data %>"
+CONF_DIR="<%= @path_conf %>"
+PID_DIR="<%= @path_pid %>"
 
 # Source the default env file
 ES_ENV_FILE="/etc/sysconfig/<%= @program_name %>"

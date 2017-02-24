@@ -37,7 +37,7 @@ ES_USER=elasticsearch
 ES_GROUP=elasticsearch
 
 # Directory where the Elasticsearch binary distribution resides
-ES_HOME=/usr/share/$NAME
+ES_HOME="<%= @path_home %>"
 
 # Additional Java OPTS
 #ES_JAVA_OPTS=
@@ -49,19 +49,19 @@ MAX_OPEN_FILES=65536
 #MAX_LOCKED_MEMORY=
 
 # Elasticsearch log directory
-LOG_DIR=/var/log/$NAME
+LOG_DIR="<%= @path_logs %>"
 
 # Elasticsearch data directory
-DATA_DIR=/var/lib/$NAME
+DATA_DIR="<%= @path_data %>"
 
 # Elasticsearch configuration directory
-CONF_DIR=/etc/$NAME
+CONF_DIR="<%= @path_conf %>"
 
 # Maximum number of VMA (Virtual Memory Areas) a process can own
 MAX_MAP_COUNT=262144
 
 # Elasticsearch PID file directory
-PID_DIR="/var/run/elasticsearch"
+PID_DIR="<%= @path_pid %>"
 
 # End of variables that can be overwritten in $DEFAULT
 

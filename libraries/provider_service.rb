@@ -36,7 +36,12 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       mode '0755'
       variables(
         # we need to include something about #{progname} fixed in here.
-        program_name: new_resource.service_name
+        program_name: new_resource.service_name,
+        path_home: es_conf.path_home,
+        path_conf: es_conf.path_conf,
+        path_data: es_conf.path_data,
+        path_logs: es_conf.path_logs,
+        path_pid: es_conf.path_pid
       )
       only_if { ::File.exist?('/etc/init.d') }
       action :nothing
@@ -65,7 +70,12 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         path_home: es_conf.path_home,
         es_user: es_user.username,
         es_group: es_user.groupname,
-        nofile_limit: es_conf.nofile_limit
+        nofile_limit: es_conf.nofile_limit,
+        path_home: es_conf.path_home,
+        path_conf: es_conf.path_conf,
+        path_data: es_conf.path_data,
+        path_logs: es_conf.path_logs,
+        path_pid: es_conf.path_pid
       )
       only_if 'which systemctl'
       action :nothing
