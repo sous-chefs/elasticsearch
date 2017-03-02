@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.0.4](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.4) (2017-03-02)
+- Bump ES version to 5.2.2 (#550)
+
 ## [v3.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.3) (2017-02-09)
 - Fix URL support for plugins (#525)
 - Add support for versions 5.0.2, 5.1.1, 5.1.2, 5.2.0
