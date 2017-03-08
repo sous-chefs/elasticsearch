@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.4.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.4.1) (2017-03-08)
+
+- Update hash and default version to 2.4.4 (#552)
+
 ## [v2.4.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.4.0) (2016-09-15)
 
 - Update attributes for 2.3.5 and 2.4.0 versions. Use 2.4.0 version as default for installation and tests. [\#496](https://github.com/elastic/cookbook-elasticsearch/issues/496) and [\#490](https://github.com/elastic/cookbook-elasticsearch/issues/490)
