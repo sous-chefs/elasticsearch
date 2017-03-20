@@ -101,5 +101,26 @@ module ElasticsearchCookbook
           node['elasticsearch']['checksums'][version][platform_family]
       end
     end
+
+    # proxy helper for chef sets JVM 8 proxy options
+    def get_java_proxy_arguments(enabled = true)
+      return '' unless enabled
+      require 'uri'
+      output = ''
+
+      if Chef::Config[:http_proxy] && !Chef::Config[:http_proxy].empty?
+        parsed_uri = URI(Chef::Config[:http_proxy])
+        output += "-Dhttp.proxyHost=#{parsed_uri.host} -Dhttp.proxyPort=#{parsed_uri.port}"
+      end
+
+      if Chef::Config[:https_proxy] && !Chef::Config[:https_proxy].empty?
+        parsed_uri = URI(Chef::Config[:https_proxy])
+        output += "-Dhttps.proxyHost=#{parsed_uri.host} -Dhttps.proxyPort=#{parsed_uri.port}"
+      end
+
+      output
+    rescue
+      ''
+    end
   end
 end

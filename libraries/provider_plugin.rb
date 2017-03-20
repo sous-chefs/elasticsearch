@@ -74,6 +74,8 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     include_file_resource = find_exact_resource(run_ctx, :template, "elasticsearch.in.sh-#{default_config_name}")
     env = { ES_INCLUDE: include_file_resource.path }
 
+    env[:ES_JAVA_OPTS] = "#{ENV['ES_JAVA_OPTS']} #{get_java_proxy_arguments}" if new_resource.chef_proxy
+
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
     if es_install.type == 'package' || es_install.type == 'repository'
