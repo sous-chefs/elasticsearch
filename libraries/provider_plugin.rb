@@ -72,11 +72,11 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     # we need to figure out the env file path to set environment for plugins
     default_config_name = es_svc.service_name || es_svc.instance_name || es_conf.instance_name || 'elasticsearch'
     include_file_resource = find_exact_resource(run_ctx, :template, "elasticsearch.in.sh-#{default_config_name}")
-    env = { ES_INCLUDE: include_file_resource.path }
+    env = { 'ES_INCLUDE' => include_file_resource.path }
 
     # Add HTTP Proxy vars unless explicitly told not to
     if new_resource.chef_proxy
-      env[:ES_JAVA_OPTS] = "#{ENV['ES_JAVA_OPTS']} #{get_java_proxy_arguments}"
+      env['ES_JAVA_OPTS'] = "#{ENV['ES_JAVA_OPTS']} #{get_java_proxy_arguments}"
     end
 
     # See this link for an explanation:

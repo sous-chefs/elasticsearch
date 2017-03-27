@@ -110,12 +110,12 @@ module ElasticsearchCookbook
 
       if Chef::Config[:http_proxy] && !Chef::Config[:http_proxy].empty?
         parsed_uri = URI(Chef::Config[:http_proxy])
-        output += "-Dhttp.proxyHost=#{parsed_uri.host} -Dhttp.proxyPort=#{parsed_uri.port}"
+        output += "-Dhttp.proxyHost=#{parsed_uri.host} -Dhttp.proxyPort=#{parsed_uri.port} "
       end
 
       if Chef::Config[:https_proxy] && !Chef::Config[:https_proxy].empty?
         parsed_uri = URI(Chef::Config[:https_proxy])
-        output += "-Dhttps.proxyHost=#{parsed_uri.host} -Dhttps.proxyPort=#{parsed_uri.port}"
+        output += "-Dhttps.proxyHost=#{parsed_uri.host} -Dhttps.proxyPort=#{parsed_uri.port} "
       end
 
       output
