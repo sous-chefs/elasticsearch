@@ -130,7 +130,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_log4j2_properties
       owner es_user.username
       group es_user.groupname
-      mode '0750'
+      mode '0640'
       variables(logging: new_resource.logging)
       action :nothing
     end
@@ -153,7 +153,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       cookbook new_resource.cookbook_elasticsearch_yml
       owner es_user.username
       group es_user.groupname
-      mode '0750'
+      mode '0640'
       helpers(ElasticsearchCookbook::Helpers)
       variables(config: merged_configuration)
       action :nothing
