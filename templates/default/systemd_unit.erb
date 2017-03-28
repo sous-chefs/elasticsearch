@@ -5,11 +5,11 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-Environment=ES_HOME=/usr/share/elasticsearch
-Environment=CONF_DIR=/etc/elasticsearch
-Environment=DATA_DIR=/var/lib/elasticsearch
-Environment=LOG_DIR=/var/log/elasticsearch
-Environment=PID_DIR=/var/run/elasticsearch
+Environment=ES_HOME=<%= @path_home %>
+Environment=CONF_DIR=<%= @path_conf %>
+Environment=DATA_DIR=<%= @path_data %>
+Environment=LOG_DIR=<%= @path_logs %>
+Environment=PID_DIR=<%= @path_pid %>
 EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
 WorkingDirectory=<%= @path_home %>
