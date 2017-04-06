@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.0.5](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.5) (2017-04-06)
+- Bump ES version to 5.3.0 (#550)
+- Fix permissions for elasticsearch.yml and log4j2.properties (#555)
+
 ## [v3.0.4](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.4) (2017-03-02)
 - Bump ES version to 5.2.2 (#550)
 
