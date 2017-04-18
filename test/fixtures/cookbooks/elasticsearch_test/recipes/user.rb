@@ -1,7 +1,8 @@
-elasticsearch_user 'deleteme' do
-  groupname 'foo'
+begin
+  user = find(:elasticsearch_user => "deleteme")
+rescue
+  user = elasticsearch_user 'deleteme'
 end
 
-elasticsearch_user 'deleteme' do
-  action :remove
-end
+user.groupname 'foo'
+user.action [:create, :remove]
