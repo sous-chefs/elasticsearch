@@ -10,7 +10,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     false
   end
 
-  action :install do
+  def action_install
     if new_resource.type == 'tarball'
       install_tarball_wrapper_action
     elsif new_resource.type == 'package'
@@ -22,7 +22,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     end
   end
 
-  action :remove do
+  def action_remove
     if new_resource.type == 'tarball'
       remove_tarball_wrapper_action
     elsif new_resource.type == 'package'
@@ -143,7 +143,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   def install_tarball_wrapper_action
     include_recipe 'ark'
 
-    es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
 
     ark_r = ark 'elasticsearch' do
       url   determine_download_url(new_resource, node)

@@ -8,10 +8,10 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     false
   end
 
-  action :manage do
+  def action_manage
     # lookup existing ES resources
-    es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
-    es_svc = find_es_resource(run_context, :elasticsearch_service, new_resource)
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    es_svc = find_es_resource(Chef.run_context, :elasticsearch_service, new_resource)
 
     default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name

@@ -7,13 +7,13 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     false
   end
 
-  action :remove do
+  def action_remove
     raise "#{new_resource} remove not currently implemented"
   end
 
-  action :configure do
-    es_user = find_es_resource(run_context, :elasticsearch_user, new_resource)
-    es_conf = find_es_resource(run_context, :elasticsearch_configure, new_resource)
+  def action_configure
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
     default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
     d_r = directory "#{es_conf.path_pid}-#{default_config_name}" do
@@ -91,27 +91,27 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
 
   # Passthrough actions to service[service_name]
   #
-  action :enable do
+  def action_enable
     passthrough_action(:enable)
   end
 
-  action :disable do
+  def action_disable
     passthrough_action(:disable)
   end
 
-  action :start do
+  def action_start
     passthrough_action(:start)
   end
 
-  action :stop do
+  def action_stop
     passthrough_action(:stop)
   end
 
-  action :restart do
+  def action_restart
     passthrough_action(:restart)
   end
 
-  action :status do
+  def action_status
     passthrough_action(:status)
   end
 
@@ -122,7 +122,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   end
 
   def lookup_service_resource
-    rc = run_context.resource_collection
+    rc = Chef.run_context.resource_collection
     rc.find("service[#{new_resource.service_name}]")
   rescue
     service new_resource.service_name do

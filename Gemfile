@@ -6,7 +6,7 @@ group :lint do
 end
 
 group :unit do
-  gem 'berkshelf', '~> 4.3'
+  gem 'berkshelf', '~> 5.0'
   gem 'chef-sugar'
   gem 'chefspec', '>= 4.2'
 end
@@ -36,4 +36,5 @@ group :development do
   gem 'guard-rubocop'
   gem 'pry-nav'
   gem 'rb-fsevent'
+  gem 'chef', '~> 13.0'
 end
