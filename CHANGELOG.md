@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.1.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.1.0) (2017-04-18)
+- Add Chef 13.x support for this cookbook (#561)
+- Reintroduce chef_proxy settings (#557)
+
 ## [v3.0.5](https://github.com/elastic/cookbook-elasticsearch/tree/v3.0.5) (2017-04-06)
 - Bump ES version to 5.3.0 (#550)
 - Fix permissions for elasticsearch.yml and log4j2.properties (#555)
