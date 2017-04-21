@@ -1,5 +1,5 @@
 begin
-  user = find(:elasticsearch_user => "deleteme")
+  user = find(:elasticsearch_user => 'deleteme')
 rescue
   user = elasticsearch_user 'deleteme'
 end
