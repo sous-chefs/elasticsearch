@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.1.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.1.1) (2017-05-01)
+- Add hashes for ES 5.3.1 (#562)
+- Add hashes for ES 5.3.2 (#567)
+
 ## [v3.1.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.1.0) (2017-04-18)
 - Add Chef 13.x support for this cookbook (#561)
 - Reintroduce chef_proxy settings (#557)
