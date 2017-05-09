@@ -37,7 +37,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Create ES directories
     #
-    [new_resource.path_conf, "#{new_resource.path_conf}/scripts", new_resource.path_logs].each do |path|
+    [new_resource.path_conf, "#{new_resource.path_conf}/scripts"].each do |path|
       d = directory path do
         owner es_user.username
         group es_user.groupname
@@ -52,6 +52,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Create data path directories
     #
     data_paths = new_resource.path_data.is_a?(Array) ? new_resource.path_data : new_resource.path_data.split(',')
+    data_paths = data_paths << new_resource.path_logs
 
     data_paths.each do |path|
       d = directory path.strip do

@@ -38,17 +38,17 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'java.awt.headless=true',
   ]
 
-  describe file(path_data) do
+  describe file(path_conf) do
     it { should be_directory }
-    it { should be_mode 755 }
+    it { should be_mode 750 }
     it { should be_owned_by expected_user } unless package?
     it { should be_grouped_into expected_group } unless package?
   end
 
-  [path_conf, path_logs].each do |p|
+  [path_data, path_logs].each do |p|
     describe file(p) do
       it { should be_directory }
-      it { should be_mode 750 }
+      it { should be_mode 755 }
       it { should be_owned_by expected_user } unless package?
       it { should be_grouped_into expected_group } unless package?
     end
