@@ -239,6 +239,10 @@ elasticsearch_configure 'my_elasticsearch' do
   path_plugins  "/opt/elasticsearch/plugins"
   path_bin      "/opt/elasticsearch/bin"
 
+  # override logging parameters
+  cookbook_log4j2_properties "my_wrapper_cookbook"
+  template_log4j2_properties "my_log4j2.properties.erb"
+
   logging({:"action" => 'INFO'})
 
   allocated_memory '123m'
