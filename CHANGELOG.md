@@ -1,5 +1,10 @@
 # Change Log
 
+## [v3.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.2.0) (2017-05-21)
+- Provide additional documentation about logging options, update template (#577)
+- Allow others to read elasticsearch log dir (#570)
+- Bump ES version to 5.4.0 (#569)
+
 ## [v3.1.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.1.1) (2017-05-01)
 - Add hashes for ES 5.3.1 (#562)
 - Add hashes for ES 5.3.2 (#567)
