@@ -68,7 +68,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
     # ES_HOME CONF_DIR CONF_FILE DATA_DIR LOG_DIR WORK_DIR PID_DIR
-    # ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
+    # ES_CLASSPATH ES_HEAP_SIZE ES_HEAP_NEWSIZE ES_DIRECT_SIZE ES_JAVA_OPTS
     # ES_RESTART_ON_UPGRADE ES_GC_LOG_FILE ES_STARTUP_SLEEP_TIME
     # ES_USER ES_GROUP MAX_OPEN_FILES MAX_LOCKED_MEMORY MAX_MAP_COUNT
     params = {}
@@ -98,10 +98,16 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:ES_JAVA_OPTS] << " #{new_resource.env_options}" if new_resource.env_options
     params[:ES_JAVA_OPTS] << '"'
 
+    params[:ES_CLASSPATH] = "#{new_resource.path_home[es_install.type]}/lib/*"
+
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
+    shell_template_path = node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
+
+    params[:ES_INCLUDE] = shell_template_path if new_resource.es_include
+
     shell_template = template 'elasticsearch.in.sh' do
-      path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
+      path shell_template_path
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
       mode 0644
