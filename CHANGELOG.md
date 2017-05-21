@@ -1,5 +1,9 @@
 # Change Log
 
+## [v2.5.0](https://github.com/elastic/cookbook-elasticsearch/tree/v2.5.0) (2017-05-21)
+
+- Update to support Chef 13 (#575)
+
 ## [v2.4.1](https://github.com/elastic/cookbook-elasticsearch/tree/v2.4.1) (2017-03-08)
 
 - Update hash and default version to 2.4.4 (#552)
