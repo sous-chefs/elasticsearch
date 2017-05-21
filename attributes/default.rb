@@ -1,3 +1,6 @@
+# Override service options
+default['elasticsearch']['service'] = {}
+
 # elasticsearch version & install type
 default['elasticsearch']['version'] = '2.4.4'
 default['elasticsearch']['install_type'] = :package
