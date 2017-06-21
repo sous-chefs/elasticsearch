@@ -25,4 +25,6 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
   # allow overridable systemd unit
   attribute(:systemd_source, kind_of: String, default: 'systemd_unit.erb')
   attribute(:systemd_cookbook, kind_of: String, default: 'elasticsearch')
+  attribute(:restart_event, kind_of: String, default: 'on-failure')
+  attribute(:restart_interval, kind_of: String, default: nil)
 end
