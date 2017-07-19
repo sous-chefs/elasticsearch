@@ -8,16 +8,16 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   end
 
   use_inline_resources
-  def action_remove
+  action :remove do
     raise "#{new_resource} remove not currently implemented"
   end
 
-  def action_configure
+  action :configure do
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
     default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
-    d_r = directory "#{es_conf.path_pid}-#{default_config_name}" do
+    directory "#{es_conf.path_pid}-#{default_config_name}" do
       path es_conf.path_pid
       owner es_user.username
       group es_user.groupname
@@ -79,32 +79,31 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       end
       reload_r.run_action(:run)
     end
-
   end
 
   # Passthrough actions to service[service_name]
   #
-  def action_enable
+  action :enable do
     passthrough_action(:enable)
   end
 
-  def action_disable
+  action :disable do
     passthrough_action(:disable)
   end
 
-  def action_start
+  action :start do
     passthrough_action(:start)
   end
 
-  def action_stop
+  action :stop do
     passthrough_action(:stop)
   end
 
-  def action_restart
+  action :restart do
     passthrough_action(:restart)
   end
 
-  def action_status
+  action :status do
     passthrough_action(:status)
   end
 

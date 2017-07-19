@@ -68,9 +68,6 @@ including a demonstration of how to configure two instances of Elasticsearch on 
 
 The resources provided in this cookbook **do not automatically restart** services when changes have occurred. They ***do start services by default when configuring a new service*** This has been done to protect you from accidental data loss and service outages, as nodes might restart simultaneously or may not restart at all when bad configuration values are supplied.
 
-elasticsearch_service has a special `service_actions` parameter you can use to specify what state the underlying service should be in on each chef run (defaults to `:enabled` and `:started`). It will also pass through all of the standard `service` resource
-actions to the underlying service resource if you wish to notify it.
-
 You **must** supply your desired notifications when using each resource if you want Chef to automatically restart services. Again, we don't recommend this unless you know what you're doing.
 
 ### Resource names

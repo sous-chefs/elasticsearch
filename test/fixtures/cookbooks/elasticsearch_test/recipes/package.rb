@@ -45,5 +45,5 @@ end
 
 elasticsearch_service 'elasticsearch-crazy' do
   instance_name 'special_package_instance'
-  service_actions [:enable, :start]
+  action [:enable, :start]
 end

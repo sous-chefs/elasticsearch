@@ -52,6 +52,6 @@ settings = {
 
   elasticsearch_service "elasticsearch_#{instance_name}" do
     instance_name instance_name
-    service_actions [:enable, :start]
+    action [:enable, :start]
   end
 end
