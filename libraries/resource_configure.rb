@@ -91,4 +91,5 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   # wipe out all default settings, your configuration items should go here.
   #
   attribute(:configuration, kind_of: Hash, default: {}.freeze)
+  attribute(:service_quiet, kind_of: [TrueClass, FalseClass], default: true)
 end

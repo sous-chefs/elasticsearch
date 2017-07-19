@@ -68,7 +68,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
           path_home: es_conf.path_home,
           es_user: es_user.username,
           es_group: es_user.groupname,
-          nofile_limit: es_conf.nofile_limit
+          nofile_limit: es_conf.nofile_limit,
+          service_quiet: es_conf.service_quiet,
         )
         only_if 'which systemctl'
         action :nothing
