@@ -123,4 +123,24 @@ module ElasticsearchCookbook
       ''
     end
   end
+
+  class HashAndMashBlender
+    attr_accessor :target
+    def initialize(hash_or_mash_or_whatever)
+      self.target = hash_or_mash_or_whatever
+    end
+
+    def to_hash
+      target.each_with_object({}) do |(k, v), hsh|
+        hsh[k] =
+          if v.respond_to?(:to_hash)
+            self.class.new(v).to_hash
+          elsif v.respond_to?(:to_a)
+            v.to_a
+          else
+            v
+          end
+      end
+    end
+  end
 end
