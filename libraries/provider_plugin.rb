@@ -6,7 +6,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   provides :elasticsearch_plugin
 
   def whyrun_supported?
-    false
+    true # we only use core Chef resources that also support whyrun, or guard
   end
 
   def action_install
@@ -28,16 +28,31 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
 
-    assert_state_is_valid(es_user, es_install, es_conf)
+    assert_state_is_valid(es_user, es_install, es_conf) unless whyrun_mode?
 
     # shell_out! automatically raises on error, logs command output
     # required for package installs that show up with parent dir owned by root
     plugin_dir_exists = ::File.exist?(es_conf.path_plugins)
-    shell_out_as_user!("mkdir -p #{es_conf.path_plugins}", Chef.run_context) unless plugin_dir_exists
+    unless plugin_dir_exists
+      cmd_str = "mkdir -p #{es_conf.path_plugins}"
+      if whyrun_mode?
+        Chef::Log.info("Would run command: #{cmd_str}")
+      else
+        shell_out_as_user!(cmd_str, Chef.run_context)
+        new_resource.updated_by_last_action(true)
+      end
+    end
 
-    command_array = "#{es_conf.path_bin}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ').split(' ')
-    shell_out_as_user!(command_array, Chef.run_context)
-    new_resource.updated_by_last_action(true)
+    unless plugin_exists(new_resource.plugin_name)
+      cmd_str = "#{es_conf.path_bin}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ')
+      if whyrun_mode?
+        Chef::Log.info("Would run command: #{cmd_str}")
+      else
+        command_array = cmd_str.split(' ')
+        shell_out_as_user!(command_array, Chef.run_context)
+        new_resource.updated_by_last_action(true)
+      end
+    end
   end
 
   def plugin_exists(name)

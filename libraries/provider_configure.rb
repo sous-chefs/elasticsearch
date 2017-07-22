@@ -5,7 +5,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
   provides :elasticsearch_configure
 
   def whyrun_supported?
-    false
+    true # we only use core Chef resources that also support whyrun
   end
 
   def action_manage

@@ -63,6 +63,8 @@ actions to the underlying service resource if you wish to notify it.
 
 You **must** supply your desired notifications when using each resource if you want Chef to automatically restart services. Again, we don't recommend this unless you know what you're doing.
 
+We are supporting whyrun mode in this cookbook, simply because we're using all builtin resources from core Chef, and these also already support whyrun. If you contribute to this cookbook, please be sure to maintain that or guard dangerous Ruby code with something like `if !whyrun_mode? || nested_resource.whyrun_supported?`.
+
 ### Resource names
 
 Many of the resources provided in this cookbook need to share configuration

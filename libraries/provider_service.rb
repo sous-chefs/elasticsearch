@@ -4,7 +4,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   include ElasticsearchCookbook::Helpers
 
   def whyrun_supported?
-    false
+    true # we only use core Chef resources that also support whyrun
   end
 
   def action_remove
@@ -73,7 +73,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     systemd_r.run_action(:create)
     # special case here -- must reload unit files if we modified one
     if systemd_r.updated_by_last_action?
-      new_resource.updated_by_last_action(true)
+      new_resource.updated_by_last_action(systemd_r.updated_by_last_action?)
 
       reload_r = execute "reload-systemd-#{new_resource.service_name}" do
         command 'systemctl daemon-reload'

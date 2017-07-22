@@ -5,7 +5,7 @@ class ElasticsearchCookbook::UserProvider < Chef::Provider::LWRPBase
   provides :elasticsearch_user
 
   def whyrun_supported?
-    false
+    true # we only use core Chef resources that also support whyrun
   end
 
   def action_create

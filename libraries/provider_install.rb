@@ -1,4 +1,3 @@
-
 # Chef Provider for installing or removing Elasticsearch from package or tarball
 # downloaded from elasticsearch.org and installed by package manager or ark resource
 class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
@@ -7,7 +6,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   provides :elasticsearch_install
 
   def whyrun_supported?
-    false
+    true # we only use core Chef resources that also support whyrun
   end
 
   def action_install
