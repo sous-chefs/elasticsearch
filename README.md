@@ -2,17 +2,7 @@
 
 [![Build Status](https://travis-ci.org/elastic/cookbook-elasticsearch.svg?branch=master)](https://travis-ci.org/elastic/cookbook-elasticsearch) [![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)[![Build Status](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/badge/icon)](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/)
 
-## Pre-requisites & Supported Versions
-
-[Java Runtime](https://www.java.com/en/) - This cookbook requires java, but does not provide it. Please install Java before using any recipe in this cookbook. Please also note that Elasticsearch itself has [specific minimum Java version requirements](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup.html#jvm-version). We recommend [this cookbook](https://github.com/agileorbit-cookbooks/java) to install Java.
-
-[Elasticsearch](https://www.elastic.co/products/elasticsearch) - This cookbook is being written and tested to support Elasticsearch 5.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float. Older versions can be found via [Git tags](https://github.com/elastic/cookbook-elasticsearch/tags) or on [Chef Supermarket](https://supermarket.chef.io/cookbooks/elasticsearch). We also maintain bugfix branches for major released lines (0.x, 1.x, 2.x) of this cookbook so that we can still release fixes for older cookbooks.
-
-[Chef](https://www.chef.io/) - The latest release of this cookbook is intended to support the three most recent releases of Chef, and tests against those. Earlier versions may also be supported, though we suggest that you use Chef 12.x at a minimum. It implements support for CI as well as more modern testing with chefspec and test-kitchen. It no longer supports some of the more extraneous features such as discovery (use [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook) or EBS device creation (use [the aws cookbook](https://github.com/chef-cookbooks/aws)).
-
-**Previous versions** of this cookbook may be found using the git tags on this repository.
-
-**Upgrading Elasticsearch** in place is not recommended, and generally not supported by this cookbook. We strongly recommend you pin versions of Elasticsearch and spin up new servers to migrate to a new version, one node at a time. This cookbook does not generally set destructive options like asking the package manager to overwrite configuration files without prompting, either.
+**Please** review the [frequently asked questions](FAQ.md) and [contributing guidelines](CONTRIBUTING.md) before opening issues or submitting pull requests.
 
 ## Attributes
 
@@ -143,6 +133,9 @@ Please be sure to consult the above attribute section as that controls how
 Elasticsearch version, download URL and checksum are determined if you omit
 them.
 
+**NOTE**: The `:remove` action has not been implemented yet. Pull requests are
+very much welcome & encouraged, if you'd like to see this feature.
+
 Examples:
 
 ```ruby
@@ -160,7 +153,7 @@ end
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'tarball' # type of install
-  dir tarball: '/usr/local' # where to install
+  dir '/usr/local' # where to install
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
   # sha256
@@ -365,79 +358,6 @@ elasticsearch_plugin 'xyzzy' do
   action :install
 end
 ```
-
-## Testing
-
-This cookbook is equipped with both unit tests (chefspec) and integration tests
-(test-kitchen and serverspec). It also comes with rubocop and foodcritic tasks
-in the supplied Rakefile. Contributions to this cookbook should include tests
-for new features or bugfixes, with a preference for unit tests over integration
-tests to ensure speedy testing runs. ***All tests and most other commands here
-should be run using bundler*** and our standard Gemfile. This ensures that
-contributions and changes are made in a standardized way against the same
-versions of gems. We recommend installing rubygems-bundler so that bundler is
-automatically inserting `bundle exec` in front of commands run in a directory
-that contains a Gemfile.
-
-A full test run of all tests and style checks would look like:
-```bash
-$ bundle exec rake style
-$ bundle exec rake spec
-$ bundle exec rake integration
-$ bundle exec rake destroy
-```
-The final destroy is intended to clean up any systems that failed a test, and is
-mostly useful when running with kitchen drivers for cloud providers, so that no
-machines are left orphaned and costing you money.
-
-### Fixtures
-
-This cookbook supplies a few different test fixtures (under `test/fixtures/`)
-that can be shared amongst any number of unit or integration tests: cookbooks,
-environments, and nodes. Environments and nodes are automatically loaded into
-chef-zero for both chefspec tests that run locally and serverspec tests that run
-from test-kitchen.
-
-It also contains 'platform data' that can be used to drive unit testing, for
-example, you might read `httpd` for some platforms and `apache2` for others,
-allowing you to write a single test for the Apache webserver. Unfortunately,
-without further modifications to `busser` and `busser-serverspec`, the platform
-data will not be available to serverspec tests.
-
-### Style and Best Practices
-
-Rubocop and Foodcritic evaluations may be made by running `rake style`. There
-are no overrides for foodcritic rules, however the adjustments to
-rubocop are made using the supplied `.rubocop.yml` file and have been documented
-by comments within. Most notably, rubocop has been restricted to only apply to
-`.rb` files.
-
-Rubocop and foodcritic tests can be executed using `rake style`.
-
-### Unit testing
-
-Unit testing is done using the latest versions of Chefspec. The current default
-test layout includes running against all supported platforms, as well as
-stubbing data into chef-zero. This allows us to also test against chef search.
-As is currently a best practice in the community, we will avoid the use of
-chef-solo, but not create barriers to explicitly fail for chef-solo.
-
-Unit tests can be executed using `rake spec`.
-
-### Integration testing
-
-Integration testing is accomplished using the latest versions of test-kitchen
-and serverspec. Currently, this cookbook uses the busser-serverspec plugin for
-copying serverspec files to the system being tested. There is some debate in the
-community about whether this should be done using busser-rspec instead, and each
-busser plugin has a slightly different feature set.
-
-While the default test-kitchen configuration uses the vagrant driver, you may
-override this using `~/.kitchen/config.yml` or by placing a `.kitchen.local.yml`
-in the current directory. This allows you to run these integration tests using
-any supported test-kitchen driver (ec2, rackspace, docker, etc).
-
-Integration tests can be executed using `rake integration` or `kitchen test`.
 
 ## License
 
