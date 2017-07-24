@@ -16,6 +16,10 @@ This cookbook is being written and tested to support Elasticsearch 5.x and great
 
 ## How do I...
 
+### How do I set the JVM heap size?
+
+The [allocated_memory](https://github.com/elastic/cookbook-elasticsearch/blob/master/libraries/provider_configure.rb#L115-L119) parameter controls this.
+
 ### How should I discover other Elasticsearch nodes?
 
 We recommend using [chef search](https://docs.chef.io/chef_search.html) in your wrapper cookbook, or using one of the contributing plugins that leverage cloud-specific features (e.g. `discovery-ec2`).
