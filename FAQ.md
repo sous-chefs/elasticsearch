@@ -70,3 +70,33 @@ Alternately, you can add some logic to skip the install if the correct version i
 ### Elasticsearch is installed in the wrong directory name; the version is incorrect!
 
 If you install by URL, and don't provide the version attribute to the `elasticsearch_install` resource, this cookbook can't tell what version you've provided (any arbitrary filename works, so there's no guarantee we can even figure it out). You will get the default version included in the directory name in this case, unless you specify which version you're installing as well. See #535 for more information.
+
+### Elasticsearch won't start with configuration it doesn't recognize
+
+There's a chicken-and-egg issue with installing a plugin and then configuring it. It would be nice if Elasticsearch allowed configuration settings that didn't do anything, and emitted a warning instead of a fatal error.
+
+You have two options to workaround this -- (a) Don't start Elasticsearch until the plugin is installed; in other words, use one elasticsearch_configure and don't issue a :start action to elasticsearch_service until the plugin resource runs its own actions. Alternately, (b) check for whether or not x-pack is installed at the start of a Chef run, and don't configure any x-pack settings unless it's installed (this will require 2 chef runs to fully configure x-pack, as the ::File.exists? is evaluated very early in the Chef run), e.g.:
+```
+x_pack_installed = ::File.exists?("#{es_conf.path_plugins}/x-pack")
+
+settings = {
+   'http.port' => port,
+   'cluster.name' => cluster_name,
+   'node.name' => node_name,
+   'bootstrap.memory_lock' => false,
+   'discovery.zen.minimum_master_nodes' => 1
+}
+
+if x_pack_installed
+   settings['xpack.monitoring.enabled'] = true
+   ...
+end
+
+es_conf = elasticsearch_configure 'elasticsearch' do
+    allocated_memory '512m'
+    configuration settings
+end
+es_conf.path_data data_location if data_location
+
+...
+```
