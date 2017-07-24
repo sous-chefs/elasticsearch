@@ -52,5 +52,5 @@ elasticsearch_service 'elasticsearch-crazy' do
   # path_conf '/usr/local/awesome/etc/elasticsearch'
   # path_pid '/usr/local/awesome/var/run'
   instance_name 'special_tarball_instance'
-  service_actions [:enable, :start]
+  action [:enable, :start]
 end

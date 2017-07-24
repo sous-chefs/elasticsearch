@@ -4,32 +4,31 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   include ElasticsearchCookbook::Helpers
 
   def whyrun_supported?
-    false
+    true
   end
 
-  def action_remove
+  use_inline_resources
+  action :remove do
     raise "#{new_resource} remove not currently implemented"
   end
 
-  def action_configure
+  action :configure do
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
     default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
-    d_r = directory "#{es_conf.path_pid}-#{default_config_name}" do
+    directory "#{es_conf.path_pid}-#{default_config_name}" do
       path es_conf.path_pid
       owner es_user.username
       group es_user.groupname
       mode '0755'
       recursive true
-      action :nothing
+      action :create
     end
-    d_r.run_action(:create)
-    new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
 
     # Create service for init and systemd
     #
-    init_r = template "/etc/init.d/#{new_resource.service_name}" do
+    template "/etc/init.d/#{new_resource.service_name}" do
       source new_resource.init_source
       cookbook new_resource.init_cookbook
       owner 'root'
@@ -39,10 +38,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         program_name: new_resource.service_name
       )
       only_if { ::File.exist?('/etc/init.d') }
-      action :nothing
+      action :create
     end
-    init_r.run_action(:create)
-    new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
 
     systemd_parent_r = directory "/usr/lib/systemd/system-#{default_config_name}" do
       path '/usr/lib/systemd/system'
@@ -82,52 +79,39 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       end
       reload_r.run_action(:run)
     end
-
-    # flatten in an array here, in case the service_actions are a symbol vs. array
-    [new_resource.service_actions].flatten.each do |act|
-      passthrough_action(act)
-    end
   end
 
   # Passthrough actions to service[service_name]
   #
-  def action_enable
+  action :enable do
     passthrough_action(:enable)
   end
 
-  def action_disable
+  action :disable do
     passthrough_action(:disable)
   end
 
-  def action_start
+  action :start do
     passthrough_action(:start)
   end
 
-  def action_stop
+  action :stop do
     passthrough_action(:stop)
   end
 
-  def action_restart
+  action :restart do
     passthrough_action(:restart)
   end
 
-  def action_status
+  action :status do
     passthrough_action(:status)
   end
 
   def passthrough_action(action)
-    svc_r = lookup_service_resource
-    svc_r.run_action(action)
-    new_resource.updated_by_last_action(true) if svc_r.updated_by_last_action?
-  end
-
-  def lookup_service_resource
-    rc = Chef.run_context.resource_collection
-    rc.find("service[#{new_resource.service_name}]")
-  rescue
-    service new_resource.service_name do
+    service "#{new_resource.service_name} #{action}" do
+      service_name new_resource.service_name
       supports status: true, restart: true
-      action :nothing
+      action action.to_sym
     end
   end
 end
