@@ -148,6 +148,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       Chef::Log.warn("Please change the following to strings in order to work with this Elasticsearch cookbook: #{found_symbols.join(',')}")
     end
 
+    # workaround for https://github.com/elastic/cookbook-elasticsearch/issues/590
     config_vars = ElasticsearchCookbook::HashAndMashBlender.new(merged_configuration).to_hash
 
     yml_template = template "elasticsearch.yml-#{default_config_name}" do
