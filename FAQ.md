@@ -104,3 +104,8 @@ es_conf.path_data data_location if data_location
 
 ...
 ```
+
+### .deb package installs fail inside containers
+
+This is a known issue upstream and the packaging folks have been working to resolve it. You can follow along at:
+https://github.com/elastic/elasticsearch/issues/25846
