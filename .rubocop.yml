@@ -49,3 +49,6 @@ Style/ClassAndModuleChildren:
 
 Style/FrozenStringLiteralComment:
   Enabled: false
+
+Style/GuardClause:
+  Enabled: false
