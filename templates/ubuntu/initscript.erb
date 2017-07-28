@@ -70,6 +70,10 @@ if [ -f "$DEFAULT" ]; then
 	. "$DEFAULT"
 fi
 
+if [ "$ES_USER" != "elasticsearch" ] || [ "$ES_GROUP" != "elasticsearch" ]; then
+    echo "WARNING: ES_USER and ES_GROUP are deprecated and will be removed in the next major version of Elasticsearch, got: [$ES_USER:$ES_GROUP]"
+fi
+
 # CONF_FILE setting was removed
 if [ ! -z "$CONF_FILE" ]; then
     echo "CONF_FILE setting is no longer supported. elasticsearch.yml must be placed in the config directory and cannot be renamed."
@@ -82,9 +86,19 @@ DAEMON=$ES_HOME/bin/elasticsearch
 DAEMON_OPTS="-d -p $PID_FILE -Edefault.path.logs=$LOG_DIR -Edefault.path.data=$DATA_DIR -Edefault.path.conf=$CONF_DIR"
 
 export ES_JAVA_OPTS
-export ES_JVM_OPTIONS
 export JAVA_HOME
 export ES_INCLUDE
+export ES_JVM_OPTIONS
+
+# export unsupported variables so bin/elasticsearch can reject them and inform the user these are unsupported
+if test -n "$ES_MIN_MEM"; then export ES_MIN_MEM; fi
+if test -n "$ES_MAX_MEM"; then export ES_MAX_MEM; fi
+if test -n "$ES_HEAP_SIZE"; then export ES_HEAP_SIZE; fi
+if test -n "$ES_HEAP_NEWSIZE"; then export ES_HEAP_NEWSIZE; fi
+if test -n "$ES_DIRECT_SIZE"; then export ES_DIRECT_SIZE; fi
+if test -n "$ES_USE_IPV4"; then export ES_USE_IPV4; fi
+if test -n "$ES_GC_OPTS"; then export ES_GC_OPTS; fi
+if test -n "$ES_GC_LOG_FILE"; then export ES_GC_LOG_FILE; fi
 
 if [ ! -x "$DAEMON" ]; then
 	echo "The elasticsearch startup script does not exists or it is not executable, tried: $DAEMON"
@@ -138,7 +152,7 @@ case "$1" in
 	fi
 
 	# Start Daemon
-	start-stop-daemon -d $ES_HOME --start -b --user "$ES_USER" -c "$ES_USER" --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
+	start-stop-daemon -d $ES_HOME --start --user "$ES_USER" -c "$ES_USER" --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
 	return=$?
 	if [ $return -eq 0 ]; then
 		i=0
