@@ -44,7 +44,7 @@ LimitNPROC=2048
 # Specifies the maximum number of bytes of memory that may be locked into RAM
 # Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
 # in elasticsearch.yml and 'MAX_LOCKED_MEMORY=unlimited' in <%= @default_dir %>/<%= @program_name %>
-#LimitMEMLOCK=infinity
+<% if @memlock_limit != 'unlimited' %>#<% end %>LimitMEMLOCK=infinity
 
 # Disable timeout logic and wait until process is stopped
 TimeoutStopSec=0
