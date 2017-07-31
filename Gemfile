@@ -7,6 +7,7 @@ end
 
 group :unit do
   gem 'berkshelf', '~> 5.0'
+  gem 'molinillo', '>= 0.5', '< 0.6.0'
   gem 'chef-sugar'
   gem 'chefspec', '>= 4.2'
 end
