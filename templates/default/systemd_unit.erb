@@ -61,6 +61,11 @@ SendSIGKILL=no
 # When a JVM receives a SIGTERM signal it exits with code 143
 SuccessExitStatus=143
 
+Restart=<%= @restart_event %>
+<% if @restart_interval %>
+RestartSec=<%= @restart_interval %>
+<% end %>
+
 [Install]
 WantedBy=multi-user.target
 
