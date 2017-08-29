@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.2.2](https://github.com/elastic/cookbook-elasticsearch/tree/v3.2.2) (2017-08-29)
+- Bump ES version to 5.5.2 (#606)
+
 ## [v3.2.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.2.1) (2017-07-17)
 - Bump ES version to 5.5.0, add 5.4.2 and 5.4.3 as well (#594)
 
