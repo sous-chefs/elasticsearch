@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.3.0) (2017-08-30)
+- nil templates skip startup scripts (#585)
+
 ## [v3.2.2](https://github.com/elastic/cookbook-elasticsearch/tree/v3.2.2) (2017-08-29)
 - Bump ES version to 5.5.2 (#606)
 
