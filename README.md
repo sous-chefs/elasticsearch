@@ -271,6 +271,11 @@ a matching `elasticsearch_config` resource in the collection.
 elasticsearch_service 'elasticsearch'
 ```
 
+If you'd like to skip init scripts and systemd scripts, simply pass `nil` for
+the template file (init_source or systemd_source) and this cookbook will
+entirely skip trying to setup those scripts. Combined with changing the default
+service actions, this will have the same effect as `action :nothing`.
+
 ### elasticsearch_plugin
 Actions: `:install`, `:remove`
 
