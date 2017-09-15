@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.3.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.3.1) (2017-09-15)
+- Add hashes for ES 5.6.0 and 5.5.3 (#610)
+- Workaround for support 'amazon' platform_family (#609)
+
 ## [v3.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.3.0) (2017-08-30)
 - nil templates skip startup scripts (#585)
 
