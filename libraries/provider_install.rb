@@ -87,17 +87,21 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   def install_package_wrapper_action
-    download_url = determine_download_url(new_resource, node)
-    filename = download_url.split('/').last
+    found_download_url = determine_download_url(new_resource, node)
+    unless found_download_url
+      raise 'Could not determine download url for package on this platform'
+    end
+
+    filename = found_download_url.split('/').last
     checksum = determine_download_checksum(new_resource, node)
     package_options = new_resource.package_options
 
     unless checksum
-      Chef::Log.warn("No checksum was provided for #{download_url}, this may download a new package on every chef run!")
+      Chef::Log.warn("No checksum was provided for #{found_download_url}, this may download a new package on every chef run!")
     end
 
     remote_file_r = remote_file "#{Chef::Config[:file_cache_path]}/#{filename}" do
-      source download_url
+      source found_download_url
       checksum checksum
       mode '0644'
       action :nothing
@@ -143,9 +147,13 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     include_recipe 'ark'
 
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    found_download_url = determine_download_url(new_resource, node)
+    unless found_download_url
+      raise 'Could not determine download url for tarball on this platform'
+    end
 
     ark_r = ark 'elasticsearch' do
-      url   determine_download_url(new_resource, node)
+      url   found_download_url
       owner es_user.username
       group es_user.groupname
       version new_resource.version

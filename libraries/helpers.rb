@@ -82,6 +82,11 @@ module ElasticsearchCookbook
 
     def determine_download_checksum(new_resource, node)
       platform_family = node['platform_family']
+
+      # for the sake of finding correct attribute data, use rhel for amazon too
+      # See https://github.com/elastic/cookbook-elasticsearch/issues/609
+      platform_family = 'rhel' if platform_family == 'amazon'
+
       install_type = new_resource.type
       version = new_resource.version
 
