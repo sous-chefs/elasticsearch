@@ -41,10 +41,11 @@ LimitNOFILE=<%= @nofile_limit %>
 # Specifies the maximum number of processes
 LimitNPROC=2048
 
-# Specifies the maximum number of bytes of memory that may be locked into RAM
-# Set to "infinity" if you use the 'bootstrap.memory_lock: true' option
-# in elasticsearch.yml and 'MAX_LOCKED_MEMORY=unlimited' in <%= @default_dir %>/<%= @program_name %>
-#LimitMEMLOCK=infinity
+# Specifies the maximum size of virtual memory
+LimitAS=infinity
+
+# Specifies the maximum file size
+LimitFSIZE=infinity
 
 # Disable timeout logic and wait until process is stopped
 TimeoutStopSec=0
@@ -64,4 +65,4 @@ SuccessExitStatus=143
 [Install]
 WantedBy=multi-user.target
 
-# Built for distribution-5.5.1 (distribution)
+# Built for distribution-5.6.2 (distribution)
