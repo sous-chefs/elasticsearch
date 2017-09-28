@@ -1,5 +1,9 @@
 # Change Log
 
+## [v3.4.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.0) (2017-09-28)
+- Add hashes for ES 5.6.1 and 5.6.2 (#613)
+- Add the latest init scripts from .deb, .rpm, and systemd
+
 ## [v3.3.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.3.1) (2017-09-15)
 - Add hashes for ES 5.6.0 and 5.5.3 (#610)
 - Workaround for support 'amazon' platform_family (#609)
