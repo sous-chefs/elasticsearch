@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.4.1](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.1) (2017-10-18)
+- Add hashes for ES 5.6.3 (#616)
+
 ## [v3.4.0](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.0) (2017-09-28)
 - Add hashes for ES 5.6.1 and 5.6.2 (#613)
 - Add the latest init scripts from .deb, .rpm, and systemd
