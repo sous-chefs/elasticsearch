@@ -19,9 +19,8 @@ Group=<%= @es_group %>
 
 ExecStartPre=<%= @path_home %>/bin/elasticsearch-systemd-pre-exec
 
-ExecStart=<%= @path_home %>/bin/elasticsearch \
+ExecStart=<%= @path_home %>/bin/elasticsearch <% if @quiet%>--quiet<% end %>\
                                                 -p ${PID_DIR}/elasticsearch.pid \
-                                                --quiet \
                                                 -Edefault.path.logs=${LOG_DIR} \
                                                 -Edefault.path.data=${DATA_DIR} \
                                                 -Edefault.path.conf=${CONF_DIR}
