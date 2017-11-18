@@ -37,7 +37,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         mode '0755'
         variables(
           # we need to include something about #{progname} fixed in here.
-          program_name: new_resource.service_name
+          program_name: new_resource.service_name,
+          startup_timeout: node['elasticsearch']['service']['startup_timeout']
         )
         only_if { ::File.exist?('/etc/init.d') }
         action :nothing
