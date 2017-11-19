@@ -95,6 +95,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     filename = found_download_url.split('/').last
     checksum = determine_download_checksum(new_resource, node)
     package_options = new_resource.package_options
+    package_version = new_resource.version
 
     unless checksum
       Chef::Log.warn("No checksum was provided for #{found_download_url}, this may download a new package on every chef run!")
@@ -111,11 +112,13 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
 
     pkg_r = if node['platform_family'] == 'debian'
               dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
-                options package_options
+                version package_version
+                options "--force-confold #{package_options}"
                 action :nothing
               end
             else
               package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+                version package_version
                 options package_options
                 action :nothing
               end
