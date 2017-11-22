@@ -10,13 +10,14 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:instance_name, kind_of: String, default: nil)
 
   # if you override one of these, you should probably override them all
-  attribute(:path_home,    kind_of: String, default: '/usr/share/elasticsearch')
-  attribute(:path_conf,    kind_of: String, default: '/etc/elasticsearch')
-  attribute(:path_data,    kind_of: String, default: '/var/lib/elasticsearch')
-  attribute(:path_logs,    kind_of: String, default: '/var/log/elasticsearch')
-  attribute(:path_pid,     kind_of: String, default: '/var/run/elasticsearch')
-  attribute(:path_plugins, kind_of: String, default: '/usr/share/elasticsearch/plugins')
-  attribute(:path_bin,     kind_of: String, default: '/usr/share/elasticsearch/bin')
+  attribute(:path_home,           kind_of: String, default: '/usr/share/elasticsearch')
+  attribute(:path_conf,           kind_of: String, default: '/etc/elasticsearch')
+  attribute(:path_data,           kind_of: String, default: '/var/lib/elasticsearch')
+  attribute(:path_logs,           kind_of: String, default: '/var/log/elasticsearch')
+  attribute(:path_pid,            kind_of: String, default: '/var/run/elasticsearch')
+  attribute(:path_plugins,        kind_of: String, default: '/usr/share/elasticsearch/plugins')
+  attribute(:path_bin,            kind_of: String, default: '/usr/share/elasticsearch/bin')
+  attribute(:skip_config_options, kind_of: Array, default: [])
 
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
@@ -32,6 +33,8 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
 
   attribute(:logging, kind_of: Hash, default: {}.freeze)
   attribute(:java_home, kind_of: String, default: nil)
+
+  attribute(:environments, kind_of: Hash, default: nil)
 
   # other settings in /etc/default or /etc/sysconfig
   attribute(:memlock_limit, kind_of: String, default: 'unlimited')

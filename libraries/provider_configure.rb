@@ -17,15 +17,27 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # if a subdir parameter is missing but dir is set, infer the subdir name
     # then go and be sure it's also set in the YML hash if it wasn't given there
     if new_resource.path_conf && default_configuration['path.conf'].nil?
-      default_configuration['path.conf'] = new_resource.path_conf
+      if new_resource.skip_config_options.include?('path.conf')
+        default_configuration.delete('path.conf')
+      else
+        default_configuration['path.conf'] = new_resource.path_conf
+      end
     end
 
     if new_resource.path_data && default_configuration['path.data'].nil?
-      default_configuration['path.data'] = new_resource.path_data
+      if new_resource.skip_config_options.include?('path.data')
+        default_configuration.delete('path.data')
+      else
+        default_configuration['path.data'] = new_resource.path_data
+      end
     end
 
     if new_resource.path_logs && default_configuration['path.logs'].nil?
-      default_configuration['path.logs'] = new_resource.path_logs
+      if new_resource.skip_config_options.include?('path.logs')
+        default_configuration.delete('path.logs')
+      else
+        default_configuration['path.logs'] = new_resource.path_logs
+      end
     end
 
     # calculation for memory allocation; 50% or 31g, whatever is smaller
@@ -91,6 +103,13 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:MAX_MAP_COUNT] = new_resource.max_map_count
     params[:ES_JVM_OPTIONS] = "#{new_resource.path_conf}/jvm.options"
 
+    params = params.merge(new_resource.environments) if new_resource.environments
+
+    parameters = {}
+    params.each do |key, value|
+      parameters[key.to_sym] = value
+    end
+
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
     shell_template = template "elasticsearch.in.sh-#{default_config_name}" do
@@ -98,7 +117,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
       mode '0644'
-      variables(params: params)
+      variables(params: parameters)
       action :nothing
     end
     shell_template.run_action(:create)
