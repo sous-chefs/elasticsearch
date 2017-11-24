@@ -12,13 +12,12 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   expected_config = args[:config] || [
     'cluster.name: elasticsearch',
     'node.name: .+',
-    'path.conf: \/.+',
     'path.data: \/.+',
     'path.logs: \/.+',
   ]
 
   expected_environment = args[:env] || [
-    'CONF_DIR=.+',
+    'ES_PATH_CONF=.+',
     'DATA_DIR=.+',
     'ES_GROUP=.+',
     'ES_HOME=.+',

@@ -10,6 +10,7 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:instance_name, kind_of: String, default: nil)
 
   # if you override one of these, you should probably override them all
+  attribute(:version,      kind_of: String, default: '6.0.0')
   attribute(:path_home,    kind_of: String, default: '/usr/share/elasticsearch')
   attribute(:path_conf,    kind_of: String, default: '/etc/elasticsearch')
   attribute(:path_data,    kind_of: String, default: '/var/lib/elasticsearch')

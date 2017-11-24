@@ -9,6 +9,10 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
   )
   default_action :configure
 
+  # if this version parameter is not set by the caller, we look at
+  # `attributes/default.rb` for a default value to use, or we raise
+  attribute(:version, kind_of: String, default: '6.0.0')
+
   # this is what helps the various resources find each other
   attribute(:instance_name, kind_of: String, default: nil)
 

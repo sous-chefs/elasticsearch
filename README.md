@@ -147,7 +147,7 @@ elasticsearch_install 'elasticsearch'
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'package' # type of install
-  version '5.6.3'
+  version '6.0.0'
   action :install # could be :remove as well
 end
 ```
@@ -168,7 +168,7 @@ end
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'tarball' # type of install
-  version '5.6.3'
+  version '6.0.0'
   action :install # could be :remove as well
 end
 ```
@@ -259,6 +259,17 @@ elasticsearch_configure 'my_elasticsearch' do
 end
 ```
 
+If you have install a non default elasticsearch (ie choose your version with
+ elasticsearch_install) and want to install the service, please put the 
+same version as in the install
+
+```ruby
+elasticsearch_configure 'elasticsearch' do
+  version '6.0.0'
+  action :manage
+end
+```
+
 ### elasticsearch_service
 Actions: `:configure`, `:remove`
 
@@ -275,6 +286,17 @@ If you'd like to skip init scripts and systemd scripts, simply pass `nil` for
 the template file (init_source or systemd_source) and this cookbook will
 entirely skip trying to setup those scripts. Combined with changing the default
 service actions, this will have the same effect as `action :nothing`.
+
+If you have install a non default elasticsearch (ie choose your version with
+ elasticsearch_install) and want to install the service, please put the 
+same version as in the install
+
+```ruby
+elasticsearch_service 'elasticsearch' do
+  version '6.0.0'
+  action :configure
+end
+```
 
 ### elasticsearch_plugin
 Actions: `:install`, `:remove`

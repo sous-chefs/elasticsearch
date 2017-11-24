@@ -5,10 +5,15 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
-Environment=ES_HOME=/usr/share/elasticsearch
+<% if @version == "6.0.0" -%>
+RuntimeDirectory=elasticsearch
+Environment=ES_PATH_CONF=/etc/elasticsearch
+<% else -%>
 Environment=CONF_DIR=/etc/elasticsearch
 Environment=DATA_DIR=/var/lib/elasticsearch
 Environment=LOG_DIR=/var/log/elasticsearch
+<% end -%>
+Environment=ES_HOME=/usr/share/elasticsearch
 Environment=PID_DIR=/var/run/elasticsearch
 EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
@@ -17,6 +22,9 @@ WorkingDirectory=<%= @path_home %>
 User=<%= @es_user %>
 Group=<%= @es_group %>
 
+<% if @version == "6.0.0" -%>
+ExecStart=<%= @path_home %>/bin/elasticsearch -p ${PID_DIR}/elasticsearch.pid --quiet
+<% else -%>
 ExecStartPre=<%= @path_home %>/bin/elasticsearch-systemd-pre-exec
 
 ExecStart=<%= @path_home %>/bin/elasticsearch \
@@ -25,6 +33,7 @@ ExecStart=<%= @path_home %>/bin/elasticsearch \
                                                 -Edefault.path.logs=${LOG_DIR} \
                                                 -Edefault.path.data=${DATA_DIR} \
                                                 -Edefault.path.conf=${CONF_DIR}
+<% end -%>
 
 # StandardOutput is configured to redirect to journalctl since
 # some error messages may be logged in standard output before
@@ -39,7 +48,11 @@ StandardError=inherit
 LimitNOFILE=<%= @nofile_limit %>
 
 # Specifies the maximum number of processes
+<% if @version == "6.0.0" -%>
+LimitNPROC=4096
+<% else -%>
 LimitNPROC=2048
+<% end -%>
 
 # Specifies the maximum size of virtual memory
 LimitAS=infinity

@@ -78,7 +78,11 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params = {}
     params[:ES_HOME] = new_resource.path_home
     params[:JAVA_HOME] = new_resource.java_home
-    params[:CONF_DIR] = new_resource.path_conf
+    if new_resource.version == '6.0.0'
+      params[:ES_PATH_CONF] = new_resource.path_conf
+    else
+      params[:CONF_DIR] = new_resource.path_conf
+    end
     params[:DATA_DIR] = new_resource.path_data
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
@@ -150,6 +154,9 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
 
     # workaround for https://github.com/elastic/cookbook-elasticsearch/issues/590
     config_vars = ElasticsearchCookbook::HashAndMashBlender.new(merged_configuration).to_hash
+
+    # Because in elasticsearch 6.0.0, this configuration does not exists anymore
+    new_resource.version == '6.0.0' && config_vars.delete('path.conf')
 
     yml_template = template "elasticsearch.yml-#{default_config_name}" do
       path "#{new_resource.path_conf}/elasticsearch.yml"
