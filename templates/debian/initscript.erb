@@ -48,6 +48,10 @@ MAX_OPEN_FILES=65536
 # Maximum amount of locked memory
 #MAX_LOCKED_MEMORY=
 
+<% if @version == "6.0.0" -%>
+# Elasticsearch configuration directory
+ES_PATH_CONF=/etc/$NAME
+<% else -%>
 # Elasticsearch log directory
 LOG_DIR=/var/log/$NAME
 
@@ -56,6 +60,7 @@ DATA_DIR=/var/lib/$NAME
 
 # Elasticsearch configuration directory
 CONF_DIR=/etc/$NAME
+<% end -%>
 
 # Maximum number of VMA (Virtual Memory Areas) a process can own
 MAX_MAP_COUNT=262144
@@ -83,12 +88,15 @@ fi
 # Define other required variables
 PID_FILE="$PID_DIR/$NAME.pid"
 DAEMON=$ES_HOME/bin/elasticsearch
+<% if @version == "6.0.0" -%>
+DAEMON_OPTS="-d -p $PID_FILE"
+<% else -%>
 DAEMON_OPTS="-d -p $PID_FILE -Edefault.path.logs=$LOG_DIR -Edefault.path.data=$DATA_DIR -Edefault.path.conf=$CONF_DIR"
-
-export ES_JAVA_OPTS
-export JAVA_HOME
 export ES_INCLUDE
 export ES_JVM_OPTIONS
+<% end -%>
+export ES_JAVA_OPTS
+export JAVA_HOME
 
 # export unsupported variables so bin/elasticsearch can reject them and inform the user these are unsupported
 if test -n "$ES_MIN_MEM"; then export ES_MIN_MEM; fi
