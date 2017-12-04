@@ -33,12 +33,6 @@ platforms:
     - recipe[curl]
     - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
-  - name: ubuntu-12.04
-    run_list:
-    - recipe[apt]
-    - recipe[curl]
-    - recipe[java]
-    - recipe[elasticsearch_test::fix_cacerts]
   - name: centos-7.2
     run_list:
     - recipe[yum]
