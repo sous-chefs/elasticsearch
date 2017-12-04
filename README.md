@@ -4,6 +4,10 @@
 
 **Please** review the [frequently asked questions](FAQ.md) and [contributing guidelines](CONTRIBUTING.md) before opening issues or submitting pull requests.
 
+## Looking for Elasticsearch 6.0.0?
+
+Please [try the 4.0.0-beta release](https://github.com/elastic/cookbook-elasticsearch/tree/4.0.0-beta) of this cookbook. Otherwise pin your cookbook back to a '~> 3.0' release. The 4.0.0-beta branch will be promoted to master once it's stable & working with Elasticsearch 6.0 releases.
+
 ## Attributes
 
 Please consult [attributes/default.rb](attributes/default.rb) for a large list
