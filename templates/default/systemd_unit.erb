@@ -5,26 +5,18 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+RuntimeDirectory=elasticsearch
 Environment=ES_HOME=/usr/share/elasticsearch
-Environment=CONF_DIR=/etc/elasticsearch
-Environment=DATA_DIR=/var/lib/elasticsearch
-Environment=LOG_DIR=/var/log/elasticsearch
+Environment=ES_PATH_CONF=/etc/elasticsearch
 Environment=PID_DIR=/var/run/elasticsearch
 EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
 WorkingDirectory=<%= @path_home %>
 
-User=<%= @es_user %>
-Group=<%= @es_group %>
+User=elasticsearch
+Group=elasticsearch
 
-ExecStartPre=<%= @path_home %>/bin/elasticsearch-systemd-pre-exec
-
-ExecStart=<%= @path_home %>/bin/elasticsearch \
-                                                -p ${PID_DIR}/elasticsearch.pid \
-                                                --quiet \
-                                                -Edefault.path.logs=${LOG_DIR} \
-                                                -Edefault.path.data=${DATA_DIR} \
-                                                -Edefault.path.conf=${CONF_DIR}
+ExecStart=<%= @path_home %>/bin/elasticsearch -p ${PID_DIR}/elasticsearch.pid --quiet
 
 # StandardOutput is configured to redirect to journalctl since
 # some error messages may be logged in standard output before
@@ -36,10 +28,10 @@ StandardOutput=journal
 StandardError=inherit
 
 # Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE=<%= @nofile_limit %>
+LimitNOFILE=65536
 
 # Specifies the maximum number of processes
-LimitNPROC=2048
+LimitNPROC=4096
 
 # Specifies the maximum size of virtual memory
 LimitAS=infinity
@@ -65,4 +57,4 @@ SuccessExitStatus=143
 [Install]
 WantedBy=multi-user.target
 
-# Built for distribution-5.6.2 (distribution)
+# Built for distribution-6.0.0 (distribution)
