@@ -55,13 +55,12 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
       -Djava.awt.headless=true
       -Dfile.encoding=UTF-8
       -Djna.nosys=true
-      -Djdk.io.permissionsUseCanonicalPath=true
+      -XX:-OmitStackTraceInFastThrow
       -Dio.netty.noUnsafe=true
       -Dio.netty.noKeySetOptimization=true
       -Dio.netty.recycler.maxCapacityPerThread=0
       -Dlog4j.shutdownHookEnabled=false
       -Dlog4j2.disable.jmx=true
-      -Dlog4j.skipJansi=true
       -XX:+HeapDumpOnOutOfMemoryError
     ).freeze)
 
