@@ -8,11 +8,11 @@ This cookbook requires java, but does not provide it. Please install Java before
 
 ### What version of [Chef](https://www.chef.io/) does this cookbook require/support?
 
-This cookbook follows the [recommended Chef community cookbook policy](https://github.com/chef/chef-rfc/blob/master/rfc092-dependency-update-cadence.md#cookbook-and-ecosystem-tooling-support) regarding Chef support; specifically, we support at least the last 6 months of Chef Client versions. We explicitly don't support anything less than Chef 12.x. We run CI as well as testing with chefspec and test-kitchen.
+This cookbook follows the [recommended Chef community cookbook policy](https://github.com/chef/chef-rfc/blob/master/rfc092-dependency-update-cadence.md#cookbook-and-ecosystem-tooling-support) regarding Chef support; specifically, we support at least the last 6 months of Chef Client versions. We explicitly don't support anything less than Chef 12.5 and greater. We run CI as well as testing with chefspec and test-kitchen.
 
 ### What versions of [Elasticsearch](https://www.elastic.co/products/elasticsearch) does this cookbook support?
 
-This cookbook is being written and tested to support Elasticsearch 5.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float. Older versions can be found via [Git tags](https://github.com/elastic/cookbook-elasticsearch/tags) or on [Chef Supermarket](https://supermarket.chef.io/cookbooks/elasticsearch). We also maintain bugfix branches for major released lines (0.x, 1.x, 2.x) of this cookbook so that we can still release fixes for older cookbooks. Previous versions of this cookbook may be found using the git tags on this repository.
+This cookbook is being written and tested to support Elasticsearch 6.x and greater. If you must have a cookbook that works with older versions of Elasticsearch, please test and then pin to a specific, older `major.minor` version of this cookbook and only leave the patch release to float. Older versions can be found via [Git tags](https://github.com/elastic/cookbook-elasticsearch/tags) or on [Chef Supermarket](https://supermarket.chef.io/cookbooks/elasticsearch). We also maintain bugfix branches for major released lines (0.x, 1.x, 2.x, 3.x) of this cookbook so that we can still release fixes for older cookbooks. Previous versions of this cookbook may be found using the git tags on this repository.
 
 ## How do I...
 
