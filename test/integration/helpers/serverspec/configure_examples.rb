@@ -18,7 +18,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   ]
 
   expected_environment = args[:env] || [
-    'CONF_DIR=.+',
+    'ES_PATH_CONF=.+',
     'DATA_DIR=.+',
     'ES_GROUP=.+',
     'ES_HOME=.+',
