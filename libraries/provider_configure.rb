@@ -16,10 +16,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name
     # then go and be sure it's also set in the YML hash if it wasn't given there
-    if new_resource.path_conf && default_configuration['path.conf'].nil?
-      default_configuration['path.conf'] = new_resource.path_conf
-    end
-
     if new_resource.path_data && default_configuration['path.data'].nil?
       default_configuration['path.data'] = new_resource.path_data
     end
@@ -69,7 +65,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Create elasticsearch shell variables file
     #
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
-    # ES_HOME JAVA_HOME CONF_DIR DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
+    # ES_HOME JAVA_HOME ES_PATH_CONF DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
     # RESTART_ON_UPGRADE ES_USER ES_GROUP ES_STARTUP_SLEEP_TIME MAX_OPEN_FILES
     # MAX_LOCKED_MEMORY MAX_MAP_COUNT
     #
@@ -78,7 +74,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params = {}
     params[:ES_HOME] = new_resource.path_home
     params[:JAVA_HOME] = new_resource.java_home
-    params[:CONF_DIR] = new_resource.path_conf
+    params[:ES_PATH_CONF] = new_resource.path_conf
     params[:DATA_DIR] = new_resource.path_data
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
