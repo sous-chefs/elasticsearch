@@ -13,7 +13,7 @@ shared_examples_for 'elasticsearch service' do |service_name = 'elasticsearch', 
     its(:exit_status) { should eq 0 }
   end
 
-  describe command('curl http://elastic:changeme@localhost:9200') do
+  describe command('curl http://testuser:testpass@localhost:9200') do
     its(:stdout) { should match(/#{content_match}/) }
   end
 end

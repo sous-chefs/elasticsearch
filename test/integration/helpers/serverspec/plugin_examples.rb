@@ -6,7 +6,7 @@ shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
   expected_home = args[:home] || '/usr/share/elasticsearch'
   expected_plugin = args[:plugin] || "#{expected_home}/plugins/#{plugin_name}"
   expected_response_code = args[:response_code] || 200
-  auth_data = args[:auth_data] || 'elastic:changeme@'
+  auth_data = args[:auth_data] || 'testuser:testpass@'
 
   describe file(expected_plugin) do
     it { should be_directory }
