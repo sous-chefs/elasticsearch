@@ -79,8 +79,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
     params[:RESTART_ON_UPGRADE] = new_resource.restart_on_upgrade
-    params[:ES_USER] = es_user.username
-    params[:ES_GROUP] = es_user.groupname
     params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
