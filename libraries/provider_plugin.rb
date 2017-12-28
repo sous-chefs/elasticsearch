@@ -98,11 +98,11 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
     if es_install.type == 'package' || es_install.type == 'repository'
       # package installations should install plugins as root
-      shell_out!(command, :env => env)
+      shell_out!(command, :env => env, :timeout => 1200)
     else
       # non-package installations should install plugins as the ES user
       es_user = find_es_resource(run_ctx, :elasticsearch_user, new_resource)
-      shell_out!(command, user: es_user.username, group: es_user.groupname, :env => env)
+      shell_out!(command, user: es_user.username, group: es_user.groupname, :env => env, :timeout => 1200)
     end
   end
 end # provider

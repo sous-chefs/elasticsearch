@@ -13,8 +13,8 @@ EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
 WorkingDirectory=<%= @path_home %>
 
-User=<%= @es_user %>
-Group=<%= @es_group %>
+User=elasticsearch
+Group=elasticsearch
 
 ExecStart=<%= @path_home %>/bin/elasticsearch -p ${PID_DIR}/elasticsearch.pid --quiet
 
@@ -56,3 +56,5 @@ SuccessExitStatus=143
 
 [Install]
 WantedBy=multi-user.target
+
+# Built for distribution-6.0.0 (distribution)

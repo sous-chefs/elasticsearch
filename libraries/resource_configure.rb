@@ -60,7 +60,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
       -Dio.netty.recycler.maxCapacityPerThread=0
       -Dlog4j.shutdownHookEnabled=false
       -Dlog4j2.disable.jmx=true
-      -Dlog4j.skipJansi=true
       -XX:+HeapDumpOnOutOfMemoryError
       -XX:-AssumeMP
     ).freeze)

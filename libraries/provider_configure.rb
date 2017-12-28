@@ -66,7 +66,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # Create elasticsearch shell variables file
     #
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
-    # ES_HOME JAVA_HOME CONF_DIR DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
+    # ES_HOME JAVA_HOME ES_PATH_CONF DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
     # RESTART_ON_UPGRADE ES_USER ES_GROUP ES_STARTUP_SLEEP_TIME MAX_OPEN_FILES
     # MAX_LOCKED_MEMORY MAX_MAP_COUNT
     #
@@ -75,7 +75,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params = {}
     params[:ES_HOME] = new_resource.path_home
     params[:JAVA_HOME] = new_resource.java_home
-    params[:CONF_DIR] = new_resource.path_conf
+    params[:ES_PATH_CONF] = new_resource.path_conf
     params[:DATA_DIR] = new_resource.path_data
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
@@ -86,7 +86,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
     params[:MAX_MAP_COUNT] = new_resource.max_map_count
-    params[:ES_JVM_OPTIONS] = "#{new_resource.path_conf}/jvm.options"
 
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
