@@ -16,9 +16,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name
     # then go and be sure it's also set in the YML hash if it wasn't given there
-    if new_resource.path_conf && default_configuration['path.conf'].nil?
-      default_configuration['path.conf'] = new_resource.path_conf
-    end
 
     if new_resource.path_data && default_configuration['path.data'].nil?
       default_configuration['path.data'] = new_resource.path_data
