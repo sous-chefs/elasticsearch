@@ -4,7 +4,7 @@
 
 **Please** review the [frequently asked questions](FAQ.md) and [contributing guidelines](CONTRIBUTING.md) before opening issues or submitting pull requests.
 
-## Looking for Elasticsearch 6.0.0?
+## Looking for Elasticsearch 6.x?
 
 Please [try the 4.0.0-beta release](https://github.com/elastic/cookbook-elasticsearch/tree/4.0.0-beta) of this cookbook. Otherwise pin your cookbook back to a '~> 3.0' release. The 4.0.0-beta branch will be promoted to master once it's stable & working with Elasticsearch 6.0 releases.
 
@@ -151,7 +151,7 @@ elasticsearch_install 'elasticsearch'
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'package' # type of install
-  version '6.0.0'
+  version '6.1.1'
   action :install # could be :remove as well
 end
 ```
@@ -172,7 +172,7 @@ end
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'tarball' # type of install
-  version '6.0.0'
+  version '6.1.1'
   action :install # could be :remove as well
 end
 ```
