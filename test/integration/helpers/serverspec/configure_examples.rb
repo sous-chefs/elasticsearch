@@ -12,7 +12,6 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   expected_config = args[:config] || [
     'cluster.name: elasticsearch',
     'node.name: .+',
-    'path.conf: \/.+',
     'path.data: \/.+',
     'path.logs: \/.+',
   ]
