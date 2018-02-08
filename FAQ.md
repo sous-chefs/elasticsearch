@@ -65,6 +65,25 @@ Per 5.3.1 release notes, Elasticsearch now fails to start if you provide default
 
 TL;DR -- you should upgrade and get the bugfix (of the original bugfix). See https://github.com/elastic/cookbook-elasticsearch/issues/563 for more information.
 
+### Java "trust anchors" error when installing Elasticseach plugins
+
+If you're using OpenJDK, installing Elasticsearch plugins might fail with a Java SSL exception:
+
+```
+Exception in thread "main" javax.net.ssl.SSLException: java.lang.RuntimeException: Unexpected error: java.security.InvalidAlgorithmParameterException: the trustAnchors parameter must be non-empty
+```
+
+This can be fixed by running the configuration for the `ca-certificates-java` package before installing any plugins:
+
+```rb
+# http://phutchins.com/blog/2017/03/14/java-trust-anchors-error-when-installing-es-plugins/
+execute "ca-certificates-configure" do
+  command "sudo /var/lib/dpkg/info/ca-certificates-java.postinst configure"
+end
+```
+
+See [this article](http://phutchins.com/blog/2017/03/14/java-trust-anchors-error-when-installing-es-plugins/) for more details.
+
 ### Chef::Exceptions::Package: Installed package is newer than candidate package
 
 You may be trying to downgrade Elasticsearch, or the newer package has gone missing from their repos. Depending on what you'd like to do next, you may [provide package_options arguments](https://github.com/elastic/cookbook-elasticsearch/blob/master/libraries/resource_install.rb#L27) to yum or apt to tell it what you'd like to do more specifically. In #571, someone else has figured out how to direct apt/dpkg to upgrade the way they want, but we didn't want to prescribe what end users want their package manager to do.
