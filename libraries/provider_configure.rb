@@ -66,8 +66,8 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     #
     # Valid values in /etc/sysconfig/elasticsearch or /etc/default/elasticsearch
     # ES_HOME JAVA_HOME ES_PATH_CONF DATA_DIR LOG_DIR PID_DIR ES_JAVA_OPTS
-    # RESTART_ON_UPGRADE ES_USER ES_GROUP ES_STARTUP_SLEEP_TIME MAX_OPEN_FILES
-    # MAX_LOCKED_MEMORY MAX_MAP_COUNT
+    # RESTART_ON_UPGRADE ES_STARTUP_SLEEP_TIME MAX_OPEN_FILES MAX_LOCKED_MEMORY
+    # MAX_MAP_COUNT
     #
     # We provide these values as resource attributes/parameters directly
 
@@ -79,8 +79,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
     params[:RESTART_ON_UPGRADE] = new_resource.restart_on_upgrade
-    params[:ES_USER] = es_user.username
-    params[:ES_GROUP] = es_user.groupname
     params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit
