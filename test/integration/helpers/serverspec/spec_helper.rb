@@ -29,3 +29,13 @@ end
 def tarball?
   !package?
 end
+
+def version
+  if debian?
+    `dpkg -s elasticsearch |grep Version |cut -d: -f2 |tr -d '\n\r ' 2> /dev/null`
+  elsif rhel?
+    `rpm -qa |grep elasticsearch |cut -d- -f2 |tr -d '\n\r ' 2> /dev/null`
+  else
+    raise "I don't recognize #{os[:family]}, so I can't check for an elasticsearch version"
+  end
+end

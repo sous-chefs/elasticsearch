@@ -19,10 +19,8 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   expected_environment = args[:env] || [
     'ES_PATH_CONF=.+',
     'DATA_DIR=.+',
-    'ES_GROUP=.+',
     'ES_HOME=.+',
     'ES_STARTUP_SLEEP_TIME=.+',
-    'ES_USER=.+',
     'LOG_DIR=.+',
     'MAX_LOCKED_MEMORY=.+',
     'MAX_MAP_COUNT=.+',
@@ -59,6 +57,13 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
     expected_environment.each do |line|
       its(:content) { should contain(/#{line}/) }
+    end
+    if version.to_f < 5 || tarball?
+      its(:content) { should contain(/ES_GROUP=.+/) }
+      its(:content) { should contain(/ES_USER=.+/) }
+    else
+      its(:content) { should_not contain(/ES_GROUP=.+/) }
+      its(:content) { should_not contain(/ES_USER=.+/) }
     end
   end
 

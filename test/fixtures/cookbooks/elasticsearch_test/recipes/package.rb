@@ -1,9 +1,9 @@
 # this is a test fixture used to test that the elasticsearch cookbook's
 # resources, providers, and recipes can be used correctly from a wrapper
 
-# create user with all non-default overriden options
+# Elasticsearch 6.x supports only elasticsearch as username and groupname
 elasticsearch_user 'foobar' do
-  groupname 'bar'
+  groupname 'elasticsearch'
   username 'elasticsearch' # can't override this in systemd, so can't test!
   uid 1111
   gid 2222

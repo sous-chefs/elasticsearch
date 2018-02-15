@@ -14,6 +14,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
   def action_configure
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
+    es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
     default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
     d_r = directory "#{es_conf.path_pid}-#{default_config_name}" do
@@ -37,7 +38,9 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         mode '0755'
         variables(
           # we need to include something about #{progname} fixed in here.
-          program_name: new_resource.service_name
+          program_name: new_resource.service_name,
+          es_version: es_install.version,
+          install_type: es_install.type
         )
         only_if { ::File.exist?('/etc/init.d') }
         action :nothing
