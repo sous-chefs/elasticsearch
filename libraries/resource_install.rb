@@ -11,7 +11,7 @@ class ElasticsearchCookbook::InstallResource < Chef::Resource::LWRPBase
 
   # if this version parameter is not set by the caller, we look at
   # `attributes/default.rb` for a default value to use, or we raise
-  attribute(:version, kind_of: String, default: '6.2.1')
+  attribute(:version, kind_of: String, default: '6.2.2')
 
   # we allow a string or symbol for this value
   attribute(:type, kind_of: String, equal_to: %w(package tarball repository), default: 'repository')
