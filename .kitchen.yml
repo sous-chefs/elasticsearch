@@ -87,3 +87,63 @@ suites:
   - name: override_tarball # the override-everything use case
     run_list:
       - recipe[elasticsearch_test::tarball]
+
+  - name: cluster-node1
+    driver:
+      network:
+        - ["private_network", { ip: "192.168.100.10" }]
+    run_list:
+      - recipe[elasticsearch::default]
+    attributes:
+      elasticsearch:
+        install:
+          type: repository
+        configure:
+          configuration:
+            cluster.name: mycluster
+            network.host: 0.0.0.0
+            transport.host: 192.168.100.10
+            discovery.zen.ping.unicast.hosts: 192.168.100.11,192.168.100.12
+        plugin:
+          x-pack:
+            action: install
+
+  - name: cluster-node2
+    driver:
+      network:
+        - ["private_network", { ip: "192.168.100.11" }]
+    run_list:
+      - recipe[elasticsearch::default]
+    attributes:
+      elasticsearch:
+        install:
+          type: repository
+        configure:
+          configuration:
+            cluster.name: mycluster
+            network.host: 0.0.0.0
+            transport.host: 192.168.100.11
+            discovery.zen.ping.unicast.hosts: 192.168.100.10,192.168.100.12
+        plugin:
+          x-pack:
+            action: install
+
+  - name: cluster-node3
+    driver:
+      network:
+        - ["private_network", { ip: "192.168.100.12" }]
+    run_list:
+      - recipe[elasticsearch::default]
+    attributes:
+      elasticsearch:
+        install:
+          type: repository
+        configure:
+          configuration:
+            cluster.name: mycluster
+            network.host: 0.0.0.0
+            transport.host: 192.168.100.12
+            discovery.zen.ping.unicast.hosts: 192.168.100.10,192.168.100.11
+        plugin:
+          x-pack:
+            action: install
