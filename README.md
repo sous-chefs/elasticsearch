@@ -4,9 +4,9 @@
 
 **Please** review the [frequently asked questions](FAQ.md) and [contributing guidelines](CONTRIBUTING.md) before opening issues or submitting pull requests.
 
-## Looking for Elasticsearch 6.x?
+## Looking for Elasticsearch 5.x or 6.x?
 
-Please [try the 4.0.0-beta release](https://github.com/elastic/cookbook-elasticsearch/tree/4.0.0-beta) of this cookbook. Otherwise pin your cookbook back to a '~> 3.0' release. The 4.0.0-beta branch will be promoted to master once it's stable & working with Elasticsearch 6.0 releases.
+Please [check out the previous 3.x.x releases](https://github.com/elastic/cookbook-elasticsearch/tree/3.x.x) of this cookbook. Please consider pinning your cookbook to '~> 3.0' for support for Elasticsearch 6 and earlier, or '~> 4.0' release for Elasticsearch 6 and beyond.
 
 ## Attributes
 
