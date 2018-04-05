@@ -10,6 +10,11 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   def action_install
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    raise "Using custom user:group #{es_user.username}:#{es_user.groupname}, is not supported in Elasticsearch 6.x package installation" if
+      new_resource.version.to_f >= 6 && new_resource.type != 'tarball' &&
+      (es_user.username != 'elasticsearch' || es_user.groupname != 'elasticsearch')
+
     if new_resource.type == 'tarball'
       install_tarball_wrapper_action
     elsif new_resource.type == 'package'

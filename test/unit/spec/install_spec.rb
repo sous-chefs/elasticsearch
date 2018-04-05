@@ -95,3 +95,38 @@ describe 'elasticsearch_test::tarball with bad low version' do
     end
   end
 end
+
+describe 'elasticsearch_test::package with username foo' do
+  before { stub_resources }
+  supported_platforms.each do |platform, versions|
+    versions.each do |version|
+      %w(repository package tarball).each do |install_type|
+        %w(5.6.7 6.0.0).each do |es_version|
+          context "Install Elasticsearch #{es_version} as #{install_type}" do
+            let(:chef_run) do
+              ChefSpec::ServerRunner.new(platform: platform, version: version, step_into: ['elasticsearch_install']) do |node, server|
+                node_resources(node) # data for this node
+                stub_chef_zero(platform, version, server) # stub other nodes in chef-zero
+                node.override['elasticsearch']['user']['username'] = 'foo'
+                node.override['elasticsearch']['user']['groupname'] = 'bar'
+                node.override['elasticsearch']['install']['type'] = install_type
+                node.override['elasticsearch']['install']['version'] = es_version
+              end.converge('elasticsearch_test::default_with_plugins')
+            end
+
+            # any platform specific data you want available to your test can be loaded here
+            _property = load_platform_properties(platform: platform, platform_version: version)
+
+            it 'converge status' do
+              if es_version.to_f >= 6 && install_type != 'tarball'
+                expect{ chef_run }.to raise_error(RuntimeError, /custom user:group/)
+              else
+                expect{ chef_run }.to_not raise_error(RuntimeError, /custom user:group/)
+              end
+            end
+          end
+        end
+      end
+    end
+  end
+end
