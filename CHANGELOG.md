@@ -1,5 +1,25 @@
 # Change Log
 
+## [v4.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.0) (2018-03-25)
+- Default to 6.0.0 and add sha256 checksums, drop old 5.x hashes
+- Point to 6.x yum repo
+- Introduce 6.0.0's JVM options for ES 6
+- ES_JVM_OPTIONS is no longer supported in v6.0.0
+- Correct tests with x-pack installation
+- Remove test for config entry that is no longer valid
+- Remove path.conf reference after testing
+- Stop testing on Ubuntu 12.04 and earlier
+
+## [v3.4.5](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.5) (2018-03-25)
+- Add documentation for Java "trust anchors" problem (#646)
+- Add hashes for 5.6.8 (#649)
+
+## [v3.4.4](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.4) (2018-02-01)
+- Add hashes for ES 5.6.6 (#638) and ES 5.6.7 (#640)
+
+## [v3.4.3](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.3) (2018-01-03)
+- Add hashes for ES 5.6.5 (#632)
+
 ## [v3.4.2](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.2) (2017-12-03)
 - Add hashes for ES 5.6.4 (#622)
 
