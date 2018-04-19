@@ -99,25 +99,6 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     shell_template.run_action(:create)
     new_resource.updated_by_last_action(true) if shell_template.updated_by_last_action?
 
-    # Create jvm.options file
-    #
-    jvm_options_template = template "jvm_options-#{default_config_name}" do
-      path   "#{new_resource.path_conf}/jvm.options"
-      source new_resource.template_jvm_options
-      cookbook new_resource.cookbook_jvm_options
-      owner es_user.username
-      group es_user.groupname
-      mode '0644'
-      variables(jvm_options: [
-        "-Xms#{new_resource.allocated_memory}",
-        "-Xmx#{new_resource.allocated_memory}",
-        new_resource.jvm_options,
-      ].flatten.join("\n"))
-      action :nothing
-    end
-    jvm_options_template.run_action(:create)
-    new_resource.updated_by_last_action(true) if jvm_options_template.updated_by_last_action?
-
     # Create ES logging file
     #
     logging_template = template "log4j2_properties-#{default_config_name}" do

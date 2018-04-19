@@ -30,15 +30,6 @@ elasticsearch_configure 'my_elasticsearch' do
 
   allocated_memory '123m'
 
-  jvm_options %w(
-    -XX:+UseParNewGC
-    -XX:+UseConcMarkSweepGC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
-    -XX:+HeapDumpOnOutOfMemoryError
-    -XX:+PrintGCDetails
-  )
-
   configuration('node.name' => 'crazy')
   action :manage
   instance_name 'special_tarball_instance'
@@ -52,5 +43,5 @@ elasticsearch_service 'elasticsearch-crazy' do
   # path_conf '/usr/local/awesome/etc/elasticsearch'
   # path_pid '/usr/local/awesome/var/run'
   instance_name 'special_tarball_instance'
-  service_actions [:enable, :start]
+  service_actions %i[enable start]
 end
