@@ -3,7 +3,7 @@ Lint/RescueException:
     - 'Rakefile'
     - 'libraries/helpers.rb'
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - 'Rakefile'
     - 'libraries/helpers.rb'
