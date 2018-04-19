@@ -13,7 +13,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'cluster.name: elasticsearch',
     'node.name: .+',
     'path.data: \/.+',
-    'path.logs: \/.+',
+    'path.logs: \/.+'
   ]
 
   expected_environment = args[:env] || [
@@ -28,13 +28,7 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'MAX_MAP_COUNT=.+',
     'MAX_OPEN_FILES=.+',
     'PID_DIR=.+',
-    'RESTART_ON_UPGRADE=.+',
-  ]
-
-  expected_jvm_options = args[:jvmopts] || [
-    'server',
-    'HeapDumpOnOutOfMemoryError',
-    'java.awt.headless=true',
+    'RESTART_ON_UPGRADE=.+'
   ]
 
   describe file(path_conf) do
@@ -69,17 +63,6 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     it { should be_grouped_into expected_group }
 
     expected_config.each do |line|
-      its(:content) { should contain(/#{line}/) }
-    end
-  end
-
-  describe file("#{path_conf}/jvm.options") do
-    it { should be_file }
-    it { should be_mode 644 }
-    it { should be_owned_by expected_user }
-    it { should be_grouped_into expected_group }
-
-    expected_jvm_options.each do |line|
       its(:content) { should contain(/#{line}/) }
     end
   end

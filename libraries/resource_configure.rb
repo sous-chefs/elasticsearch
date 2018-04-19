@@ -21,9 +21,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   attribute(:template_elasticsearch_env, kind_of: String, default: 'elasticsearch.in.sh.erb')
   attribute(:cookbook_elasticsearch_env, kind_of: String, default: 'elasticsearch')
 
-  attribute(:template_jvm_options, kind_of: String, default: 'jvm_options.erb')
-  attribute(:cookbook_jvm_options, kind_of: String, default: 'elasticsearch')
-
   attribute(:template_elasticsearch_yml, kind_of: String, default: 'elasticsearch.yml.erb')
   attribute(:cookbook_elasticsearch_yml, kind_of: String, default: 'elasticsearch')
 
@@ -43,26 +40,6 @@ class ElasticsearchCookbook::ConfigureResource < Chef::Resource::LWRPBase
   # Calculations for this are done in the provider, as we can't do them in the
   # resource definition. default is 50% of RAM or 31GB, which ever is smaller.
   attribute(:allocated_memory, kind_of: String)
-
-  attribute(:jvm_options, kind_of: Array, default:
-    %w(
-      -XX:+UseConcMarkSweepGC
-      -XX:CMSInitiatingOccupancyFraction=75
-      -XX:+UseCMSInitiatingOccupancyOnly
-      -XX:+AlwaysPreTouch
-      -server
-      -Xss1m
-      -Djava.awt.headless=true
-      -Dfile.encoding=UTF-8
-      -Djna.nosys=true
-      -XX:-OmitStackTraceInFastThrow
-      -Dio.netty.noUnsafe=true
-      -Dio.netty.noKeySetOptimization=true
-      -Dio.netty.recycler.maxCapacityPerThread=0
-      -Dlog4j.shutdownHookEnabled=false
-      -Dlog4j2.disable.jmx=true
-      -XX:+HeapDumpOnOutOfMemoryError
-    ).freeze)
 
   # These are the default settings. Most of the time, you want to override
   # the `configuration` attribute below. If you do override the defaults, you

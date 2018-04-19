@@ -246,19 +246,6 @@ elasticsearch_configure 'my_elasticsearch' do
 
   allocated_memory '123m'
 
-  jvm_options %w(
-                -XX:+UseParNewGC
-                -XX:+UseConcMarkSweepGC
-                -XX:CMSInitiatingOccupancyFraction=75
-                -XX:+UseCMSInitiatingOccupancyOnly
-                -XX:+HeapDumpOnOutOfMemoryError
-                -XX:+PrintGCDetails
-              )
-
-  configuration ({
-    'node.name' => 'crazy'
-  })
-
   action :manage
 end
 ```

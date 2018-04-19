@@ -22,17 +22,6 @@ elasticsearch_configure 'my_elasticsearch' do
 
   allocated_memory '123m'
 
-  jvm_options %w(
-    -server
-    -Djava.awt.headless=true
-    -XX:+UseParNewGC
-    -XX:+UseConcMarkSweepGC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
-    -XX:+HeapDumpOnOutOfMemoryError
-    -XX:+PrintGCDetails
-  )
-
   configuration('node.name' => 'arbitrary_name')
   # plugin_dir '/usr/local/awesome/elasticsearch-1.7.3/plugins'
   action :manage
@@ -45,5 +34,5 @@ end
 
 elasticsearch_service 'elasticsearch-crazy' do
   instance_name 'special_package_instance'
-  service_actions [:enable, :start]
+  service_actions %i[enable start]
 end
