@@ -18,7 +18,8 @@ This cookbook is being written and tested to support Elasticsearch 6.x and great
 
 ### How do I set the JVM heap size?
 
-The [allocated_memory](https://github.com/elastic/cookbook-elasticsearch/blob/master/libraries/provider_configure.rb#L115-L119) parameter controls this.
+The [allocated_memory](https://github.com/elastic/cookbook-elasticsearch/blob/master/libraries/provider_configure.rb#L27-L32) parameter controls this.
+If you do not set this parameter, the heap size will be set to 50% of system memory or 31g, whatever is smaller.
 
 ### How should I discover other Elasticsearch nodes?
 
