@@ -27,12 +27,13 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
     d_r.run_action(:create)
     new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
 
-    # Create service for init and systemd
+    # Create service for init, upstart, or systemd
     #
-    if new_resource.init_source
+    case new_resource.startup_method
+    when 'initd'
       init_r = template "/etc/init.d/#{new_resource.service_name}" do
-        source new_resource.init_source
-        cookbook new_resource.init_cookbook
+        source new_resource.initd_source
+        cookbook new_resource.initd_cookbook
         owner 'root'
         mode '0755'
         variables(
@@ -45,9 +46,32 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       end
       init_r.run_action(:create)
       new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
-    end
 
-    if new_resource.systemd_source
+    when 'init'
+      file '/etc/init.d/elasticsearch' do
+        action :delete
+      end
+      init_r = template "/etc/init/#{new_resource.service_name}.conf" do
+        source new_resource.init_source
+        cookbook new_resource.init_cookbook
+        owner 'root'
+        mode '0644'
+        variables(
+          # we need to include something about #{progname} fixed in here.
+          program_name: new_resource.service_name,
+          es_user: es_user.username,
+          es_group: es_user.groupname,
+          path_data: new_resource.path_data,
+          path_conf: new_resource.path_conf,
+          path_logs: new_resource.path_logs
+        )
+        only_if { ::File.exist?('/etc/init') }
+        action :nothing
+      end
+      init_r.run_action(:create)
+      new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
+
+    when 'systemd'
       systemd_parent_r = directory "/usr/lib/systemd/system-#{default_config_name}" do
         path '/usr/lib/systemd/system'
         action :nothing
@@ -87,7 +111,6 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         reload_r.run_action(:run)
       end
     end
-
     # flatten in an array here, in case the service_actions are a symbol vs. array
     [new_resource.service_actions].flatten.each do |act|
       passthrough_action(act)

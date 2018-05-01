@@ -12,8 +12,10 @@ driver:
 provisioner:
   name: chef_zero
   nodes_path: 'test/fixtures/nodes'
-  data_bags_path: 'test/fixtures/data_bags'
-  environments_path: 'test/fixtures/environments'
+  data_bags_path: '../../avvo_chef/data_bags'
+  environments_path: '../../avvo_chef/environments'
+  roles_path: '../../avvo_chef/roles'
+
   client_rb:
     environment: _default
   attributes:
@@ -21,69 +23,26 @@ provisioner:
       jdk_version: '8'
 
 platforms:
-  - name: ubuntu-16.04
-    run_list:
-    - recipe[apt]
-    - recipe[curl]
-    - recipe[java]
-    - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-14.04
     run_list:
     - recipe[apt]
     - recipe[curl]
     - recipe[java]
-    - recipe[elasticsearch_test::fix_cacerts]
-  - name: ubuntu-12.04
-    run_list:
-    - recipe[apt]
-    - recipe[curl]
-    - recipe[java]
-    - recipe[elasticsearch_test::fix_cacerts]
-  - name: centos-7.2
-    run_list:
-    - recipe[yum]
-    - recipe[curl]
-    - recipe[java]
-  - name: centos-6.7
-    run_list:
-    - recipe[yum]
-    - recipe[curl]
-    - recipe[java]
-
 suites:
-  - name: repository # install from repository
+  - name: default
     run_list:
-      - recipe[elasticsearch_test::default_with_plugins]
+      - recipe[elasticsearch]
     attributes:
       elasticsearch:
+        service:
+          startup_method: init
+          path_conf: "/srv/elasticsearch"
         install:
-          type: repository
-
-  - name: tarball # install by tarball
-    run_list:
-      - recipe[elasticsearch_test::default_with_plugins]
-    attributes:
-      elasticsearch:
-        install:
-          type: tarball
-
-  - name: package # install from package directly
-    run_list:
-      - recipe[java]
-      - recipe[elasticsearch_test::default_with_plugins]
-    attributes:
-      elasticsearch:
-        install:
-          type: package
-
-  - name: doubleinstance
-    run_list:
-      - recipe[elasticsearch_test::doubleinstances]
-
-  - name: override_package # the override-everything use case
-    run_list:
-      - recipe[elasticsearch_test::package]
-
-  - name: override_tarball # the override-everything use case
-    run_list:
-      - recipe[elasticsearch_test::tarball]
+          version: 5.6.3
+        configure: 
+          instance_name: "elasticsearch"
+          allocated_memory: "244m"
+          path_conf: "/srv/elasticsearch"
+          path_logs: "/var/log/elasticsearch"
+          path_pid: "/var/run/elasticsearch"
+          path_plugins: "/usr/share/elasticsearch/plugins"

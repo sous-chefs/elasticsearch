@@ -11,6 +11,9 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
 
   # this is what helps the various resources find each other
   attribute(:instance_name, kind_of: String, default: nil)
+  attribute(:path_conf,    kind_of: String, default: '/etc/elasticsearch')
+  attribute(:path_data,    kind_of: String, default: '/var/lib/elasticsearch')
+  attribute(:path_logs,    kind_of: String, default: '/var/log/elasticsearch')
 
   attribute(:service_name, kind_of: String, name_attribute: true)
   attribute(:args, kind_of: String, default: '-d')
@@ -18,7 +21,13 @@ class ElasticsearchCookbook::ServiceResource < Chef::Resource::LWRPBase
   # service actions
   attribute(:service_actions, kind_of: [Symbol, String, Array], default: [:enable, :start].freeze)
 
+  attribute(:startup_method, kind_of: String, default: 'init')
+
   # allow overridable init script
+  attribute(:initd_source, kind_of: String, default: 'initdscript.erb')
+  attribute(:initd_cookbook, kind_of: String, default: 'elasticsearch')
+
+  # allow overridable upstart script
   attribute(:init_source, kind_of: String, default: 'initscript.erb')
   attribute(:init_cookbook, kind_of: String, default: 'elasticsearch')
 
