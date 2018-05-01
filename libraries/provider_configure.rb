@@ -12,6 +12,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     # lookup existing ES resources
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     es_svc = find_es_resource(Chef.run_context, :elasticsearch_service, new_resource)
+    es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
 
     default_configuration = new_resource.default_configuration.dup
     # if a subdir parameter is missing but dir is set, infer the subdir name
@@ -79,8 +80,8 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     params[:LOG_DIR] = new_resource.path_logs
     params[:PID_DIR] = new_resource.path_pid
     params[:RESTART_ON_UPGRADE] = new_resource.restart_on_upgrade
-    params[:ES_USER] = es_user.username
-    params[:ES_GROUP] = es_user.groupname
+    params[:ES_USER] = es_user.username if es_install.type == 'tarball'
+    params[:ES_GROUP] = es_user.groupname if es_install.type == 'tarball'
     params[:ES_STARTUP_SLEEP_TIME] = new_resource.startup_sleep_seconds.to_s
     params[:MAX_OPEN_FILES] = new_resource.nofile_limit
     params[:MAX_LOCKED_MEMORY] = new_resource.memlock_limit

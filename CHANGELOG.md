@@ -1,5 +1,8 @@
 # Change Log
 
+## Unreleased
+- Improve ES_USER / ES_GROUP logic for init script and package installs (#647)
+
 ## [v4.0.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.0) (2018-03-25)
 - Default to 6.0.0 and add sha256 checksums, drop old 5.x hashes
 - Point to 6.x yum repo

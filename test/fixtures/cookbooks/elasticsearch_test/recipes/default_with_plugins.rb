@@ -33,6 +33,7 @@ end
 #Create the X-Pack Test User
 execute 'create user test' do
   command '/usr/share/elasticsearch/bin/x-pack/users useradd -p testpass -r superuser testuser'
+  not_if '/usr/share/elasticsearch/bin/x-pack/users list | grep -q testuser'
 end
 
 # remove a non-existent plugin

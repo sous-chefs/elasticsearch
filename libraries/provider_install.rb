@@ -36,6 +36,11 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   protected
 
   def install_repo_wrapper_action
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    unless es_user && es_user.username == 'elasticsearch' && es_user.groupname == 'elasticsearch'
+      raise 'Custom usernames/group names is not supported in Elasticsearch 6+ repository installation'
+    end
+
     if new_resource.enable_repository_actions
       if node['platform_family'] == 'debian'
         apt_r = apt_repo_resource
@@ -87,6 +92,11 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   def install_package_wrapper_action
+    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    unless es_user && es_user.username == 'elasticsearch' && es_user.groupname == 'elasticsearch'
+      raise 'Custom usernames/group names is not supported in Elasticsearch 6+ package installation'
+    end
+
     found_download_url = determine_download_url(new_resource, node)
     unless found_download_url
       raise 'Could not determine download url for package on this platform'

@@ -13,6 +13,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
 
   def action_configure
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+    es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
     default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
@@ -37,7 +38,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
         mode '0755'
         variables(
           # we need to include something about #{progname} fixed in here.
-          program_name: new_resource.service_name
+          program_name: new_resource.service_name,
+          install_type: es_install.type
         )
         only_if { ::File.exist?('/etc/init.d') }
         action :nothing
@@ -68,7 +70,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
           path_home: es_conf.path_home,
           es_user: es_user.username,
           es_group: es_user.groupname,
-          nofile_limit: es_conf.nofile_limit
+          nofile_limit: es_conf.nofile_limit,
+          install_type: es_install.type
         )
         only_if 'which systemctl'
         action :nothing
