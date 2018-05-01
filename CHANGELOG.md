@@ -1,7 +1,11 @@
 # Change Log
 
-## [v3.4.5](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.5) (2018-05-01)
-- Add hashes for ES 5.6.8 and ES 5.6.9 (#658)
+## [v3.4.6](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.5) (2018-05-01)
+- Add hashes for ES 5.6.9 (#658)
+
+## [v3.4.5](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.5) (2018-03-25)
+- Add documentation for Java "trust anchors" problem (#646)
+- Add hashes for 5.6.8 (#649)
 
 ## [v3.4.4](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.4) (2018-02-01)
 - Add hashes for ES 5.6.6 (#638) and ES 5.6.7 (#640)
