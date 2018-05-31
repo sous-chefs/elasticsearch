@@ -129,7 +129,14 @@ case "$1" in
 	fi
 
 	# Start Daemon
-	start-stop-daemon -d $ES_HOME --start --user elasticsearch -c elasticsearch --pidfile "$PID_FILE" --exec $DAEMON -- $DAEMON_OPTS
+	start-stop-daemon -d $ES_HOME \
+	                  --start \
+			  --background \
+	                  --user elasticsearch \
+			  -c elasticsearch \
+			  --pidfile "$PID_FILE" \
+			  --exec $DAEMON \
+			  -- $DAEMON_OPTS
 	return=$?
 	if [ $return -eq 0 ]; then
 		i=0
