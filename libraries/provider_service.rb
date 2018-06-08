@@ -57,7 +57,7 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
       systemd_parent_r.run_action(:create)
       new_resource.updated_by_last_action(true) if systemd_parent_r.updated_by_last_action?
 
-      default_conf_dir = node['platform_family'] == 'rhel' ? '/etc/sysconfig' : '/etc/default'
+      default_conf_dir = %w[rhel amazon].include?(node['platform_family']) ? '/etc/sysconfig' : '/etc/default'
       systemd_r = template "/usr/lib/systemd/system/#{new_resource.service_name}.service" do
         source new_resource.systemd_source
         cookbook new_resource.systemd_cookbook
