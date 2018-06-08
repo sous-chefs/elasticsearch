@@ -90,7 +90,7 @@ class ElasticsearchCookbook::ConfigureProvider < Chef::Provider::LWRPBase
     default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
     shell_template = template "elasticsearch.in.sh-#{default_config_name}" do
-      path node['platform_family'] == 'rhel' ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
+      path %w[rhel amazon].include?(node['platform_family']) ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
       source new_resource.template_elasticsearch_env
       cookbook new_resource.cookbook_elasticsearch_env
       mode '0644'

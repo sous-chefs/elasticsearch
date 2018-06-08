@@ -53,7 +53,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       end
     end
 
-    if node['platform_family'] == 'rhel' && !new_resource.version.include?('-')
+    if %w[rhel amazon].include?(node['platform_family']) && !new_resource.version.include?('-')
       # NB: yum repo packages are broken in Chef if you don't specify a release
       #     https://github.com/chef/chef/issues/4103
       new_resource.version = "#{new_resource.version}-1"
