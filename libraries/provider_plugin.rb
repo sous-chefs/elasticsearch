@@ -14,7 +14,8 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
 
     # since install can take a URL argument instead
     url_or_name = new_resource.url || new_resource.plugin_name
-    manage_plugin("install #{url_or_name}")
+    batch_arg = new_resource.batch ? '--batch' : ''
+    manage_plugin("install #{batch_arg} #{url_or_name}")
   end # action
 
   def action_remove
