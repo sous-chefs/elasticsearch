@@ -12,6 +12,7 @@ class ElasticsearchCookbook::PluginResource < Chef::Resource::LWRPBase
   attribute(:plugin_name, kind_of: String, name_attribute: true)
   attribute(:url, kind_of: String, default: nil)
   attribute(:chef_proxy, kind_of: [TrueClass, FalseClass], default: false)
+  attribute(:batch, kind_of: [TrueClass, FalseClass], default: false)
   attribute(:options, kind_of: String, default: '')
 
   # this is what helps the various resources find each other
