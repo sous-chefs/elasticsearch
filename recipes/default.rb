@@ -4,7 +4,9 @@
 # Recipe:: default
 #
 
-include_recipe 'chef-sugar'
+chef_sugar_cookbook_version = Gem::Version.new(run_context.cookbook_collection['chef-sugar'].metadata.version)
+
+include_recipe 'chef-sugar' if chef_sugar_cookbook_version < Gem::Version.new('4.0.0')
 
 # see README.md and test/fixtures/cookbooks for more examples!
 elasticsearch_user 'elasticsearch' do
