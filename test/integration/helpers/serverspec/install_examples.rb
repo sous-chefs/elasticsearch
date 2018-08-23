@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 shared_examples_for 'elasticsearch install' do |args = {}|
   dir = args[:dir] || '/usr/share'
-  version = args[:version] || '6.3.1'
+  version = args[:version] || '6.4.0'
 
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'
