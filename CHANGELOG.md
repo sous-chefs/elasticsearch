@@ -1,5 +1,8 @@
 # Change Log
 
+## [v4.0.2](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.2) (2018-09-17)
+- Add hashes for 6.3.0 (#669), 6.3.1 (#673), 6.4.0 (#677)
+
 ## [v4.0.1](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.1) (2018-06-01)
 - Add hashes for 6.2.4 (#665)
 - Improve ES_USER / ES_GROUP logic for init script and package installs (#647)
