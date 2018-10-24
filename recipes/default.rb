@@ -4,8 +4,6 @@
 # Recipe:: default
 #
 
-include_recipe 'chef-sugar'
-
 # see README.md and test/fixtures/cookbooks for more examples!
 elasticsearch_user 'elasticsearch' do
   node['elasticsearch']['user'].each do |key, value|
