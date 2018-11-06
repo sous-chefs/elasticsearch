@@ -140,11 +140,11 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     filename = package_url.split('/').last
 
     pkg_r = if node['platform_family'] == 'debian'
-              dpkg_package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+              dpkg_package "#{node['elasticsearch']['package_base_name']}" do
                 action :nothing
               end
             else
-              package "#{Chef::Config[:file_cache_path]}/#{filename}" do
+              package "#{node['elasticsearch']['package_base_name']}" do
                 action :nothing
               end
             end
