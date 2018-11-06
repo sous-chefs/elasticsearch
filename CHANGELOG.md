@@ -1,5 +1,8 @@
 # Change Log
 
+## [v4.0.4](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.4) (2018-11-06)
+- Add hashes for 6.4.2 (#687)
+
 ## [v4.0.3](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.3) (2018-09-24)
 - Add hashes for 6.4.1 (#682)
 
