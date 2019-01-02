@@ -1,5 +1,8 @@
 # Change Log
 
+## [v3.4.8](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.8) (2019-01-02)
+- Add hashes for ES 5.6.{12, 13, 14} (#700)
+
 ## [v3.4.7](https://github.com/elastic/cookbook-elasticsearch/tree/v3.4.7) (2018-09-17)
 - Add hashes for ES 5.6.10 (#672) & 5.6.11 (#678)
 
