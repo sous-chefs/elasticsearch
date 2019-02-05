@@ -97,3 +97,22 @@ default['elasticsearch']['checksums']['6.5.3']['tarball'] = 'cee4340dfaadf27d73c
 default['elasticsearch']['checksums']['6.5.4']['debian'] = 'c0a062ffb45f989cd3091c66f62605178c41c3735991d95506a6986a90924833'
 default['elasticsearch']['checksums']['6.5.4']['rhel'] = 'aa4006f754bd1a0bfaa338ba40d93a1762917c1862951577c62b1f073026b5ba'
 default['elasticsearch']['checksums']['6.5.4']['tarball'] = '762e25c036fa2e882cb7e91d83868fa15a1cad8549d279a8c5826a005bb31877'
+
+default['elasticsearch']['jvm_options'] = %w(
+  -XX:+UseConcMarkSweepGC
+  -XX:CMSInitiatingOccupancyFraction=75
+  -XX:+UseCMSInitiatingOccupancyOnly
+  -XX:+AlwaysPreTouch
+  -server
+  -Xss1m
+  -Djava.awt.headless=true
+  -Dfile.encoding=UTF-8
+  -Djna.nosys=true
+  -XX:-OmitStackTraceInFastThrow
+  -Dio.netty.noUnsafe=true
+  -Dio.netty.noKeySetOptimization=true
+  -Dio.netty.recycler.maxCapacityPerThread=0
+  -Dlog4j.shutdownHookEnabled=false
+  -Dlog4j2.disable.jmx=true
+  -XX:+HeapDumpOnOutOfMemoryError
+)
