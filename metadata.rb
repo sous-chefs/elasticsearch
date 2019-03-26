@@ -5,7 +5,7 @@ maintainer_email 'karel.minarik@elasticsearch.org'
 license          'Apache 2.0'
 description      'Installs and configures Elasticsearch'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '4.0.5'
+version          '4.0.6'
 
 supports 'amazon'
 supports 'centos'
@@ -22,4 +22,4 @@ depends 'ark'
 issues_url       'https://github.com/elastic/cookbook-elasticsearch/issues'
 source_url       'https://github.com/elastic/cookbook-elasticsearch'
 
-chef_version '>= 12.5' if respond_to?(:chef_version)
+chef_version '>= 13.0' if respond_to?(:chef_version)
