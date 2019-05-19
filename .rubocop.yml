@@ -18,6 +18,12 @@ Style/GuardClause:
     - 'Rakefile'
     - 'libraries/helpers.rb'
 
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
+
 # Longer classes are okay.
 Metrics/ClassLength:
   Max: 200
