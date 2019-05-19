@@ -117,9 +117,9 @@ describe 'elasticsearch_test::package with username foo' do
 
           it 'converge status' do
             if install_type != 'tarball'
-              expect{ chef_run }.to raise_error(RuntimeError, /Custom usernames/)
+              expect { chef_run }.to raise_error(RuntimeError, /Custom usernames/)
             else
-              expect{ chef_run }.to_not raise_error(RuntimeError, /Custom usernames/)
+              expect { chef_run }.to_not raise_error(RuntimeError, /Custom usernames/)
             end
           end
         end

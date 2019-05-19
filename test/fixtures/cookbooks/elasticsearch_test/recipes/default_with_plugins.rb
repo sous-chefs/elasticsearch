@@ -19,7 +19,7 @@ elasticsearch_plugin 'x-pack' do
   notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
 end
 
-#Needed when installing x-pack plugin
+# Needed when installing x-pack plugin
 file '/etc/elasticsearch/elasticsearch.keystore' do
   user 'elasticsearch'
   group 'elasticsearch'
@@ -30,7 +30,7 @@ service 'elasticsearch' do
   action :nothing
 end
 
-#Create the X-Pack Test User
+# Create the X-Pack Test User
 execute 'create user test' do
   command '/usr/share/elasticsearch/bin/x-pack/users useradd -p testpass -r superuser testuser'
   not_if '/usr/share/elasticsearch/bin/x-pack/users list | grep -q testuser'
