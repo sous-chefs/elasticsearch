@@ -22,10 +22,9 @@ def node_resources(node)
   allow(Chef::Environment).to receive(:load).and_return(env)
 end
 
-# use to stub commands or files or other ruby calls
-# e.g. stub_command('/usr/sbin/httpd -t').and_return(0)
+# Stub one guard from the elasticsearch_test fixture cookbook to prevent rspec from failing
 def stub_resources
-  stub_command('/usr/sbin/foo').and_return(0)
+  stub_command('/usr/share/elasticsearch/bin/x-pack/users list | grep -q testuser').and_return(0)
 end
 
 def stub_chef_zero(platform, version, server)
