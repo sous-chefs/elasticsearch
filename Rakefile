@@ -11,9 +11,6 @@ namespace :style do
     # see templatestack's .rubocop.yml for comparison
     task.patterns = ['**/*.rb']
 
-    # only show the files with failures
-    task.formatters = ['files']
-
     # abort rake on failure
     task.fail_on_error = true
   end
