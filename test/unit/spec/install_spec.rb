@@ -119,7 +119,7 @@ describe 'elasticsearch_test::package with username foo' do
             if install_type != 'tarball'
               expect { chef_run }.to raise_error(RuntimeError, /Custom usernames/)
             else
-              expect { chef_run }.to_not raise_error(RuntimeError, /Custom usernames/)
+              expect { chef_run }.to_not raise_error
             end
           end
         end
