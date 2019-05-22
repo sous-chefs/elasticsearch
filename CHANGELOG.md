@@ -1,5 +1,9 @@
 # Change Log
 
+## [v4.0.6](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.6) (2019-05-22)
+- Lots of new hashes of more recent releases of ES, see PRs for full list (#715, #713, #710, #709, #705, #704, #701).
+- Get Travis building again (#714).
+
 ## [v4.0.5](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.5) (2019-01-02)
 - Add hashes for 6.5.4 (#699), 6.5.3 (#697)
 
