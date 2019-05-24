@@ -3,7 +3,7 @@ Lint/RescueException:
     - 'Rakefile'
     - 'libraries/helpers.rb'
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Exclude:
     - 'Rakefile'
     - 'libraries/helpers.rb'
@@ -17,6 +17,12 @@ Style/GuardClause:
   Exclude:
     - 'Rakefile'
     - 'libraries/helpers.rb'
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  Enabled: false
 
 # Longer classes are okay.
 Metrics/ClassLength:

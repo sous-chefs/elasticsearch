@@ -11,9 +11,6 @@ namespace :style do
     # see templatestack's .rubocop.yml for comparison
     task.patterns = ['**/*.rb']
 
-    # only show the files with failures
-    task.formatters = ['files']
-
     # abort rake on failure
     task.fail_on_error = true
   end
@@ -22,9 +19,12 @@ namespace :style do
   desc 'Run Chef style checks'
   FoodCritic::Rake::LintTask.new(:chef) do |t|
     # 'search_gems' doesn't work, but :search_gems does
-    t.options = { :search_gems => true, # allows us to add addl gems with more rules
-                  :fail_tags => ['correctness'],
-                  :chef_version => '12.4.1' }
+    t.options = {
+      :search_gems => true, # allows us to add addl gems with more rules
+      :fail_tags => ['correctness'],
+      :tags => ['~FC085'], # Skip updated_by_last_action warnings for now
+      :chef_version => '12.4.1',
+    }
   end
 end
 

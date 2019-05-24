@@ -2,10 +2,10 @@
 name             'vendor-elasticsearch6'
 maintainer       'Karel Minarik'
 maintainer_email 'karel.minarik@elasticsearch.org'
-license          'Apache 2.0'
+license          'Apache-2.0'
 description      'Installs and configures Elasticsearch'
 long_description IO.read(File.join(File.dirname(__FILE__), 'README.md'))
-version          '4.0.5'
+version          '4.0.6'
 
 supports 'amazon'
 supports 'centos'
