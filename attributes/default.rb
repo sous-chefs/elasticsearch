@@ -7,11 +7,19 @@ default['elasticsearch']['service'] = {}
 default['elasticsearch']['plugin'] = {}
 
 # platform_family keyed download URLs
-default['elasticsearch']['download_urls'] = {
-  'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.deb',
-  'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.rpm',
-  'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz',
-}
+default['elasticsearch']['download_urls'] = if Gem::Version.new(default['elasticsearch']['install']['version']) >= Gem::Version.new('7.0.0')
+                                              {
+                                                'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-amd64.deb',
+                                                'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-x86_64.rpm',
+                                                'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-linux-x86_64.tar.gz',
+                                              }
+                                            else
+                                              {
+                                                'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.deb',
+                                                'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.rpm',
+                                                'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz',
+                                              }
+                                            end
 
 # platform_family keyed download sha256 checksums
 default['elasticsearch']['checksums']['6.0.0']['debian'] = '28f38779156387c1db274d8d733429e574b54b4f518da6f0741f6276f8229939'
