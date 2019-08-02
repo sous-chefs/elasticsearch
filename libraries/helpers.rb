@@ -65,7 +65,7 @@ module ElasticsearchCookbook
       platform_family = node['platform_family']
 
       version_key = 'download_urls'
-      if Gem::Version.new(node['elasticsearch']['install']['version']) >= Gem::Version.new('7.0.0')
+      if Gem::Version.new(new_resource.version) >= Gem::Version.new('7.0.0')
         version_key = 'download_urls_v7'
       end
 

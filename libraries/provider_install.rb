@@ -219,24 +219,20 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
   end
 
   def yum_repo_resource
-    yum_repository "elastic-#{major_version}.x" do
-      baseurl "https://artifacts.elastic.co/packages/#{major_version}.x/yum"
+    yum_repository "elastic-#{new_resource.version.to_i}.x" do
+      baseurl "https://artifacts.elastic.co/packages/#{new_resource.version.to_i}.x/yum"
       gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
       action :nothing # :add, remove
     end
   end
 
   def apt_repo_resource
-    apt_repository "elastic-#{major_version}.x" do
-      uri "https://artifacts.elastic.co/packages/#{major_version}.x/apt"
+    apt_repository "elastic-#{new_resource.version.to_i}.x" do
+      uri "https://artifacts.elastic.co/packages/#{new_resource.version.to_i}.x/apt"
       key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
       components ['main']
       distribution 'stable'
       action :nothing # :create, :delete
     end
-  end
-
-  def major_version
-    new_resource.version.to_i
   end
 end
