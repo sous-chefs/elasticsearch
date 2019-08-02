@@ -37,5 +37,6 @@ group :development do
   gem 'guard-rubocop'
   gem 'pry-nav'
   gem 'rb-fsevent'
-  gem 'chef', '~> 13.0'
+  gem 'chef', '~> 14.0'
+  gem 'openssl', '>= 2.1.2'
 end

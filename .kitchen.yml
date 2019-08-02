@@ -7,7 +7,7 @@
 ################################################################################
 driver:
   name: vagrant # provide a default test-kitchen driver, vagrant
-  require_chef_omnibus: true
+  require_chef_omnibus: 14
 
 provisioner:
   name: chef_zero
