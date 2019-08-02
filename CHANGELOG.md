@@ -1,5 +1,13 @@
 # Change Log
 
+## [v4.1.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.6) (2019-05-22)
+- Added support for ES 6.8.1, 6.8.2 and new default of 6.8.2
+- Added support for ES v7, with 7.0.0, 7.0.1, 7.1.0, 7.2.0, 7.2.1, 7.3.0
+- New URL format for ES v7 introduced, taught lib/helpers how to use it
+- Bumped testing to use Chef v14
+- Modified testing with test-kitchen to stop using x-pack as a test plugin, now using analysis-icu
+- Some minor tweaks to get chefspec tests working again
+
 ## [v4.0.6](https://github.com/elastic/cookbook-elasticsearch/tree/v4.0.6) (2019-05-22)
 - Lots of new hashes of more recent releases of ES, see PRs for full list (#715, #713, #710, #709, #705, #704, #701).
 - Get Travis building again (#714).
