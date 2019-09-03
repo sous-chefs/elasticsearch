@@ -64,13 +64,18 @@ module ElasticsearchCookbook
     def determine_download_url(new_resource, node)
       platform_family = node['platform_family']
 
+      version_key = 'download_urls'
+      if Gem::Version.new(new_resource.version) >= Gem::Version.new('7.0.0')
+        version_key = 'download_urls_v7'
+      end
+
       url_string = nil
       if new_resource.download_url
         url_string = new_resource.download_url
       elsif new_resource.type == 'tarball'
-        url_string = node['elasticsearch']['download_urls']['tarball']
+        url_string = node['elasticsearch'][version_key]['tarball']
       elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
-        url_string = node['elasticsearch']['download_urls'][platform_family]
+        url_string = node['elasticsearch'][version_key][platform_family]
       end
 
       if url_string && new_resource.version

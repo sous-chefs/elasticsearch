@@ -39,7 +39,7 @@ elasticsearch_configure 'my_elasticsearch' do
   instance_name 'special_package_instance'
 end
 
-elasticsearch_plugin 'x-pack' do
+elasticsearch_plugin 'analysis-icu' do
   instance_name 'special_package_instance'
 end
 

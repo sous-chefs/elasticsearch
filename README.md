@@ -20,9 +20,14 @@ the version parameter as a string into your download_url.
 
 |Name|Default|Other values|
 |----|-------|------------|
+| For Elasticsearch < 7: ||
 |`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 |`default['elasticsearch']['download_urls']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+| For Elasticsearch >= 7: ||
+|`default['elasticsearch']['download_urls_v7']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls_v7']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
+|`default['elasticsearch']['download_urls_v7']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
 
 This cookbook's `elasticsearch::default` recipe also supports setting any `elasticsearch_` resource using attributes:
 
@@ -151,7 +156,7 @@ elasticsearch_install 'elasticsearch'
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'package' # type of install
-  version '6.8.1'
+  version '7.3.0'
   action :install # could be :remove as well
 end
 ```
@@ -172,7 +177,7 @@ end
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'tarball' # type of install
-  version '6.8.1'
+  version '7.3.0'
   action :install # could be :remove as well
 end
 ```
