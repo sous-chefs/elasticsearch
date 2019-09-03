@@ -14,26 +14,9 @@ include_recipe 'chef-sugar'
 # see README.md
 include_recipe 'elasticsearch::default'
 
-# by default, no plugins, but we do the x-pack
-elasticsearch_plugin 'x-pack' do
+# by default, no plugins, but we'd like to try one
+elasticsearch_plugin 'analysis-icu' do
   notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
-end
-
-# Needed when installing x-pack plugin
-file '/etc/elasticsearch/elasticsearch.keystore' do
-  user 'elasticsearch'
-  group 'elasticsearch'
-  notifies :start, 'service[elasticsearch]'
-end
-
-service 'elasticsearch' do
-  action :nothing
-end
-
-# Create the X-Pack Test User
-execute 'create user test' do
-  command '/usr/share/elasticsearch/bin/x-pack/users useradd -p testpass -r superuser testuser'
-  not_if '/usr/share/elasticsearch/bin/x-pack/users list | grep -q testuser'
 end
 
 # remove a non-existent plugin

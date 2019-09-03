@@ -43,11 +43,11 @@ settings = {
     )
   end
 
-  elasticsearch_plugin "xpack_#{instance_name}" do
+  elasticsearch_plugin "analysis_icu_#{instance_name}" do
     instance_name instance_name
-    plugin_name 'x-pack'
+    plugin_name 'analysis-icu'
     notifies :restart, "elasticsearch_service[elasticsearch_#{instance_name}]", :delayed
-    not_if { ::File.exist?('/usr/share/elasticsearch/plugins/x-pack') }
+    not_if { ::File.exist?('/usr/share/elasticsearch/plugins/analysis-icu') }
   end
 
   elasticsearch_service "elasticsearch_#{instance_name}" do

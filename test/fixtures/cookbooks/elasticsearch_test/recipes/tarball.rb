@@ -44,7 +44,7 @@ elasticsearch_configure 'my_elasticsearch' do
   instance_name 'special_tarball_instance'
 end
 
-elasticsearch_plugin 'x-pack' do
+elasticsearch_plugin 'analysis-icu' do
   instance_name 'special_tarball_instance'
 end
 
