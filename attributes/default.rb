@@ -7,19 +7,11 @@ default['elasticsearch']['service'] = {}
 default['elasticsearch']['plugin'] = {}
 
 # platform_family keyed download URLs
-if node['elasticsearch']['version'] >= '7.0.0'
-    default['elasticsearch']['download_urls'] = {
-        'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-amd64.deb',
-        'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-x86_64.rpm',
-        'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-linux-x86_64.tar.gz',
-    }
-else
-    default['elasticsearch']['download_urls'] = {
-        'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.deb',
-        'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.rpm',
-        'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz',
-    }
-end
+default['elasticsearch']['download_urls'] = {
+  'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.deb',
+  'rhel' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.rpm',
+  'tarball' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s.tar.gz',
+}
 
 default['elasticsearch']['download_urls_v7'] = {
   'debian' => 'https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-%s-amd64.deb',
