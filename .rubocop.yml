@@ -57,6 +57,9 @@ Style/ClassAndModuleChildren:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/WordArray:
+  Enabled: False
+
 # Cookstyle specific things
 ChefStyle/CommentFormat:
   Enabled: False # we are not Chef

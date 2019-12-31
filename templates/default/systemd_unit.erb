@@ -5,10 +5,13 @@ Wants=network-online.target
 After=network-online.target
 
 [Service]
+Type=notify
 RuntimeDirectory=elasticsearch
+PrivateTmp=true
 Environment=ES_HOME=/usr/share/elasticsearch
 Environment=ES_PATH_CONF=/etc/elasticsearch
 Environment=PID_DIR=/var/run/elasticsearch
+Environment=ES_SD_NOTIFY=true
 EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
 WorkingDirectory=<%= @path_home %>
@@ -28,7 +31,7 @@ StandardOutput=journal
 StandardError=inherit
 
 # Specifies the maximum file descriptor number that can be opened by this process
-LimitNOFILE=65536
+LimitNOFILE=65535
 
 # Specifies the maximum number of processes
 LimitNPROC=4096
@@ -57,4 +60,4 @@ SuccessExitStatus=143
 [Install]
 WantedBy=multi-user.target
 
-# Built for distribution-6.0.0 (distribution)
+# Built by elasticsearch chef cookbook for elasticsearch version <%= @version %>
