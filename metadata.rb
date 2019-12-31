@@ -4,7 +4,7 @@ maintainer       'Karel Minarik'
 maintainer_email 'karel.minarik@elasticsearch.org'
 license          'Apache-2.0'
 description      'Installs and configures Elasticsearch'
-version          '4.2.0'
+version          '4.3.0'
 
 supports 'amazon'
 supports 'centos'

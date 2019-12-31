@@ -1,5 +1,8 @@
 # Change Log
 
+## [v4.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.3.0) (2019-12-30)
+- Default to Elasticsearch 7.4.2
+
 ## [v4.2.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.2.0) (2019-08-02)
 - Default to Elasticsearch 7.3.0
 - Some fixes for the version logic when selecting v7 or higher ES
