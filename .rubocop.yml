@@ -14,6 +14,7 @@ Style/RescueModifier:
     - 'libraries/helpers.rb'
 
 Style/GuardClause:
+  Enabled: false
   Exclude:
     - 'Rakefile'
     - 'libraries/helpers.rb'
@@ -56,5 +57,15 @@ Style/ClassAndModuleChildren:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Style/GuardClause:
-  Enabled: false
+# Cookstyle specific things
+ChefStyle/CommentFormat:
+  Enabled: False # we are not Chef
+
+ChefModernize/WhyRunSupportedTrue:
+  Enabled: False # we are still supporting v12
+
+ChefModernize/RespondToInMetadata:
+  Enabled: False # we're supporting 12.5 still
+
+ChefModernize/DefinesChefSpecMatchers:
+  Enabled: False # we haven't moved to newer ChefSpec yet
