@@ -211,3 +211,7 @@ default['elasticsearch']['checksums']['7.5.0']['tarball'] = '1e183717071e329591c
 default['elasticsearch']['checksums']['7.5.1']['debian'] = 'e566a88e15d8f85cf793c8f971b51eeae6465a0aa73f968ae4b1ee6aa71e4c20'
 default['elasticsearch']['checksums']['7.5.1']['rhel'] = 'e6202bba2bd8644d23dcbef9ad7780c847dfe4ee699d3dc1804f6f62eed59c2d'
 default['elasticsearch']['checksums']['7.5.1']['tarball'] = '37c317efaacf33a1bae250a59e822864750fddd8caf08c4b6a6c235ffa5f47e8'
+
+default['elasticsearch']['checksums']['7.5.2']['debian'] = '4d5d2aa01a29bab054dd67a7c39d330d5c3844aa686846a8bd9ddf841834f485'
+default['elasticsearch']['checksums']['7.5.2']['rhel'] = 'bf34b74295be1768e456d4c9b5431d6e4caac64afb92afef686fa4228e4a5c57'
+default['elasticsearch']['checksums']['7.5.2']['tarball'] = '7b49b5ad9fea43533fc0355708b0fad7651aa0215fd590ed1414c2ff44e4cdf3'
