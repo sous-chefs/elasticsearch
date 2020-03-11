@@ -21,24 +21,31 @@ provisioner:
       jdk_version: '8'
 
 platforms:
+  - name: ubuntu-18.04
+    driver:
+      box: bento/ubuntu-18.04
+    run_list:
+    - recipe[apt]
+    - recipe[curl]
+    - recipe[java]
+    - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-16.04
+    driver:
+      box: bento/ubuntu-16.04
     run_list:
     - recipe[apt]
     - recipe[curl]
     - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
-  - name: ubuntu-14.04
-    run_list:
-    - recipe[apt]
-    - recipe[curl]
-    - recipe[java]
-    - recipe[elasticsearch_test::fix_cacerts]
-  - name: centos-7.2
+  - name: centos-8
+    driver:
+      box: bento/centos-8
     run_list:
     - recipe[yum]
     - recipe[curl]
-    - recipe[java]
-  - name: centos-6.7
+  - name: centos-7
+    driver:
+      box: bento/centos-7
     run_list:
     - recipe[yum]
     - recipe[curl]
