@@ -17,9 +17,6 @@ provisioner:
   environments_path: 'test/fixtures/environments'
   client_rb:
     environment: _default
-  attributes:
-    java:
-      jdk_version: '8'
 
 platforms:
   - name: ubuntu-18.04
@@ -28,7 +25,6 @@ platforms:
     run_list:
     - recipe[apt]
     - recipe[curl]
-    - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
   - name: ubuntu-16.04
     driver:
@@ -36,7 +32,6 @@ platforms:
     run_list:
     - recipe[apt]
     - recipe[curl]
-    - recipe[java]
     - recipe[elasticsearch_test::fix_cacerts]
   - name: centos-8
     driver:
@@ -50,7 +45,6 @@ platforms:
     run_list:
     - recipe[yum]
     - recipe[curl]
-    - recipe[java]
 
 suites:
   - name: repository # install from repository
@@ -71,7 +65,6 @@ suites:
 
   - name: package # install from package directly
     run_list:
-      - recipe[java]
       - recipe[elasticsearch_test::default_with_plugins]
     attributes:
       elasticsearch:
