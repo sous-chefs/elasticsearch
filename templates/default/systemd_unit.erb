@@ -20,8 +20,8 @@ EnvironmentFile=-<%= @default_dir %>/<%= @program_name %>
 
 WorkingDirectory=<%= @path_home %>
 
-User=elasticsearch
-Group=elasticsearch
+User=<%= @es_user %>
+Group=<%= @es_group %>
 
 ExecStart=<%= @path_home %>/bin/elasticsearch -p ${PID_DIR}/elasticsearch.pid --quiet
 

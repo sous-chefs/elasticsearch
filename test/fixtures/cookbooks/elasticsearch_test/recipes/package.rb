@@ -1,9 +1,9 @@
 # this is a test fixture used to test that the elasticsearch cookbook's
 # resources, providers, and recipes can be used correctly from a wrapper
 
-# create user with all non-default overriden options (except user/group, ESv6)
+# create user with all non-default overriden options (except user/group, >= ESv6)
 elasticsearch_user 'foobar' do
-  groupname 'elasticsearch' # can't override this w/ package in ESv6
+  groupname 'elasticsearch' # can't override this w/ package in >= ESv6
   username 'elasticsearch' # can't override this in systemd, so can't test!
   uid 1111
   gid 2222
@@ -25,8 +25,7 @@ elasticsearch_configure 'my_elasticsearch' do
   jvm_options %w(
     -server
     -Djava.awt.headless=true
-    -XX:+UseParNewGC
-    -XX:+UseConcMarkSweepGC
+    -XX:+UseG1GC
     -XX:CMSInitiatingOccupancyFraction=75
     -XX:+UseCMSInitiatingOccupancyOnly
     -XX:+HeapDumpOnOutOfMemoryError
