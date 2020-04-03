@@ -30,9 +30,9 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
   ]
 
   expected_jvm_options = args[:jvmopts] || [
-    'server',
     'HeapDumpOnOutOfMemoryError',
-    'java.awt.headless=true',
+    'HeapDumpPath',
+    'ErrorFile',
   ]
 
   describe file(path_conf) do
