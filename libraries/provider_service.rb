@@ -71,7 +71,8 @@ class ElasticsearchCookbook::ServiceProvider < Chef::Provider::LWRPBase
           es_user: es_user.username,
           es_group: es_user.groupname,
           nofile_limit: es_conf.nofile_limit,
-          install_type: es_install.type
+          install_type: es_install.type,
+          version: es_install.version
         )
         only_if 'which systemctl'
         action :nothing

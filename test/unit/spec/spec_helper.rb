@@ -42,5 +42,3 @@ def stub_chef_zero(platform, version, server)
     server.create_environment(env_name, env_data)
   end
 end
-
-at_exit { ChefSpec::Coverage.report! }
