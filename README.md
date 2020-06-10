@@ -156,7 +156,7 @@ elasticsearch_install 'elasticsearch'
 ```ruby
 elasticsearch_install 'my_es_installation' do
   type 'package' # type of install
-  version '7.6.2'
+  version '7.7.1'
   action :install # could be :remove as well
 end
 ```
