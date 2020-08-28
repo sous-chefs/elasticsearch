@@ -9,7 +9,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     true # we only use core Chef resources that also support whyrun
   end
 
-  def action_install
+  action :install do
     if new_resource.type == 'tarball'
       install_tarball_wrapper_action
     elsif new_resource.type == 'package'
@@ -21,7 +21,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
     end
   end
 
-  def action_remove
+  action :remove do
     if new_resource.type == 'tarball'
       remove_tarball_wrapper_action
     elsif new_resource.type == 'package'

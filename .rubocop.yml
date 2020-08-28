@@ -36,7 +36,7 @@ Metrics/BlockLength:
   Max: 150
 
 # Not on VT100s anymore.
-Metrics/LineLength:
+Layout/LineLength:
   Max: 180
 
 # We're not against complexity.
