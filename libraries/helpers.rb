@@ -79,9 +79,9 @@ module ElasticsearchCookbook
       end
 
       if url_string && new_resource.version
-        return format(url_string, new_resource.version)
+        format(url_string, new_resource.version)
       elsif url_string
-        return url_string
+        url_string
       end
     end
 

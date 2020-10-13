@@ -1,7 +1,6 @@
 # Chef Provider for installing an elasticsearch plugin
 class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
   include ElasticsearchCookbook::Helpers
-  include Chef::Mixin::ShellOut
 
   provides :elasticsearch_plugin
 
@@ -9,7 +8,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     true # we only use core Chef resources that also support whyrun, or guard
   end
 
-  def action_install
+  action :action_install do
     return if plugin_exists(new_resource.plugin_name)
 
     # since install can take a URL argument instead
@@ -17,7 +16,7 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     manage_plugin("install #{url_or_name}")
   end # action
 
-  def action_remove
+  action :action_remove do
     return unless plugin_exists(new_resource.plugin_name)
 
     manage_plugin("remove #{new_resource.plugin_name}")
