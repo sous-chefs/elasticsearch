@@ -8,18 +8,18 @@ class ElasticsearchCookbook::PluginProvider < Chef::Provider::LWRPBase
     true # we only use core Chef resources that also support whyrun, or guard
   end
 
-  action :action_install do
-    return if plugin_exists(new_resource.plugin_name)
-
-    # since install can take a URL argument instead
-    url_or_name = new_resource.url || new_resource.plugin_name
-    manage_plugin("install #{url_or_name}")
+  action :install do
+    unless plugin_exists(new_resource.plugin_name)
+      # since install can take a URL argument instead
+      url_or_name = new_resource.url || new_resource.plugin_name
+      manage_plugin("install #{url_or_name}")
+    end
   end # action
 
-  action :action_remove do
-    return unless plugin_exists(new_resource.plugin_name)
-
-    manage_plugin("remove #{new_resource.plugin_name}")
+  action :remove do
+    unless plugin_exists(new_resource.plugin_name)
+      manage_plugin("remove #{new_resource.plugin_name}")
+    end
   end # action
 
   def manage_plugin(arguments)
