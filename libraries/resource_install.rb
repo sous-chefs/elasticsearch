@@ -23,6 +23,9 @@ class ElasticsearchCookbook::InstallResource < Chef::Resource::LWRPBase
   # where to install?
   attribute(:dir, kind_of: String, default: '/usr/share')
 
+  # package name to use when installing with package provider
+  attribute(:package_name, kind_of: String, default: 'elasticsearch')
+
   # attributes used by the package-flavor provider
   attribute(:package_options, kind_of: String)
 

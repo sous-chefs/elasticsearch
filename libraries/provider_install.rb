@@ -59,7 +59,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       new_resource.version = "#{new_resource.version}-1"
     end
 
-    pkg_r = package 'elasticsearch' do
+    pkg_r = package new_resource.package_name do
       options new_resource.package_options
       version new_resource.version
       action :nothing
@@ -82,7 +82,7 @@ class ElasticsearchCookbook::InstallProvider < Chef::Provider::LWRPBase
       end
     end
 
-    pkg_r = package 'elasticsearch' do
+    pkg_r = package new_resource.package_name do
       options new_resource.package_options
       version new_resource.version
       action :nothing
