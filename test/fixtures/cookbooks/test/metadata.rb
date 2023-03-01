@@ -1,0 +1,10 @@
+name             'test'
+maintainer       'Sous Chefs'
+maintainer_email 'help@sous-chefs.org'
+license          'Apache-2.0'
+description      'A wrapper cookbook for use in testing that elasticsearch cookbook works well with wrappers calling it'
+version          '0.1.0'
+
+depends 'apt'
+depends 'yum'
+depends 'elasticsearch'

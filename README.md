@@ -31,7 +31,7 @@ the version parameter as a string into your download_url.
 
 This cookbook's `elasticsearch::default` recipe also supports setting any `elasticsearch_` resource using attributes:
 
-```
+```ruby
 default['elasticsearch']['user'] = {}
 default['elasticsearch']['install'] = {}
 default['elasticsearch']['configure'] = {}
@@ -40,7 +40,8 @@ default['elasticsearch']['plugin'] = {}
 ```
 
 For example, this will pass a username 'foo' to `elasticsearch_user` and set a uid to `1234`:
-```
+
+```ruby
 default['elasticsearch']['user']['username'] = 'foo'
 default['elasticsearch']['user']['uid'] = '1234'
 ```
@@ -58,7 +59,7 @@ See the attributes section above to for what defaults you can adjust.
 The default recipe creates an elasticsearch user, group, package installation,
 configuration files, and service with all of the default options.
 
-Please note that there are [additional examples within the test fixtures](test/fixtures/cookbooks/elasticsearch_test),
+Please note that there are [additional examples within the test fixtures](test/fixtures/cookbooks/test),
 including a demonstration of how to configure two instances of Elasticsearch on a single server.
 
 ## Resources
@@ -103,6 +104,7 @@ elasticsearch_plugin 'x-pack'
 ```
 
 ### elasticsearch_user
+
 Actions: `:create`, `:remove`
 
 Creates a user and group on the system for use by elasticsearch. Here is an
@@ -127,6 +129,7 @@ end
 ```
 
 ### elasticsearch_install
+
 Actions: `:install`, `:remove`
 
 Downloads the elasticsearch software, and unpacks it on the system. There are
@@ -155,29 +158,29 @@ elasticsearch_install 'elasticsearch'
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'package' # type of install
-  version '7.5.1'
-  action :install # could be :remove as well
+  type 'package'
+  version '7.8.0'
+  action :install
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'tarball' # type of install
+  type 'tarball'
   dir '/usr/local' # where to install
 
   download_url "https://download.elasticsearch.org/elasticsearch/elasticsearch/elasticsearch-1.7.2.tar.gz"
   # sha256
   download_checksum "6f81935e270c403681e120ec4395c28b2ddc87e659ff7784608b86beb5223dd2"
 
-  action :install # could be :remove as well
+  action :install
 end
 ```
 
 ```ruby
 elasticsearch_install 'my_es_installation' do
-  type 'tarball' # type of install
-  version '7.5.1'
+  type 'tarball'
+  version '7.8.0'
   action :install # could be :remove as well
 end
 ```
@@ -194,6 +197,7 @@ end
 ```
 
 ### elasticsearch_configure
+
 Actions: `:manage`, `:remove`
 
 Configures an elasticsearch instance; creates directories for configuration,
@@ -205,7 +209,7 @@ which is a hash of any elasticsearch configuration directives. The
 other important attribute is `default_configuration` -- this contains the
 minimal set of required defaults.
 
-Note that these are both _not_ a Chef mash, everything must be in a single level
+Note that these are both *not* a Chef mash, everything must be in a single level
 of keys and values. Any settings you pass in configuration will be merged into
 (and potentially overwrite) any default settings.
 
@@ -215,11 +219,13 @@ for more.
 Examples:
 
 With all defaults -
+
 ```ruby
 elasticsearch_configure 'elasticsearch'
 ```
 
 With mostly defaults -
+
 ```ruby
 elasticsearch_configure 'elasticsearch' do
     allocated_memory '512m'
@@ -232,6 +238,7 @@ end
 ```
 
 Very complicated -
+
 ```ruby
 elasticsearch_configure 'my_elasticsearch' do
   # if you override one of these, you probably want to override all
@@ -269,6 +276,7 @@ end
 ```
 
 ### elasticsearch_service
+
 Actions: `:configure`, `:remove`
 
 Writes out a system service configuration of the appropriate type, and enables
@@ -286,6 +294,7 @@ entirely skip trying to setup those scripts. Combined with changing the default
 service actions, this will have the same effect as `action :nothing`.
 
 ### elasticsearch_plugin
+
 Actions: `:install`, `:remove`
 
 Installs or removes a plugin to a given elasticsearch instance and plugin
@@ -295,7 +304,7 @@ Furthermore, there isn't a way to determine if a plugin is compatible with ES or
 even what version it is. So once we install a plugin to a directory, we
 generally assume that is the desired one and we don't touch it further.
 
-See https://github.com/elastic/cookbook-elasticsearch/issues/264 for more info.
+See <https://github.com/elastic/cookbook-elasticsearch/issues/264> for more info.
 NB: You [may encounter issues on certain distros](http://blog.backslasher.net/java-ssl-crash.html) with NSS 3.16.1 and OpenJDK 7.x.
 
 Officially supported or commercial plugins require just the plugin name:
@@ -324,6 +333,7 @@ end
 ```
 
 Plugins from Maven Central or Sonatype require 'groupId/artifactId/version':
+
 ```ruby
 elasticsearch_plugin 'mapper-attachments' do
   url 'org.elasticsearch/elasticsearch-mapper-attachments/2.6.0'
@@ -332,6 +342,7 @@ end
 ```
 
 Plugins can be installed from a custom URL or file location as follows:
+
 ```ruby
 elasticsearch_plugin 'mapper-attachments' do
   url 'http://some.domain.name//my-plugin-1.0.0.zip'
@@ -347,6 +358,7 @@ end
 The plugin resource respects the `https_proxy` or `http_proxy` (non-SSL)
 [Chef settings](https://docs.chef.io/config_rb_client.html) unless explicitly
 disabled using `chef_proxy false`:
+
 ```ruby
 elasticsearch_plugin 'kopf' do
   url 'lmenezes/elasticsearch-kopf'
@@ -377,6 +389,7 @@ end
 
 ## License
 
+```text
 This software is licensed under the Apache 2 license, quoted below.
 
     Copyright (c) 2015 Elasticsearch <https://www.elastic.co/>
@@ -392,3 +405,4 @@ This software is licensed under the Apache 2 license, quoted below.
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+```

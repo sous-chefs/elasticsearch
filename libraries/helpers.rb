@@ -6,16 +6,32 @@ module ElasticsearchCookbook
       instance_name = resource.instance_name
 
       # if we are truly given a specific name to find
-      name_match = find_exact_resource(run_context, resource_type, resource_name) rescue nil
+      name_match = begin
+                     find_exact_resource(run_context, resource_type, resource_name)
+                   rescue
+                     nil
+                   end
       return name_match if name_match
 
       # first try by instance name attribute
-      name_instance = find_instance_name_resource(run_context, resource_type, instance_name) rescue nil
+      name_instance = begin
+                        find_instance_name_resource(run_context, resource_type, instance_name)
+                      rescue
+                        nil
+                      end
       return name_instance if name_instance
 
       # otherwise try the defaults
-      name_default = find_exact_resource(run_context, resource_type, 'default') rescue nil
-      name_elasticsearch = find_exact_resource(run_context, resource_type, 'elasticsearch') rescue nil
+      name_default = begin
+                       find_exact_resource(run_context, resource_type, 'default')
+                     rescue
+                       nil
+                     end
+      name_elasticsearch = begin
+                             find_exact_resource(run_context, resource_type, 'elasticsearch')
+                           rescue
+                             nil
+                           end
 
       # if we found exactly one default name that matched
       return name_default if name_default && !name_elasticsearch
@@ -79,9 +95,9 @@ module ElasticsearchCookbook
       end
 
       if url_string && new_resource.version
-        return format(url_string, new_resource.version)
+        format(url_string, new_resource.version)
       elsif url_string
-        return url_string
+        url_string
       end
     end
 
