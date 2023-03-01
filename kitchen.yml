@@ -21,17 +21,8 @@ provisioner:
 
 platforms:
   - name: ubuntu-20.04
-    # run_list:
-    #   - recipe[apt]
-    #   - recipe[curl]
-    #   - recipe[java]
-    #   - recipe[test::fix_cacerts]
   - name: centos-7
   - name: centos-8
-    # run_list:
-    #   - recipe[yum]
-    #   - recipe[curl]
-    #   - recipe[java]
 
 suites:
   - name: repository
