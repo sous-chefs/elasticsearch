@@ -1,10 +1,4 @@
 ---
-################################################################################
-# Any local customizations should be placed inside the .kitchen.local.yml, which
-# will not be checked in or overwritten. You may also use ~/.kitchen/config.yml
-# or environment variables like VAGRANT_DEFAULT_PROVIDER. Anything in those will
-# take precedence over anything set in `.kitchen.yml`.
-################################################################################
 driver:
   name: vagrant
 
@@ -32,7 +26,8 @@ platforms:
     #   - recipe[curl]
     #   - recipe[java]
     #   - recipe[test::fix_cacerts]
-  - name: centos-7.2
+  - name: centos-7
+  - name: centos-8
     # run_list:
     #   - recipe[yum]
     #   - recipe[curl]

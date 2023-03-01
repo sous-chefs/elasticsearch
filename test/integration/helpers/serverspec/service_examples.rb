@@ -3,6 +3,17 @@ require_relative 'spec_helper'
 shared_examples_for 'elasticsearch service' do |service_name = 'elasticsearch', args = {}|
   content_match = args[:content] || 'elasticsearch'
 
+  describe file("/usr/lib/systemd/system/#{service_name}.service") do
+    it { should be_file }
+    it { should be_mode 644 }
+
+    if package?
+      its(:content) { should contain(/ES_SD_NOTIFY=true/) }
+    else
+      its(:content) { should_not contain(/ES_SD_NOTIFY=true/) }
+    end
+  end
+
   # we should move to inspec here ASAP, as this doesn't pass due to serverspec
   describe service(service_name) do
     it { should be_enabled }
