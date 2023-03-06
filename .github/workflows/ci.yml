@@ -34,39 +34,12 @@ jobs:
           - ubuntu-1804
           - ubuntu-2004
         suite:
-          - basic-site
-          - default
-          - mod-auth-cas
-          - mod-php
-          - module-template
-          - mod-wsgi
-          - pkg-name
-          - ports
-          - ssl
-          - install-override
-        exclude:
-          - os: amazonlinux-2
-            suite: pkg-name
-          - os: debian-10
-            suite: pkg-name
-          - os: debian-11
-            suite: pkg-name
-          - os: almalinux-8
-            suite: pkg-name
-          - os: centos-stream-8
-            suite: pkg-name
-          - os: rockylinux-8
-            suite: pkg-name
-          - os: fedora-latest
-            suite: pkg-name
-          - os: fedora-latest
-            suite: mod-php
-          - os: ubuntu-1804
-            suite: pkg-name
-          - os: ubuntu-2004
-            suite: pkg-name
-          - os: opensuse-leap-15
-            suite: pkg-name
+          - repository
+          - tarball
+          - package
+          - doubleinstance
+          - override_package
+          - override_tarball
       fail-fast: false
 
     steps:
