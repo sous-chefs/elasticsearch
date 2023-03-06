@@ -1,0 +1,16 @@
+---
+PreCommit:
+  TrailingWhitespace:
+    enabled: true
+  YamlLint:
+    enabled: true
+  Rspec:
+    enabled: true
+    required_executable: 'rspec'
+  Cookstyle:
+    enabled: true
+    required_executable: 'cookstyle'
+    command: ["cookstyle"]
+CommitMsg:
+  HardTabs:
+    enabled: true
