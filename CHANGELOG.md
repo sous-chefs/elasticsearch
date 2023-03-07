@@ -1,5 +1,10 @@
 # Change Log
 
+## Unreleased
+
+- resolved cookstyle error: Rakefile:1:1 convention: `Style/Encoding`
+- resolved cookstyle error: Rakefile:63:5 convention: `Style/StderrPuts`
+
 ## [v4.3.0](https://github.com/elastic/cookbook-elasticsearch/tree/v4.3.0) (2019-12-30)
 - Default to Elasticsearch 7.4.2
 
