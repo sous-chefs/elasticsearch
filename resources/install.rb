@@ -69,7 +69,7 @@ action_class do
     if new_resource.enable_repository_actions
       if platform_family?('debian')
         apt_repository "elastic-#{new_resource.version.to_i}.x" do
-          key "elasticsearch.asc"
+          key 'elasticsearch.asc'
           cookbook 'elasticsearch'
           components ['main']
           distribution 'stable'
@@ -167,7 +167,7 @@ action_class do
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     found_download_url = determine_download_url(new_resource, node)
 
-    raise 'Could not determine download url for tarball on this platform'  unless found_download_url
+    raise 'Could not determine download url for tarball on this platform' unless found_download_url
 
     ark 'elasticsearch' do
       url   found_download_url

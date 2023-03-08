@@ -62,9 +62,9 @@ action_class do
       # if whyrun_mode?
       #   Chef::Log.info("Would run command: #{cmd_str}")
       # else
-        command_array = cmd_str.split(' ')
-        shell_out_as_user!(command_array, es_install.type, config_name)
-        # new_resource.updated_by_last_action(true)
+      command_array = cmd_str.split(' ')
+      shell_out_as_user!(command_array, es_install.type, config_name)
+      # new_resource.updated_by_last_action(true)
       # end
     end
   end
@@ -94,25 +94,25 @@ action_class do
   end
 
   # def shell_out_as_user!(command, run_ctx)
-  def shell_out_as_user!(command, install_type, config_name=nil)
+  def shell_out_as_user!(_command, _install_type, config_name = nil)
     # we need to figure out the env file path to set environment for plugins
-    include_file_resource = find_resource!(:template, "elasticsearch.in.sh-#{config_name}")
+    # include_file_resource = find_resource!(:template, "elasticsearch.in.sh-#{config_name}")
     # env = { 'ES_INCLUDE' => include_file_resource.path }
 
     # Add HTTP Proxy vars unless explicitly told not to
-    if new_resource.chef_proxy
-      env['ES_JAVA_OPTS'] = "#{ENV['ES_JAVA_OPTS']} #{get_java_proxy_arguments}"
-    end
+    # if new_resource.chef_proxy
+    #   env['ES_JAVA_OPTS'] = "#{ENV['ES_JAVA_OPTS']} #{get_java_proxy_arguments}"
+    # end
 
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
     # if install_type == 'package' || install_type == 'repository'
     #   # package installations should install plugins as root
-      # shell_out!(command, env: env, timeout: 1200)
+    # shell_out!(command, env: env, timeout: 1200)
     # else
-      # non-package installations should install plugins as the ES user
-      # es_user = find_resource!(:elasticsearch_user, new_resource)
-      # shell_out!(command, user: es_user.username, group: es_user.groupname, env: env, timeout: 1200)
+    # non-package installations should install plugins as the ES user
+    # es_user = find_resource!(:elasticsearch_user, new_resource)
+    # shell_out!(command, user: es_user.username, group: es_user.groupname, env: env, timeout: 1200)
     # end
   end
 end
