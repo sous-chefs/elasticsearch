@@ -36,17 +36,16 @@ property :systemd_cookbook,
 
 action :configure do
   es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
-  es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
   es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
   default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
-  d_r = directory "#{es_conf.path_pid}-#{default_config_name}" do
+  directory "#{es_conf.path_pid}-#{default_config_name}" do
     path es_conf.path_pid
     owner es_user.username
     group es_user.groupname
     mode '0755'
     recursive true
-    action :nothing
+    action :create
   end
 
   d_r.run_action(:create)
