@@ -8,43 +8,15 @@
 # cookbook (unlike install, configure, and service, which we do ship in the
 # default cookbook).
 
-elasticsearch_user 'elasticsearch' do
-  node['elasticsearch']['user'].each do |key, value|
-    # Skip nils, use false if you want to disable something.
-    send(key, value) unless value.nil?
-  end
-end
+elasticsearch_user 'elasticsearch'
 
 elasticsearch_install 'elasticsearch' do
-  node['elasticsearch']['install'].each do |key, value|
-    # Skip nils, use false if you want to disable something.
-    send(key, value) unless value.nil?
-  end
+  type node['elasticsearch']['install']['type']
 end
 
-# elasticsearch_configure 'elasticsearch' do
-#   node['elasticsearch']['configure'].each do |key, value|
-#     # Skip nils, use false if you want to disable something.
-#     send(key, value) unless value.nil?
-#   end
-# end
+elasticsearch_configure 'elasticsearch'
 
-elasticsearch_service 'elasticsearch' do
-  node['elasticsearch']['service'].each do |key, value|
-    # Skip nils, use false if you want to disable something.
-    send(key, value) unless value.nil?
-  end
-end
-
-# by default, no plugins
-node['elasticsearch']['plugin'].each do |plugin_name, plugin_value|
-  elasticsearch_plugin plugin_name do
-    plugin_value.each do |key, value|
-      # Skip nils, use false if you want to disable something.
-      send(key, value) unless value.nil?
-    end
-  end
-end
+elasticsearch_service 'elasticsearch'
 
 # by default, no plugins, but we'd like to try one
 elasticsearch_plugin 'analysis-icu' do
