@@ -8,7 +8,7 @@ provisioner:
   chef_license: accept
   product_name: chef
   product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
-  install_strategy: always
+  install_strategy: once
   log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
   nodes_path: "test/fixtures/nodes"
   data_bags_path: "test/fixtures/data_bags"
