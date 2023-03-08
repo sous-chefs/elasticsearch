@@ -48,78 +48,50 @@ action :configure do
     action :create
   end
 
-  d_r.run_action(:create)
+  default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
 
-  new_resource.updated_by_last_action(true) if d_r.updated_by_last_action?
-
-  # Create service for init and systemd
-  #
-  if new_resource.init_source
-    init_r = template "/etc/init.d/#{new_resource.service_name}" do
-      source new_resource.init_source
-      cookbook new_resource.init_cookbook
-      owner 'root'
-      mode '0755'
-      variables(
-        # we need to include something about #{progname} fixed in here.
-        program_name: new_resource.service_name,
-        install_type: es_install.type
-      )
-      only_if { ::File.exist?('/etc/init.d') }
-      action :nothing
-    end
-
-    init_r.run_action(:create)
-
-    new_resource.updated_by_last_action(true) if init_r.updated_by_last_action?
-  end
-
-  if new_resource.systemd_source
-    systemd_parent_r = directory "/usr/lib/systemd/system-#{default_config_name}" do
-      path '/usr/lib/systemd/system'
-      action :nothing
-      only_if { ::File.exist?('/usr/lib/systemd') }
-    end
-
-    systemd_parent_r.run_action(:create)
-
-    new_resource.updated_by_last_action(true) if systemd_parent_r.updated_by_last_action?
-
-    default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
-
-    systemd_r = template "/usr/lib/systemd/system/#{new_resource.service_name}.service" do
-      source new_resource.systemd_source
-      cookbook new_resource.systemd_cookbook
-      owner 'root'
-      mode '0644'
-      variables(
-        # we need to include something about #{progname} fixed in here.
-        program_name: new_resource.service_name,
-        default_dir: default_conf_dir,
-        path_home: es_conf.path_home,
-        es_user: es_user.username,
-        es_group: es_user.groupname,
-        nofile_limit: es_conf.nofile_limit,
-        install_type: es_install.type,
-        version: es_install.version
-      )
-      only_if 'which systemctl'
-      action :nothing
-    end
-
-    systemd_r.run_action(:create)
-
-    # special case here -- must reload unit files if we modified one
-    if systemd_r.updated_by_last_action?
-      new_resource.updated_by_last_action(systemd_r.updated_by_last_action?)
-
-      reload_r = execute "reload-systemd-#{new_resource.service_name}" do
-        command 'systemctl daemon-reload'
-        action :nothing
-        only_if 'which systemctl'
-      end
-      reload_r.run_action(:run)
-    end
+  systemd_unit new_resource.service_name do
+    content(
+      Unit: {
+        Description: 'Elasticsearch',
+        Documentation: 'https://www.elastic.co',
+        Wants: 'network-online.target',
+        After: 'network-online.target',
+      },
+      Service: {
+        Type: 'notify',
+        RuntimeDirectory: 'elasticsearch',
+        PrivateTmp: 'true',
+        Environment: [
+          "ES_HOME=#{es_conf.path_home}",
+          'ES_PATH_CONF=/etc/elasticsearch',
+          "PID_DIR=#{es_conf.path_pid}",
+          'ES_SD_NOTIFY=true',
+        ],
+        EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
+        WorkingDirectory: "#{es_conf.path_home}",
+        User: es_user.username,
+        Group: es_user.groupname,
+        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
+        StandardOutput: 'journal',
+        StandardError: 'inherit',
+        LimitNOFILE: '65535',
+        LimitNPROC: '4096',
+        LimitAS: 'infinity',
+        LimitFSIZE: 'infinity',
+        TimeoutStopSec: '0',
+        KillSignal: 'SIGTERM',
+        KillMode: 'process',
+        SendSIGKILL: 'no',
+        SuccessExitStatus: '143',
+        TimeoutStartSec: '900',
+      },
+      Install: {
+        WantedBy: 'multi-user.target',
+      }
+    )
+    verify false
+    action :create
   end
 
   # flatten in an array here, in case the service_actions are a symbol vs. array
