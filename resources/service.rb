@@ -16,7 +16,7 @@ property :args,
 
 property :service_actions,
         [Symbol, String, Array],
-        default: [:enable, :start].freeze
+        default: [:enable, :start]
 
 property :init_source,
         String,

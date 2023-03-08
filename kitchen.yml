@@ -53,10 +53,10 @@ suites:
     run_list:
       - recipe[test::doubleinstances]
 
-  - name: override_package
+  - name: package
     run_list:
       - recipe[test::package]
 
-  - name: override_tarball
+  - name: tarball
     run_list:
       - recipe[test::tarball]
