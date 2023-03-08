@@ -166,20 +166,18 @@ action :manage do
 
   default_config_name = es_svc.service_name || es_svc.instance_name || new_resource.instance_name || 'elasticsearch'
 
-  shell_template = template "elasticsearch.in.sh-#{default_config_name}" do
-    path platform_family?('rhel', 'amazon') ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
-    source new_resource.template_elasticsearch_env
-    cookbook new_resource.cookbook_elasticsearch_env
-    mode '0644'
-    variables(params: params)
-    action :nothing
+  with_run_context :root do
+    template "elasticsearch.in.sh-#{default_config_name}" do
+      path platform_family?('rhel', 'amazon') ? "/etc/sysconfig/#{default_config_name}" : "/etc/default/#{default_config_name}"
+      source new_resource.template_elasticsearch_env
+      cookbook new_resource.cookbook_elasticsearch_env
+      mode '0644'
+      variables(params: params)
+      action :create
+    end
   end
-  shell_template.run_action(:create)
-  new_resource.updated_by_last_action(true) if shell_template.updated_by_last_action?
 
-  # Create jvm.options file
-  #
-  jvm_options_template = template "jvm_options-#{default_config_name}" do
+  template "jvm_options-#{default_config_name}" do
     path   "#{new_resource.path_conf}/jvm.options"
     source new_resource.template_jvm_options
     cookbook new_resource.cookbook_jvm_options
@@ -218,18 +216,17 @@ action :manage do
   # workaround for https://github.com/elastic/cookbook-elasticsearch/issues/590
   config_vars = ElasticsearchCookbook::HashAndMashBlender.new(merged_configuration).to_hash
 
-  yml_template = template "elasticsearch.yml-#{default_config_name}" do
-    path "#{new_resource.path_conf}/elasticsearch.yml"
-    source new_resource.template_elasticsearch_yml
-    cookbook new_resource.cookbook_elasticsearch_yml
-    owner es_user.username
-    group es_user.groupname
-    mode '0640'
-    helpers(ElasticsearchCookbook::Helpers)
-    variables(config: config_vars)
-    action :nothing
+  with_run_context :root do
+    template "elasticsearch.yml-#{default_config_name}" do
+      path "#{new_resource.path_conf}/elasticsearch.yml"
+      source new_resource.template_elasticsearch_yml
+      cookbook new_resource.cookbook_elasticsearch_yml
+      owner es_user.username
+      group es_user.groupname
+      mode '0640'
+      helpers(ElasticsearchCookbook::Helpers)
+      variables(config: config_vars)
+      action :create
+    end
   end
-
-  yml_template.run_action(:create)
-  new_resource.updated_by_last_action(true) if yml_template.updated_by_last_action?
 end
