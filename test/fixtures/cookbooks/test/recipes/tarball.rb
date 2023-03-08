@@ -34,8 +34,6 @@ elasticsearch_configure 'my_elasticsearch' do
     -server
     -Djava.awt.headless=true
     -XX:+UseG1GC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
     -XX:+HeapDumpOnOutOfMemoryError
     -XX:+PrintGCDetails
   )
