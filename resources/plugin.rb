@@ -38,6 +38,8 @@ action_class do
     es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
     es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
 
+    config_name = new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
+
     assert_state_is_valid(es_user, es_install, es_conf) unless whyrun_mode?
 
     # shell_out! automatically raises on error, logs command output
@@ -49,20 +51,21 @@ action_class do
       if whyrun_mode?
         Chef::Log.info("Would run command: #{cmd_str}")
       else
-        shell_out_as_user!(cmd_str, Chef.run_context)
-        new_resource.updated_by_last_action(true)
+        shell_out_as_user!(cmd_str, es_install.type, config_name)
+        # new_resource.updated_by_last_action(true)
       end
     end
 
     unless plugin_exists(new_resource.plugin_name)
       cmd_str = "#{es_conf.path_bin}/elasticsearch-plugin #{arguments.chomp(' ')} #{new_resource.options}".chomp(' ')
-      if whyrun_mode?
-        Chef::Log.info("Would run command: #{cmd_str}")
-      else
+
+      # if whyrun_mode?
+      #   Chef::Log.info("Would run command: #{cmd_str}")
+      # else
         command_array = cmd_str.split(' ')
-        shell_out_as_user!(command_array, Chef.run_context)
-        new_resource.updated_by_last_action(true)
-      end
+        shell_out_as_user!(command_array, es_install.type, config_name)
+        # new_resource.updated_by_last_action(true)
+      # end
     end
   end
 
@@ -90,15 +93,11 @@ action_class do
     true
   end
 
-  def shell_out_as_user!(command, run_ctx)
-    es_install = find_es_resource(run_ctx, :elasticsearch_install, new_resource)
-    es_conf = find_es_resource(run_ctx, :elasticsearch_configure, new_resource)
-    es_svc = find_es_resource(run_ctx, :elasticsearch_service, new_resource)
-
+  # def shell_out_as_user!(command, run_ctx)
+  def shell_out_as_user!(command, install_type, config_name=nil)
     # we need to figure out the env file path to set environment for plugins
-    default_config_name = es_svc.service_name || es_svc.instance_name || es_conf.instance_name || 'elasticsearch'
-    include_file_resource = find_exact_resource(run_ctx, :template, "elasticsearch.in.sh-#{default_config_name}")
-    env = { 'ES_INCLUDE' => include_file_resource.path }
+    include_file_resource = find_resource!(:template, "elasticsearch.in.sh-#{config_name}")
+    # env = { 'ES_INCLUDE' => include_file_resource.path }
 
     # Add HTTP Proxy vars unless explicitly told not to
     if new_resource.chef_proxy
@@ -107,13 +106,13 @@ action_class do
 
     # See this link for an explanation:
     # https://www.elastic.co/guide/en/elasticsearch/plugins/2.1/plugin-management.html
-    if es_install.type == 'package' || es_install.type == 'repository'
-      # package installations should install plugins as root
-      shell_out!(command, env: env, timeout: 1200)
-    else
+    # if install_type == 'package' || install_type == 'repository'
+    #   # package installations should install plugins as root
+      # shell_out!(command, env: env, timeout: 1200)
+    # else
       # non-package installations should install plugins as the ES user
-      es_user = find_es_resource(run_ctx, :elasticsearch_user, new_resource)
-      shell_out!(command, user: es_user.username, group: es_user.groupname, env: env, timeout: 1200)
-    end
+      # es_user = find_resource!(:elasticsearch_user, new_resource)
+      # shell_out!(command, user: es_user.username, group: es_user.groupname, env: env, timeout: 1200)
+    # end
   end
 end
