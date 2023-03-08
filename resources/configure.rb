@@ -29,7 +29,7 @@ property :java_home, String
 # other settings in /etc/default or /etc/sysconfig
 property :memlock_limit, String, default: 'unlimited'
 property :max_map_count, String, default: '262144'
-property :nofile_limit, String, default: '65536'
+property :nofile_limit, String, default: '65535'
 property :startup_sleep_seconds, [String, Integer], default: 5
 property :restart_on_upgrade, [true, false], default: false
 
@@ -39,12 +39,13 @@ property :allocated_memory, String
 
 property :jvm_options, Array, default:
   %w(
-    -XX:+UseConcMarkSweepGC
-    -XX:CMSInitiatingOccupancyFraction=75
-    -XX:+UseCMSInitiatingOccupancyOnly
+    8-13:-XX:+UseConcMarkSweepGC
+    8-13:-XX:CMSInitiatingOccupancyFraction=75
+    8-13:-XX:+UseCMSInitiatingOccupancyOnly
+    14-:-XX:+UseG1GC
     -Djava.io.tmpdir=${ES_TMPDIR}
     -XX:+HeapDumpOnOutOfMemoryError
-    -XX:HeapDumpPath=/var/lib/elasticsearch
+    9-:-XX:+ExitOnOutOfMemoryError
     -XX:ErrorFile=/var/log/elasticsearch/hs_err_pid%p.log
     8:-XX:+PrintGCDetails
     8:-XX:+PrintGCDateStamps
