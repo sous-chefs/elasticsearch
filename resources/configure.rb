@@ -117,15 +117,13 @@ action :manage do
   # Create ES directories
   #
   [new_resource.path_conf, "#{new_resource.path_conf}/scripts"].each do |path|
-    d = directory path do
+    directory path do
       owner es_user.username
       group es_user.groupname
       mode '0750'
       recursive true
-      action :nothing
+      action :create
     end
-    d.run_action(:create)
-    new_resource.updated_by_last_action(true) if d.updated_by_last_action?
   end
 
   # Create data path directories
@@ -134,15 +132,13 @@ action :manage do
   data_paths = data_paths << new_resource.path_logs
 
   data_paths.each do |path|
-    d = directory path.strip do
+    directory path.strip do
       owner es_user.username
       group es_user.groupname
       mode '0755'
       recursive true
-      action :nothing
+      action :create
     end
-    d.run_action(:create)
-    new_resource.updated_by_last_action(true) if d.updated_by_last_action?
   end
 
   # Create elasticsearch shell variables file
@@ -195,14 +191,10 @@ action :manage do
       "-Xmx#{new_resource.allocated_memory}",
       new_resource.jvm_options,
     ].flatten.join("\n"))
-    action :nothing
+    action :create
   end
-  jvm_options_template.run_action(:create)
-  new_resource.updated_by_last_action(true) if jvm_options_template.updated_by_last_action?
 
-  # Create ES logging file
-  #
-  logging_template = template "log4j2_properties-#{default_config_name}" do
+  template "log4j2_properties-#{default_config_name}" do
     path   "#{new_resource.path_conf}/log4j2.properties"
     source new_resource.template_log4j2_properties
     cookbook new_resource.cookbook_log4j2_properties
@@ -210,17 +202,14 @@ action :manage do
     group es_user.groupname
     mode '0640'
     variables(logging: new_resource.logging)
-    action :nothing
+    action :create
   end
-
-  logging_template.run_action(:create)
-  new_resource.updated_by_last_action(true) if logging_template.updated_by_last_action?
 
   # Create ES elasticsearch.yml file
   #
   merged_configuration = default_configuration.merge(new_resource.configuration.dup)
 
-  # warn if someone is using symbols. we don't support.
+  # Warn if someone is using symbols. We don't support.
   found_symbols = merged_configuration.keys.select { |s| s.is_a?(Symbol) }
   unless found_symbols.empty?
     Chef::Log.warn("Please change the following to strings in order to work with this Elasticsearch cookbook: #{found_symbols.join(',')}")
