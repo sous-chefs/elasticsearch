@@ -11,18 +11,20 @@ provisioner:
   install_strategy: once
   log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
   nodes_path: "test/fixtures/nodes"
-  # data_bags_path: "test/fixtures/data_bags"
-  # environments_path: "test/fixtures/environments"
-  # client_rb:
-  #   environment: _default
-  # attributes:
-  #   java:
-  #     jdk_version: "8"
 
 platforms:
+  - name: ubuntu-18.04
   - name: ubuntu-20.04
+  - name: rockylinux-8
+  - name: amazonlinux-2
+  - name: amazonlinux-2022
+  - name: almalinux-8
   - name: centos-7
-  - name: centos-8
+  - name: centos-stream-8
+  - name: debian-10
+  - name: debian-11
+  - name: fedora-latest
+  - name: opensuse-leap-15
 
 suites:
   - name: repository
