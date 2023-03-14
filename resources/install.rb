@@ -50,7 +50,7 @@ action :install do
       if platform_family?('debian')
         apt_repository "elastic-#{new_resource.version}.x" do
           uri 'https://artifacts.elastic.co/packages/7.x/apt'
-          key "elasticsearch.asc"
+          key 'elasticsearch.asc'
           cookbook 'elasticsearch'
           components ['main']
           distribution 'stable'
@@ -59,7 +59,7 @@ action :install do
         yum_repository "elastic-#{new_resource.version}.x" do
           baseurl "https://artifacts.elastic.co/packages/#{new_resource.version}.x/yum"
           gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-          action :add
+          action :create
         end
       end
     end

@@ -65,7 +65,7 @@ action_class do
       group: es_user.groupname,
       path_conf: es_conf.path_conf,
       path_plugins: es_conf.path_plugins,
-      path_bin: es_conf.path_bin
+      path_bin: es_conf.path_bin,
     }
   end
 
