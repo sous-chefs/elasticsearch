@@ -20,6 +20,11 @@ platforms:
       image: dokken/amazonlinux-2
       pid_one_command: /usr/lib/systemd/systemd
 
+  - name: amazonlinux-2022
+    driver:
+      image: dokken/amazonlinux-2022
+      pid_one_command: /usr/lib/systemd/systemd
+
   - name: debian-10
     driver:
       image: dokken/debian-10
