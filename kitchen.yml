@@ -24,7 +24,7 @@ platforms:
   - name: debian-10
   - name: debian-11
   - name: fedora-latest
-  - name: opensuse-leap-15
+  # - name: opensuse-leap-15
 
 suites:
   - name: repository

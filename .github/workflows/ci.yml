@@ -29,14 +29,14 @@ jobs:
           - debian-10
           - debian-11
           - fedora-latest
-          - opensuse-leap-15
+          # - opensuse-leap-15
           - rockylinux-8
           - ubuntu-1804
           - ubuntu-2004
         suite:
           - repository
-          # - tarball
-          # - package
+          - tarball
+          - package
           # - doubleinstance
           # - override_package
           # - override_tarball
