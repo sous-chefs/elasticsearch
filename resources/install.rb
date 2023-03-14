@@ -41,6 +41,8 @@ action :install do
     install_package_wrapper_action
   when 'repository'
 
+    major_version = new_resource.version.split('.')[0]
+
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     unless es_user && es_user.username == 'elasticsearch' && es_user.groupname == 'elasticsearch'
       raise 'Custom usernames/group names is not supported in Elasticsearch 6+ repository installation'
@@ -48,7 +50,7 @@ action :install do
 
     if new_resource.enable_repository_actions
       if platform_family?('debian')
-        apt_repository "elastic-#{new_resource.version}.x" do
+        apt_repository "elastic-#{major_version}.x" do
           uri 'https://artifacts.elastic.co/packages/7.x/apt'
           key 'elasticsearch.asc'
           cookbook 'elasticsearch'
@@ -56,8 +58,8 @@ action :install do
           distribution 'stable'
         end
       else
-        yum_repository "elastic-#{new_resource.version}.x" do
-          baseurl "https://artifacts.elastic.co/packages/#{new_resource.version}.x/yum"
+        yum_repository "elastic-#{major_version}.x" do
+          baseurl "https://artifacts.elastic.co/packages/#{major_version}.x/yum"
           gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
           action :create
         end
