@@ -40,27 +40,7 @@ action :install do
   when 'package'
     install_package_wrapper_action
   when 'repository'
-    install_repo_wrapper_action
-  else
-    raise "#{install_type} is not a valid install type"
-  end
-end
 
-action :remove do
-  case new_resource.type
-  when 'tarball'
-    remove_tarball_wrapper_action
-  when 'package'
-    remove_package_wrapper_action
-  when 'repository'
-    remove_repo_wrapper_action
-  else
-    raise "#{install_type} is not a valid install type"
-  end
-end
-
-action_class do
-  def install_repo_wrapper_action
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     unless es_user && es_user.username == 'elasticsearch' && es_user.groupname == 'elasticsearch'
       raise 'Custom usernames/group names is not supported in Elasticsearch 6+ repository installation'
@@ -68,16 +48,19 @@ action_class do
 
     if new_resource.enable_repository_actions
       if platform_family?('debian')
-        apt_repository "elastic-#{new_resource.version.to_i}.x" do
-          key 'elasticsearch.asc'
+        apt_repository "elastic-#{new_resource.version}.x" do
+          uri 'https://artifacts.elastic.co/packages/7.x/apt'
+          key "elasticsearch.asc"
           cookbook 'elasticsearch'
           components ['main']
           distribution 'stable'
         end
       else
-        yr_r = yum_repo_resource
-        yr_r.run_action(:create)
-        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
+        yum_repository "elastic-#{new_resource.version}.x" do
+          baseurl "https://artifacts.elastic.co/packages/#{new_resource.version}.x/yum"
+          gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+          action :add
+        end
       end
     end
 
@@ -86,18 +69,44 @@ action_class do
       version new_resource.version
       action :install
     end
+  else
+    raise "#{install_type} is not a valid install type"
   end
+end
 
-  def remove_repo_wrapper_action
+action :remove do
+  case new_resource.type
+  when 'tarball'
+
+    link "#{new_resource.dir}/elasticsearch" do
+      only_if do
+        link   = "#{new_resource.dir}/elasticsearch"
+        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
+
+        ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
+      end
+      action :delete
+    end
+
+    # remove the specific version
+    directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
+      recursive true
+      action :delete
+    end
+  when 'package'
+
+    remove_package_wrapper_action
+  when 'repository'
+
     if new_resource.enable_repository_actions
       if platform_family?('debian')
-        apt_repository "elastic-#{new_resource.version.to_i}.x" do
+        apt_repository "elastic-#{new_resource.version}.x" do
           action :remove
         end
       else
-        yr_r = yum_repo_resource
-        yr_r.run_action(:delete)
-        new_resource.updated_by_last_action(true) if yr_r.updated_by_last_action?
+        yum_repository "elastic-#{new_resource.version}.x" do
+          action :remove
+        end
       end
     end
 
@@ -106,8 +115,12 @@ action_class do
       version new_resource.version
       action :remove
     end
+  else
+    raise "#{install_type} is not a valid install type"
   end
+end
 
+action_class do
   def install_package_wrapper_action
     es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
 
@@ -195,43 +208,6 @@ action_class do
     directory "#{new_resource.dir}/elasticsearch/config" do
       action :delete
       recursive true
-    end
-  end
-
-  def remove_tarball_wrapper_action
-    # remove the symlink to this version
-    link "#{new_resource.dir}/elasticsearch" do
-      only_if do
-        link   = "#{new_resource.dir}/elasticsearch"
-        target = "#{new_resource.dir}/elasticsearch-#{new_resource.version}"
-
-        ::File.directory?(link) && ::File.symlink?(link) && ::File.readlink(link) == target
-      end
-      action :delete
-    end
-
-    # remove the specific version
-    directory "#{new_resource.dir}/elasticsearch-#{new_resource.version}" do
-      recursive true
-      action :delete
-    end
-  end
-
-  def yum_repo_resource
-    yum_repository "elastic-#{new_resource.version.to_i}.x" do
-      baseurl "https://artifacts.elastic.co/packages/#{new_resource.version.to_i}.x/yum"
-      gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-      action :nothing # :add, remove
-    end
-  end
-
-  def apt_repo_resource
-    apt_repository "elastic-#{new_resource.version.to_i}.x" do
-      uri "https://artifacts.elastic.co/packages/#{new_resource.version.to_i}.x/apt"
-      key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
-      components ['main']
-      distribution 'stable'
-      action :nothing # :create, :delete
     end
   end
 end
