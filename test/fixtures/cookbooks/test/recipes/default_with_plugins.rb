@@ -18,8 +18,11 @@ elasticsearch_configure 'elasticsearch'
 
 elasticsearch_service 'elasticsearch'
 
-# by default, no plugins, but we'd like to try one
 elasticsearch_plugin 'analysis-icu' do
+  notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
+end
+
+elasticsearch_plugin 'mapper-size' do
   notifies :restart, 'elasticsearch_service[elasticsearch]', :delayed
 end
 

@@ -14,12 +14,12 @@ shared_examples_for 'elasticsearch plugin' do |plugin_name, args = {}|
     it { should be_grouped_into expected_group }
   end
 
-  describe command("curl -s -o /dev/null -w \"%{http_code}\" http://#{auth_data}127.0.0.1:9200/_nodes/plugins") do
+  describe command("curl -s -o /dev/null -w \"%{http_code}\" http://#{auth_data}127.0.0.1:9200/_cat/plugins") do
     its(:stdout) { should match(/#{expected_response_code}/) }
   end
 
   if expected_response_code == 200
-    describe command("curl -v http://#{auth_data}127.0.0.1:9200/_nodes/plugins") do
+    describe command("curl -v http://#{auth_data}127.0.0.1:9200/_cat/plugins") do
       its(:stdout) { should match(/#{plugin_name}/) }
     end
   end

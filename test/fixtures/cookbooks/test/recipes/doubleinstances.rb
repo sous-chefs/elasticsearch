@@ -47,7 +47,12 @@ settings = {
     instance_name instance_name
     plugin_name 'analysis-icu'
     notifies :restart, "elasticsearch_service[elasticsearch_#{instance_name}]", :delayed
-    not_if { ::File.exist?('/usr/share/elasticsearch/plugins/analysis-icu') }
+  end
+
+  elasticsearch_plugin "mapper_size_#{instance_name}" do
+    instance_name instance_name
+    plugin_name 'mapper-size'
+    notifies :restart, "elasticsearch_service[elasticsearch_#{instance_name}]", :delayed
   end
 
   elasticsearch_service "elasticsearch_#{instance_name}" do

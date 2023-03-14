@@ -47,6 +47,10 @@ elasticsearch_plugin 'analysis-icu' do
   instance_name 'special_tarball_instance'
 end
 
+elasticsearch_plugin 'mapper-size' do
+  instance_name 'special_tarball_instance'
+end
+
 elasticsearch_service 'elasticsearch-crazy' do
   # path_conf '/usr/local/awesome/etc/elasticsearch'
   # path_pid '/usr/local/awesome/var/run'

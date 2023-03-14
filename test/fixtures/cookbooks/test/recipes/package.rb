@@ -22,14 +22,6 @@ elasticsearch_configure 'my_elasticsearch' do
 
   allocated_memory '123m'
 
-  # jvm_options %w(
-  #   -server
-  #   -Djava.awt.headless=true
-  #   -XX:+UseG1GC
-  #   -XX:+HeapDumpOnOutOfMemoryError
-  #   -XX:+PrintGCDetails
-  # )
-
   configuration('node.name' => 'arbitrary_name')
   # plugin_dir '/usr/local/awesome/elasticsearch-1.7.3/plugins'
   action :manage
@@ -38,6 +30,12 @@ end
 
 elasticsearch_plugin 'analysis-icu' do
   instance_name 'special_package_instance'
+  notifies :restart, 'elasticsearch_service[elasticsearch-crazy]'
+end
+
+elasticsearch_plugin 'mapper-size' do
+  instance_name 'special_package_instance'
+  notifies :restart, 'elasticsearch_service[elasticsearch-crazy]'
 end
 
 elasticsearch_service 'elasticsearch-crazy' do

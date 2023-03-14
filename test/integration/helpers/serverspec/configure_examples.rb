@@ -31,7 +31,6 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
 
   expected_jvm_options = args[:jvmopts] || %w(
     HeapDumpOnOutOfMemoryError
-    HeapDumpPath
     ErrorFile
   )
 
