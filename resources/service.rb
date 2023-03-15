@@ -37,7 +37,6 @@ property :systemd_cookbook,
 action :configure do
   es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
   es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
-  es_install = find_es_resource(Chef.run_context, :elasticsearch_install, new_resource)
   default_config_name = new_resource.service_name || new_resource.instance_name || es_conf.instance_name || 'elasticsearch'
 
   directory "#{es_conf.path_pid}-#{default_config_name}" do
@@ -50,8 +49,6 @@ action :configure do
   end
 
   default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
-
-  entrypoint = es_install.install_type == 'tarball' ? '/bin/elasticsearch' : '/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet'
 
   systemd_unit new_resource.service_name do
     content(
@@ -75,7 +72,7 @@ action :configure do
         WorkingDirectory: "#{es_conf.path_home}",
         User: es_user.username,
         Group: es_user.groupname,
-        ExecStart: "#{es_conf.path_home}#{entrypoint}",
+        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
         StandardOutput: 'journal',
         StandardError: 'inherit',
         LimitNOFILE: '65535',
