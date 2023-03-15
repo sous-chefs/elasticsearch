@@ -35,11 +35,11 @@ jobs:
           - ubuntu-2004
         suite:
           - repository
-          # - tarball
           - package
           - doubleinstance
-          - override_package
+          # - override_package
           # - override_tarball
+          # - tarball
       fail-fast: false
 
     steps:

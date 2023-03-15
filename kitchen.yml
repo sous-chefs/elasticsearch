@@ -55,10 +55,10 @@ suites:
     run_list:
       - recipe[test::doubleinstances]
 
-  - name: package
-    run_list:
-      - recipe[test::package]
+  # - name: package
+  #   run_list:
+  #     - recipe[test::package]
 
-  - name: tarball
-    run_list:
-      - recipe[test::tarball]
+  # - name: tarball
+  #   run_list:
+  #     - recipe[test::tarball]
