@@ -50,6 +50,8 @@ action :configure do
 
   default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
 
+  entrypoint = new_resource.install_type == 'tarball' ? '/bin/elasticsearch' : '/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet'
+
   systemd_unit new_resource.service_name do
     content(
       Unit: {
@@ -72,7 +74,7 @@ action :configure do
         WorkingDirectory: "#{es_conf.path_home}",
         User: es_user.username,
         Group: es_user.groupname,
-        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
+        ExecStart: "#{es_conf.path_home}${entrypoint}",
         StandardOutput: 'journal',
         StandardError: 'inherit',
         LimitNOFILE: '65535',
@@ -92,6 +94,7 @@ action :configure do
     )
     verify false
     action :create
+    unit_name "#{new_resource.service_name}.service"
   end
 
   # flatten in an array here, in case the service_actions are a symbol vs. array

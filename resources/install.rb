@@ -178,14 +178,17 @@ action_class do
     end
   end
 
+  def es_user
+    find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
+  end
+
   def install_tarball_wrapper_action
-    es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
     found_download_url = determine_download_url(new_resource, node)
 
     raise 'Could not determine download url for tarball on this platform' unless found_download_url
 
     ark 'elasticsearch' do
-      url   found_download_url
+      url found_download_url
       owner es_user.username
       group es_user.groupname
       version new_resource.version
