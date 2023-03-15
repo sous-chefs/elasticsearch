@@ -74,7 +74,7 @@ action :configure do
         WorkingDirectory: "#{es_conf.path_home}",
         User: es_user.username,
         Group: es_user.groupname,
-        ExecStart: "#{es_conf.path_home}${entrypoint}",
+        ExecStart: "#{es_conf.path_home}#{entrypoint}",
         StandardOutput: 'journal',
         StandardError: 'inherit',
         LimitNOFILE: '65535',
