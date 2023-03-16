@@ -8,7 +8,7 @@ module ElasticsearchCookbook
       when 'debian'
         arch = machine.include?('x86_64') ? 'amd64' : 'arm64'
         file_type = 'deb'
-      when 'rhel'
+      when 'rhel', 'fedora', 'amazon'
         arch = machine.include?('x86_64') ? 'x86_64' : 'aarch64'
         file_type = 'rpm'
       else

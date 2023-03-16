@@ -24,7 +24,6 @@ platforms:
   - name: debian-10
   - name: debian-11
   - name: fedora-latest
-  # - name: opensuse-leap-15
 
 suites:
   - name: repository
@@ -42,7 +41,3 @@ suites:
       elasticsearch:
         install:
           type: package
-
-  # - name: doubleinstance
-  #   run_list:
-  #     - recipe[test::doubleinstances]
