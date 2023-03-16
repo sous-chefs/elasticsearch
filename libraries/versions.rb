@@ -201,6 +201,5 @@ module ElasticsearchCookbook
         raise "Unsupported version #{version}"
       end
     end
-
   end
 end

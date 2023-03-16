@@ -15,7 +15,6 @@ See below for possible breaking changes.
 - Update Chef spec tested platforms to:
   - Ubuntu: 18.04, 20.04
   - CentOS: 7.8.2003, 8
-
 - Sous-Chefs standardization
   - Change test cookbook name to test
   - Add GitHub Actions pipelines
@@ -30,6 +29,9 @@ See below for possible breaking changes.
   - Remove Rakefile
   - Remove Gemfile (replaced by Chef Workstation)
   - Move rspec files from test/unit/spec to spec
+- [BREAKING] Remove default recipe
+- [BREAKING] ReMove default attributes
+  - For usage please see testing cookbook
 
 ## 4.3.1 - *2023-03-23*
 

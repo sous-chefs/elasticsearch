@@ -2,7 +2,6 @@ unified_mode true
 use 'partial/_common'
 # use 'partial/_repository'
 
-
 property :download_url,
         String,
         default: lazy { default_download_url(new_resource.version) }
