@@ -2,7 +2,7 @@ unified_mode true
 use 'partial/_common'
 use 'partial/_package'
 use 'partial/_repository'
-# use 'partial/_tarball' # Disabled until systemd service is supported
+
 property :type,
         String,
         equal_to: %w(package tarball repository),
@@ -11,14 +11,13 @@ property :type,
 action :install do
   case new_resource.type
   when 'tarball'
-    # install_tarball_wrapper_action
     raise 'Tarball method is not currently supported, due to no supporting systemd service'
   when 'package'
     elasticsearch_install_package "ElasticSearch #{new_resource.version}" do
       version new_resource.version
       instance_name new_resource.instance_name
-      # download_url new_resource.download_url
-      # download_checksum new_resource.download_checksum
+      download_url new_resource.download_url
+      download_checksum new_resource.download_checksum
     end
   when 'repository'
     elasticsearch_install_repository "ElasticSearch #{new_resource.version}" do
@@ -34,8 +33,6 @@ end
 
 action :remove do
   case new_resource.type
-  when 'tarball'
-    raise 'Tarball method is not currently supported'
   when 'package'
     elasticsearch_install_package "ElasticSearch #{new_resource.version}" do
       action :remove
@@ -47,7 +44,4 @@ action :remove do
   else
     raise "#{install_type} is not a valid install type"
   end
-end
-
-action_class do
 end

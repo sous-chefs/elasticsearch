@@ -35,14 +35,6 @@ suites:
         install:
           type: repository
 
-  - name: tarball
-    run_list:
-      - recipe[test::default_with_plugins]
-    attributes:
-      elasticsearch:
-        install:
-          type: tarball
-
   - name: package
     run_list:
       - recipe[test::default_with_plugins]

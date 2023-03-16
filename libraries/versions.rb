@@ -1,7 +1,14 @@
 module ElasticsearchCookbook
   module VersionHelpers
     def default_download_url(version)
-      arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'arm64'
+      if node['platform_family'] == 'debian'
+        arch =node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'arm64'
+      elsif node['platform_family'] == 'rhel'
+        arch =node['kernel']['machine'] =~ /x86_64/ ? 'x86_64' : 'aarch64'
+      else
+        raise "Unsupported platform family: #{node['platform_family']}"
+      end
+
       file_type = node['platform_family'] == 'debian' ? 'deb' : 'rpm'
 
       "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-#{version}-#{arch}.#{file_type}"
