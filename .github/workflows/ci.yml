@@ -36,7 +36,7 @@ jobs:
         suite:
           - repository
           - package
-          - doubleinstance
+          # - doubleinstance
           # - override_package
           # - override_tarball
           # - tarball

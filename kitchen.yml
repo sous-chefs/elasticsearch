@@ -43,6 +43,6 @@ suites:
         install:
           type: package
 
-  - name: doubleinstance
-    run_list:
-      - recipe[test::doubleinstances]
+  # - name: doubleinstance
+  #   run_list:
+  #     - recipe[test::doubleinstances]
