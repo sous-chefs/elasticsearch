@@ -11,7 +11,7 @@ action :install do
     action :create
   end
 
-  if node['platform_family'] == 'debian'
+  if platform_family?('debian')
     dpkg_package filename_from_url do
       options new_resource.package_options
       source "#{Chef::Config[:file_cache_path]}/#{filename_from_url}"
@@ -24,7 +24,6 @@ action :install do
       action :install
     end
   end
-
 end
 
 action :remove do
