@@ -16,8 +16,8 @@ action :install do
     elasticsearch_install_package "ElasticSearch #{new_resource.version}" do
       version new_resource.version
       instance_name new_resource.instance_name
-      download_url new_resource.download_url
-      download_checksum new_resource.download_checksum
+      download_url self.download_url
+      download_checksum self.download_checksum
     end
   when 'repository'
     elasticsearch_install_repository "ElasticSearch #{new_resource.version}" do

@@ -1,14 +1,6 @@
 unified_mode true
 use 'partial/_common'
-# use 'partial/_repository'
-
-property :download_url,
-        String,
-        default: lazy { default_download_url(new_resource.version) }
-
-property :download_checksum,
-        String,
-        default: lazy { default_download_checksum(new_resource.version) }
+use 'partial/_repository'
 
 include ElasticsearchCookbook::Helpers
 

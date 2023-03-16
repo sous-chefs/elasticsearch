@@ -1,25 +1,33 @@
 module ElasticsearchCookbook
   module VersionHelpers
     def default_download_url(version)
-      if node['platform_family'] == 'debian'
-        arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'arm64'
-      elsif node['platform_family'] == 'rhel'
-        arch = node['kernel']['machine'] =~ /x86_64/ ? 'x86_64' : 'aarch64'
+      platform_family = node['platform_family']
+      machine = node['kernel']['machine']
+
+      case platform_family
+      when 'debian'
+        arch = machine.include?('x86_64') ? 'amd64' : 'arm64'
+        file_type = 'deb'
+      when 'rhel'
+        arch = machine.include?('x86_64') ? 'x86_64' : 'aarch64'
+        file_type = 'rpm'
       else
-        raise "Unsupported platform family: #{node['platform_family']}"
+        raise "Unsupported platform family: #{platform_family}"
       end
 
-      file_type = node['platform_family'] == 'debian' ? 'deb' : 'rpm'
-
-      "https://artifacts.elastic.co/downloads/elasticsearch/elasticsearch-#{version}-#{arch}.#{file_type}"
+      base_url = 'https://artifacts.elastic.co/downloads/elasticsearch'
+      "#{base_url}/elasticsearch-#{version}-#{arch}.#{file_type}"
     end
 
     def checksum_platform
-      if node['platform_family'] == 'debian'
-        "debian_#{arm? ? 'arm64' : 'x86_64'}"
-      else
-        "rpm_#{arm? ? 'aarch64' : 'x86_64'}"
-      end
+      platform_family = node['platform_family']
+      arch = if arm?
+               platform_family == 'debian' ? 'arm64' : 'aarch64'
+             else
+               'x86_64'
+             end
+
+      "#{platform_family == 'debian' ? 'debian' : 'rpm'}_#{arch}"
     end
 
     def default_download_checksum(version)

@@ -1,66 +1,12 @@
 # Elasticsearch Chef Cookbook
 
-[![Build Status](https://travis-ci.org/elastic/cookbook-elasticsearch.svg?branch=master)](https://travis-ci.org/elastic/cookbook-elasticsearch) [![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)[![Build Status](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/badge/icon)](https://jenkins-01.eastus.cloudapp.azure.com/job/elasticsearch-cookbook/)
+[![Cookbook Version](https://img.shields.io/cookbook/v/elasticsearch.svg)](https://supermarket.chef.io/cookbooks/elasticsearch)
 
 **Please** review the [frequently asked questions](FAQ.md) and [contributing guidelines](CONTRIBUTING.md) before opening issues or submitting pull requests.
 
 ## Looking for Elasticsearch 5.x or 6.x?
 
 Please [check out the previous 3.x.x releases](https://github.com/elastic/cookbook-elasticsearch/tree/3.x.x) of this cookbook. Please consider pinning your cookbook to '~> 3.0' for support for Elasticsearch 6 and earlier, or '~> 4.0' release for Elasticsearch 6 and beyond.
-
-## Attributes
-
-Please consult [attributes/default.rb](attributes/default.rb) for a large list
-of checksums for many different archives and package files of different
-elasticsearch versions. Both recipes and resources/providers here use those
-default values.
-
-You may use `%s` in your URL and this cookbook will use sprintf/format to insert
-the version parameter as a string into your download_url.
-
-|Name|Default|Other values|
-|----|-------|------------|
-| For Elasticsearch < 7: ||
-|`default['elasticsearch']['download_urls']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-| For Elasticsearch >= 7: ||
-|`default['elasticsearch']['download_urls_v7']['debian']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls_v7']['rhel']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-|`default['elasticsearch']['download_urls_v7']['tarball']`|[See values](attributes/default.rb).|`%s` will be replaced with the version attribute above|
-
-This cookbook's `elasticsearch::default` recipe also supports setting any `elasticsearch_` resource using attributes:
-
-```ruby
-default['elasticsearch']['user'] = {}
-default['elasticsearch']['install'] = {}
-default['elasticsearch']['configure'] = {}
-default['elasticsearch']['service'] = {}
-default['elasticsearch']['plugin'] = {}
-```
-
-For example, this will pass a username 'foo' to `elasticsearch_user` and set a uid to `1234`:
-
-```ruby
-default['elasticsearch']['user']['username'] = 'foo'
-default['elasticsearch']['user']['uid'] = '1234'
-```
-
-## Recipes
-
-Resources are the intended way to consume this cookbook, however we have
-provided a single recipe that configures Elasticsearch by downloading an archive
-containing a distribution of Elasticsearch, and extracting that into `/usr/share`.
-
-See the attributes section above to for what defaults you can adjust.
-
-### default
-
-The default recipe creates an elasticsearch user, group, package installation,
-configuration files, and service with all of the default options.
-
-Please note that there are [additional examples within the test fixtures](test/fixtures/cookbooks/test),
-including a demonstration of how to configure two instances of Elasticsearch on a single server.
 
 ## Resources
 
@@ -72,8 +18,6 @@ elasticsearch_service has a special `service_actions` parameter you can use to s
 actions to the underlying service resource if you wish to notify it.
 
 You **must** supply your desired notifications when using each resource if you want Chef to automatically restart services. Again, we don't recommend this unless you know what you're doing.
-
-We are supporting whyrun mode in this cookbook, simply because we're using all builtin resources from core Chef, and these also already support whyrun. If you contribute to this cookbook, please be sure to maintain that or guard dangerous Ruby code with something like `if !whyrun_mode? || nested_resource.whyrun_supported?`.
 
 ### Resource names
 
