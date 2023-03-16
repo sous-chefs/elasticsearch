@@ -23,6 +23,7 @@ jobs:
       matrix:
         os:
           - almalinux-8
+          - amazonlinux-2
           - amazonlinux-2022
           - centos-7
           - centos-stream-8
