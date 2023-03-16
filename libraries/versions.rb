@@ -2,9 +2,9 @@ module ElasticsearchCookbook
   module VersionHelpers
     def default_download_url(version)
       if node['platform_family'] == 'debian'
-        arch =node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'arm64'
+        arch = node['kernel']['machine'] =~ /x86_64/ ? 'amd64' : 'arm64'
       elsif node['platform_family'] == 'rhel'
-        arch =node['kernel']['machine'] =~ /x86_64/ ? 'x86_64' : 'aarch64'
+        arch = node['kernel']['machine'] =~ /x86_64/ ? 'x86_64' : 'aarch64'
       else
         raise "Unsupported platform family: #{node['platform_family']}"
       end
