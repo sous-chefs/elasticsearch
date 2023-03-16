@@ -54,11 +54,3 @@ suites:
   - name: doubleinstance
     run_list:
       - recipe[test::doubleinstances]
-
-  # - name: package
-  #   run_list:
-  #     - recipe[test::package]
-
-  # - name: tarball
-  #   run_list:
-  #     - recipe[test::tarball]

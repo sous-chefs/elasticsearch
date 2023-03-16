@@ -32,6 +32,10 @@ See below for possible breaking changes.
 - [BREAKING] Remove default recipe
 - [BREAKING] ReMove default attributes
   - For usage please see testing cookbook
+- [BREAKING] Remove support for tarball installation
+  - Tarball installation does not support running in systemd
+- use the Elasticsearch public key to verify the package rather than downloading the key from the internet on every run
+- Use the execute resource over shellout where possible. As this correctly triggers notifications
 
 ## 4.3.1 - *2023-03-23*
 
