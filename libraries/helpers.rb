@@ -74,59 +74,59 @@ module ElasticsearchCookbook
         return results.first
       end
 
-      nil # falsey
+      nil
     end
 
-    def determine_download_url(new_resource, node)
-      platform_family = node['platform_family']
+    # def determine_download_url(new_resource, node)
+    #   platform_family = node['platform_family']
+    #   version_key = 'download_urls'
 
-      version_key = 'download_urls'
-      if Gem::Version.new(new_resource.version) >= Gem::Version.new('7.0.0')
-        version_key = 'download_urls_v7'
-      end
+    #   if Gem::Version.new(new_resource.version) == Gem::Version.new('7.0.0')
+    #     version_key = 'download_urls_v7'
+    #   end
 
-      url_string = nil
-      if new_resource.download_url
-        url_string = new_resource.download_url
-      elsif new_resource.type == 'tarball'
-        url_string = node['elasticsearch'][version_key]['tarball']
-      elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
-        url_string = node['elasticsearch'][version_key][platform_family]
-      end
+    #   url_string = nil
+    #   if new_resource.download_url
+    #     url_string = new_resource.download_url
+    #   # elsif new_resource.type == 'tarball'
+    #   #   url_string = node['elasticsearch'][version_key]['tarball']
+    #   elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
+    #     url_string = node['elasticsearch'][version_key][platform_family]
+    #   end
 
-      if url_string && new_resource.version
-        format(url_string, new_resource.version)
-      elsif url_string
-        url_string
-      end
-    end
+    #   if url_string && new_resource.version
+    #     format(url_string, new_resource.version)
+    #   elsif url_string
+    #     url_string
+    #   end
+    # end
 
-    def determine_download_checksum(new_resource, node)
-      platform_family = node['platform_family']
+    # def determine_download_checksum(new_resource, node)
+    #   platform_family = node['platform_family']
 
-      # for the sake of finding correct attribute data, use rhel for amazon too
-      # See https://github.com/elastic/cookbook-elasticsearch/issues/609
-      platform_family = 'rhel' if platform_family == 'amazon'
+    #   # for the sake of finding correct attribute data, use rhel for amazon too
+    #   # See https://github.com/elastic/cookbook-elasticsearch/issues/609
+    #   platform_family = 'rhel' if platform_family == 'amazon'
 
-      install_type = new_resource.type
-      version = new_resource.version
+    #   install_type = new_resource.type
+    #   version = new_resource.version
 
-      if new_resource.download_checksum
-        new_resource.download_checksum
-      elsif install_type == 'tarball'
-        node && version &&
-          node['elasticsearch'] &&
-          node['elasticsearch']['checksums'] &&
-          node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version]['tarball']
-      elsif install_type == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
-        node && version && platform_family &&
-          node['elasticsearch'] &&
-          node['elasticsearch']['checksums'] &&
-          node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version][platform_family]
-      end
-    end
+    #   if new_resource.download_checksum
+    #     new_resource.download_checksum
+    #   # elsif install_type == 'tarball'
+    #   #   node && version &&
+    #   #     node['elasticsearch'] &&
+    #   #     node['elasticsearch']['checksums'] &&
+    #   #     node['elasticsearch']['checksums'][version] &&
+    #   #     node['elasticsearch']['checksums'][version]['tarball']
+    #   elsif install_type == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
+    #     node && version && platform_family &&
+    #       node['elasticsearch'] &&
+    #       node['elasticsearch']['checksums'] &&
+    #       node['elasticsearch']['checksums'][version] &&
+    #       node['elasticsearch']['checksums'][version][platform_family]
+    #   end
+    # end
 
     # proxy helper for chef sets JVM 8 proxy options
     def get_java_proxy_arguments(enabled = true)
@@ -148,6 +148,10 @@ module ElasticsearchCookbook
     rescue
       ''
     end
+  end
+
+  def es_user
+    find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
   end
 
   class HashAndMashBlender
