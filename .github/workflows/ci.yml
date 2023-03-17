@@ -24,7 +24,7 @@ jobs:
       - name: Check metadata
         uses: damacus/check-chef-metadata-action@0.0.3
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   integration:
     needs: lint-unit
