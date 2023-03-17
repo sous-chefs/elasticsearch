@@ -18,13 +18,19 @@ jobs:
 
   check-metadata:
     runs-on: ubuntu-latest
+    permissions:
+      actions: write
+      checks: write
+      pull-requests: write
+      # statuses: write
+      # issues: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
       - name: Check metadata
         uses: damacus/check-chef-metadata-action@0.0.3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   integration:
     needs: lint-unit
