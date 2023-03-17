@@ -16,6 +16,12 @@ jobs:
       statuses: write
       issues: write
 
+  check-metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check metadata
+        uses: damacus/check-chef-metadata-action@0.0.3
+
   integration:
     needs: lint-unit
     runs-on: ubuntu-latest
