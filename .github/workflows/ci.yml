@@ -22,8 +22,8 @@ jobs:
       actions: write
       checks: write
       pull-requests: write
-      # statuses: write
-      # issues: write
+      statuses: write
+      issues: write
     steps:
       - name: Check out code
         uses: actions/checkout@v3
