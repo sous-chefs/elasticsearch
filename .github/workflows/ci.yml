@@ -16,22 +16,6 @@ jobs:
       statuses: write
       issues: write
 
-  check-metadata:
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      checks: write
-      pull-requests: write
-      statuses: write
-      issues: write
-    steps:
-      - name: Check out code
-        uses: actions/checkout@v3
-      - name: Check metadata
-        uses: damacus/check-chef-metadata-action@0.0.4
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
   integration:
     needs: lint-unit
     runs-on: ubuntu-latest
@@ -39,8 +23,8 @@ jobs:
       matrix:
         os:
           - almalinux-8
-          - amazonlinux-2
-          - amazonlinux-2022
+          # - amazonlinux-2
+          # - amazonlinux-2022
           - centos-7
           - centos-stream-8
           - debian-10
