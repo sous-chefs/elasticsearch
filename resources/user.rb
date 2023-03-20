@@ -10,7 +10,8 @@ property :username,
         name_property: true
 
 property :groupname,
-        String
+        String,
+        default: lazy { username }
 
 property :shell,
         String,
