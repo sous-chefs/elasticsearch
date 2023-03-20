@@ -36,6 +36,7 @@ See below for possible breaking changes.
   - Tarball installation does not support running in systemd
 - use the Elasticsearch public key to verify the package rather than downloading the key from the internet on every run
 - Use the execute resource over shellout where possible. As this correctly triggers notifications
+- Stop depending on yum and apt cookbooks as they are not required
 
 ## 4.3.1 - *2023-03-23*
 
