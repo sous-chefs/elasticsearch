@@ -5,9 +5,6 @@
 See below for possible breaking changes.
 
 - Sous-Chefs Adoption
-- [BREAKING] Remove default recipe
-  - This recipe was an example and was not expected to be used as is
-- Switch LWRP to custom resources
 - Default download to 7.17.9 which is supported until v9 is released
 - Remove load_platform_properties and suport test files that were no longer up to date or used
 - Remove rubocop ignore files
@@ -29,14 +26,25 @@ See below for possible breaking changes.
   - Remove Rakefile
   - Remove Gemfile (replaced by Chef Workstation)
   - Move rspec files from test/unit/spec to spec
-- [BREAKING] Remove default recipe
-- [BREAKING] ReMove default attributes
+  - Remove: .rubocop.yml exceptions
+  - Remove Rakefile, Gemfile, and Gemfile.lock
+  - Move .kitchen.yml to kitchen.yml
+  - Change test cookbook name to test
+  - Add Dangerfile
+- Migrate library files to custom resources
+- **[BREAKING] Remove default recipe**
+- **[BREAKING] Remove default attributes**
   - For usage please see testing cookbook
-- [BREAKING] Remove support for tarball installation
+- **[BREAKING] Remove support for tarball installation**
   - Tarball installation does not support running in systemd
-- use the Elasticsearch public key to verify the package rather than downloading the key from the internet on every run
+- Use the Elasticsearch public key to verify the package rather than downloading the key from the internet on every run
 - Use the execute resource over shellout where possible. As this correctly triggers notifications
 - Stop depending on yum and apt cookbooks as they are not required
+- Remove dertime_download_url helper method and replace with default_downoad_url from Elasticsearch::VersionHelpers
+- Remove determine_download_checksum and replace with default_download_checksum from Elasticsearch::VersionHelpers
+- Move documentation for resources to the documentation folder
+- Split the install resources into multiple resources for clarity
+- Move common properties into `partials`
 
 ## 4.3.1 - *2023-03-23*
 
