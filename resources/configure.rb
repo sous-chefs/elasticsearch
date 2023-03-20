@@ -111,16 +111,32 @@ action :manage do
     end
   end
 
-  # Create data path directories
-  data_paths = new_resource.path_data << new_resource.path_logs
 
-  data_paths.each do |path|
-    directory path.strip do
+  directory new_resource.path_data do
+    owner es_user.username
+    group es_user.groupname
+    mode '0750'
+    recursive true
+    action :create
+  end
+
+  if new_resource.path_data.is_a?(String)
+      directory new_resource.path_data do
       owner es_user.username
       group es_user.groupname
       mode '0755'
       recursive true
       action :create
+    end
+  else
+    new_resource.path_data.each do |path|
+      directory path.strip do
+        owner es_user.username
+        group es_user.groupname
+        mode '0755'
+        recursive true
+        action :create
+      end
     end
   end
 
