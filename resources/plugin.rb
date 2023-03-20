@@ -5,11 +5,10 @@ include ElasticsearchCookbook::Helpers
 property :plugin_name,
          String,
          name_property: true
+
 property :url,
          String
-property :chef_proxy,
-         [true, false],
-         default: false
+
 property :options,
          String,
          default: ''

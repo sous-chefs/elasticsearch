@@ -2,10 +2,10 @@ unified_mode true
 # this is what helps the various resources find each other
 property :instance_name, String
 
-# if you override one of these, you should probably override them all
+# If you override one of these, you should probably override them all
 property :path_home,    String, default: '/usr/share/elasticsearch'
 property :path_conf,    String, default: '/etc/elasticsearch'
-property :path_data,    String, default: '/var/lib/elasticsearch'
+property :path_data,    [String, Array], default: '/var/lib/elasticsearch'
 property :path_logs,    String, default: '/var/log/elasticsearch'
 property :path_pid,     String, default: '/var/run/elasticsearch'
 property :path_plugins, String, default: '/usr/share/elasticsearch/plugins'
@@ -62,32 +62,17 @@ property :jvm_options, Array, default:
 # the `configuration` attribute below. If you do override the defaults, you
 # must supply ALL needed defaults, and don't use nil as a value in the hash.
 property :default_configuration, Hash, default: {
-  # === NAMING
   'cluster.name' => 'elasticsearch',
-  # can't access node.name, so expect to have to set set this
   'node.name' => Chef::Config[:node_name],
-
-  # if omitted or nil, these will be populated from attributes above
-  'path.data' => nil, # see path_data above
-  'path.logs' => nil, # see path_logs above
-
-  # Refer to ES documentation on how to configure these to a
-  # specific node role/type instead of using the defaults
-  #
-  # 'node.data' => ?,
-  # 'node.master' => ?,
-}.freeze
+}
 
 # These settings are merged with the `default_configuration` attribute,
 # allowing you to override and set specific settings. Unless you intend to
 # wipe out all default settings, your configuration items should go here.
 #
-property :configuration, Hash, default: {}.freeze
+property :configuration, Hash, default: {}
 
 include ElasticsearchCookbook::Helpers
-
-provides :elasticsearch_configure
-unified_mode true
 
 action :manage do
   # lookup existing ES resources
@@ -127,9 +112,7 @@ action :manage do
   end
 
   # Create data path directories
-  #
-  data_paths = new_resource.path_data.is_a?(Array) ? new_resource.path_data : new_resource.path_data.split(',')
-  data_paths = data_paths << new_resource.path_logs
+  data_paths = new_resource.path_data << new_resource.path_logs
 
   data_paths.each do |path|
     directory path.strip do
@@ -213,7 +196,7 @@ action :manage do
     Chef::Log.warn("Please change the following to strings in order to work with this Elasticsearch cookbook: #{found_symbols.join(',')}")
   end
 
-  # workaround for https://github.com/elastic/cookbook-elasticsearch/issues/590
+  # workaround for https://github.com/sous-chefs/elasticsearch/issues/590
   config_vars = ElasticsearchCookbook::HashAndMashBlender.new(merged_configuration).to_hash
 
   with_run_context :root do

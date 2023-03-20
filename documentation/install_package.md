@@ -9,21 +9,17 @@ It includes helper methods from the `ElasticsearchCookbook::Helpers` module and 
 
 The following table provides an overview of the available properties for the install_package.rb class, including properties inherited from the included partials:
 
-| Filename           | Properties         | Default                                         | Example Values                                      |
-|--------------------|--------------------|-------------------------------------------------|-----------------------------------------------------|
-| `install_package.rb` | instance_name      | -                                               | "elasticsearch", "my_elasticsearch_instance"       |
-|                    | version            | "7.17.9"                                        | "7.17.9", "8.0.0"                                   |
-|                    | package_options    | -                                               | "--force-yes", "--no-install-recommends"           |
-| `partial/_common.rb` | instance_name      | -                                               | "elasticsearch", "my_elasticsearch_instance"       |
-|                    | version            | "7.17.9"                                        | "7.17.9", "8.0.0"                                   |
-|                    | package_options    | -                                               | "--force-yes", "--no-install-recommends"           |
-| `partial/_package.rb`| download_url       | `lazy { default_download_url(new_resource.version)` }| "https://example.com/package.tgz"                  |
-|                    | download_checksum  | `lazy { default_download_checksum[new_resource.version](checksum_platform)` }| "c2d5e5a5e42a5ac5e5c5e5a5a5c2d5e5"                |
-|                    | package_options    | -                                               | "--force-yes", "--no-install-recommends"           |
+| Filename              | Properties          | Default                                                                       |
+|-----------------------|---------------------|-------------------------------------------------------------------------------|
+| `partial/_common.rb`  | `instance_name`     | -                                                                             |
+|                       | `version`           | "7.17.9"                                                                      |
+|                       | `package_options`   | -                                                                             |
+| `partial/_package.rb` | `download_url`      | `lazy { default_download_url(new_resource.version)` }                         |
+|                       | `download_checksum` | `lazy { default_download_checksum[new_resource.version](checksum_platform)` } |
 
 ## Notes
 
-Remember that the download_url and download_checksum properties have default values that are generated based on the specified Elasticsearch version. If you want to use custom values, you can override the defaults by providing your own values.
+The `download_url` and `download_checksum` properties have default values that are generated based on the specified Elasticsearch version. If you want to use custom values, you can override the defaults by providing your own values.
 
 ## Examples
 

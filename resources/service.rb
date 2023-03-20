@@ -10,29 +10,9 @@ property :service_name,
         String,
         name_property: true
 
-property :args,
-        String,
-        default: '-d'
-
 property :service_actions,
         [Symbol, String, Array],
         default: [:enable, :start]
-
-property :init_source,
-        String,
-        default: 'initscript.erb'
-
-property :init_cookbook,
-        String,
-        default: 'elasticsearch'
-
-property :systemd_source,
-        String,
-        default: 'systemd_unit.erb'
-
-property :systemd_cookbook,
-        String,
-        default: 'elasticsearch'
 
 action :configure do
   es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)

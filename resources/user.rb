@@ -2,26 +2,26 @@ include ElasticsearchCookbook::Helpers
 
 unified_mode true
 
-property:instance_name, kind_of: String, default: nil
+property :instance_name,
+        String
 
 property :username,
         String,
         name_property: true
 
-property :uid,
-        Integer
+property :groupname,
+        String
 
 property :shell,
         String,
         default: '/bin/bash'
 
+property :uid,
+        Integer
+
 property :comment,
         String,
         default: 'Elasticsearch User'
-
-property :groupname,
-        String,
-        name_property: true
 
 property :gid,
         Integer

@@ -5,6 +5,3 @@ property :download_url,
 property :download_checksum,
         String,
         default: lazy { default_download_checksum(new_resource.version)[checksum_platform] }
-
-property :package_options,
-        String
