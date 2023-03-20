@@ -111,7 +111,6 @@ action :manage do
     end
   end
 
-
   directory new_resource.path_data do
     owner es_user.username
     group es_user.groupname
@@ -121,7 +120,7 @@ action :manage do
   end
 
   if new_resource.path_data.is_a?(String)
-      directory new_resource.path_data do
+    directory new_resource.path_data do
       owner es_user.username
       group es_user.groupname
       mode '0755'
