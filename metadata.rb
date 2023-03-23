@@ -6,7 +6,7 @@ description      'Installs and configures Elasticsearch'
 version          '4.3.1'
 issues_url       'https://github.com/sous-chefs/elasticsearch/issues'
 source_url       'https://github.com/sous-chefs/elasticsearch'
-chef_version      '>= 15.3'
+chef_version '>= 15.3'
 
 supports 'amazon'
 supports 'centos'
