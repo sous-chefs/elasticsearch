@@ -6,16 +6,32 @@ module ElasticsearchCookbook
       instance_name = resource.instance_name
 
       # if we are truly given a specific name to find
-      name_match = find_exact_resource(run_context, resource_type, resource_name) rescue nil
+      name_match = begin
+                     find_exact_resource(run_context, resource_type, resource_name)
+                   rescue
+                     nil
+                   end
       return name_match if name_match
 
       # first try by instance name attribute
-      name_instance = find_instance_name_resource(run_context, resource_type, instance_name) rescue nil
+      name_instance = begin
+                        find_instance_name_resource(run_context, resource_type, instance_name)
+                      rescue
+                        nil
+                      end
       return name_instance if name_instance
 
       # otherwise try the defaults
-      name_default = find_exact_resource(run_context, resource_type, 'default') rescue nil
-      name_elasticsearch = find_exact_resource(run_context, resource_type, 'elasticsearch') rescue nil
+      name_default = begin
+                       find_exact_resource(run_context, resource_type, 'default')
+                     rescue
+                       nil
+                     end
+      name_elasticsearch = begin
+                             find_exact_resource(run_context, resource_type, 'elasticsearch')
+                           rescue
+                             nil
+                           end
 
       # if we found exactly one default name that matched
       return name_default if name_default && !name_elasticsearch
@@ -58,58 +74,7 @@ module ElasticsearchCookbook
         return results.first
       end
 
-      nil # falsey
-    end
-
-    def determine_download_url(new_resource, node)
-      platform_family = node['platform_family']
-
-      version_key = 'download_urls'
-      if Gem::Version.new(new_resource.version) >= Gem::Version.new('7.0.0')
-        version_key = 'download_urls_v7'
-      end
-
-      url_string = nil
-      if new_resource.download_url
-        url_string = new_resource.download_url
-      elsif new_resource.type == 'tarball'
-        url_string = node['elasticsearch'][version_key]['tarball']
-      elsif new_resource.type == 'package' && node['elasticsearch']['download_urls'][platform_family]
-        url_string = node['elasticsearch'][version_key][platform_family]
-      end
-
-      if url_string && new_resource.version
-        return format(url_string, new_resource.version)
-      elsif url_string
-        return url_string
-      end
-    end
-
-    def determine_download_checksum(new_resource, node)
-      platform_family = node['platform_family']
-
-      # for the sake of finding correct attribute data, use rhel for amazon too
-      # See https://github.com/elastic/cookbook-elasticsearch/issues/609
-      platform_family = 'rhel' if platform_family == 'amazon'
-
-      install_type = new_resource.type
-      version = new_resource.version
-
-      if new_resource.download_checksum
-        new_resource.download_checksum
-      elsif install_type == 'tarball'
-        node && version &&
-          node['elasticsearch'] &&
-          node['elasticsearch']['checksums'] &&
-          node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version]['tarball']
-      elsif install_type == 'package' && node['elasticsearch']['checksums'][version] && node['elasticsearch']['checksums'][version][platform_family]
-        node && version && platform_family &&
-          node['elasticsearch'] &&
-          node['elasticsearch']['checksums'] &&
-          node['elasticsearch']['checksums'][version] &&
-          node['elasticsearch']['checksums'][version][platform_family]
-      end
+      nil
     end
 
     # proxy helper for chef sets JVM 8 proxy options
@@ -132,6 +97,10 @@ module ElasticsearchCookbook
     rescue
       ''
     end
+  end
+
+  def es_user
+    find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
   end
 
   class HashAndMashBlender

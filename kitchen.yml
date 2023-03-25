@@ -1,0 +1,43 @@
+---
+driver:
+  name: vagrant
+
+provisioner:
+  name: chef_zero
+  deprecations_as_errors: true
+  chef_license: accept
+  product_name: chef
+  product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
+  install_strategy: once
+  log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
+  nodes_path: "test/fixtures/nodes"
+
+platforms:
+  - name: ubuntu-18.04
+  - name: ubuntu-20.04
+  - name: rockylinux-8
+  - name: amazonlinux-2
+  - name: amazonlinux-2022
+  - name: almalinux-8
+  - name: centos-7
+  - name: centos-stream-8
+  - name: debian-10
+  - name: debian-11
+  - name: fedora-latest
+
+suites:
+  - name: repository
+    run_list:
+      - recipe[test::default_with_plugins]
+    attributes:
+      elasticsearch:
+        install:
+          type: repository
+
+  - name: package
+    run_list:
+      - recipe[test::default_with_plugins]
+    attributes:
+      elasticsearch:
+        install:
+          type: package

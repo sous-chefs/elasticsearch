@@ -29,11 +29,10 @@ shared_examples_for 'elasticsearch configure' do |args = {}|
     'RESTART_ON_UPGRADE=.+',
   ]
 
-  expected_jvm_options = args[:jvmopts] || [
-    'HeapDumpOnOutOfMemoryError',
-    'HeapDumpPath',
-    'ErrorFile',
-  ]
+  expected_jvm_options = args[:jvmopts] || %w(
+    HeapDumpOnOutOfMemoryError
+    ErrorFile
+  )
 
   describe file(path_conf) do
     it { should be_directory }
