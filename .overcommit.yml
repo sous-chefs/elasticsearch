@@ -4,21 +4,13 @@ PreCommit:
     enabled: true
   YamlLint:
     enabled: true
-    required_executable: "yamllint"
-  ChefSpec:
+  Rspec:
     enabled: true
-    required_executable: "chef"
-    command: ["chef", "exec", "rspec"]
+    required_executable: 'rspec'
   Cookstyle:
     enabled: true
-    required_executable: "cookstyle"
+    required_executable: 'cookstyle'
     command: ["cookstyle"]
-  MarkdownLint:
-    enabled: false
-    required_executable: "npx"
-    command: ["npx", "markdownlint-cli2", "'**/*.md'"]
-    include: ["**/*.md"]
-
 CommitMsg:
   HardTabs:
     enabled: true
