@@ -111,7 +111,7 @@ action :manage do
     end
   end
 
-  directory new_resource.path_data do
+  directory new_resource.path_logs do
     owner es_user.username
     group es_user.groupname
     mode '0750'
@@ -123,7 +123,7 @@ action :manage do
     directory new_resource.path_data do
       owner es_user.username
       group es_user.groupname
-      mode '0755'
+      mode '0750'
       recursive true
       action :create
     end
@@ -132,7 +132,7 @@ action :manage do
       directory path.strip do
         owner es_user.username
         group es_user.groupname
-        mode '0755'
+        mode '0750'
         recursive true
         action :create
       end
