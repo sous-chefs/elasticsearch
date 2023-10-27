@@ -1,6 +1,8 @@
 # install_repository
 
-The install_repository.rb class is part of the Elasticsearch Cookbook and is responsible for managing the installation and removal of Elasticsearch repositories. It includes helper methods from the ElasticsearchCookbook::Helpers module and utilizes partials _common.rb and_repository.rb for defining properties related to Elasticsearch instances and repository options.
+The install_repository.rb class is part of the Elasticsearch Cookbook and is responsible for managing the installation and removal of Elasticsearch repositories.
+
+It includes helper methods from the `ElasticsearchCookbook::Helpers` module and utilizes partials `_common.rb` and `_repository.rb` for defining properties related to Elasticsearch instances and repository options.
 
 ## Notes
 
