@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 shared_examples_for 'elasticsearch configure' do |args = {}|
   path_conf = args[:path_conf] || '/etc/elasticsearch'
   path_data = args[:path_data] || '/var/lib/elasticsearch'

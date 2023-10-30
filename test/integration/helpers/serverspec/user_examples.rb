@@ -1,5 +1,3 @@
-require_relative 'spec_helper'
-
 shared_examples_for 'elasticsearch user' do |args = {}|
   expected_user = args[:user] || 'elasticsearch'
   expected_group = args[:group] || expected_user || 'elasticsearch'
