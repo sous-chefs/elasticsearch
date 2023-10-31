@@ -1,5 +1,7 @@
 # elasticsearch Cookbook Changelog
 
+## Unreleased
+
 ## 5.1.7 - *2023-10-31*
 
 - Fix markdown errors
