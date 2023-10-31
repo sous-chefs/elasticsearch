@@ -12,6 +12,9 @@ provisioner:
   log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
   nodes_path: "test/fixtures/nodes"
 
+verifier:
+  name: inspec
+
 platforms:
   - name: ubuntu-18.04
   - name: ubuntu-20.04

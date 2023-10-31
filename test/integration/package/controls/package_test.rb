@@ -3,3 +3,5 @@ control 'Elasticsearch package' do
     it { should be_installed }
   end
 end
+
+include_controls 'default'

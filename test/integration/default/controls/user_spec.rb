@@ -1,6 +1,4 @@
 control 'User' do
-  description 'Verify the user and group exist'
-
   describe group('elasticsearch') do
     it { should exist }
   end

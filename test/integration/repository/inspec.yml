@@ -1,5 +1,5 @@
-name: elasticsearch package test
-title: Elasticsearch Package Test
+name: elasticsearch repository test
+title: Elasticsearch Repository Test
 version: 0.1.0
 supports:
   - os-family: linux
