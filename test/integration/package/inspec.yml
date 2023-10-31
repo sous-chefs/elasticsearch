@@ -1,0 +1,9 @@
+name: elasticsearch package test
+title: Elasticsearch Package Test
+version: 0.1.0
+supports:
+  - os-family: linux
+  - os-family: bsd
+depends:
+  - name: default
+    path: test/integration/default

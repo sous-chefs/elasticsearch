@@ -1,0 +1,9 @@
+name: elasticsearch repository test
+title: Elasticsearch Repository Test
+version: 0.1.0
+supports:
+  - os-family: linux
+  - os-family: bsd
+depends:
+  - name: default
+    path: test/integration/default
