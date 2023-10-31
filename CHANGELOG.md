@@ -1,5 +1,7 @@
 # elasticsearch Cookbook Changelog
 
+## Unreleased
+
 ## 5.1.8 - *2023-10-31*
 
 ## 5.1.7 - *2023-10-31*
