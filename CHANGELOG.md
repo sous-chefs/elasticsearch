@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+- Fix property references in install resource
+
 ## 5.1.9 - *2023-10-31*
 
 ## 5.1.8 - *2023-10-31*

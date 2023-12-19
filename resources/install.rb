@@ -16,8 +16,8 @@ action :install do
     elasticsearch_install_package "ElasticSearch #{new_resource.version}" do
       version new_resource.version
       instance_name new_resource.instance_name
-      download_url download_url
-      download_checksum download_checksum
+      download_url new_resource.download_url
+      download_checksum new_resource.download_checksum
     end
   when 'repository'
     elasticsearch_install_repository "ElasticSearch #{new_resource.version}" do
@@ -42,6 +42,6 @@ action :remove do
       action :remove
     end
   else
-    raise "#{install_type} is not a valid install type"
+    raise "#{new_resource.type} is not a valid install type"
   end
 end
