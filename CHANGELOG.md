@@ -1,6 +1,6 @@
 # elasticsearch Cookbook Changelog
 
-## Unreleased
+## 5.1.13 - *2024-05-03*
 
 ## 5.1.12 - *2024-05-03*
 
