@@ -16,7 +16,7 @@ action :install do
   if new_resource.enable_repository_actions
     if platform_family?('debian')
       apt_repository "elastic-#{major_version}.x" do
-        uri 'https://artifacts.elastic.co/packages/7.x/apt'
+        uri "https://artifacts.elastic.co/packages/#{major_version}.x/apt"
         key 'elasticsearch.asc'
         cookbook 'elasticsearch'
         components ['main']
