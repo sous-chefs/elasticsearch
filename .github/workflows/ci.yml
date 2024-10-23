@@ -34,7 +34,7 @@ jobs:
           - rockylinux-9
           - ubuntu-2004
           - ubuntu-2204
-          - ubuntu-2204
+          - ubuntu-2404
         suite:
           - repository
           - package
