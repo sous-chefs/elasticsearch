@@ -24,7 +24,6 @@ jobs:
         os:
           - almalinux-8
           - almalinux-9
-          - amazonlinux-2
           - amazonlinux-2023
           - centos-stream-9
           - debian-11
@@ -39,10 +38,6 @@ jobs:
         suite:
           - repository
           - package
-          # - doubleinstance
-          # - override_package
-          # - override_tarball
-          # - tarball
       fail-fast: false
 
     steps:
