@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+Updated metadata.rb to reflect the need for chef-client version 16.0+ for use of resouce partials
+
 ## 5.1.15 - *2024-07-15*
 
 Standardise files with files in sous-chefs/repo-management
