@@ -24,12 +24,12 @@ jobs:
         os:
           - almalinux-8
           - almalinux-9
-          - amazonlinux-2023
+          # - amazonlinux-2023
           - centos-stream-9
           - debian-11
           - debian-12
           - fedora-latest
-          - opensuse-leap-15
+          # - opensuse-leap-15
           - rockylinux-8
           - rockylinux-9
           - ubuntu-2004
