@@ -1,6 +1,6 @@
 # elasticsearch Cookbook Changelog
 
-## Unreleased
+## 5.1.16 - *2024-10-24*
 
 Updated metadata.rb to reflect the need for chef-client version 16.0+ for use of resouce partials
 
