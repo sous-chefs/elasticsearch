@@ -4,6 +4,8 @@
 
 Standardise files with files in sous-chefs/repo-management
 
+Standardise files with files in sous-chefs/repo-management
+
 ## 5.1.16 - *2024-10-24*
 
 Updated metadata.rb to reflect the need for chef-client version 16.0+ for use of resouce partials
