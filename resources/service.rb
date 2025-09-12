@@ -14,6 +14,16 @@ property :service_actions,
         [Symbol, String, Array],
         default: [:enable, :start]
 
+property :restart_policy,
+        String,
+        default: '',
+        regex: /^(no|always|on-success|on-failure|on-abnormal|on-abort|on-watchdog)?$/,
+        description: 'Systemd restart policy. Valid values: no, always, on-success, on-failure, on-abnormal, on-abort, on-watchdog. Defaults to empty string (no restart).'
+
+property :restart_sec,
+        [Integer, String],
+        description: 'Configures the time to sleep before restarting a service (seconds). Takes an integer or time span value (e.g., "5min 20s").'
+
 action :configure do
   es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
   es_conf = find_es_resource(Chef.run_context, :elasticsearch_configure, new_resource)
@@ -30,6 +40,46 @@ action :configure do
 
   default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
 
+  # Build service configuration with optional restart settings
+  service_config = {
+    Type: 'notify',
+    RuntimeDirectory: 'elasticsearch',
+    PrivateTmp: 'true',
+    Environment: [
+      "ES_HOME=#{es_conf.path_home}",
+      'ES_PATH_CONF=/etc/elasticsearch',
+      "PID_DIR=#{es_conf.path_pid}",
+      'ES_SD_NOTIFY=true',
+    ],
+    EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
+    WorkingDirectory: "#{es_conf.path_home}",
+    User: es_user.username,
+    Group: es_user.groupname,
+    ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
+    StandardOutput: 'journal',
+    StandardError: 'inherit',
+    LimitNOFILE: '65535',
+    LimitNPROC: '4096',
+    LimitAS: 'infinity',
+    LimitFSIZE: 'infinity',
+    TimeoutStopSec: '0',
+    KillSignal: 'SIGTERM',
+    KillMode: 'process',
+    SendSIGKILL: 'no',
+    SuccessExitStatus: '143',
+    TimeoutStartSec: '900',
+  }
+
+  # Add restart policy if specified
+  unless new_resource.restart_policy.empty?
+    service_config[:Restart] = new_resource.restart_policy
+  end
+
+  # Add restart delay if specified
+  if new_resource.restart_sec
+    service_config[:RestartSec] = new_resource.restart_sec
+  end
+
   systemd_unit new_resource.service_name do
     content(
       Unit: {
@@ -38,34 +88,7 @@ action :configure do
         Wants: 'network-online.target',
         After: 'network-online.target',
       },
-      Service: {
-        Type: 'notify',
-        RuntimeDirectory: 'elasticsearch',
-        PrivateTmp: 'true',
-        Environment: [
-          "ES_HOME=#{es_conf.path_home}",
-          'ES_PATH_CONF=/etc/elasticsearch',
-          "PID_DIR=#{es_conf.path_pid}",
-          'ES_SD_NOTIFY=true',
-        ],
-        EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
-        WorkingDirectory: "#{es_conf.path_home}",
-        User: es_user.username,
-        Group: es_user.groupname,
-        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
-        StandardOutput: 'journal',
-        StandardError: 'inherit',
-        LimitNOFILE: '65535',
-        LimitNPROC: '4096',
-        LimitAS: 'infinity',
-        LimitFSIZE: 'infinity',
-        TimeoutStopSec: '0',
-        KillSignal: 'SIGTERM',
-        KillMode: 'process',
-        SendSIGKILL: 'no',
-        SuccessExitStatus: '143',
-        TimeoutStartSec: '900',
-      },
+      Service: service_config,
       Install: {
         WantedBy: 'multi-user.target',
       }
