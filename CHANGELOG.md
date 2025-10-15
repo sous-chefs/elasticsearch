@@ -2,6 +2,7 @@
 
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
+
 ## 5.1.17 - *2024-11-18*
 
 Standardise files with files in sous-chefs/repo-management
@@ -40,33 +41,33 @@ See below for possible breaking changes.
 * Remove rubocop ignore files
 * Remove the test that checked if a recipe was run
 * Update Chef spec tested platforms to:
-  - Ubuntu: 18.04, 20.04
-  - CentOS: 7.8.2003, 8
+  * Ubuntu: 18.04, 20.04
+  * CentOS: 7.8.2003, 8
 * Sous-Chefs standardization
-  - Change test cookbook name to test
-  - Add GitHub Actions pipelines
-  - Add Dokken configuration
-  - Add support for testing on non-EOL Operating systems
-  - Update Chef ignore
-  - Update .gitignore
-  - Update CHANGELOG format
-  - Update CONTRIBUTING format
-  - Add renovate configuration
-  - **[BREAKING] Support Chef 15.3+**
-  - Remove Rakefile
-  - Remove Gemfile (replaced by Chef Workstation)
-  - Move rspec files from test/unit/spec to spec
-  - Remove: .rubocop.yml exceptions
-  - Remove Rakefile, Gemfile, and Gemfile.lock
-  - Move .kitchen.yml to kitchen.yml
-  - Change test cookbook name to test
-  - Add Dangerfile
+  * Change test cookbook name to test
+  * Add GitHub Actions pipelines
+  * Add Dokken configuration
+  * Add support for testing on non-EOL Operating systems
+  * Update Chef ignore
+  * Update .gitignore
+  * Update CHANGELOG format
+  * Update CONTRIBUTING format
+  * Add renovate configuration
+  * **[BREAKING] Support Chef 15.3+**
+  * Remove Rakefile
+  * Remove Gemfile (replaced by Chef Workstation)
+  * Move rspec files from test/unit/spec to spec
+  * Remove: .rubocop.yml exceptions
+  * Remove Rakefile, Gemfile, and Gemfile.lock
+  * Move .kitchen.yml to kitchen.yml
+  * Change test cookbook name to test
+  * Add Dangerfile
 * Migrate library files to custom resources
 **[BREAKING] Remove default recipe**
 **[BREAKING] Remove default attributes**
-  - For usage please see testing cookbook
+  * For usage please see testing cookbook
 **[BREAKING] Remove support for tarball installation**
-  - Tarball installation does not support running in systemd
+  * Tarball installation does not support running in systemd
 * Use the Elasticsearch public key to verify the package rather than downloading the key from the internet on every run
 * Use the execute resource over shellout where possible. As this correctly triggers notifications
 * Stop depending on yum and apt cookbooks as they are not required

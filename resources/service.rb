@@ -49,7 +49,7 @@ action :configure do
           'ES_SD_NOTIFY=true',
         ],
         EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
-        WorkingDirectory: "#{es_conf.path_home}",
+        WorkingDirectory: es_conf.path_home.to_s,
         User: es_user.username,
         Group: es_user.groupname,
         ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
