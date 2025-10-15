@@ -3,6 +3,13 @@
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [5.1.19](https://github.com/sous-chefs/elasticsearch/compare/5.1.18...v5.1.19) (2025-10-15)
+
+
+### Bug Fixes
+
+* **ci:** Update workflows to use release pipeline ([#822](https://github.com/sous-chefs/elasticsearch/issues/822)) ([ac9b48a](https://github.com/sous-chefs/elasticsearch/commit/ac9b48a46dc185cae39e044a18e128ee54e18f4d))
+
 ## 5.1.17 - *2024-11-18*
 
 Standardise files with files in sous-chefs/repo-management
