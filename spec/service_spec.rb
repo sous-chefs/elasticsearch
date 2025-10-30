@@ -34,24 +34,23 @@ describe 'elasticsearch_service' do
 
   # Test default behavior (no restart)
   context 'with default configuration' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '20.04', step_into: ['elasticsearch_service']) do |node, server|
-        node_resources(node)
-        stub_chef_zero('ubuntu', '20.04', server)
-      end.converge_dsl('test') do
-        elasticsearch_user 'elasticsearch'
-        elasticsearch_install 'elasticsearch' do
-          type 'package'
-        end
-        elasticsearch_configure 'elasticsearch'
-        elasticsearch_service 'elasticsearch'
-      end
-    end
+    supported_platforms.each do |platform, versions|
+      versions.each do |version|
+        context "on #{platform.capitalize} #{version}" do
+          let(:chef_run) do
+            ChefSpec::ServerRunner.new(platform: platform, version: version, step_into: ['elasticsearch_service']) do |node, server|
+              node_resources(node)
+              stub_chef_zero(platform, version, server)
+            end.converge('test::default_service')
+          end
 
-    it 'creates systemd unit without restart policy' do
-      systemd_unit = chef_run.systemd_unit('elasticsearch')
-      expect(systemd_unit.content[:Service]).not_to have_key(:Restart)
-      expect(systemd_unit.content[:Service]).not_to have_key(:RestartSec)
+          it 'creates systemd unit without restart policy' do
+            systemd_unit = chef_run.systemd_unit('elasticsearch')
+            expect(systemd_unit.content[:Service]).not_to have_key(:Restart)
+            expect(systemd_unit.content[:Service]).not_to have_key(:RestartSec)
+          end
+        end
+      end
     end
   end
 end
