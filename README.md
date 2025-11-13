@@ -251,6 +251,7 @@ end
 ```
 
 Valid restart policies:
+
 - `''` (empty string) - No automatic restart (default, maintains backward compatibility)
 - `'no'` - Never restart
 - `'always'` - Always restart regardless of exit status

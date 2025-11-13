@@ -40,46 +40,6 @@ action :configure do
 
   default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
 
-  # Build service configuration with optional restart settings
-  service_config = {
-    Type: 'notify',
-    RuntimeDirectory: 'elasticsearch',
-    PrivateTmp: 'true',
-    Environment: [
-      "ES_HOME=#{es_conf.path_home}",
-      'ES_PATH_CONF=/etc/elasticsearch',
-      "PID_DIR=#{es_conf.path_pid}",
-      'ES_SD_NOTIFY=true',
-    ],
-    EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
-    WorkingDirectory: "#{es_conf.path_home}",
-    User: es_user.username,
-    Group: es_user.groupname,
-    ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
-    StandardOutput: 'journal',
-    StandardError: 'inherit',
-    LimitNOFILE: '65535',
-    LimitNPROC: '4096',
-    LimitAS: 'infinity',
-    LimitFSIZE: 'infinity',
-    TimeoutStopSec: '0',
-    KillSignal: 'SIGTERM',
-    KillMode: 'process',
-    SendSIGKILL: 'no',
-    SuccessExitStatus: '143',
-    TimeoutStartSec: '900',
-  }
-
-  # Add restart policy if specified
-  unless new_resource.restart_policy.empty?
-    service_config[:Restart] = new_resource.restart_policy
-  end
-
-  # Add restart delay if specified
-  if new_resource.restart_sec
-    service_config[:RestartSec] = new_resource.restart_sec
-  end
-
   systemd_unit new_resource.service_name do
     content(
       Unit: {
@@ -88,7 +48,36 @@ action :configure do
         Wants: 'network-online.target',
         After: 'network-online.target',
       },
-      Service: service_config,
+      Service: {
+        Type: 'notify',
+        RuntimeDirectory: 'elasticsearch',
+        PrivateTmp: 'true',
+        Environment: [
+          "ES_HOME=#{es_conf.path_home}",
+          'ES_PATH_CONF=/etc/elasticsearch',
+          "PID_DIR=#{es_conf.path_pid}",
+          'ES_SD_NOTIFY=true',
+        ],
+        EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
+        WorkingDirectory: "#{es_conf.path_home}",
+        User: es_user.username,
+        Group: es_user.groupname,
+        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
+        StandardOutput: 'journal',
+        StandardError: 'inherit',
+        LimitNOFILE: '65535',
+        LimitNPROC: '4096',
+        LimitAS: 'infinity',
+        LimitFSIZE: 'infinity',
+        TimeoutStopSec: '0',
+        KillSignal: 'SIGTERM',
+        KillMode: 'process',
+        SendSIGKILL: 'no',
+        SuccessExitStatus: '143',
+        TimeoutStartSec: '900',
+        Restart: new_resource.restart_policy if new_resource.restart_policy,
+        RestartSec: new_resource.restart_sec if new_resource.restart_sec
+      },
       Install: {
         WantedBy: 'multi-user.target',
       }
