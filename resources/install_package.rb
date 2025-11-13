@@ -28,7 +28,7 @@ end
 
 action :remove do
   package "#{Chef::Config[:file_cache_path]}/#{filename_from_url}" do
-    action :temove
+    action :remove
   end
 end
 
