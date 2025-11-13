@@ -181,21 +181,21 @@ module ElasticsearchCookbook
         {
           'debian_x86_64' => '03992d97930b734155981076b3cd250c22742f3876f5f135f374940d1cb3ae2e',
           'debian_arm64' => 'c383e5b45eb070e1b6d53b9dc56218634794e2e0b27ea42a7d4a12650eec2b70',
-          'rpm_aarch64'  => 'f833e86db87240bcdc822ea40fc6103f019c35bafcfd7ac6063ef01d5b588e1c',
+          'rpm_aarch64' => 'f833e86db87240bcdc822ea40fc6103f019c35bafcfd7ac6063ef01d5b588e1c',
           'rpm_x86_64' => '9edf142b9a25b9000a9bf8638bc0590916f367b66e4abb3ce80d8f00f9de0c9c',
         }
       when '7.17.8'
         {
           'debian_x86_64' => 'd4875477129214519f6150aaf35374103f075886913307d6ed7c138d04ae6fa1',
           'debian_arm64' => '7dd69704b8d6d71aa58bb05f86d63fb34c00f2fcabdff244e9dab37226ca48af',
-          'rpm_aarch64'  => 'bb151d40c7979e5c5c6b9b1a227d494bb463642af938a6b21ae46a4eae767c74',
+          'rpm_aarch64' => 'bb151d40c7979e5c5c6b9b1a227d494bb463642af938a6b21ae46a4eae767c74',
           'rpm_x86_64' => 'd1d1cf15143029c658224d39ebf174f8da802bb26800cd88f974ad2a0ee16484',
         }
       when '7.17.9'
         {
           'debian_x86_64' => '7832e13c0b67239370058b729d321af1a12f0b329c0a3828c57d2fd4a9cb6555',
           'debian_arm64' => 'ec7064982bd3601280478b5d1ea01b8b8d95cbaaffad441e7bef194c53e8cccd',
-          'rpm_aarch64'  => '16a6e97440b0a4542d9d69168287fe143d40db138e9a3fd3e6348e60abe77175',
+          'rpm_aarch64' => '16a6e97440b0a4542d9d69168287fe143d40db138e9a3fd3e6348e60abe77175',
           'rpm_x86_64' => '751beebbe28ebefcd451796c1075208421b109bdae752383122142fd00a04559',
         }
       when '8.6.1'

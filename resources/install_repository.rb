@@ -5,7 +5,7 @@ use 'partial/_repository'
 include ElasticsearchCookbook::Helpers
 
 action :install do
-  major_version = new_resource.version.split('.')[0]
+  major_version = new_resource.version.split('.').first
 
   es_user = find_es_resource(Chef.run_context, :elasticsearch_user, new_resource)
 
