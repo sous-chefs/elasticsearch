@@ -33,6 +33,7 @@ describe 'elasticsearch_service' do
   end
 
   # Test default behavior (no restart)
+  # rubocop:disable Style/MultilineBlockChain
   context 'with default configuration' do
     let(:chef_run) do
       ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '20.04', step_into: ['elasticsearch_service']) do |node, server|
@@ -54,4 +55,5 @@ describe 'elasticsearch_service' do
       expect(systemd_unit.content[:Service]).not_to have_key(:RestartSec)
     end
   end
+  # rubocop:enable Style/MultilineBlockChain
 end

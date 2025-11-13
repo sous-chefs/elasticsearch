@@ -40,6 +40,38 @@ action :configure do
 
   default_conf_dir = platform_family?('rhel', 'amazon') ? '/etc/sysconfig' : '/etc/default'
 
+  service_config = {
+    Type: 'notify',
+    RuntimeDirectory: 'elasticsearch',
+    PrivateTmp: 'true',
+    Environment: [
+      "ES_HOME=#{es_conf.path_home}",
+      'ES_PATH_CONF=/etc/elasticsearch',
+      "PID_DIR=#{es_conf.path_pid}",
+      'ES_SD_NOTIFY=true',
+    ],
+    EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
+    WorkingDirectory: es_conf.path_home.to_s,
+    User: es_user.username,
+    Group: es_user.groupname,
+    ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
+    StandardOutput: 'journal',
+    StandardError: 'inherit',
+    LimitNOFILE: '65535',
+    LimitNPROC: '4096',
+    LimitAS: 'infinity',
+    LimitFSIZE: 'infinity',
+    TimeoutStopSec: '0',
+    KillSignal: 'SIGTERM',
+    KillMode: 'process',
+    SendSIGKILL: 'no',
+    SuccessExitStatus: '143',
+    TimeoutStartSec: '900',
+  }
+
+  service_config[:Restart] = new_resource.restart_policy if new_resource.restart_policy && !new_resource.restart_policy.empty?
+  service_config[:RestartSec] = new_resource.restart_sec if new_resource.restart_sec
+
   systemd_unit new_resource.service_name do
     content(
       Unit: {
@@ -48,36 +80,7 @@ action :configure do
         Wants: 'network-online.target',
         After: 'network-online.target',
       },
-      Service: {
-        Type: 'notify',
-        RuntimeDirectory: 'elasticsearch',
-        PrivateTmp: 'true',
-        Environment: [
-          "ES_HOME=#{es_conf.path_home}",
-          'ES_PATH_CONF=/etc/elasticsearch',
-          "PID_DIR=#{es_conf.path_pid}",
-          'ES_SD_NOTIFY=true',
-        ],
-        EnvironmentFile: "-#{default_conf_dir}/#{new_resource.service_name}",
-        WorkingDirectory: "#{es_conf.path_home}",
-        User: es_user.username,
-        Group: es_user.groupname,
-        ExecStart: "#{es_conf.path_home}/bin/systemd-entrypoint -p ${PID_DIR}/elasticsearch.pid --quiet",
-        StandardOutput: 'journal',
-        StandardError: 'inherit',
-        LimitNOFILE: '65535',
-        LimitNPROC: '4096',
-        LimitAS: 'infinity',
-        LimitFSIZE: 'infinity',
-        TimeoutStopSec: '0',
-        KillSignal: 'SIGTERM',
-        KillMode: 'process',
-        SendSIGKILL: 'no',
-        SuccessExitStatus: '143',
-        TimeoutStartSec: '900',
-        Restart: new_resource.restart_policy if new_resource.restart_policy,
-        RestartSec: new_resource.restart_sec if new_resource.restart_sec
-      },
+      Service: service_config,
       Install: {
         WantedBy: 'multi-user.target',
       }

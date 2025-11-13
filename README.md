@@ -232,7 +232,7 @@ a matching `elasticsearch_config` resource in the collection.
 elasticsearch_service 'elasticsearch'
 ```
 
-**Restart Configuration**
+#### Restart Configuration
 
 You can configure systemd restart behavior using the `restart_policy` and `restart_sec` properties:
 
