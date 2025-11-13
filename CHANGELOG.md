@@ -3,6 +3,13 @@
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [5.2.0](https://github.com/sous-chefs/elasticsearch/compare/v5.1.19...v5.2.0) (2025-11-13)
+
+
+### Features
+
+* **service:** Allow configuration of systemd service Restart directive ([#813](https://github.com/sous-chefs/elasticsearch/issues/813)) ([245f493](https://github.com/sous-chefs/elasticsearch/commit/245f493c098327d8b32cae86be8c6a5b83db1195))
+
 ## [5.1.19](https://github.com/sous-chefs/elasticsearch/compare/5.1.18...v5.1.19) (2025-10-15)
 
 
