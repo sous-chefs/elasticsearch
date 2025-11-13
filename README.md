@@ -232,6 +232,37 @@ a matching `elasticsearch_config` resource in the collection.
 elasticsearch_service 'elasticsearch'
 ```
 
+#### Restart Configuration
+
+You can configure systemd restart behavior using the `restart_policy` and `restart_sec` properties:
+
+```ruby
+elasticsearch_service 'elasticsearch' do
+  restart_policy 'on-failure'    # Restart only on failure
+  restart_sec 30                 # Wait 30 seconds before restart
+end
+```
+
+```ruby
+elasticsearch_service 'elasticsearch' do
+  restart_policy 'always'        # Always restart
+  restart_sec '5min'             # Wait 5 minutes before restart
+end
+```
+
+Valid restart policies:
+
+- `''` (empty string) - No automatic restart (default, maintains backward compatibility)
+- `'no'` - Never restart
+- `'always'` - Always restart regardless of exit status
+- `'on-success'` - Restart only when process exits cleanly
+- `'on-failure'` - Restart when process exits with non-zero code, killed by signal, timeout, or watchdog
+- `'on-abnormal'` - Restart when process is terminated by signal, timeout, or watchdog
+- `'on-abort'` - Restart when process exits due to uncaught signal
+- `'on-watchdog'` - Restart when watchdog timeout occurs
+
+The `restart_sec` property accepts either an integer (seconds) or a systemd time span string (e.g., "5min", "30s", "1m 30s").
+
 If you'd like to skip init scripts and systemd scripts, simply pass `nil` for
 the template file (init_source or systemd_source) and this cookbook will
 entirely skip trying to setup those scripts. Combined with changing the default
