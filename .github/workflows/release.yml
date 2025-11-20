@@ -21,3 +21,5 @@ jobs:
       token: ${{ secrets.PORTER_GITHUB_TOKEN }}
       supermarket_user: ${{ secrets.CHEF_SUPERMARKET_USER }}
       supermarket_key: ${{ secrets.CHEF_SUPERMARKET_KEY }}
+      slack_bot_token: ${{ secrets.SLACK_BOT_TOKEN }}
+      slack_channel_id: ${{ secrets.SLACK_CHANNEL_ID }}
