@@ -1,5 +1,9 @@
 # elasticsearch Cookbook Changelog
 
+## Unreleased
+
+* fix(service): Add systemd unit option that prevents service from failing to start on Debian and Elasticsearch 8.x ([#826](https://github.com/sous-chefs/elasticsearch/issues/826))
+
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
