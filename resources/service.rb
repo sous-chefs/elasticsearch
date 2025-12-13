@@ -42,6 +42,7 @@ action :configure do
 
   service_config = {
     Type: 'notify',
+    NotifyAccess: 'all',
     RuntimeDirectory: 'elasticsearch',
     PrivateTmp: 'true',
     Environment: [

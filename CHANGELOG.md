@@ -1,7 +1,24 @@
 # elasticsearch Cookbook Changelog
 
+## Unreleased
+
+* fix(service): Add systemd unit option that prevents service from failing to start on Debian and Elasticsearch 8.x ([#826](https://github.com/sous-chefs/elasticsearch/issues/826))
+
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
+
+## [5.2.0](https://github.com/sous-chefs/elasticsearch/compare/v5.1.19...v5.2.0) (2025-11-20)
+
+
+### Features
+
+* **service:** Allow configuration of systemd service Restart directive ([#813](https://github.com/sous-chefs/elasticsearch/issues/813)) ([245f493](https://github.com/sous-chefs/elasticsearch/commit/245f493c098327d8b32cae86be8c6a5b83db1195))
+
+
+### Bug Fixes
+
+* **ci:** Update CI matrix ([#827](https://github.com/sous-chefs/elasticsearch/issues/827)) ([295aae6](https://github.com/sous-chefs/elasticsearch/commit/295aae62d29cb4206239ae023073b3709983d53b))
+* **service:** Add systemd unit option that prevents service from failing to start on Debian and Elasticsearch 8.x ([#826](https://github.com/sous-chefs/elasticsearch/issues/826)) ([#819](https://github.com/sous-chefs/elasticsearch/issues/819)) ([cb8c045](https://github.com/sous-chefs/elasticsearch/commit/cb8c0456cacf8598271f181f443c84ccd586c5fe))
 
 ## [5.1.19](https://github.com/sous-chefs/elasticsearch/compare/5.1.18...v5.1.19) (2025-10-15)
 
