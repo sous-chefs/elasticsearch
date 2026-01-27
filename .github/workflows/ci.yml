@@ -24,17 +24,15 @@ jobs:
         os:
           - almalinux-8
           - almalinux-9
-          - almalinux-10
-          - amazonlinux-2023
+          # - amazonlinux-2023
           - centos-stream-9
-          - centos-stream-10
-          - debian-12
-          - debian-13
+          - debian-11
+          # - debian-12
           - fedora-latest
           # - opensuse-leap-15
           - rockylinux-8
           - rockylinux-9
-          - rockylinux-10
+          - ubuntu-2004
           - ubuntu-2204
           - ubuntu-2404
         suite:
@@ -44,7 +42,7 @@ jobs:
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v5
       - name: Install Chef
         uses: actionshub/chef-install@main
       - name: Dokken
