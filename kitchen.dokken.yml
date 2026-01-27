@@ -3,8 +3,12 @@ driver:
   privileged: true
   chef_version: <%= ENV['CHEF_VERSION'] || 'current' %>
 
-transport: { name: dokken }
-provisioner: { name: dokken }
+transport:
+  name: dokken
+  # Increase timeout for slow operations like APT repository updates
+  max_wait_until_ready: 1200
+provisioner:
+  name: dokken
 
 platforms:
   - name: almalinux-8
