@@ -37,7 +37,7 @@ jobs:
           - rockylinux-8
           - rockylinux-9
           - rockylinux-10
-          - ubuntu-2004
+          # - ubuntu-2004  # EOL 2025-05-31
           - ubuntu-2204
           - ubuntu-2404
         suite:
