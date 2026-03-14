@@ -65,4 +65,19 @@ These platforms are tested in `kitchen.dokken.yml` but not declared in `metadata
 - Default version in `_common.rb` partial is `7.17.9`; ES 8.x is the current major release
 - The `versions.rb` checksum library only covers ES 6.x–8.6.2; newer 8.x versions require the repository install type
 - Tarball install type raises an error — no systemd service template for tarball installs
-- The `install_repository.rb` remove action uses `new_resource.version` for the repository name but the install action uses `major_version`, causing a mismatch
+
+## Disabled Platforms
+
+### Debian 13 (Trixie)
+
+Elastic's 7.x APT repository GPG key uses SHA1 signatures. Debian 13 rejects SHA1 as insecure
+(since 2026-02-01), causing `apt-get update` to fail with "repository is not signed". This is an
+upstream Elastic issue — their GPG key needs to be re-signed with a stronger hash algorithm.
+The repository install type will fail on Debian 13 with Elasticsearch 7.x.
+
+### Amazon Linux 2023
+
+The `dokken/amazonlinux-2023` container image is missing `/usr/lib/systemd/systemd-sysv-install`,
+which `systemctl enable` invokes when synchronizing SysV service state. This causes the
+`service[elasticsearch] action enable` to fail. This is a Dokken container image issue, not a
+cookbook bug. Amazon Linux 2023 may work with Vagrant or bare-metal provisioners.
