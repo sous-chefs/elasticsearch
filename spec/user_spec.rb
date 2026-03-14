@@ -1,25 +1,44 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 
-describe 'test::user' do
-  before { stub_resources }
-  supported_platforms.each do |platform, versions|
-    versions.each do |version|
-      context "on #{platform.capitalize} #{version}" do
-        let(:chef_run) do
-          ChefSpec::ServerRunner.new(platform: platform, version: version, step_into: ['elasticsearch_user']) do |node, server|
-            node_resources(node) # data for this node
-            stub_chef_zero(platform, version, server) # stub other nodes in chef-zero
-          end.converge(described_recipe)
-        end
+describe 'elasticsearch_user' do
+  step_into :elasticsearch_user
+  platform 'ubuntu', '22.04'
 
-        it 'creates elasticsearch user deleteme in group foo' do
-          expect(chef_run).to create_elasticsearch_user('deleteme')
-        end
+  context 'action :create with defaults' do
+    recipe do
+      elasticsearch_user 'elasticsearch'
+    end
 
-        it 'deletes user deleteme' do
-          expect(chef_run).to remove_elasticsearch_user('deleteme')
-        end
+    it { is_expected.to create_group('elasticsearch') }
+    it { is_expected.to create_user('elasticsearch') }
+  end
+
+  context 'action :create with custom properties' do
+    recipe do
+      elasticsearch_user 'custom' do
+        username 'esuser'
+        groupname 'esgroup'
+        uid 1001
+        gid 2001
+        shell '/bin/sh'
+        comment 'Custom ES User'
       end
     end
+
+    it { is_expected.to create_group('esgroup') }
+    it { is_expected.to create_user('esuser').with(shell: '/bin/sh', comment: 'Custom ES User') }
+  end
+
+  context 'action :remove' do
+    recipe do
+      elasticsearch_user 'elasticsearch' do
+        action :remove
+      end
+    end
+
+    it { is_expected.to remove_user('elasticsearch') }
+    it { is_expected.to remove_group('elasticsearch') }
   end
 end

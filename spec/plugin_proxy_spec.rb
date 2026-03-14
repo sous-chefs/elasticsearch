@@ -1,53 +1,50 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 require_relative '../libraries/helpers'
 
-describe 'test::default_with_plugins' do
-  before { stub_resources }
-  supported_platforms.each do |platform, versions|
-    versions.each do |version|
-      context "on #{platform.capitalize} #{version}" do
-        let(:chef_run) do
-          ChefSpec::ServerRunner.new(platform: platform, version: version) do |node, server|
-            node_resources(node) # data for this node
-            stub_chef_zero(platform, version, server) # stub other nodes in chef-zero
-          end.converge(described_recipe)
-        end
+describe ElasticsearchCookbook::Helpers do
+  let(:helper_class) do
+    Class.new do
+      include ElasticsearchCookbook::Helpers
+    end
+  end
 
-        before do
-          extend ElasticsearchCookbook::Helpers
-          Chef::Config['http_proxy'] = nil
-          Chef::Config['https_proxy'] = nil
-        end
+  let(:helper) { helper_class.new }
 
-        it 'installs elasticsearch without proxy' do
-          args = get_java_proxy_arguments
-          expect(args).to eq('')
-        end
+  describe '#get_java_proxy_arguments' do
+    before do
+      Chef::Config['http_proxy'] = nil
+      Chef::Config['https_proxy'] = nil
+    end
 
-        it 'installs elasticsearch with proxy host' do
-          Chef::Config['http_proxy'] = 'http://example.com'
-          args = get_java_proxy_arguments
-          expect(args).to eq('-Dhttp.proxyHost=example.com -Dhttp.proxyPort=80 ')
-        end
+    it 'returns empty string without proxy' do
+      expect(helper.get_java_proxy_arguments).to eq('')
+    end
 
-        it 'installs elasticsearch with proxy' do
-          Chef::Config['http_proxy'] = 'http://example.com:8080'
-          args = get_java_proxy_arguments
-          expect(args).to eq('-Dhttp.proxyHost=example.com -Dhttp.proxyPort=8080 ')
-        end
+    it 'returns http proxy arguments' do
+      Chef::Config['http_proxy'] = 'http://example.com'
+      expect(helper.get_java_proxy_arguments).to eq('-Dhttp.proxyHost=example.com -Dhttp.proxyPort=80 ')
+    end
 
-        it 'installs elasticsearch with proxy host (ssl)' do
-          Chef::Config['https_proxy'] = 'https://example.com'
-          args = get_java_proxy_arguments
-          expect(args).to eq('-Dhttps.proxyHost=example.com -Dhttps.proxyPort=443 ')
-        end
+    it 'returns http proxy arguments with custom port' do
+      Chef::Config['http_proxy'] = 'http://example.com:8080'
+      expect(helper.get_java_proxy_arguments).to eq('-Dhttp.proxyHost=example.com -Dhttp.proxyPort=8080 ')
+    end
 
-        it 'installs elasticsearch with proxy (ssl)' do
-          Chef::Config['https_proxy'] = 'https://example.com:8080'
-          args = get_java_proxy_arguments
-          expect(args).to eq('-Dhttps.proxyHost=example.com -Dhttps.proxyPort=8080 ')
-        end
-      end
+    it 'returns https proxy arguments' do
+      Chef::Config['https_proxy'] = 'https://example.com'
+      expect(helper.get_java_proxy_arguments).to eq('-Dhttps.proxyHost=example.com -Dhttps.proxyPort=443 ')
+    end
+
+    it 'returns https proxy arguments with custom port' do
+      Chef::Config['https_proxy'] = 'https://example.com:8080'
+      expect(helper.get_java_proxy_arguments).to eq('-Dhttps.proxyHost=example.com -Dhttps.proxyPort=8080 ')
+    end
+
+    it 'returns empty string when proxy is disabled' do
+      Chef::Config['http_proxy'] = 'http://example.com:8080'
+      expect(helper.get_java_proxy_arguments(false)).to eq('')
     end
   end
 end

@@ -1,52 +1,51 @@
+# frozen_string_literal: true
+
 require_relative 'spec_helper'
 
 describe 'elasticsearch_service' do
-  before { stub_resources }
+  step_into :elasticsearch_service
+  platform 'ubuntu', '22.04'
 
-  supported_platforms.each do |platform, versions|
-    versions.each do |version|
-      context "on #{platform.capitalize} #{version}" do
-        let(:chef_run) do
-          ChefSpec::ServerRunner.new(platform: platform, version: version, step_into: ['elasticsearch_service']) do |node, server|
-            node_resources(node)
-            stub_chef_zero(platform, version, server)
-          end.converge('test::restart_policy')
-        end
-
-        it 'creates systemd unit with restart policy' do
-          expect(chef_run).to create_systemd_unit('elasticsearch').with(
-            content: hash_including(
-              Service: hash_including(
-                Restart: 'on-failure',
-                RestartSec: 30
-              )
-            )
-          )
-        end
-
-        it 'enables and starts the elasticsearch service' do
-          expect(chef_run).to enable_service('elasticsearch')
-          expect(chef_run).to start_service('elasticsearch')
-        end
+  context 'with restart policy' do
+    recipe do
+      elasticsearch_user 'elasticsearch'
+      elasticsearch_install 'elasticsearch' do
+        type 'package'
+      end
+      elasticsearch_configure 'elasticsearch' do
+        allocated_memory '256m'
+      end
+      elasticsearch_service 'elasticsearch' do
+        restart_policy 'on-failure'
+        restart_sec 30
       end
     end
+
+    it 'creates systemd unit with restart policy' do
+      expect(chef_run).to create_systemd_unit('elasticsearch').with(
+        content: hash_including(
+          Service: hash_including(
+            Restart: 'on-failure',
+            RestartSec: 30
+          )
+        )
+      )
+    end
+
+    it { is_expected.to enable_service('elasticsearch') }
+    it { is_expected.to start_service('elasticsearch') }
   end
 
-  # Test default behavior (no restart)
-  # rubocop:disable Style/MultilineBlockChain
   context 'with default configuration' do
-    let(:chef_run) do
-      ChefSpec::ServerRunner.new(platform: 'ubuntu', version: '20.04', step_into: ['elasticsearch_service']) do |node, server|
-        node_resources(node)
-        stub_chef_zero('ubuntu', '20.04', server)
-      end.converge_block do
-        elasticsearch_user 'elasticsearch'
-        elasticsearch_install 'elasticsearch' do
-          type 'package'
-        end
-        elasticsearch_configure 'elasticsearch'
-        elasticsearch_service 'elasticsearch'
+    recipe do
+      elasticsearch_user 'elasticsearch'
+      elasticsearch_install 'elasticsearch' do
+        type 'package'
       end
+      elasticsearch_configure 'elasticsearch' do
+        allocated_memory '256m'
+      end
+      elasticsearch_service 'elasticsearch'
     end
 
     it 'creates systemd unit without restart policy' do
@@ -55,5 +54,4 @@ describe 'elasticsearch_service' do
       expect(systemd_unit.content[:Service]).not_to have_key(:RestartSec)
     end
   end
-  # rubocop:enable Style/MultilineBlockChain
 end
