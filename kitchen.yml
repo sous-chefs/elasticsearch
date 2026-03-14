@@ -10,7 +10,6 @@ provisioner:
   product_version: <%= ENV['CHEF_VERSION'] || 'latest' %>
   install_strategy: once
   log_level: <%= ENV['CHEF_LOG_LEVEL'] || 'auto' %>
-  nodes_path: "test/fixtures/nodes"
 
 verifier:
   name: inspec
@@ -18,32 +17,43 @@ verifier:
 platforms:
   - name: almalinux-8
   - name: almalinux-9
+  - name: almalinux-10
   - name: amazonlinux-2023
   - name: centos-stream-9
-  - name: debian-11
+  - name: centos-stream-10
   - name: debian-12
+  - name: debian-13
   - name: fedora-latest
   - name: opensuse-leap-15
   - name: oraclelinux-8
   - name: oraclelinux-9
   - name: rockylinux-8
   - name: rockylinux-9
+  - name: rockylinux-10
   - name: ubuntu-20.04
   - name: ubuntu-22.04
   - name: ubuntu-24.04
 
+# Reusable YAML anchors for run_lists
+x-run_lists:
+  default: &default_run_list
+    - recipe[test::default]
+  default_with_plugins: &plugins_run_list
+    - recipe[test::default_with_plugins]
+
 suites:
+  - name: default
+    run_list: *default_run_list
+
   - name: repository
-    run_list:
-      - recipe[test::default_with_plugins]
+    run_list: *plugins_run_list
     attributes:
       elasticsearch:
         install:
           type: repository
 
   - name: package
-    run_list:
-      - recipe[test::default_with_plugins]
+    run_list: *plugins_run_list
     attributes:
       elasticsearch:
         install:
