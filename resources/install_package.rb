@@ -1,5 +1,10 @@
-include ElasticsearchCookbook::Helpers
+# frozen_string_literal: true
+
+provides :elasticsearch_install_package
 unified_mode true
+
+include ElasticsearchCookbook::Helpers
+
 use 'partial/_common'
 use 'partial/_package'
 

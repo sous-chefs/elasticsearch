@@ -1,6 +1,9 @@
-include ElasticsearchCookbook::Helpers
+# frozen_string_literal: true
 
+provides :elasticsearch_user
 unified_mode true
+
+include ElasticsearchCookbook::Helpers
 
 property :instance_name,
         String

@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+provides :elasticsearch_configure
 unified_mode true
+
 # this is what helps the various resources find each other
 property :instance_name, String
 
