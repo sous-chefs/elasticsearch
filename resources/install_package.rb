@@ -22,6 +22,17 @@ action :install do
       source package_filename
       action :install
     end
+  elsif platform_family?('suse')
+    execute 'import elasticsearch GPG key' do
+      command 'rpm --import https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+      not_if 'rpm -q gpg-pubkey --qf "%{summary}\n" | grep -q Elasticsearch'
+    end
+
+    package filename_from_url do
+      options new_resource.package_options
+      source package_filename
+      action :install
+    end
   else
     package filename_from_url do
       options new_resource.package_options

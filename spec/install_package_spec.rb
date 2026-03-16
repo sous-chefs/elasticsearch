@@ -32,6 +32,25 @@ describe 'elasticsearch_install_package' do
     it { is_expected.to install_package('elasticsearch-8.19.12-x86_64.rpm') }
   end
 
+  context 'action :install on suse' do
+    platform 'opensuse', '15'
+
+    before do
+      stub_command('rpm -q gpg-pubkey --qf "%{summary}\n" | grep -q Elasticsearch').and_return(false)
+    end
+
+    recipe do
+      elasticsearch_user 'elasticsearch'
+      elasticsearch_install_package 'elasticsearch' do
+        version '8.19.12'
+      end
+    end
+
+    it { is_expected.to create_remote_file("#{Chef::Config[:file_cache_path]}/elasticsearch-8.19.12-x86_64.rpm") }
+    it { is_expected.to run_execute('import elasticsearch GPG key') }
+    it { is_expected.to install_package('elasticsearch-8.19.12-x86_64.rpm') }
+  end
+
   context 'action :remove' do
     recipe do
       elasticsearch_user 'elasticsearch'
