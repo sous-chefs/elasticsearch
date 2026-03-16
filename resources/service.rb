@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+provides :elasticsearch_service
 unified_mode true
 
 include ElasticsearchCookbook::Helpers

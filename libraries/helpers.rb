@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ElasticsearchCookbook
   # Helper methods included by various providers and passed to the template engine
   module Helpers

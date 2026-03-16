@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+provides :elasticsearch_install_repository
 unified_mode true
+
 use 'partial/_common'
 use 'partial/_repository'
 
@@ -39,13 +43,15 @@ action :install do
 end
 
 action :remove do
+  major_version = new_resource.version.split('.').first
+
   if new_resource.enable_repository_actions
     if platform_family?('debian')
-      apt_repository "elastic-#{new_resource.version}.x" do
+      apt_repository "elastic-#{major_version}.x" do
         action :remove
       end
     else
-      yum_repository "elastic-#{new_resource.version}.x" do
+      yum_repository "elastic-#{major_version}.x" do
         action :remove
       end
     end

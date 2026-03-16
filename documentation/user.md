@@ -1,38 +1,41 @@
 # elasticsearch_user
 
-This custom resource is used to create and manage Elasticsearch users and groups.
-Properties
+Manages the Elasticsearch system user and group.
+
+## Actions
+
+| Action    | Description                |
+|-----------|----------------------------|
+| `:create` | Creates the user and group |
+| `:remove` | Removes the user and group |
 
 ## Properties
 
-The following table provides an overview of the available properties for the elasticsearch_user resource:
-
-| Property    | Type              | Description                                                            |
-|-------------|-------------------|------------------------------------------------------------------------|
-| `username`  | String            | The username for the Elasticsearch user. (name property)               |
-| `groupname` | String            | The group name for the Elasticsearch user. Default is `elasticsearch`. |
-| `shell`     | String            | The shell for the Elasticsearch user. Default is `/bin/false`.         |
-| `uid`       | [String, Integer] | The user ID for the Elasticsearch user.                                |
-| `gid`       | [String, Integer] | The group ID for the Elasticsearch user.                               |
+| Property        | Type    | Default                | Description                       |
+|-----------------|---------|------------------------|-----------------------------------|
+| `username`      | String  | name property          | System username                   |
+| `groupname`     | String  | lazy { username }      | System group name                 |
+| `shell`         | String  | `'/bin/bash'`          | Login shell                       |
+| `uid`           | Integer | -                      | User ID                           |
+| `gid`           | Integer | -                      | Group ID                          |
+| `comment`       | String  | `'Elasticsearch User'` | User comment/GECOS field          |
+| `instance_name` | String  | -                      | Used to look up related resources |
 
 ## Examples
 
-### Create a user
-
-The following example creates a user named `elasticsearch`:
+### Basic usage
 
 ```ruby
 elasticsearch_user 'elasticsearch'
 ```
 
-### Create a user with a custom group, shell, and UID
-
-The following example creates a user named `elasticsearch` with a custom group, shell, and UID:
+### Custom user and group
 
 ```ruby
 elasticsearch_user 'myuser' do
   groupname 'mygroup'
-  shell '/bin/bash'
+  shell '/bin/sh'
   uid 1234
+  gid 5678
 end
 ```

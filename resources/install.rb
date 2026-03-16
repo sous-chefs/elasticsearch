@@ -1,4 +1,8 @@
+# frozen_string_literal: true
+
+provides :elasticsearch_install
 unified_mode true
+
 use 'partial/_common'
 use 'partial/_package'
 use 'partial/_repository'

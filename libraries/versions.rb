@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module ElasticsearchCookbook
   module VersionHelpers
     def default_download_url(version)

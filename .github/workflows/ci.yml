@@ -24,18 +24,24 @@ jobs:
         os:
           - almalinux-8
           - almalinux-9
-          # - amazonlinux-2023
+          - almalinux-10
+          # - amazonlinux-2023  # systemd-sysv-install missing in Dokken image
           - centos-stream-9
-          - debian-11
-          # - debian-12
+          - centos-stream-10
+          - debian-12
+          # - debian-13  # Elastic 7.x GPG key uses SHA1, rejected by Debian 13
           - fedora-latest
           # - opensuse-leap-15
+          - oraclelinux-8
+          - oraclelinux-9
           - rockylinux-8
           - rockylinux-9
-          - ubuntu-2004
+          - rockylinux-10
+          # - ubuntu-2004  # EOL 2025-05-31
           - ubuntu-2204
           - ubuntu-2404
         suite:
+          - default
           - repository
           - package
       fail-fast: false

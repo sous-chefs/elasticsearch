@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 include ElasticsearchCookbook::Helpers
 include ElasticsearchCookbook::VersionHelpers
 
