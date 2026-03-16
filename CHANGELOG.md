@@ -7,6 +7,17 @@
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [6.0.0](https://github.com/sous-chefs/elasticsearch/compare/v5.2.0...v6.0.0) (2026-03-16)
+
+
+### ⚠ BREAKING CHANGES
+
+* Update elasticsearch checksums for all supported versions ([#834](https://github.com/sous-chefs/elasticsearch/issues/834))
+
+### Features
+
+* Update elasticsearch checksums for all supported versions ([#834](https://github.com/sous-chefs/elasticsearch/issues/834)) ([d35e269](https://github.com/sous-chefs/elasticsearch/commit/d35e2693bc40a186e787b6eb6c0525aab82dc475))
+
 ## [5.2.0](https://github.com/sous-chefs/elasticsearch/compare/v5.1.19...v5.2.0) (2025-11-20)
 
 
