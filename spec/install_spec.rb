@@ -3,7 +3,7 @@
 require_relative 'spec_helper'
 
 describe 'elasticsearch_install' do
-  step_into :elasticsearch_install
+  step_into :elasticsearch_install, :elasticsearch_user
   platform 'ubuntu', '22.04'
 
   context 'type repository (default)' do
@@ -12,7 +12,7 @@ describe 'elasticsearch_install' do
       elasticsearch_install 'elasticsearch'
     end
 
-    it { is_expected.to install_elasticsearch_install_repository('ElasticSearch 7.17.9') }
+    it { is_expected.to install_elasticsearch_install_repository('ElasticSearch 8.19.12') }
   end
 
   context 'type package' do
@@ -23,7 +23,7 @@ describe 'elasticsearch_install' do
       end
     end
 
-    it { is_expected.to install_elasticsearch_install_package('ElasticSearch 7.17.9') }
+    it { is_expected.to install_elasticsearch_install_package('ElasticSearch 8.19.12') }
   end
 
   context 'type tarball raises error' do
@@ -47,6 +47,6 @@ describe 'elasticsearch_install' do
       end
     end
 
-    it { is_expected.to remove_elasticsearch_install_repository('ElasticSearch 7.17.9') }
+    it { is_expected.to remove_elasticsearch_install_repository('ElasticSearch 8.19.12') }
   end
 end

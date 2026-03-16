@@ -5,5 +5,5 @@ property :download_url,
         default: lazy { default_download_url(version) }
 
 property :download_checksum,
-        String,
+      String,
         default: lazy { default_download_checksum(version)[checksum_platform] }

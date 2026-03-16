@@ -8,7 +8,7 @@ property :instance_name,
 
 property :version,
         String,
-        default: '7.17.9'
+        default: '8.19.12'
 
 property :package_options,
         String

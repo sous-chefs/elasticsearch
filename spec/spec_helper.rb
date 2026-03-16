@@ -15,7 +15,7 @@ end
 
 def supported_platforms
   {
-    'ubuntu' => ['22.04'],
-    'almalinux' => ['9'],
+    'ubuntu' => ['22.04', '24.04'],
+    'redhat' => %w(8 9 10),
   }
 end

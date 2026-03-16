@@ -9,13 +9,13 @@ It includes helper methods from the `ElasticsearchCookbook::Helpers` module and 
 
 The following table provides an overview of the available properties for the install_package.rb class, including properties inherited from the included partials:
 
-| Filename              | Properties          | Default                                                                       |
-|-----------------------|---------------------|-------------------------------------------------------------------------------|
-| `partial/_common.rb`  | `instance_name`     | -                                                                             |
-|                       | `version`           | "7.17.9"                                                                      |
-|                       | `package_options`   | -                                                                             |
-| `partial/_package.rb` | `download_url`      | `lazy { default_download_url(new_resource.version)` }                         |
-|                       | `download_checksum` | `lazy { default_download_checksum[new_resource.version](checksum_platform)` } |
+| Filename              | Properties          | Default                                                                           |
+|-----------------------|---------------------|-----------------------------------------------------------------------------------|
+| `partial/_common.rb`  | `instance_name`     | -                                                                                 |
+|                       | `version`           | "8.19.12"                                                                         |
+|                       | `package_options`   | -                                                                                 |
+| `partial/_package.rb` | `download_url`      | `lazy { default_download_url(new_resource.version)` }                             |
+|                       | `download_checksum` | `lazy { default_download_checksum(new_resource.version)&.[](checksum_platform) }` |
 
 ## Notes
 

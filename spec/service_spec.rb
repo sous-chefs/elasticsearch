@@ -3,7 +3,7 @@
 require_relative 'spec_helper'
 
 describe 'elasticsearch_service' do
-  step_into :elasticsearch_service
+  step_into :elasticsearch_service, :elasticsearch_user
   platform 'ubuntu', '22.04'
 
   context 'with restart policy' do
