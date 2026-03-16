@@ -10,12 +10,12 @@ Custom usernames and group names are not supported in Elasticsearch 6+ repositor
 
 The following table provides an overview of the available properties for the install_repository.rb class, including properties inherited from the included partials:
 
-| Filename                 | Properties                  | Default  | Example Values                               |
-|--------------------------|-----------------------------|----------|----------------------------------------------|
-| `partial/_common.rb`     | `instance_name`             | -        | "elasticsearch", "my_elasticsearch_instance" |
-|                          | `version`                   | "7.17.9" | "7.17.9", "8.0.0"                            |
-|                          | `package_options`           | -        | "--force-yes", "--no-install-recommends"     |
-| `partial/_repository.rb` | `enable_repository_actions` | true     | true, false                                  |
+| Filename                 | Properties                  | Default   | Example Values                               |
+|--------------------------|-----------------------------|-----------|----------------------------------------------|
+| `partial/_common.rb`     | `instance_name`             | -         | "elasticsearch", "my_elasticsearch_instance" |
+|                          | `version`                   | "8.19.12" | "8.19.12", "9.3.1"                           |
+|                          | `package_options`           | -         | "--force-yes", "--no-install-recommends"     |
+| `partial/_repository.rb` | `enable_repository_actions` | true      | true, false                                  |
 
 ## Examples
 
