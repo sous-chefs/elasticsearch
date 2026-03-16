@@ -9,7 +9,12 @@ end
 
 elasticsearch_configure 'elasticsearch' do
   allocated_memory '256m'
-  configuration('node.name' => 'restart_test_node')
+  configuration(
+    'node.name' => 'restart_test_node',
+    'xpack.security.enabled' => false,
+    'xpack.security.transport.ssl.enabled' => false,
+    'xpack.security.http.ssl.enabled' => false
+  )
   action :manage
 end
 

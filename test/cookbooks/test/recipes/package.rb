@@ -22,7 +22,12 @@ elasticsearch_configure 'my_elasticsearch' do
 
   allocated_memory '123m'
 
-  configuration('node.name' => 'arbitrary_name')
+  configuration(
+    'node.name' => 'arbitrary_name',
+    'xpack.security.enabled' => false,
+    'xpack.security.transport.ssl.enabled' => false,
+    'xpack.security.http.ssl.enabled' => false
+  )
   # plugin_dir '/usr/local/awesome/elasticsearch-1.7.3/plugins'
   action :manage
   instance_name 'special_package_instance'

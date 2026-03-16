@@ -12,7 +12,16 @@ elasticsearch_install 'elasticsearch' do
   type 'repository'
 end
 
-elasticsearch_configure 'elasticsearch'
+# ES 8.x auto-configures security on package install, adding SSL keystore
+# entries and certs. Explicitly disable security and SSL so the vendor
+# keystore entries don't conflict with the cookbook-managed elasticsearch.yml.
+elasticsearch_configure 'elasticsearch' do
+  configuration(
+    'xpack.security.enabled' => false,
+    'xpack.security.transport.ssl.enabled' => false,
+    'xpack.security.http.ssl.enabled' => false
+  )
+end
 
 elasticsearch_service 'elasticsearch'
 
