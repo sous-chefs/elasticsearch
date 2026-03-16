@@ -25,7 +25,6 @@ jobs:
           - almalinux-8
           - almalinux-9
           - almalinux-10
-          - amazonlinux-2023
           - centos-stream-9
           - centos-stream-10
           - debian-12

@@ -10,7 +10,7 @@ module ElasticsearchCookbook
       when 'debian'
         arch = machine.include?('x86_64') ? 'amd64' : 'arm64'
         file_type = 'deb'
-      when 'rhel', 'fedora', 'amazon'
+      when 'rhel', 'fedora', 'amazon', 'suse'
         arch = machine.include?('x86_64') ? 'x86_64' : 'aarch64'
         file_type = 'rpm'
       else
@@ -29,7 +29,8 @@ module ElasticsearchCookbook
                'x86_64'
              end
 
-      "#{platform_family == 'debian' ? 'debian' : 'rpm'}_#{arch}"
+      type = platform_family == 'debian' ? 'debian' : 'rpm'
+      "#{type}_#{arch}"
     end
 
     def default_download_checksum(version)

@@ -21,10 +21,17 @@ action :install do
     if platform_family?('debian')
       apt_repository "elastic-#{major_version}.x" do
         uri "https://artifacts.elastic.co/packages/#{major_version}.x/apt"
-        key 'elasticsearch.asc'
-        cookbook 'elasticsearch'
+        key 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
         components ['main']
         distribution 'stable'
+      end
+    elsif platform_family?('suse')
+      zypper_repository "elastic-#{major_version}.x" do
+        baseurl "https://artifacts.elastic.co/packages/#{major_version}.x/yum"
+        gpgkey 'https://artifacts.elastic.co/GPG-KEY-elasticsearch'
+        type 'rpm-md'
+        gpgcheck true
+        action :create
       end
     else
       yum_repository "elastic-#{major_version}.x" do
@@ -48,6 +55,10 @@ action :remove do
   if new_resource.enable_repository_actions
     if platform_family?('debian')
       apt_repository "elastic-#{major_version}.x" do
+        action :remove
+      end
+    elsif platform_family?('suse')
+      zypper_repository "elastic-#{major_version}.x" do
         action :remove
       end
     else
