@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative '../libraries/versions'
 
 RSpec.describe ElasticsearchCookbook::VersionHelpers do
