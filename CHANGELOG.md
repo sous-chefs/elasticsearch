@@ -7,6 +7,13 @@
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [6.0.1](https://github.com/sous-chefs/elasticsearch/compare/v6.0.0...v6.0.1) (2026-03-19)
+
+
+### Bug Fixes
+
+* add frozen_string_literal and amazonlinux-2023 to dokken ([#836](https://github.com/sous-chefs/elasticsearch/issues/836)) ([bb4bd55](https://github.com/sous-chefs/elasticsearch/commit/bb4bd55d775b47b7b00b5979a42f4a4d80c7752f))
+
 ## [6.0.0](https://github.com/sous-chefs/elasticsearch/compare/v5.2.0...v6.0.0) (2026-03-16)
 
 
