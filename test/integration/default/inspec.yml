@@ -2,6 +2,3 @@
 name: default
 title: Default Tests for ElasticSearch
 summary: This InSpec profile contains integration tests for the ElasticSearch cookbook
-supports:
-  - os-family: linux
-  - os-family: bsd

@@ -210,7 +210,7 @@ action :manage do
   merged_configuration = default_configuration.merge(new_resource.configuration.dup)
 
   # Warn if someone is using symbols. We don't support.
-  found_symbols = merged_configuration.keys.select { |s| s.is_a?(Symbol) }
+  found_symbols = merged_configuration.keys.grep(Symbol)
   unless found_symbols.empty?
     Chef::Log.warn("Please change the following to strings in order to work with this Elasticsearch cookbook: #{found_symbols.join(',')}")
   end

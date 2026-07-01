@@ -36,7 +36,6 @@ doc/
 rdoc
 
 # chef infra stuff
-Berksfile.lock
 .kitchen
 kitchen.local.yml
 vendor/

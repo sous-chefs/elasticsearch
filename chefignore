@@ -83,10 +83,7 @@ test/*
 */.hg/*
 */.svn/*
 
-# Berkshelf #
 #############
-Berksfile
-Berksfile.lock
 cookbooks/*
 tmp
 
