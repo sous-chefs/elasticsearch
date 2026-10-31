@@ -1,4 +1,14 @@
 ---
+lifecycle:
+  pre_converge:
+    # git >= 2.31 runs `git maintenance run --auto` in a detached process after
+    # clone/fetch. cookbook-omnifetch recursively copies the scratch clone while
+    # that process creates and deletes .git/objects/maintenance.lock, so the
+    # Policyfile lock generation intermittently fails with:
+    #   Reason: (Errno::ENOENT) ... .git/objects/maintenance.lock
+    # Force maintenance to run in the foreground so the copy cannot race it.
+    - local: "git config --global gc.autoDetach false"
+
 driver:
   name: vagrant
 
