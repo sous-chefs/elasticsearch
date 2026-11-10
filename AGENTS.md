@@ -76,6 +76,10 @@ These platforms are tested in `kitchen.dokken.yml` but not declared in `metadata
 * Default version in `_common.rb` partial is `7.17.9`; ES 8.x is the current major release
 * The `versions.rb` checksum library only covers ES 6.x–8.6.2; newer 8.x versions require the repository install type
 * Tarball install type raises an error — no systemd service template for tarball installs
+* `kitchen.yml` sets `gc.autoDetach false` in a `pre_converge` hook. git's detached
+  auto-maintenance races cookbook-omnifetch's recursive copy of the scratch clone and makes
+  Policyfile lock generation fail intermittently with `Errno::ENOENT` on
+  `.git/objects/maintenance.lock`. Keep the hook unless omnifetch/cinc is upgraded.
 
 ## Disabled Platforms
 
