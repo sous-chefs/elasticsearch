@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require_relative 'test/support/kitchen_git_config'
+
 name 'elasticsearch'
 
 run_list 'test::default'
