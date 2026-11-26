@@ -76,6 +76,11 @@ These platforms are tested in `kitchen.dokken.yml` but not declared in `metadata
 * Default version in `_common.rb` partial is `7.17.9`; ES 8.x is the current major release
 * The `versions.rb` checksum library only covers ES 6.x–8.6.2; newer 8.x versions require the repository install type
 * Tarball install type raises an error — no systemd service template for tarball installs
+* `kitchen.yml` keeps Git maintenance in the foreground during dependency resolution, including
+  installs from a lockfile. Detached maintenance can remove `.git/objects/maintenance.lock`
+  while cookbook-omnifetch copies the scratch clone. Fresh direct Policyfile compilation loads
+  the same process-only override. Direct CLI installs from an existing lockfile skip Policyfile
+  evaluation.
 
 ## Disabled Platforms
 

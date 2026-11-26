@@ -1,4 +1,5 @@
 ---
+# <% require_relative 'test/support/kitchen_git_config' %>
 driver:
   name: vagrant
 
