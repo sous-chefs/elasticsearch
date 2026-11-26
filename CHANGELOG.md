@@ -7,6 +7,13 @@
 Standardise files with files in sous-chefs/repo-management
 Standardise files with files in sous-chefs/repo-management
 
+## [6.0.2](https://github.com/sous-chefs/elasticsearch/compare/v6.0.1...v6.0.2) (2026-11-26)
+
+
+### Bug Fixes
+
+* **kitchen:** avoid git maintenance race during Policyfile resolution ([#847](https://github.com/sous-chefs/elasticsearch/issues/847)) ([a9f47ea](https://github.com/sous-chefs/elasticsearch/commit/a9f47eac75a86cd568ba5a8ea18774b021bf7d77))
+
 ## [6.0.1](https://github.com/sous-chefs/elasticsearch/compare/v6.0.0...v6.0.1) (2026-03-19)
 
 
