@@ -1,8 +1,20 @@
 ---
 name: prevent-file-change
 
+# xalvarez/prevent-file-change-action (via sous-chefs/.github) requires
+# pull_request_target: the workflow file is then always taken from the default
+# branch, so a pull request cannot loosen the very check that guards it.
+# The action never checks out PR code, it only reads the changed file list via
+# the API, so no checkout step belongs in this workflow.
+# The GITHUB_TOKEN permissions below must stay writable because the reusable
+# workflow may close a PR that touches .github/workflows.
+#
+# The event needs to be allowed in the Actions event policies
+# (Settings -> Actions -> Policies, target this workflow file), see
+# https://github.blog/changelog/2026-11-02-pull_request_target-blocked-by-default-december-2/
+# and https://github.com/xalvarez/prevent-file-change-action#readme
 "on":
-  pull_request:
+  pull_request_target:
     types:
       - opened
       - reopened
