@@ -13,4 +13,4 @@ jobs:
   conventional-commits:
     permissions:
       pull-requests: read
-    uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@9.0.1
+    uses: sous-chefs/.github/.github/workflows/conventional-commits.yml@9.0.2
